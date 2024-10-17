@@ -1,10 +1,10 @@
+import { Route, Routes } from 'react-router';
 import './MzPick.css';
 
 export default function MzPick() {
   return (
-    <div>
-      <h1>MzPick</h1>
-    </div>
+    <Routes>
+      <Route index element={<h1>das</h1>}/>
+    </Routes>
   );
 }
-
