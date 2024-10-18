@@ -1,10 +1,11 @@
-import { Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './MzPick.css';
+import MainLayout from './layouts/MainLayout';
 
 export default function MzPick() {
   return (
     <Routes>
-      <Route index element=
+      <Route index element={<MainLayout/>}/>
     </Routes>
   );
 }
