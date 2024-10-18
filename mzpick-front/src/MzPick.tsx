@@ -5,7 +5,8 @@ import MainLayout from './layouts/MainLayout';
 export default function MzPick() {
   return (
     <Routes>
-      <Route index element={<MainLayout/>}/>
+      {/* <Route index element={<MainLayout/>}/> */}
+      <Route index element={<SideBarDetail/>}/>
     </Routes>
   );
 }
