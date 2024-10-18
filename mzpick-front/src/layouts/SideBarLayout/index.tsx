@@ -25,19 +25,19 @@ export default function SideBarMain() {
                         <div className='Travel-detail-text'>여행 게시판</div>
                     </div>
                     <div className='Travel-detail-text-box'>
-                        <div className='icon'>1</div>
+                        <div className='icon'>2</div>
                         <div className='Travel-detail-text'>맛집</div>
                     </div>
                     <div className='Travel-detail-text-box'>
-                        <div className='icon'>1</div>
+                        <div className='icon'>3</div>
                         <div className='Travel-detail-text'>카페</div>
                     </div>
                     <div className='Travel-detail-text-box'>
-                        <div className='icon'>1</div>
+                        <div className='icon'>4</div>
                         <div className='Travel-detail-text'>숙박</div>
                     </div>
                     <div className='Travel-detail-text-box'>
-                        <div className='icon'>1</div>
+                        <div className='icon'>5</div>
                         <div className='Travel-detail-text'>투표</div>
                     </div>
                 </div>
