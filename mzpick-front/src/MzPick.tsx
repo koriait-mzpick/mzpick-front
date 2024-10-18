@@ -1,23 +1,16 @@
-// import { Route } from 'react-router-dom';
-// import './MzPick.css';
 
-// export default function MzPick() {
-//   return (
-//     <Routes>
-//       <Route index element=
-//     </Routes>
-//   );
-// }
+import { Route, Routes } from 'react-router-dom';
+import './MzPick.css';
+import MainLayout from './layouts/MainLayout';
+import SideBarMain from './layouts/SideBarLayout';
+import BottomNav from './layouts/BttomNav';
 
-
-import MainLayout from "./layouts/MainLayout";
-
-function App() {
+export default function MzPick() {
   return (
-    <MainLayout></MainLayout>
-      
-    
+    <Routes>
+      {/* <Route index element={<MainLayout/>}/> */}
+      {/* <Route index element={<SideBarMain/>}/> */}
+      <Route index element={<BottomNav/>}/>
+    </Routes>
   );
 }
-
-export default App;

@@ -13,5 +13,11 @@
 }
 
 body{
+  width: 1920px;
+
   margin: 0;
+}
+
+back {
+  background-color: #fafafa;
 }
