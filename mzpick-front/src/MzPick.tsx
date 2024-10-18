@@ -8,9 +8,9 @@ import BottomNav from './layouts/BttomNav';
 export default function MzPick() {
   return (
     <Routes>
-      {/* <Route index element={<MainLayout/>}/> */}
+      <Route index element={<MainLayout/>}/>
       {/* <Route index element={<SideBarMain/>}/> */}
-      <Route index element={<BottomNav/>}/>
+      {/* <Route index element={<BottomNav/>}/> */}
     </Routes>
   );
 }
