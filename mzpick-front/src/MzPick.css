@@ -12,6 +12,12 @@
   font-style: normal;
 }
 
+:root {
+  --primary-color: rgba(12, 12, 12, 1);
+  --primary-font-color: rgba(245, 245, 245, 1);
+}
+
+
 body{
   width: 1920px;
 
