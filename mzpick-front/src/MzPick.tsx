@@ -1,12 +1,13 @@
 import { Route, Routes } from 'react-router-dom';
 import './MzPick.css';
-import SideBarDetail from './layouts/SideBarLayout';
+import MainLayout from './layouts/MainLayout';
+
 
 export default function MzPick() {
   return (
     <Routes>
-      {/* <Route index element={<MainLayout/>}/> */}
-      <Route index element={<SideBarDetail/>}/>
+      <Route index element={<MainLayout/>}/>
+      {/* <Route index element={<SideBarMain/>}/> */}
     </Routes>
   );
 }
