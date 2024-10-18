@@ -1,3 +1,4 @@
+
 import { Route, Routes } from 'react-router-dom';
 import './MzPick.css';
 import MainLayout from './layouts/MainLayout';
@@ -9,3 +10,4 @@ export default function MzPick() {
     </Routes>
   );
 }
+
