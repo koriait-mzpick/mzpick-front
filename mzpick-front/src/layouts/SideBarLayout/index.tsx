@@ -18,8 +18,6 @@ export default function SideBarMain() {
             <div className="side-bar">
                 <div className="closeButtoon">X</div>
                 <div className="HOME">HOME</div>
-                <ul className="TRAVEL">TRAVEL
-                </ul>
                 <div className="FOOD">FOOD</div>
                 <div className="FASHION">FASHION</div>
                 <div className="KEYWORD">KEYWORD</div>
