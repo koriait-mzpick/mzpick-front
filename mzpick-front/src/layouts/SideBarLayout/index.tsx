@@ -37,7 +37,7 @@ export default function SideBarMain() {
                         <div className='Travel-detail-text'>숙박</div>
                     </div>
                     <div className='Travel-detail-text-box'>
-                        <div className='icon'>5</div>
+                        <div className='icon'>10</div>
                         <div className='Travel-detail-text'>투표</div>
                     </div>
                 </div>
