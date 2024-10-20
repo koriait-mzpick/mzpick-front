@@ -9,7 +9,7 @@ export default function MzPick() {
   return (
     <Routes>
       {/* <Route index element={<MainLayout/>}/> */}
-      {/* <Route index element={<SideBarMain/>}/> */}
+      <Route index element={<SideBarMain/>}/>
       <Route index element={<BottomNav/>}/>
     </Routes>
   );
