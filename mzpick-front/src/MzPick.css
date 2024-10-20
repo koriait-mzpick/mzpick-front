@@ -17,13 +17,7 @@
   --primary-font-color: rgba(245, 245, 245, 1);
 }
 
-
-body{
-  width: 1920px;
-
-  margin: 0;
-}
-
-back {
-  background-color: #fafafa;
+.full-width {
+  width: 100%;
+  box-sizing: border-box;
 }
