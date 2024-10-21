@@ -10,7 +10,7 @@ import Auth from './views/Auth';
 export default function MzPick() {
   return (
     <Routes>
-      {/* <Route index element={<MainLayout/>}/> */}
+      <Route index element={<MainLayout/>}/>
       {/* <Route index element={<BottomNav/>}/> */}
       <Route path={SIGN_IN_PATH} element={<Auth/>}/>
     </Routes>
