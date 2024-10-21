@@ -1,0 +1,33 @@
+
+@font-face {
+    font-family: 'Pretendard-Bold.otf';
+    src: url(/public/font/Pretendard-Bold.otf);
+}
+.auth-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: 127px;
+    margin-left: 30%;
+    margin-right: 30%;
+    
+
+    width: 838px;
+    height: 643px;
+}
+
+.title-box {
+    display: flex;
+    align-items: center;
+    padding-top: 170px;
+
+    font-family: 'Pretendard-Bold.otf';
+    font-size: 20px;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap:9px
+}
