@@ -1,7 +1,14 @@
-import React, { ChangeEvent, useState } from 'react'
-import './style.css';
-import InputBox from '../../components/Inputbox';
+
+export default function Auth() {
+  return (
+    <div>Auth</div>
+  )
+}
+
+import { ChangeEvent, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import InputBox from '../../components/Inputbox';
+import './style.css';
 
 
 type AuthPath = '회원가입' | '로그인';

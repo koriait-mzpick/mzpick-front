@@ -1,5 +1,15 @@
-import './style.css';
 import { useState } from 'react';
+import './style.css';
+
+
+// // component: 사이드바 상세 항목 //
+// const ClickListEventHandler=()=>{
+//   const [isOpen,setOpen] = useState(null);
+
+//   const toggleListItem = (index: SetStateAction<null>) => {
+//     setOpen(isOpen === index ? null : index);
+//   };
+// }
 
 // component: 메인레이아웃 컴포넌트 //
 export default function MainLayout() {
