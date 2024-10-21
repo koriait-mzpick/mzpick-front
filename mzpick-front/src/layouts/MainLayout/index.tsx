@@ -1,6 +1,16 @@
 import { useState } from 'react';
 import './style.css';
 
+
+// // component: 사이드바 상세 항목 //
+// const ClickListEventHandler=()=>{
+//   const [isOpen,setOpen] = useState(null);
+
+//   const toggleListItem = (index: SetStateAction<null>) => {
+//     setOpen(isOpen === index ? null : index);
+//   };
+// }
+
 export default function MainLayout() {
 
   // component: 메인레이아웃 컴포넌트 //
@@ -33,7 +43,7 @@ export default function MainLayout() {
 
                   <div className="Category ">HOME</div>
                   <div className="Category" style={{ borderBottom: "1px solid rgba(201, 224, 253, 0.3)" }}>TRAVEL</div>
-                  <div className='Category-detail' onClick={toggleMenu}>
+                  <div className='Category-detail' >
                     <div className='Category-detail-text-box'>
                       <div className='icon'></div>
                       <div className='Category-detail-text'>여행 게시판</div>
