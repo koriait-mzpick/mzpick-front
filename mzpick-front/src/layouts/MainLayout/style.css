@@ -92,21 +92,20 @@
 #main {
     display: flex;
     justify-content: flex-end;
-
 }
 
 #main .side-bar {
     display: flex;
     flex-direction: column;
+    width: 300px;
     background-color: var(--primary-color);
 }
 
-#main .side-bar .closeIcon {
+#main .side-bar .close-icon {
     display: flex;
     margin: 10px 24px 30px 236px;
     width: 40px;
     height: 40px;
-
     background-image: url('/public/image/Close\ Icon.png');
     background-size: contain;
 }
@@ -115,16 +114,13 @@
     display: flex;
     width: 252px;
     height: 50px;
+    font-family: 'Pretendard-Bold';
     font-size: 17px;
     color: var(--primary-font-color);
     margin: 0px 24px;
     align-items: center;
     border-bottom: 1px solid var(--primary-font-color);
     cursor: pointer;
-}
-
-#main .side-bar .darkLine {
-    border-bottom: 1px solid rgba(201, 224, 253, 0.3);
 }
 
 .signin-signup {
@@ -139,32 +135,36 @@
 .signin-signup .signup-button {
     display: flex;
     height: 50px;
+    font-family: 'Pretendard-Thin';
     font-size: 16px;
     align-items: center;
     color: var(--primary-font-color);
     cursor: pointer;
 }
 
-.signin-signup .slice-line{
-    cursor: default;
-}
-
-#main .side-bar .Travel-detail {
+#main .side-bar .Category-detail {
     display: flex;
     flex-direction: column;
-    height: 125px;
-    margin: 5px 152px 5px 24px;
+    margin: 5px 152px 0px 24px;
 }
-#main .side-bar .Travel-detail .Travel-detail-text-box{
+#main .side-bar .Category-detail .Category-detail-text-box{
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+    height: 25px;
+    border-bottom: 1px solid rgba(201, 224, 253, 0.3);
 }
 
-#main .side-bar .Travel-detail .Travel-detail-text-box .icon{
-    color: rgb(76, 148, 211);
+#main .side-bar .Category-detail .Category-detail-text-box .icon{
+    display: flex;
+    width: 4px;
+    height: 6px;
+    background-image: url('/public/image/ArrowRight2.png');
+    background-size: contain;
 }
 
-#main .side-bar .Travel-detail .Travel-detail-text-box .Travel-detail-text{
-    color: rgb(76, 148, 211);
+#main .side-bar .Category-detail .Category-detail-text-box .Category-detail-text{
+    display: flex;
+    font-family: 'Pretendard-Thin';
+    color: rgba(255, 255, 255, 1);
 }
-

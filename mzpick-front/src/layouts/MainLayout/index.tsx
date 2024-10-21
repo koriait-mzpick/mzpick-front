@@ -18,32 +18,32 @@ function SideBarMain() {
             <div className="side-bar">
                 <div className="close-icon"></div>
                 <div className="Category ">HOME</div>
-                <div className="Category darkLine">TRAVEL</div>
-                <div className='Travel-detail'>
-                    <div className='Travel-detail-text-box'>
-                        <div className='icon'>1</div>
-                        <div className='Travel-detail-text'>여행 게시판</div>
+                <div className="Category" style={{borderBottom:"1px solid rgba(201, 224, 253, 0.3)"}}>TRAVEL</div>
+                <div className='Category-detail'>
+                    <div className='Category-detail-text-box'>
+                        <div className='icon'></div>
+                        <div className='Category-detail-text'>여행 게시판</div>
                     </div>
-                    <div className='Travel-detail-text-box'>
-                        <div className='icon'>3git </div>
-                        <div className='Travel-detail-text'>맛집</div>
+                    <div className='Category-detail-text-box'>
+                        <div className='icon'></div>
+                        <div className='Category-detail-text'>맛집</div>
                     </div>
-                    <div className='Travel-detail-text-box'>
-                        <div className='icon'>3</div>
-                        <div className='Travel-detail-text'>카페</div>
+                    <div className='Category-detail-text-box'>
+                        <div className='icon'></div>
+                        <div className='Category-detail-text'>카페</div>
                     </div>
-                    <div className='Travel-detail-text-box'>
-                        <div className='icon'>4</div>
-                        <div className='Travel-detail-text'>숙박</div>
+                    <div className='Category-detail-text-box'>
+                        <div className='icon'></div>
+                        <div className='Category-detail-text'>숙박</div>
                     </div>
-                    <div className='Travel-detail-text-box'>
-                        <div className='icon'>10</div>
-                        <div className='Travel-detail-text'>투표</div>
+                    <div className='Category-detail-text-box'>
+                        <div className='icon'></div>
+                        <div className='Category-detail-text'>투표</div>
                     </div>
                 </div>
-                <div className="Category darkLine">FOOD</div>
+                <div className="Category" style={{borderBottom:"1px solid rgba(201, 224, 253, 0.3)"}}>FOOD</div>
                 <div className="Category">FASHION</div>
-                <div className="Category darkLine">KEYWORD</div>
+                <div className="Category" style={{borderBottom:"1px solid rgba(201, 224, 253, 0.3)"}}>KEYWORD</div>
                 <div className="Category">HALL OF FAME</div>
                 <div className="signin-signup">
                     <div className='login-button'>로그인</div>
