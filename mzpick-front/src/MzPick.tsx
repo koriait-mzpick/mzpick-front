@@ -1,16 +1,15 @@
 
 import { Route, Routes } from 'react-router-dom';
 import './MzPick.css';
+import { SIGN_IN_PATH } from './constants';
 import MainLayout from './layouts/MainLayout';
-import SideBarMain from './layouts/SideBarLayout';
-import BottomNav from './layouts/BttomNav';
+import Auth from './views/Auth';
 
 export default function MzPick() {
   return (
     <Routes>
-      {/* <Route index element={<MainLayout/>}/> */}
-      <Route index element={<SideBarMain/>}/>
-      <Route index element={<BottomNav/>}/>
+      <Route index element={<MainLayout/>}/>
+      <Route path={SIGN_IN_PATH} element={<Auth/>}/>
     </Routes>
   );
 }
