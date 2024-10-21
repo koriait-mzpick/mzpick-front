@@ -1,0 +1,64 @@
+@font-face {
+    font-family: 'Pretendard-Bold.otf';
+    src: url(/public/font/Pretendard-Bold.otf);
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-box .input-area {
+    display: flex;
+    width: 427px;
+    height: 56px;
+    gap: 10px;
+}
+
+
+.input-box input {
+    flex: 1;
+
+    background: none;
+    border: none;
+    outline: none;
+
+    padding-top: 28px;
+
+    border-bottom: 1px solid var(--primary-color);
+    box-shadow: 0px 5px 0px 0px rgba(217, 217, 217, 0.7);
+
+
+    font-family: 'Pretendard-Regular';
+    font-size: 20px;
+    color: var(--primary-color);
+}
+
+input::placeholder {
+    font-family: 'Pretendard-Bold.otf';
+    font-size: 20px;
+    color: rgba(217, 217, 217, 0.7);
+}
+
+.input-button.disable {
+    background-color: var(--primary-color);
+    color: var(--primary-font-color);
+}
+
+.input-button.active {
+    background-color: var(--primary-10-color);
+    color: var(--primary-color);
+}
+
+.input-button.active:hover {
+    background-color: var(--primary-20-color);
+    cursor: pointer;
+}
+
+.input-box .message {
+    margin-top: -4px;
+    height: 16px;
+
+    font-size: 13px;
+    font-weight: 400;
+}
