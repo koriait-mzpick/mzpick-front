@@ -1,5 +1,5 @@
-import './style.css';
 import { useState } from 'react';
+import './style.css';
 
 export default function MainLayout() {
 
@@ -33,7 +33,7 @@ export default function MainLayout() {
 
                   <div className="Category ">HOME</div>
                   <div className="Category" style={{ borderBottom: "1px solid rgba(201, 224, 253, 0.3)" }}>TRAVEL</div>
-                  <div className='Category-detail'>
+                  <div className='Category-detail' onClick={toggleMenu}>
                     <div className='Category-detail-text-box'>
                       <div className='icon'></div>
                       <div className='Category-detail-text'>여행 게시판</div>
