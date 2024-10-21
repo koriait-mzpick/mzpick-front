@@ -1,10 +1,3 @@
-
-export default function Auth() {
-  return (
-    <div>Auth</div>
-  )
-}
-
 import { ChangeEvent, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import InputBox from '../../components/Inputbox';
@@ -74,8 +67,17 @@ return (
   )
 }
 
-// export default function Auth() {
-//   return (
-//   <SignIn /> 
-//   )
-// }
+export default function Auth() {
+
+  // state: 선택 화면 상태 //
+  const [path, setPath] = useState<AuthPath>('로그인');
+
+  // event handler: 화면 변경 이벤트 처리 //
+  const onPathChangeHandler = (path: AuthPath) => {
+    setPath(path);
+  };
+
+  return (
+    <SignIn onPathChange={onPathChangeHandler}/>
+  )
+}
