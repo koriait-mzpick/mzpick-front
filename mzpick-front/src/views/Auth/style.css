@@ -1,17 +1,33 @@
-.sns-container {
+
+@font-face {
+    font-family: 'Pretendard-Bold.otf';
+    src: url(/public/font/Pretendard-Bold.otf);
+}
+.auth-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+
+    margin-top: 127px;
+    margin-left: 30%;
+    margin-right: 30%;
+    
+
+    width: 838px;
+    height: 643px;
 }
 
-.sns-container .title {
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--gray-color);
-}
-
-.sns-button-container {
+.title-box {
     display: flex;
-    gap: 24px;
+    align-items: center;
+    padding-top: 170px;
+
+    font-family: 'Pretendard-Bold.otf';
+    font-size: 20px;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap:9px
 }
