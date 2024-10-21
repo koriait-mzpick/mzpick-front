@@ -1,0 +1,170 @@
+@font-face {
+    font-family: 'Pretendard-Thin';
+    src: url(/public/font/Pretendard-Thin.ttf);
+}
+#layout-logo{
+    grid-area: logo;
+    width: 100%;
+    height: 54px;
+    display: flex;
+    justify-content:space-between;
+    background-color: rgba(12, 12, 12, 1);
+}
+
+#layout-logo .box {
+    display: flex;
+    align-items: center;
+    cursor: default;
+    background-color: rgba(12, 12, 12, 1);
+}
+
+#layout-logo .title {
+    color: rgba(255, 255, 255, 1);
+    margin-left: 6px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 24px;
+    font-family: 'Pretendard-Regular';
+}
+
+#layout-logo .box .icon {
+    display: flex;
+    align-content: center;
+    width: 51px;
+    height: 42px;
+    margin-left: 21px;
+    background-image: url('/public/Logo.png');
+
+}
+
+#layout-logo .navi-icon{
+    display: flex;
+    align-content: center;
+    margin-right: 76px;
+    margin-top: 6px;
+    margin-bottom: 4px;
+    width: 44px;
+    height: 44px;
+    background-image: url('/public/NaviIconVector.png');
+}
+
+#layout-logo .navi-box{
+    display: flex;
+}
+
+#layout-logo .navi-box .signin-signup{
+    display: flex;
+    margin-top: 16px;
+    padding-right: 30px;
+    width: 200px;
+    height: 25px;
+}
+
+#layout-logo .navi-box .signin-signup .login-button{
+    color: rgba(245, 245, 245, 1);
+    font-size: 16px;
+    width: 90px;
+    border: 0;
+    background-color: transparent;
+    font-family: 'Pretendard-Thin';
+}
+
+#layout-logo .navi-box .signin-signup .signup-button{
+    color: rgba(245, 245, 245, 1);
+    font-size: 16px;
+    width: 100px;
+    border: 0;
+    background-color: transparent;
+    font-family: 'Pretendard-Thin';
+}
+
+#layout-logo .navi-box .signin-signup .slice-line{
+    color: rgba(245, 245, 245, 1);    
+    font-size: 16px;
+}
+
+
+
+
+
+
+
+#main {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#main .side-bar {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    background-color: var(--primary-color);
+}
+
+#main .side-bar .close-icon {
+    display: flex;
+    margin: 10px 24px 30px 236px;
+    width: 40px;
+    height: 40px;
+    background-image: url('/public/image/Close\ Icon.png');
+    background-size: contain;
+}
+
+#main .side-bar .Category {
+    display: flex;
+    width: 252px;
+    height: 50px;
+    font-family: 'Pretendard-Bold';
+    font-size: 17px;
+    color: var(--primary-font-color);
+    margin: 0px 24px;
+    align-items: center;
+    border-bottom: 1px solid var(--primary-font-color);
+    cursor: pointer;
+}
+
+.signin-signup {
+    display: flex;
+    gap: 5px;
+    height: 300px;
+    justify-content: center;
+}
+
+.signin-signup .login-button,
+.signin-signup .slice-line,
+.signin-signup .signup-button {
+    display: flex;
+    height: 50px;
+    font-family: 'Pretendard-Thin';
+    font-size: 16px;
+    align-items: center;
+    color: var(--primary-font-color);
+    cursor: pointer;
+}
+
+#main .side-bar .Category-detail {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 152px 0px 24px;
+}
+#main .side-bar .Category-detail .Category-detail-text-box{
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 25px;
+    border-bottom: 1px solid rgba(201, 224, 253, 0.3);
+}
+
+#main .side-bar .Category-detail .Category-detail-text-box .icon{
+    display: flex;
+    width: 4px;
+    height: 6px;
+    background-image: url('/public/image/ArrowRight2.png');
+    background-size: contain;
+}
+
+#main .side-bar .Category-detail .Category-detail-text-box .Category-detail-text{
+    display: flex;
+    font-family: 'Pretendard-Thin';
+    color: rgba(255, 255, 255, 1);
+}
