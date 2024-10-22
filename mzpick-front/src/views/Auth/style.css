@@ -20,6 +20,7 @@
     display: flex;
     align-items: center;
     padding-top: 170px;
+    padding-bottom: 30px;
 
     font-family: 'Pretendard-Bold.otf';
     font-size: 20px;
@@ -30,3 +31,10 @@
     flex-direction: column;
     gap:9px
 }
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+

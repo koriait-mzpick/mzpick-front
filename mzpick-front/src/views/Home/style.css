@@ -1,0 +1,79 @@
+#home {
+    display: grid;
+}
+
+#home .home-media{
+
+    width: calc(100vw - 5px);
+    height: calc(100vh - 54px);
+}
+
+#home .home-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: calc(100vw - 5px);
+    height: calc(100vh - 54px);
+}
+
+#home .home-text .introduce-text{
+    font-family: GongGothicMedium;
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-size: 7.4vw ;
+    margin-bottom: 30px;
+}
+
+#home .home-text .icon-box {
+    background-image: url(/public/logologo.png);
+    width: 781px;
+    height: 264px;
+    min-width: auto;
+    min-height: auto;
+    margin-bottom: 30px;
+    
+}
+
+#home .home-text .detail-introduce{
+    font-family: 'Pretendard-Thin';
+    src: url(/public/font/Pretendard-Thin.ttf);
+    font-size: 3.7vw ;
+    font-weight: 100;
+
+}
+
+#home .home-category{
+    width: calc(100vw - 5px);
+    height: calc(100vh - 54px);
+    font-weight: lighter;
+}
+
+#home .footer{
+    background-color: rgba(12, 12, 12, 100);
+    width: calc(100vw - 5px);
+    height: 26vh;
+}
+
+#home .footer .name-logo-box{
+    display: flex;
+    justify-content: space-between;
+    color: rgba(255, 255, 255, 100);
+    margin: 30px;
+}
+
+#home .footer .name-logo-box .name-box{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 4px;
+    margin-right: 100px;
+}
+
+#home .footer .name-logo-box .name-box .name {
+    margin-left: 80px;
+}
+
+#home .footer .contract{
+    color: rgba(255, 255, 255, 100);
+    position: relative;
+}
