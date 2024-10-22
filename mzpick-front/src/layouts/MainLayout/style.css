@@ -5,6 +5,7 @@
 
 #main-layout {
     display: flex;
+    flex-direction: column;
     width: 100%;
 }
 
@@ -31,6 +32,7 @@
     margin-bottom: 15px;
     font-size: 24px;
     font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
 }
 
 #main-layout .layout-logo .box .icon {
@@ -53,11 +55,11 @@
 
 #main-layout .layout-logo .navi-box .navi-icon{
     align-items: center;
-    width: 44px;
-    height: 44px;
-    margin: 6px 20px 4px 20px;
+    width: 36px;
+    height: 30px;
+    margin: 12px 15px;
     cursor: pointer;
-    background-image: url('/public/NaviIconVector.png');
+    background-image: url('/public/image/NaviIcon.png');
 }
 
 #main-layout .side-bar{
@@ -65,6 +67,7 @@
     position: fixed;
     flex-direction: column;
     height: 100%;
+    min-height: 660px;
     right: -300px;
     gap: 4.7px;
     width: 300px;
@@ -80,7 +83,8 @@
     margin: 10px 24px 40px 246px;
     width: 30px;
     height: 30px;
-    background-image: url('/public/image/Close\ Icon3.png');
+    min-height: 30px;
+    background-image: url('/public/image/Close-Icon3.png');
     background-size: contain;
     cursor: pointer;
 }
@@ -147,8 +151,14 @@
     height: 20px;
     margin: 17px 0px;
     font-family: 'Pretendard-Thin';
-    font-size: 16px;
+    font-size: 18px;
     align-items: center;
     color: var(--primary-font-color);
     cursor: pointer;
+}
+
+#main-wrapper .table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }

@@ -1,0 +1,53 @@
+@font-face {
+    font-family: 'Pretendard-Bold';
+    src: url(/public/font/Pretendard-Bold.ttf);
+}
+
+
+#main-travel-board {
+    display: flex;
+    flex-direction: column;
+    width: 1830px;
+}
+
+#main-travel-board .board-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+    background-color: aqua;
+}
+
+#main-travel-board .board-top .drop-down-box {
+    display: flex;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    border: 1px solid var(--primary-gray-font-color);
+    border-radius: 5px;
+    background-color: var(--primary-font-color);
+}
+
+#main-travel-board .board-top .drop-down-box .drop-down-text{
+    display: flex;
+    width: 40px;
+    height: 20px;
+    padding: 10px 2.5px 10px 27px;
+    color: var(--primary-gray-font-color);
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+}
+
+#main-travel-board .board-top .drop-down-box .drop-down-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15px;
+    height: 15px;
+    padding: 10px 10px 10px 10px;
+    color: var(--primary-gray-font-color);
+    background-image: url(/public/image/Chevron-down.png);
+    background-size: contain;
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+}
