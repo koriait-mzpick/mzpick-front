@@ -1,0 +1,128 @@
+@font-face {
+    font-family: 'Pretendard-Bold.otf';
+    src: url(/public/font/Pretendard-Bold.otf);
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+#header-box {
+    display: flex;
+    width: 1920px;
+    height: 149px;
+}
+
+#header-box .header-namebox {
+    display: flex;
+
+    width: 180px;
+    height: 30px;
+
+    font-family: 'Pretendard-Bold.otf';
+    font-size: 33px;
+
+    padding-left: 105px;
+    padding-top:  40px;    
+}
+
+.user-infoBox {
+    display: flex;
+    width: 490px;
+    height: 60px;
+
+    padding-top: 40px;
+}
+
+.user-infoBox .user-contentBox {
+    display: flex;
+    flex-direction: column;
+
+    width: 245px;
+    height: 60px;
+}
+
+.user-infoBox .user-contentBox .contentBox1 {
+    display: flex;
+    width: 220px;
+    height: 30px;
+
+    gap: 30px;
+
+}
+
+.user-infoBox .user-contentBox .contentBox2 {
+    display: flex;
+    width: 220px;
+    height: 30px;
+
+    gap: 30px;
+} 
+
+#subscribe-box {
+    display: flex;
+    flex-direction: column;
+
+    width: 1830px;
+    height: 930px;
+}
+
+#subscribe-box .save-box {
+    display: flex;
+    flex-direction: column;
+
+    width: 1385px;
+    height: 350px;
+    padding-left: 267px;
+}
+
+#subscribe-box .like-box {
+    display: flex;
+    flex-direction: column;
+
+    width: 1385px;
+    height: 350px;
+    padding-left: 267px;
+}
+
+#subscribe-box .save-box .textBox {
+    display: flex;
+    width: 1385px;
+    height: 40px;
+
+    text-align: left;
+    font-family: 'Pretendard-Bold.otf';
+    padding-left: 8px;
+}
+
+#subscribe-box .like-box .textBox {
+    display: flex;
+    width: 1385px;
+    height: 40px;
+
+    text-align: left;
+    font-family: 'Pretendard-Bold.otf';
+    padding-left: 8px;
+}
+
+#subscribe-box .save-box .imageBox {
+    display: flex;
+
+    width: 1235px;
+    height: 280px;
+}
+
+#subscribe-box .save-box .imageBox .WritePostBox {
+    display: flex;
+    width: 320vw;
+    height: 280vh;
+
+    border: 1px solid rgba(166, 166, 166, 100);
+    border-radius: 10px;
+    padding-top: 70px;
+}
+
+
