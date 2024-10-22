@@ -10,7 +10,7 @@ export const SIGN_UP_PATH = '/sign-up'
 export const TRAVEL_PATH='/travel'
 export const TRAVEL_BOARD_PATH='/travel/board'
 
-
+export const MY_PAGE_PATH = '/mypage'
 
 // variable: HTTP BEARER TOKEN COOKIE NAME //
 export const ACCESS_TOKEN = 'accessToken';

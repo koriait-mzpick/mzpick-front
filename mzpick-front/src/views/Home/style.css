@@ -1,11 +1,14 @@
 #home {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    margin-top: 54px;
 }
 
 #home .home-media{
-
+    /* margin-top: 54px; */
     width: calc(100vw - 5px);
     height: calc(100vh - 54px);
+    /* height: 100vh; */
 }
 
 #home .home-text {
@@ -45,7 +48,8 @@
 #home .home-category{
     width: calc(100vw - 5px);
     height: calc(100vh - 54px);
-    font-weight: lighter;
+    background-color: aquamarine;
+
 }
 
 #home .footer{
