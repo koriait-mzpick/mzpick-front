@@ -29,6 +29,7 @@
 :root {
   --primary-color: rgba(12, 12, 12, 1);
   --primary-font-color: rgba(245, 245, 245, 1);
+  --primary-gray-font-color: rgba(116, 116, 116, 1);
 }
 
 .full-width {
