@@ -33,7 +33,9 @@ export default function InputBox({
                 <input value={value} type={type} placeholder={placeholder} onChange={onChange}/>
                 {buttonName && <div className={`input-button ${value ? 'active' : 'disable'}`} onClick={onButtonClick}>{buttonName}</div>}
             </div>
-            <div className={`message ${messageError ? 'error' : 'primary'}`}>{message}</div>
+            <div className='shadow'></div>
+            {/* <div className={`message ${messageError ? 'error' : 'primary'}`}>{message}</div> */}
+            <div className='message error'>로그인 정보가 일치하지 않습니다.</div>
         </div>
     )
 }
