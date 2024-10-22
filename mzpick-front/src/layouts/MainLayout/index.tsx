@@ -1,5 +1,5 @@
-import './style.css';
 import { useState } from 'react';
+import './style.css';
 
 // component: 메인레이아웃 컴포넌트 //
 export default function MainLayout() {
