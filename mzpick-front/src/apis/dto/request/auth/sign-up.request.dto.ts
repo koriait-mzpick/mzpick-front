@@ -1,9 +1,10 @@
+// interface: 회원가입 Request Body Dto //
 export default interface SignUpRequestDto {
     name: string;
-    user_id: string;
+    userId: string;
     password: string;
-    tel_number: string;
-    auth_number: string;
-    join_path: string;
-    sns_id: string | null;
+    telNumber: string;
+    authNumber: string;
+    joinPath: string;
+    snsId: string | null;
 }
