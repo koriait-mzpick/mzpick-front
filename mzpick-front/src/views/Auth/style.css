@@ -11,8 +11,6 @@
 #auth-wrapper {
     width: calc(100vw - 5px);
     height: calc(100vh - 54px);
-    /* padding-top: 54px;
-    padding-bottom: 175px; */
 }
 
 .auth-container .auth-box {
@@ -21,8 +19,6 @@
     align-items: center;
     margin: auto;
     padding-top: 15vh;
-    
-    
 }
 
 .auth-container .title-box {

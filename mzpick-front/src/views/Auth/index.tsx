@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import { IdCheckRequestDto, SignInRequestDto, SignUpRequestDto, TelAuthCheckRequestDto, TelAuthRequestDto } from '../../apis/dto/request/auth';
 import { ResponseDto } from '../../apis/dto/response';
+import { idCheckRequest, signInRequest, signUpRequest, telAuthCheckRequest, telAuthRequest } from '../../apis';
+import { SignInResponseDto } from '../../apis/dto/response/auth';
 
 
 type AuthPath = '회원가입' | '로그인';
@@ -191,7 +193,7 @@ function SignUp({ onPathChange }: AuthComponentProps) {
     const requestBody: IdCheckRequestDto = {
       userId: id
     };
-    // idCheckRequest(requestBody).then(idCheckResponse);
+    idCheckRequest(requestBody).then(idCheckResponse);
   };
 
   // event handler: 전화번호 인증 버튼 클릭 이벤트 처리 //
@@ -208,7 +210,7 @@ function SignUp({ onPathChange }: AuthComponentProps) {
     }
 
     const requestBody: TelAuthRequestDto = { telNumber };
-    // telAuthRequest(requestBody).then(telAuthResponse);
+    telAuthRequest(requestBody).then(telAuthResponse);
 
   };
 
@@ -219,7 +221,7 @@ function SignUp({ onPathChange }: AuthComponentProps) {
     const requestBody: TelAuthCheckRequestDto = {
       telNumber, authNumber
     }
-    // telAuthCheckRequest(requestBody).then(telAuthCheckResponse);
+    telAuthCheckRequest(requestBody).then(telAuthCheckResponse);
   };
 
   // event handler: 회원가입 버튼 클릭 이벤트 처리 //
@@ -235,7 +237,7 @@ function SignUp({ onPathChange }: AuthComponentProps) {
       joinPath: joinPath ? joinPath : 'home',
       snsId
     };
-    // signUpRequest(requestBody).then(signUpResponse);
+    signUpRequest(requestBody).then(signUpResponse);
   };
 
   // effect: 비밀번호 및 비밀번호 확인 변경 시 실행할 함수 //
@@ -291,27 +293,27 @@ function SignIn({ onPathChange }: AuthComponentProps) {
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
 
-  // // function: 로그인 Response 처리 함수 //
-  // const signInResponse = (responseBody: SignInResponseDto | ResponseDto | null) => {
-  //   const message =
-  //     !responseBody ? '서버에 문제가 있습니다.' :
-  //       responseBody.code === "VF" ? '아이디와 비밀번호를 모두 입력하세요.' :
-  //         responseBody.code === "SF" ? '로그인 정보가 일치하지 않습니다.' :
-  //           responseBody.code === "TCF" ? '서버에 문제가 있습니다.' :
-  //             responseBody.code === "DBE" ? '서버에 문제가 있습니다.' : ''
+  // function: 로그인 Response 처리 함수 //
+  const signInResponse = (responseBody: SignInResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === "VF" ? '아이디와 비밀번호를 모두 입력하세요.' :
+          responseBody.code === "SF" ? '로그인 정보가 일치하지 않습니다.' :
+            responseBody.code === "TCF" ? '서버에 문제가 있습니다.' :
+              responseBody.code === "DBE" ? '서버에 문제가 있습니다.' : ''
 
-  //   const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-  //   if (!isSuccessed) {
-  //     setMessage(message);
-  //     return;
-  //   }
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      setMessage(message);
+      return;
+    }
 
-  //   const { accessToken, expiration } = responseBody as SignInResponseDto;
-  //   const expires = new Date(Date.now() + (expiration * 1000));
-  //   setCookie(ACCESS_TOKEN, accessToken, { path: ROOT_PATH, expires });
+    // const { accessToken, expiration } = responseBody as SignInResponseDto;
+    // const expires = new Date(Date.now() + (expiration * 1000));
+    // setCookie(ACCESS_TOKEN, accessToken, { path: ROOT_PATH, expires });
 
-  //   navigator(CS_ABSOLUTE_PATH);
-  // };
+    // navigator();
+  };
 
   // event handler: 아이디 변경 이벤트 처리 //
   const onIdChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -333,7 +335,7 @@ function SignIn({ onPathChange }: AuthComponentProps) {
       userId: id,
       password
     };
-    // signInRequest(requestBody).then(signInResponse);
+    signInRequest(requestBody).then(signInResponse);
 
   };
 
