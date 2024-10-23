@@ -1,8 +1,8 @@
 
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import './style.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { HOME_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_BOARD_PATH, TRAVEL_PATH } from '../../constants';
+import './style.css';
 
 // component: 메인레이아웃 컴포넌트 //
 export default function MainLayout() {
