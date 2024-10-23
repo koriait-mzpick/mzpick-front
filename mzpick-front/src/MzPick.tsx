@@ -2,10 +2,14 @@
 import { useCookies } from 'react-cookie';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import './MzPick.css';
-import { HOME_PATH, MY_PAGE_PATH, SIGN_IN_PATH, TRAVEL_BOARD_PATH, TRAVEL_PATH } from './constants';
+import { FASHION_PATH, FOOD_PATH, HOF_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, SIGN_IN_PATH, TRAVEL_BOARD_PATH, TRAVEL_PATH } from './constants';
 import MainLayout from './layouts/MainLayout';
 import Auth from './views/Auth';
+import Fashion from './views/Fashion';
+import Food from './views/Food';
+import HOF from './views/HOF';
 import Home from './views/Home';
+import Keyword from './views/Keyword';
 import MyPage from './views/MyPage';
 import Travel from './views/Travel';
 import MainTravel from './views/Travel/MainTravel';
@@ -40,6 +44,22 @@ export default function MzPick() {
       <Route path={TRAVEL_PATH} element={<MainLayout />}>
         < Route path={TRAVEL_PATH} element={< Travel />} />
         < Route path={TRAVEL_BOARD_PATH} element={< MainTravel />} />
+      </Route>
+
+      <Route path={FASHION_PATH} element={<MainLayout />}>
+        < Route path={FASHION_PATH} element={< Fashion />} />
+      </Route>
+
+      <Route path={FOOD_PATH} element={<MainLayout />}>
+        < Route path={FOOD_PATH} element={< Food />} />
+      </Route>
+
+      <Route path={KEYWORD_PATH} element={<MainLayout />}>
+        < Route path={KEYWORD_PATH} element={< Keyword />} />
+      </Route>
+
+      <Route path={HOF_PATH} element={<MainLayout />}>
+        < Route path={HOF_PATH} element={< HOF />} />
       </Route>
 
       <Route path={MY_PAGE_PATH} element={<MainLayout />}>
