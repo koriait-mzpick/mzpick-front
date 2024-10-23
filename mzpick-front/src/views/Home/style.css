@@ -4,7 +4,10 @@
     margin-top: 54px;
 }
 
-
+#home .scroll-box {
+    position: relative;
+    height: 200vh;
+}
 
 #home .home-media {
     /* margin-top: 54px; */
@@ -14,12 +17,15 @@
 }
 
 #home .home-text {
+    position: sticky;
+    top: 54px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     width: calc(100vw - 5px);
     height: 100vh;
+    z-index: -999;
 
     scroll-snap-align: start;
     user-select: none;
@@ -54,8 +60,13 @@
 }
 
 #home .home-category {
+    position: sticky;
+    top: 54px;
+    
     width: calc(100vw - 5px);
     height: 100vh;
+
+    background-color: rgba(12, 12, 12, 100);
 
     user-select: none;
     -webkit-user-select:none;
@@ -63,7 +74,7 @@
     -ms-user-select: none;
 }
 
-#home .home-category .category-container {
+#home   .home-category .category-container {
     display: grid;
     grid-template-columns:
         1fr 1fr 1fr 1fr 1fr;
@@ -75,11 +86,11 @@
     font-weight: bold;
     font-size: 2.7vw;
     color: rgba(245, 245, 245, 100);
-
     text-align: center;
-
     /* align-items: center; */
     /* justify-items: center; */
+
+    cursor: pointer;
 }
 
 #home .home-category .category-container .travel-category {
@@ -116,6 +127,7 @@
     background-color: rgba(12, 12, 12, 100);
     width: calc(100vw - 5px);
     height: 26vh;
+    
 }
 
 #home .footer .name-logo-box {
