@@ -50,7 +50,15 @@ export default function MyPage() {
             <div className='SubtitleBox'></div>
           </div>
         </div>
-        <div  className='page-box'></div>
+        <div  className='page-box'>
+          <div className='pageBox1'></div>
+          <div className='pageBox'>1</div>
+          <div className='pageBox'>2</div>
+          <div className='pageBox'>3</div>
+          <div className='pageBox'>4</div>
+          <div className='pageBox'>5</div>
+          <div className='pageBox2'></div>
+        </div>
       </div>
       <div className='like-box'>
         <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>LIKE</div>
@@ -69,9 +77,66 @@ export default function MyPage() {
           </div>
           
         </div>
-        <div  className='page-box'></div>
+        <div  className='page-box'>
+          <div className='pageBox1'></div>
+          <div className='pageBox'>1</div>
+          <div className='pageBox'>2</div>
+          <div className='pageBox'>3</div>
+          <div className='pageBox'>4</div>
+          <div className='pageBox'>5</div>
+          <div className='pageBox2'></div>
+        </div>
       </div>
     </div>
+
+
+
+
+    <div className='subscribe-box'>
+      
+    <div className='like-box'>
+        <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>WRITE</div>
+
+        <div  className='page-box'>
+          <div className='pageBox1'></div>
+          <div className='pageBox'>1</div>
+          <div className='pageBox'>2</div>
+          <div className='pageBox'>3</div>
+          <div className='pageBox'>4</div>
+          <div className='pageBox'>5</div>
+          <div className='pageBox2'></div>
+        </div>
+      </div>
+      
+      <div className='like-box'>
+        <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>VOTE</div>
+        <div className='imageBox'>
+          <div className='WritePostBox'>
+            <div className='imgContainer'></div>
+            <div className='SubtitleBox'></div>
+          </div>
+          <div className='WritePostBox'>
+            <div className='imgContainer'></div>
+            <div className='SubtitleBox'></div>
+          </div>
+          <div className='WritePostBox'>
+            <div className='imgContainer'></div>
+            <div className='SubtitleBox'></div>
+          </div>
+          
+        </div>
+        <div  className='page-box'>
+          <div className='pageBox1'></div>
+          <div className='pageBox'>1</div>
+          <div className='pageBox'>2</div>
+          <div className='pageBox'>3</div>
+          <div className='pageBox'>4</div>
+          <div className='pageBox'>5</div>
+          <div className='pageBox2'></div>
+        </div>
+      </div>
+    </div>
+
 
     </div>
       
