@@ -30,12 +30,17 @@ export default function InputBox({
     return (
         <div className="input-box">
             <div className="input-area">
-                <input value={value} type={type} placeholder={placeholder} onChange={onChange}/>
-                {buttonName && <div className={`input-button ${value ? 'active' : 'disable'}`} onClick={onButtonClick}>{buttonName}</div>}
+                <div className="input-text">
+                    <input value={value} type={type} placeholder={placeholder}/>
+                    <div className="shadow"></div>
+                </div>
+
+                {buttonName && <div className={`input-button ${value ? 'active' : 'disable'}`}>{buttonName}</div>}
+                {/* {buttonName && <div className={`input-button ${value ? 'active' : 'active'}`}>{buttonName}</div>} */}
             </div>
-            <div className='shadow'></div>
-            {/* <div className={`message ${messageError ? 'error' : 'primary'}`}>{message}</div> */}
-            <div className='message error'>로그인 정보가 일치하지 않습니다.</div>
+            
+            <div className={`message ${messageError ? 'error' : 'primary'}`}>{message}</div>
+            {/* <div className='message error'>로그인 정보가 일치하지 않습니다.</div> */}
         </div>
     )
 }
