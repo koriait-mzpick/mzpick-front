@@ -1,6 +1,9 @@
 import React from 'react'
+import './style.css';
+import BottomNav from '../../BottomNav';
 
 export default function Write() {
+
   return (
     <div id='main-write'>
       <div className='write-box'>
@@ -18,6 +21,7 @@ export default function Write() {
           <div className='cancel'></div>
         </div>
       </div>
+      <BottomNav />
     </div>
   )
 }

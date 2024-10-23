@@ -1,5 +1,5 @@
 // variable: 상대 경로 상수 //
-export const HOME_PATH = '/home'
+export const HOME_PATH = '/'
 
 export const SIGN_IN_PATH = '/sign-in'
 export const ID_CHECK_PATH = '/id-check'
@@ -19,6 +19,8 @@ export const KEYWORD_PATH='/keyword'
 export const HOF_PATH = '/hof'
 
 export const MY_PAGE_PATH = '/mypage'
+
+export const WRITE_PATH = '/write'
 
 // variable: HTTP BEARER TOKEN COOKIE NAME //
 export const ACCESS_TOKEN = 'accessToken';
