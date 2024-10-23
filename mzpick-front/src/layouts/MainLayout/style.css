@@ -16,6 +16,10 @@
     height: 54px;
     justify-content:space-between;
     background-color: rgba(12, 12, 12, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 #main-layout .layout-logo .box {
@@ -25,7 +29,7 @@
     background-color: rgba(12, 12, 12, 1);
 }
 
-#main-layout .layout-logo .title {
+#main-layout .layout-logo .box .title {
     color: rgba(255, 255, 255, 1);
     margin-left: 6px;
     margin-top: 15px;
@@ -73,6 +77,10 @@
     width: 300px;
     background-color: var(--primary-color);
     transition: transform 0.3s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 #main-layout .side-bar.active {
@@ -102,7 +110,7 @@
     cursor: pointer;
 }
 
-.category-detail {
+#main-layout .side-bar .category-detail {
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -111,7 +119,7 @@
     transition: max-height 0.2s ease-out;
 }
 
-.category-detail.active {
+#main-layout .side-bar .category-detail.active {
     max-height: 200px;
 }
 
@@ -124,9 +132,8 @@
 }
 
 #main-layout .side-bar .category-detail .category-detail-text-box .icon{
-
     width: 4px;
-    height: 6px;
+    height: 5px;
     background-image: url('/public/image/ArrowRight2.png');
     background-size: contain;
 }

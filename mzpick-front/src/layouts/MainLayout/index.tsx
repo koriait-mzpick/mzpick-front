@@ -1,7 +1,7 @@
 
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import './style.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HOME_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_BOARD_PATH, TRAVEL_PATH } from '../../constants';
 
 // component: 메인레이아웃 컴포넌트 //
@@ -20,7 +20,7 @@ export default function MainLayout() {
         setCategoryOpen2(false);
       }
       return !sideBar
-    }); // on,off 개념 boolean
+    });
   }
 
   // state: 사이드바 세부 카테고리 토글 상태 //
@@ -46,7 +46,9 @@ export default function MainLayout() {
   // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
   const onItemClickHandler = (path: string) => {
     navigator(path);
+    setSideBarOpen(false);
   };
+
 
   // render: 메인레이아웃 컴포넌트 렌더링 //
   return (
