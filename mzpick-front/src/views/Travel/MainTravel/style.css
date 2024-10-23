@@ -35,23 +35,7 @@
     cursor: pointer;
 }
 
-#main-travel-board .board-top .drop-down-box .drop-down-sub {
-    display: flex;
-    flex-direction: column;
-    border-radius: 5px;
-    /* border: 1px solid var(--primary-font-gray-color); */
-    background-color: var(--primary-font-color);
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.2s ease-out;
-    cursor: pointer;
-}
-
-#main-travel-board .board-top .drop-down-box .drop-down-sub.active {
-    max-height: 200px;
-}
-
-#main-travel-board .board-top .drop-down-box .drop-down-text {
+#main-travel-board .board-top .drop-down-box .drop-down-main-text {
     display: flex;
     width: 40px;
     height: 20px;
@@ -74,6 +58,39 @@
     background-size: contain;
 }
 
+#main-travel-board .board-top .drop-down-box .drop-down-sub {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    /* border: 1px solid var(--primary-font-gray-color); */
+    background-color: var(--primary-font-color);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.2s ease-out;
+    cursor: pointer;
+}
+
+#main-travel-board .board-top .drop-down-box .drop-down-sub.active {
+    max-height: 200px;
+}
+
+#main-travel-board .board-top .drop-down-box .drop-down-sub-text {
+    display: flex;
+    align-items: center;
+    width: 28px;
+    height: 40px;
+    padding: 0px 45px 0px 27px;
+    color: var(--primary-font-gray-color);
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-size: 15px;
+}
+
+#main-travel-board .board-top .drop-down-box .drop-down-sub-text:hover {
+    cursor: pointer;
+    color: rgba(50, 50, 50, 1);
+    background-color: rgba(220, 220, 220, 1);
+}
 
 #main-travel-board .board-top .write-button {
     display: flex;
@@ -97,4 +114,29 @@
     margin: 115px 45px 0px 45px;
     width: 95%;
     gap: 45px;
+}
+
+
+#main-travel-board .board-middle .board-detail-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    height: 350px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, .25);
+    background-color: rgba(217, 217, 217, 0);
+}
+
+#main-travel-board .board-middle .board-detail-box .board-detail-image {
+    height: 270px;
+}
+
+#main-travel-board .board-middle .board-detail-box .board-detail-information {
+    display: flex;
+    justify-content: space-between;
+    width: 380px;
+    height: 20px;
+    margin: 10px;
+    
 }
