@@ -3,7 +3,7 @@
     src: url(/public/font/Pretendard-Bold.ttf);
 }
 
-#main-travel-board {
+#list-main {
     display: flex;
     position: relative;
     flex-direction: column;
@@ -14,7 +14,7 @@
     margin-top: 54px;
 }
 
-#main-travel-board .board-top {
+#list-main .board-top {
     display: flex;
     position: absolute;
     justify-content: space-between;
@@ -23,13 +23,13 @@
     z-index: 2;
 }
 
-#main-travel-board .board-top .drop-down-box {
+#list-main .board-top .drop-down-box {
     display: flex;
     flex-direction: column;
     width: 100px;
 }
 
-#main-travel-board .board-top .drop-down-box .drop-down-main {
+#list-main .board-top .drop-down-box .drop-down-main {
     display: flex;
     height: 40px;
     border-radius: 5px;
@@ -38,7 +38,7 @@
     cursor: pointer;
 }
 
-#main-travel-board .board-top .drop-down-box .drop-down-main-text {
+#list-main .board-top .drop-down-box .drop-down-main-text {
     display: flex;
     width: 40px;
     height: 20px;
@@ -49,7 +49,7 @@
     font-size: 15px;
 }
 
-#main-travel-board .board-top .drop-down-box .drop-down-button {
+#list-main .board-top .drop-down-box .drop-down-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,7 +61,7 @@
     background-size: contain;
 }
 
-#main-travel-board .board-top .drop-down-box .drop-down-sub {
+#list-main .board-top .drop-down-box .drop-down-sub {
     display: flex;
     flex-direction: column;
     border-radius: 5px;
@@ -73,11 +73,11 @@
     cursor: pointer;
 }
 
-#main-travel-board .board-top .drop-down-box .drop-down-sub.active {
+#list-main .board-top .drop-down-box .drop-down-sub.active {
     max-height: 200px;
 }
 
-#main-travel-board .board-top .drop-down-box .drop-down-sub-text {
+#list-main .board-top .drop-down-box .drop-down-sub-text {
     display: flex;
     align-items: center;
     width: 28px;
@@ -89,13 +89,13 @@
     font-size: 15px;
 }
 
-#main-travel-board .board-top .drop-down-box .drop-down-sub-text:hover {
+#list-main .board-top .drop-down-box .drop-down-sub-text:hover {
     cursor: pointer;
     color: rgba(50, 50, 50, 1);
     background-color: rgba(220, 220, 220, 1);
 }
 
-#main-travel-board .board-top .write-button {
+#list-main .board-top .write-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -109,7 +109,7 @@
     cursor: pointer;
 }
 
-#main-travel-board .board-middle {
+#list-main .board-middle {
     display: flex;
     position: absolute;
     justify-content: center;
@@ -119,7 +119,7 @@
     z-index: 1;
 }
 
-#main-travel-board .board-middle .board-box {
+#list-main .board-middle .board-box {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -130,11 +130,15 @@
     background-color: rgba(217, 217, 217, 0);
 }
 
-#main-travel-board .board-middle .board-box .board-image {
+#list-main .board-middle .board-box .board-image {
+    width: 400px;
     height: 270px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor: pointer;
 }
 
-#main-travel-board .board-middle .board-box .board-information {
+#list-main .board-middle .board-box .board-information {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -151,18 +155,18 @@
     color: rgba(166, 166, 166, 1);
 }
 
-#main-travel-board .board-middle .board-box .board-information .board-information-right {
+#list-main .board-middle .board-box .board-information .board-information-right {
     display: flex;
     gap: 10px;
 }
 
-#main-travel-board .board-middle .board-box .board-information .board-information-right .board-information-like {
+#list-main .board-middle .board-box .board-information .board-information-right .board-information-like {
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
-#main-travel-board .board-middle .board-box .board-information .board-information-right .board-information-like-icon {
+#list-main .board-middle .board-box .board-information .board-information-right .board-information-like-icon {
     display: flex;
     width: 18px;
     height:16px;
@@ -170,12 +174,12 @@
     background-size: contain;
 }
 
-#main-travel-board .board-middle .board-box .board-information .board-information-right .board-information-view {
+#list-main .board-middle .board-box .board-information .board-information-right .board-information-view {
     display: flex;
     align-items: center;
     gap: 5px;
 }
-#main-travel-board .board-middle .board-box .board-information .board-information-right .board-information-view-icon {
+#list-main .board-middle .board-box .board-information .board-information-right .board-information-view-icon {
     display: flex;
     width: 20px;
     height:16px;
@@ -183,15 +187,25 @@
     background-size: contain;
 }
 
-#main-travel-board .board-middle .board-box .board-information .board-information-right .board-information-bookmark {
+#list-main .board-middle .board-box .board-information .board-information-right .board-information-bookmark {
     display: flex;
     width: 13.5px;
     height: 18px;
     background-image: url(/public/image/bookmark.png);
     background-size: contain;
+    cursor: pointer;
 }
 
-#main-travel-board .board-middle .board-box .board-tag {
+#list-main .board-middle .board-box .board-information .board-information-right .board-information-bookmark.active {
+    display: flex;
+    width: 13.5px;
+    height: 18px;
+    background-image: url(/public/image/bookmark-active.png);
+    background-size: contain;
+    cursor: pointer;
+}
+
+#list-main .board-middle .board-box .board-tag {
     display: flex;
     width: 380px;
     height: 30x;

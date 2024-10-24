@@ -1,16 +1,23 @@
 import React, { useState } from 'react'
 import './style.css';
 import { useNavigate } from 'react-router-dom';
-import { WRITE_PATH } from '../../../constants';
+import { TRAVEL_DETAIL_PATH, WRITE_PATH } from '../../../constants';
 
 export default function List() {
-  
+
   // state: 드롭다운 상태//
   const [dropDownOpen, setDropDownOpen] = useState(false);
 
   const dropDown = () => {
     setDropDownOpen(!dropDownOpen);
   }
+
+  const [boorMarkClick, setBookMarkClick] = useState(false);
+
+  const bookMark = () => {
+    setBookMarkClick(!boorMarkClick);
+  }
+
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -30,7 +37,7 @@ export default function List() {
 
   // render: 여행 게시판 리스트 컴포넌트 렌더링//  
   return (
-    <div id='main-travel-board'>
+    <div id='list-main'>
       <div className='board-top'>
         <div className='drop-down-box'>
           <div className='drop-down-main' onClick={dropDown}>
@@ -47,7 +54,7 @@ export default function List() {
       </div>
       <div className='board-middle'>
         <div className='board-box'>
-          <div className='board-image'></div>
+          <div className='board-image' onClick={() => onItemClickHandler(TRAVEL_DETAIL_PATH)}></div>
           <div className='board-information'>
             <div className='board-information-data'>24.12.12</div>
             <div className='board-information-right'>
@@ -59,7 +66,7 @@ export default function List() {
                 <div className='board-information-view-icon'></div>
                 <div className='board-information-data'>32</div>
               </div>
-              <div className='board-information-bookmark'></div>
+              <div className={`board-information-bookmark ${boorMarkClick ? 'active' : ''}`} onClick={bookMark}></div>
             </div>
           </div>
           <div className='board-tag'>#</div>

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router';
-import { FASHION_PATH, FOOD_PATH, HOF_PATH, KEYWORD_PATH, TRAVEL_PATH } from '../../constants';
+import { FASHION_PATH, FOOD_PATH, HOF_PATH, KEYWORD_PATH, TRAVEL_MAP_PATH, } from '../../constants';
 import './style.css';
 
 export default function Home() {
@@ -38,7 +38,7 @@ export default function Home() {
         <div className='scroll-box'>
         <div className='home-category'>
           <div className='category-container'>
-            <div className='travel-category' onClick={() => onItemClickHandler(TRAVEL_PATH)}>TRAVEL</div>
+            <div className='travel-category' onClick={() => onItemClickHandler(TRAVEL_MAP_PATH)}>TRAVEL</div>
             <div className='food-category' onClick={() => onItemClickHandler(FOOD_PATH)}>FOOD</div>
             <div className='fashion-category' onClick={() => onItemClickHandler(FASHION_PATH)}>FASHION</div>
             <div className='keyword-category'onClick={() => onItemClickHandler(KEYWORD_PATH)}>KEYWORD</div>
