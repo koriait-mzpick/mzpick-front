@@ -10,17 +10,23 @@
     font-style: normal;
 }
 
-#componentBox {
-    margin-top: 54px;
+.layout{
+    display: flex;
+    width: 1920px;
+    height: 2052px;
+    display: flex;
+    flex-direction: column;
 }
 
-#componentBox .header-box {
+.layout .header-box {
     display: flex;
     width: 1920px;
     height: 149px;
+
+    margin-top: 54px;
 }
 
-#componentBox .header-box .header-namebox {
+.layout .header-box .header-namebox {
     display: flex;
 
     width: 180px;
@@ -33,7 +39,7 @@
     padding-top:  40px;    
 }
 
-#componentBox .user-infoBox {
+.layout .user-infoBox {
     display: flex;
     width: 490px;
     height: 60px;
@@ -41,7 +47,7 @@
     padding-top: 40px;
 }
 
-#componentBox .user-infoBox .user-contentBox {
+.layout .user-infoBox .user-contentBox {
     display: flex;
     flex-direction: column;
 
@@ -49,7 +55,7 @@
     height: 60px;
 }
 
-#componentBox .user-infoBox .user-contentBox .contentBox1 {
+.layout .user-infoBox .user-contentBox .contentBox1 {
     display: flex;
     width: 220px;
     height: 30px;
@@ -58,7 +64,7 @@
 
 }
 
-#componentBox .user-infoBox .user-contentBox .contentBox2 {
+.layout .user-infoBox .user-contentBox .contentBox2 {
     display: flex;
     width: 220px;
     height: 30px;
@@ -66,35 +72,35 @@
     gap: 30px;
 } 
 
-#componentBox .user-infoBox .user-contentBox .contentBox1 .iconBox {
+.layout .user-infoBox .user-contentBox .contentBox1 .iconBox {
     width: 24px;
     height: 24px;
 
     background-image: url('/public/image/user-key.png');
 }
 
-#componentBox .user-infoBox .user-contentBox .contentBox1 .content-board {
+.layout .user-infoBox .user-contentBox .contentBox1 .content-board {
     max-width: fit-content;
 
     font-family: 'Pretendard-Regular';
     font-size: 20px;
 }
 
-#componentBox .user-infoBox .user-contentBox .contentBox2 .iconBox {
+.layout .user-infoBox .user-contentBox .contentBox2 .iconBox {
     width: 24px;
     height: 24px;
 
     background-image: url('/public/image/user-key.png');
 }
 
-#componentBox .user-infoBox .user-contentBox .contentBox2 .content-board {
+.layout .user-infoBox .user-contentBox .contentBox2 .content-board {
     max-width: fit-content;
 
     font-family: 'Pretendard-Regular';
     font-size: 20px;
 }
 
-#componentBox .subscribe-box {
+.layout .subscribe-box {
     display: flex;
     flex-direction: column;
 
@@ -105,9 +111,10 @@
     justify-content: center;
 
     margin-top: 500px;
+    gap: 80px;
 }
 
-#componentBox .subscribe-box .save-box {
+.layout .subscribe-box .save-box {
     display: flex;
     flex-direction: column;
 
@@ -116,7 +123,7 @@
 
 }
 
-#componentBox .subscribe-box .like-box {
+.layout .subscribe-box .like-box {
     display: flex;
     flex-direction: column;
 
@@ -124,7 +131,7 @@
     height: 350px;
 }
 
-#componentBox .subscribe-box .save-box .textBox {
+.layout .subscribe-box .save-box .textBox {
     display: flex;
     width: 1385px;
     height: 40px;
@@ -134,7 +141,7 @@
     padding-left: 8px;
 }
 
-#componentBox .subscribe-box .like-box .textBox {
+.layout .subscribe-box .like-box .textBox {
     display: flex;
     width: 1385px;
     height: 40px;
@@ -144,7 +151,7 @@
     padding-left: 8px;
 }
 
-#componentBox .subscribe-box .save-box .imageBox {
+.layout .subscribe-box .save-box .imageBox {
     display: flex;
     width: 1235px;
     height: 280px;
@@ -155,7 +162,7 @@
     gap: 147px;
 }
 
-#componentBox .subscribe-box .save-box .imageBox .WritePostBox {
+.layout .subscribe-box .save-box .imageBox .WritePostBox {
     display: flex;
     width: 320px;
     height: 280px;
@@ -164,7 +171,7 @@
     border-radius: 10px;
 }
 
-#componentBox .subscribe-box .like-box .imageBox {
+.layout .subscribe-box .like-box .imageBox {
     display: flex;
     width: 1235px;
     height: 280px;
@@ -175,7 +182,7 @@
     gap: 147px;
 }
 
-#componentBox .subscribe-box .like-box .imageBox .WritePostBox {
+.layout .subscribe-box .like-box .imageBox .WritePostBox {
     display: flex;
     width: 320px;
     height: 280px;
@@ -184,17 +191,17 @@
     border-radius: 10px;
 }
 
-#componentBox .subscribe-box .save-box .page-box {
+.layout .subscribe-box .save-box .page-box {
     display: flex;
     width: 1385px;
     height: 30px;
 
     justify-content: center;
-    padding-top: 41px;
-    padding-bottom: 40px;
+    margin-top: 41px;
+    margin-bottom: 40px;
 }
 
-#componentBox .subscribe-box .save-box .page-box .pageBox1 {
+.layout .subscribe-box .save-box .page-box .pageBox1 {
     display: flex;
     width: 25px;
     height: 25px;
@@ -202,7 +209,7 @@
     background-image: url(/public/image/page-arrow-left.png);
 }
 
-#componentBox .subscribe-box .save-box .page-box .pageBox2 {
+.layout .subscribe-box .save-box .page-box .pageBox2 {
     display: flex;
     width: 25px;
     height: 25px;
@@ -210,7 +217,7 @@
     background-image: url(/public/image/page-arrow-right.png);
 }
 
-#componentBox .subscribe-box .save-box .page-box .pageBox {
+.layout .subscribe-box .save-box .page-box .pageBox {
     display: flex;
     width: 25px;
     height: 25px;
@@ -218,17 +225,17 @@
     justify-content: center;
 }
 
-#componentBox .subscribe-box .like-box .page-box {
+.layout .subscribe-box .like-box .page-box {
     display: flex;
     width: 1385px;
     height: 30px;
 
     justify-content: center;
-    padding-top: 41px;
-    padding-bottom: 40px;
+    margin-top: 41px;
+    margin-bottom: 40px;
 }
 
-#componentBox .subscribe-box .like-box .page-box .pageBox1 {
+.layout .subscribe-box .like-box .page-box .pageBox1 {
     display: flex;
     width: 25px;
     height: 25px;
@@ -236,7 +243,7 @@
     background-image: url(/public/image/page-arrow-left.png);
 }
 
-#componentBox .subscribe-box .like-box .page-box .pageBox2 {
+.layout .subscribe-box .like-box .page-box .pageBox2 {
     display: flex;
     width: 25px;
     height: 25px;
@@ -244,7 +251,7 @@
     background-image: url(/public/image/page-arrow-right.png);
 }
 
-#componentBox .subscribe-box .like-box .page-box .pageBox {
+.layout .subscribe-box .like-box .page-box .pageBox {
     display: flex;
     width: 25px;
     height: 25px;
@@ -252,25 +259,27 @@
     justify-content: center;
 }
 
-#componentBox .subscribe-box .like-box .write-totalBox {
+.layout .subscribe-box .like-box .write-totalBox {
     display: flex;
 
     width: 1385px;
-    height: 221px;
+    height: 400px;
+
+    flex-direction: column;
 }
 
-#componentBox .subscribe-box .like-box .write-totalBox .write-titleBox {
+.layout .subscribe-box .like-box .write-totalBox .write-titleBox {
     display: flex;
 
     width: 1385px;
-    height: 40px;
+    height: 46px;
 
     justify-content: center;
     align-items: center;
     text-align: center;
 }
 
-#componentBox .subscribe-box .like-box .write-totalBox .write-titleBox .title {
+.layout .subscribe-box .like-box .write-totalBox .write-titleBox .title {
     width: 185px;
     height: 17px;
 
@@ -278,12 +287,54 @@
     font-size: 15px;   
 }
 
-#componentBox .subscribe-box .like-box .write-totalBox .write-titleBox .title2 {
+.layout .subscribe-box .like-box .write-totalBox .write-titleBox .title2 {
+    display: flex;
     width: 800px;
     height: 17px;
 
     font-family: 'Pretendard-Bold.otf';
     font-size: 15px;   
+
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
+.layout .subscribe-box .like-box .write-totalBox .contentBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+    width: 1385px;
+    height: 175px;
+}
+
+.layout .subscribe-box .like-box .write-totalBox .contentBox .directed-writeBox {
+    display: flex;
+
+    width: 185px;
+    height: 17px;
+
+    font-family: 'Pretendard-Regular';
+    font-size: 15px;
+
+    align-items: center;
+    justify-content: center;
+    
+
+}
+
+.layout .subscribe-box .like-box .write-totalBox .contentBox .directed-writeBox2 {
+    display: flex;
+
+    width: 800px;
+    height: 17px;
+
+    font-family: 'Pretendard-Regular';
+    font-size: 15px;
+
+    align-items: center;
+    justify-content: center;
+    
+
+}

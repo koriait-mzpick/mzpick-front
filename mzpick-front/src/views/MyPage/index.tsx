@@ -4,7 +4,7 @@ import { url } from 'inspector';
 
 export default function MyPage() {
   return (
-    <div id='componentBox'>
+    <div className='layout'>
 
     <div className='header-box'>
       <div className='header-namebox'>MyPage</div>
@@ -98,10 +98,13 @@ export default function MyPage() {
             <div className='title'>수정</div>
             <div className='title'>삭제</div>
           </div>
-          <div className='directed-writeBox'></div>
-          <div className='directed-writeBox'></div>
-          <div className='directed-writeBox'></div>
-          
+
+          <div className='contentBox'>
+            <div className='directed-writeBox'>2024.10.11</div>
+            <div className='directed-writeBox2'>여행지 추천 해주세요!</div>
+            <div className='directed-writeBox'></div>
+            <div className='directed-writeBox'></div>
+          </div>
         </div>
         <div  className='page-box'>
           <div className='pageBox1'></div>
@@ -144,6 +147,8 @@ export default function MyPage() {
     </div>
 
     </div>
+
+    
       
     
   )
