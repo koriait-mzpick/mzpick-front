@@ -59,6 +59,7 @@ export default function MyPage() {
           <div className='pageBox'>5</div>
           <div className='pageBox2'></div>
         </div>
+
       </div>
       <div className='like-box'>
         <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>LIKE</div>
@@ -87,16 +88,21 @@ export default function MyPage() {
           <div className='pageBox2'></div>
         </div>
       </div>
-    </div>
 
-
-
-
-    <div className='subscribe-box'>
-      
-    <div className='like-box'>
+      <div className='like-box'>
         <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>WRITE</div>
-
+        <div className='write-totalBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
+          <div className='write-titleBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
+            <div className='title'>작성일</div>
+            <div className='title2'>제목</div>
+            <div className='title'>수정</div>
+            <div className='title'>삭제</div>
+          </div>
+          <div className='directed-writeBox'></div>
+          <div className='directed-writeBox'></div>
+          <div className='directed-writeBox'></div>
+          
+        </div>
         <div  className='page-box'>
           <div className='pageBox1'></div>
           <div className='pageBox'>1</div>
@@ -107,7 +113,7 @@ export default function MyPage() {
           <div className='pageBox2'></div>
         </div>
       </div>
-      
+
       <div className='like-box'>
         <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>VOTE</div>
         <div className='imageBox'>
@@ -136,7 +142,6 @@ export default function MyPage() {
         </div>
       </div>
     </div>
-
 
     </div>
       
