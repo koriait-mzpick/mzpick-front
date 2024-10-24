@@ -4,7 +4,7 @@ import { IdCheckRequestDto, SignInRequestDto, SignUpRequestDto, TelAuthCheckRequ
 import { SignInResponseDto } from "./dto/response/auth";
 
 // variable: API URL 상수 //
-const MZPICK_API_DOMAIN = 'http://localhost:3000';
+const MZPICK_API_DOMAIN = 'http://localhost:4000';
 
 const AUTH_MODULE_URL = `${MZPICK_API_DOMAIN}/api/v1/auth`;
 
@@ -13,6 +13,9 @@ const TEL_AUTH_API_URL = `${AUTH_MODULE_URL}/tel-auth`;
 const TEL_AUTH_CHECK_API_URL = `${AUTH_MODULE_URL}/tel-auth-check`;
 const SIGN_UP_API_URL = `${AUTH_MODULE_URL}/sign-up`;
 const SIGN_IN_API_URL = `${AUTH_MODULE_URL}/sign-in`;
+
+// function: Authorizarion Bearer 헤더 //
+const bearerAuthorization = (accessToken: string) => ({ headers: { 'Authorization': `Bearer ${accessToken}` } })
 
 // function: response data 처리 함수 //
 const responseDataHandler = <T>(response: AxiosResponse<T, any>) => {
