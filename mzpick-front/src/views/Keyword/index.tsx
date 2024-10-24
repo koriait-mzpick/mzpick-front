@@ -1,5 +1,4 @@
-// 
-
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import './style.css';
@@ -11,54 +10,71 @@ interface Keyword {
   keywordDate: Date;
 }
 
+const API_URL = 'http://localhost:4000/api/v1/keyword';
+
 export default function Keyword() {
+  const [cookies] = useCookies(['accessToken']);
   const [keywords, setKeywords] = useState<Keyword[]>([]);
   const [inputValue, setInputValue] = useState('');
 
-  //state: 쿠키상태 //
-  const cookies = useCookies();
+  useEffect(() => {
+    console.log('쿠키에서 가져온 accessToken:', cookies.accessToken);
+  }, [cookies]);
 
   const fetchAllKeywords = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/v1/keywords'); 
-      const data = await response.json();
+      const token = cookies.accessToken; 
 
-      console.log('Fetched keywords:', data); 
+      const response = await axios.get(API_URL, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
 
-      if (Array.isArray(data)) {
-        setKeywords(data); 
+      if (Array.isArray(response.data)) {
+        setKeywords(response.data); 
+      } else if (response.data) {
+        console.log('키워드 데이터가 배열이 아닙니다:', response.data);
+        setKeywords([response.data]); 
       } else {
-        console.error('키워드 데이터가 배열이 아닙니다:', data);
+        console.error('키워드 데이터가 없습니다.');
         setKeywords([]);
       }
     } catch (error) {
-      console.error('키워드 가져오기 실패:', error);
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          console.error('Unauthorized: 인증 실패');
+        } else {
+          console.error('키워드 가져오기 실패:', error.response?.data);
+        }
+      } else {
+        console.error('키워드 가져오기 실패:', error);
+      }
       setKeywords([]); 
     }
   };
 
   const postKeyword = async (keywordContent: string) => {
-
     try {
+      const token = cookies.accessToken; 
       const newKeyword = {
-        userId: 'user123',
+        userId: 'user1234', 
         keywordContent: keywordContent,
         keywordDate: new Date(),
       };
 
-      const response = await fetch('http://localhost:4000/api/v1/keywords', {
-        method: 'POST',
+      const response = await axios.post(API_URL, newKeyword, {
         headers: {
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newKeyword),
       });
 
-      if (!response.ok) {
+      if (response.status !== 200 && response.status !== 201) {
         throw new Error('키워드 저장 실패');
       }
 
-      fetchAllKeywords();
+      fetchAllKeywords(); 
     } catch (error) {
       console.error('키워드 저장 실패:', error);
     }
@@ -72,7 +88,7 @@ export default function Keyword() {
   };
 
   useEffect(() => {
-    fetchAllKeywords();
+    fetchAllKeywords(); 
   }, []);
 
   return (
@@ -91,7 +107,8 @@ export default function Keyword() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
-          <div className="add-button" onClick={handleAddKeyword}></div>
+          <div className="add-button" onClick={handleAddKeyword}>
+          </div>
         </div>
       </div>
 
@@ -106,7 +123,7 @@ export default function Keyword() {
         <div className="contents2">
           {keywords.slice(10, 20).map((keyword) => (
             <div key={keyword.keywordNumber}>
-              {keyword.keywordContent} 
+              {keyword.keywordContent}
             </div>
           ))}
         </div>
