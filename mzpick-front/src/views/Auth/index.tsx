@@ -10,6 +10,8 @@ import { idCheckRequest, signInRequest, signUpRequest, telAuthCheckRequest, telA
 import { SignInResponseDto } from '../../apis/dto/response/auth';
 import AuthSignIn from './SignIn';
 import AuthSignUp from './SignUp';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 
 
 type AuthPath = '회원가입' | '로그인';
@@ -19,7 +21,7 @@ interface AuthComponentProps {
 }
 
 // component: 인증 화면 컴포넌트 //
-export default function Auth() {
+export default function Auth({ onPathChange }: AuthComponentProps) {
 
     // state: Query Parameter 상태 //
     const [queryParam] = useSearchParams();
@@ -44,13 +46,8 @@ export default function Auth() {
     return (
         <div id='auth-wrapper'>
             {/* {path === '로그인' ?
-                <AuthSignIn onPathChange={onPathChangeHandler} /> :
-                <AuthSignUp onPathChange={onPathChangeHandler} />
-            } */}
-
-                {/* {path === '로그인' ?
-                <AuthSignIn /> :
-                <AuthSignUp />
+            <AuthSignIn onPathChange={onPathChangeHandler}/> :
+            <AuthSignUp onPathChange={onPathChangeHandler}/>
             } */}
         </div>
     );

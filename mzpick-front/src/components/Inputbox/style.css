@@ -1,5 +1,10 @@
 @font-face {
-    font-family: 'Pretendard-Bold.ttf';
+    font-family: 'Pretendard-Bold';
+    src: url(/public/font/Pretendard-Bold.otf);
+}
+
+@font-face {
+    font-family: 'Pretendard-Thin';
     src: url(/public/font/Pretendard-Thin.ttf);
 }
 
@@ -34,10 +39,14 @@
 }
 
 input::placeholder {
-    font-family:'Pretendard-Thin.ttf';;
+    font-family: 'Pretendard-Thin';
     font-size: 20px;
     font-weight: 300;
     color: rgba(166, 166, 166);
+}
+
+.signin-placeholder::placeholder {
+    font-family: 'Pretendard-Bold';
 }
 
 .input-box .input-button {

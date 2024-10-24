@@ -7,16 +7,16 @@ import { SignInRequestDto } from "../../../apis/dto/request/auth";
 import { signInRequest } from "../../../apis";
 import InputBox from "../../../components/Inputbox";
 import '../style.css';
-import { ACCESS_TOKEN, HOME_PATH } from "../../../constants";
+import { ACCESS_TOKEN, HOME_PATH, SIGN_UP_PATH } from "../../../constants";
 
-type AuthPath = '회원가입' | '로그인';
+// type AuthPath = '회원가입' | '로그인';
 
-interface AuthComponentProps {
-    onPathChange: (path: AuthPath) => void;
-}
+// interface AuthComponentProps {
+//     onPathChange: (path: AuthPath) => void;
+// }
 
 // component: 로그인 화면 컴포넌트 //
-function SignIn({ onPathChange }: AuthComponentProps) {
+function SignIn() {
 
     // state: 쿠키 상태 //
     const [cookies, setCookie] = useCookies();
@@ -77,6 +77,11 @@ function SignIn({ onPathChange }: AuthComponentProps) {
 
     };
 
+    // event handler: 회원가입 클릭 이벤트 처리 //
+    const onSignUpClickHandler = (path: string) => {
+        navigator(path);
+    };
+
     // effect: 아이디 및 비밀번호 변경시 실행할 함수 //
     useEffect(() => {
         setMessage('');
@@ -94,8 +99,9 @@ function SignIn({ onPathChange }: AuthComponentProps) {
                 <div className="button-container">
                     <div className="button primary full-width" onClick={onSignInButtonHandler}>로그인</div>
                     {/* <div className="link" onClick={() => {navigateSignUp}}>회원가입</div> */}
-                    <div className="link" onClick={() => onPathChange('회원가입')}>회원가입</div>
+                    <div className="link" onClick={() => onSignUpClickHandler(SIGN_UP_PATH)}>회원가입</div>
                 </div>
+                
                 <div className='sns-container'>
                     <div className='sns-button kakao'></div>
                     <div className='sns-button naver'></div>
@@ -113,14 +119,6 @@ export default function AuthSignIn() {
     // const snsId = queryParam.get('snsId');
     // const joinPath = queryParam.get('joinPath');
 
-    // state: 선택 화면 상태 //
-    const [path, setPath] = useState<AuthPath>('로그인');
-
-    // event handler: 화면 변경 이벤트 처리 //
-    const onPathChangeHandler = (path: AuthPath) => {
-        setPath(path);
-    };
-
     // // effect: 첫 로드시에 Query Param의 snsId와 joinPath가 존재시 회원가입 화면전환 함수 //
     // useEffect(() => {
     //     if (snsId && joinPath) setPath('회원가입');
@@ -130,8 +128,7 @@ export default function AuthSignIn() {
     // render: 인증 화면 컴포넌트 렌더링 //
     return (
         <div id='auth-wrapper'>
-            <SignIn onPathChange={onPathChangeHandler} /> 
-
+            <SignIn /> 
         </div>
     );
 }

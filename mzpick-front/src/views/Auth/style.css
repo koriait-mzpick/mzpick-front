@@ -123,10 +123,6 @@
 .link:hover {
     cursor: pointer;
     font-weight: bolder;
-}
-
-.link.bold {
-    font-family: 'Pretendard-Bold.otf';
     color: var(--primary-color);
 }
 

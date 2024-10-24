@@ -7,14 +7,15 @@ import InputBox from "../../../components/Inputbox";
 import '../style.css';
 import { SIGN_IN_PATH } from "../../../constants";
 
-type AuthPath = '회원가입' | '로그인';
+// type AuthPath = '회원가입' | '로그인';
 
-interface AuthComponentProps {
-    onPathChange: (path: AuthPath) => void;
-}
+// interface AuthComponentProps {
+//     onPathChange: (path: AuthPath) => void;
+// }
 
 // component: 회원가입 화면 컴포넌트 //
-function SignUp({ onPathChange }: AuthComponentProps) {
+// function SignUp({ onPathChange }: AuthComponentProps) {
+function SignUp() {
 
     // state: Query Parameter 상태 //
     const [qeuryParam] = useSearchParams();
@@ -289,29 +290,29 @@ function SignUp({ onPathChange }: AuthComponentProps) {
 // component: 인증 화면 컴포넌트 //
 export default function AuthSignUp() {
 
-    // state: Query Parameter 상태 //
-    const [queryParam] = useSearchParams();
-    const snsId = queryParam.get('snsId');
-    const joinPath = queryParam.get('joinPath');
+    // // state: Query Parameter 상태 //
+    // const [queryParam] = useSearchParams();
+    // const snsId = queryParam.get('snsId');
+    // const joinPath = queryParam.get('joinPath');
 
-    // state: 선택 화면 상태 //
-    const [path, setPath] = useState<AuthPath>('로그인');
+    // // state: 선택 화면 상태 //
+    // const [path, setPath] = useState<AuthPath>('로그인');
 
-    // event handler: 화면 변경 이벤트 처리 //
-    const onPathChangeHandler = (path: AuthPath) => {
-        setPath(path);
-    };
+    // // event handler: 화면 변경 이벤트 처리 //
+    // const onPathChangeHandler = (path: AuthPath) => {
+    //     setPath(path);
+    // };
 
-    // effect: 첫 로드시에 Query Param의 snsId와 joinPath가 존재시 회원가입 화면전환 함수 //
-    useEffect(() => {
-        if (snsId && joinPath) setPath('회원가입');
-    }, []);
+    // // effect: 첫 로드시에 Query Param의 snsId와 joinPath가 존재시 회원가입 화면전환 함수 //
+    // useEffect(() => {
+    //     if (snsId && joinPath) setPath('회원가입');
+    // }, []);
 
 
     // render: 인증 화면 컴포넌트 렌더링 //
     return (
         <div id='auth-wrapper'>
-                <SignUp onPathChange={onPathChangeHandler} />
+                <SignUp />
         </div>
     );
 }
