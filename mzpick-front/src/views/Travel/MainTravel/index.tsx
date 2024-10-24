@@ -7,8 +7,8 @@ export default function MainTravel() {
 
   // render: 여행 게시판 리스트 컴포넌트 렌더링//  
   return (
-    <div id='main-travel'>
+    <>
       <List />
-    </div>
+    </>
   )
 }

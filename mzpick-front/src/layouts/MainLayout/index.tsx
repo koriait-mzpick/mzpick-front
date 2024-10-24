@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { FASHION_PATH, FOOD_PATH, HOF_PATH, HOME_PATH, KEYWORD_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_BOARD_PATH, TRAVEL_PATH } from '../../constants';
+import { FASHION_PATH, FOOD_PATH, HOF_PATH, HOME_PATH, KEYWORD_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_CAFE_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH } from '../../constants';
 import './style.css';
 
 // component: 메인레이아웃 컴포넌트 //
@@ -77,23 +77,23 @@ export default function MainLayout() {
         <div className={`category-detail ${categoryOpen1 ? 'active' : ''}`}>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
-            <div className='category-detail-text' onClick={() => onItemClickHandler(TRAVEL_PATH)}>지도</div>
+            <div className='category-detail-text' onClick={() => onItemClickHandler(TRAVEL_MAP_PATH)}>지도</div>
           </div>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
-            <div className='category-detail-text' onClick={() => onItemClickHandler(TRAVEL_BOARD_PATH)}>여행</div>
+            <div className='category-detail-text' onClick={() => onItemClickHandler(TRAVEL_PATH)}>여행</div>
           </div>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
-            <div className='category-detail-text'>맛집</div>
+            <div className='category-detail-text' onClick={() => onItemClickHandler(TRAVEL_RESTAURANT_PATH)}>맛집</div>
           </div>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
-            <div className='category-detail-text'>카페</div>
+            <div className='category-detail-text'onClick={() => onItemClickHandler(TRAVEL_CAFE_PATH)}>카페</div>
           </div>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
-            <div className='category-detail-text'>숙박</div>
+            <div className='category-detail-text' onClick={() => onItemClickHandler(TRAVEL_STAY_PATH)}>숙박</div>
           </div>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
