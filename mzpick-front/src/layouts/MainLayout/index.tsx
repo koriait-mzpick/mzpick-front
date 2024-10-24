@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { HOME_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_BOARD_PATH, TRAVEL_PATH } from '../../constants';
+import { FASHION_PATH, FOOD_PATH, HOF_PATH, HOME_PATH, KEYWORD_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_BOARD_PATH, TRAVEL_PATH } from '../../constants';
 import './style.css';
 
 // component: 메인레이아웃 컴포넌트 //
@@ -100,20 +100,20 @@ export default function MainLayout() {
             <div className='category-detail-text'>투표</div>
           </div>
         </div>
-        <div className='category' style={{ borderBottom: "1px solid rgba(201, 224, 253, 0.3)" }}>FOOD</div>
-        <div className='category' onClick={detailCategoryToggleMenu2}>FASHION</div>
+        <div className='category' style={{ borderBottom: "1px solid rgba(201, 224, 253, 0.3)" }} onClick={() => onItemClickHandler(FOOD_PATH)}>FOOD</div>
+        <div className='category' onClick={detailCategoryToggleMenu2} >FASHION</div>
         <div className={`category-detail ${categoryOpen2 ? 'active' : ''}`}>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
-            <div className='category-detail-text'>패션 게시판</div>
+            <div className='category-detail-text' onClick={() => onItemClickHandler(FASHION_PATH)}>패션 게시판</div>
           </div>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
             <div className='category-detail-text'>투표</div>
           </div>
         </div>
-        <div className='category' style={{ borderBottom: "1px solid rgba(201, 224, 253, 0.3)" }}>KEYWORD</div>
-        <div className='category'>HALL OF FAME</div>
+        <div className='category' style={{ borderBottom: "1px solid rgba(201, 224, 253, 0.3)" }} onClick={() => onItemClickHandler(KEYWORD_PATH)}>KEYWORD</div>
+        <div className='category' onClick={() => onItemClickHandler(HOF_PATH)}>HALL OF FAME</div>
         <div className='signin-signup'>
           <div className='login-button' onClick={() => onItemClickHandler(SIGN_IN_PATH)}>로그인</div>
           <div className='slice-line' style={{ cursor: "default" }}>/</div>
