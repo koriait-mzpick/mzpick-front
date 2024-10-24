@@ -11,7 +11,7 @@
 
 #home .home-media {
     /* margin-top: 54px; */
-    width: calc(100vw - 5px);
+    width: 100vw;
     height: calc(100vh - 54px);
     /* height: 100vh; */
 }
@@ -23,7 +23,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: calc(100vw - 5px);
+    width: 100vw;
     height: 100vh;
     z-index: -999;
 
@@ -63,7 +63,7 @@
     position: sticky;
     top: 54px;
     
-    width: calc(100vw - 5px);
+    width: 100vw;
     height: 100vh;
 
     background-color: rgba(12, 12, 12, 100);
@@ -125,7 +125,7 @@
 
 #home .footer {
     background-color: rgba(12, 12, 12, 100);
-    width: calc(100vw - 5px);
+    width: 100vw;
     height: 26vh;
     
 }
