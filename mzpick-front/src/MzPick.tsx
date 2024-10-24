@@ -2,9 +2,8 @@
 import { useCookies } from 'react-cookie';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import './MzPick.css';
-import { FASHION_PATH, FOOD_PATH, HOF_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, SIGN_IN_PATH, TRAVEL_BOARD_PATH, TRAVEL_PATH, WRITE_PATH } from './constants';
+import { FASHION_PATH, FOOD_PATH, HOF_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_BOARD_PATH, TRAVEL_PATH, WRITE_PATH } from './constants';
 import MainLayout from './layouts/MainLayout';
-import Auth from './views/Auth';
 import Fashion from './views/Fashion';
 import Food from './views/Food';
 import HOF from './views/HOF';
@@ -15,6 +14,9 @@ import Travel from './views/Travel';
 import MainTravel from './views/Travel/MainTravel';
 import Write from './layouts/TotalLayout/Write';
 import BottomNav from './layouts/BottomNav';
+import Auth from './views/Auth';
+import AuthSignUp from './views/Auth/SignUp';
+import AuthSignIn from './views/Auth/SignIn';
 
 
 function Index() {
@@ -41,7 +43,11 @@ export default function MzPick() {
       </Route>
 
       <Route path={SIGN_IN_PATH} element={<MainLayout />}>
-        < Route path={SIGN_IN_PATH} element={< Auth />} />
+        < Route path={SIGN_IN_PATH} element={< AuthSignIn />} />
+      </Route>
+
+      <Route path={SIGN_UP_PATH} element={<MainLayout />}>
+        < Route path={SIGN_UP_PATH} element={< AuthSignUp />} />
       </Route>
 
       <Route path={TRAVEL_PATH} element={<MainLayout />}>

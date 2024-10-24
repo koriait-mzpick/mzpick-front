@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'Pretendard-Bold.otf';
+    src: url(/public/font/Pretendard-Bold.otf);
+}
+
+.InputBox::placeholder {
+    font-family:'Pretendard-Bold.otf';;
+    font-size: 20px;
+    font-weight: 300;
+    color: rgba(166, 166, 166);
+}
