@@ -109,8 +109,7 @@
     align-items: center;
     justify-content: center;
 
-    margin-top: 500px;
-    gap: 80px;
+    margin-top: 370px;
 }
 
 .layout .subscribe-box .save-box {
@@ -120,6 +119,8 @@
     width: 1385px;
     height: 350px;
 
+    margin-bottom: 80px;
+
 }
 
 .layout .subscribe-box .like-box {
@@ -128,6 +129,10 @@
 
     width: 1385px;
     height: 350px;
+
+    
+
+    margin-bottom: 80px;
 }
 
 .layout .subscribe-box .save-box .textBox {
@@ -310,7 +315,10 @@
     align-items: center;
 
     width: 1385px;
-    height: 175px;
+    height: 22px;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .layout .subscribe-box .like-box .write-totalBox .contentBox .directed-writeBox {
@@ -324,6 +332,8 @@
 
     align-items: center;
     justify-content: center;
+
+    flex-direction: column;
     
 
 }

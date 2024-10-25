@@ -1,6 +1,7 @@
 import React from 'react'
 import './style.css';
 import { url } from 'inspector';
+import BottomNav from '../../layouts/BottomNav';
 
 export default function MyPage() {
   return (
@@ -108,12 +109,30 @@ export default function MyPage() {
             <div className='directed-writeBox4'>
               <div className='icon-box2'></div>
             </div>
-
-            {/* <div className='directed-writeBox'>2024.10.11</div>
-            <div className='directed-writeBox2'>여행지 추천 해주세요!</div>
-            <div className='directed-writeBox'></div>
-            <div className='directed-writeBox'></div> */}
           </div>
+
+          <div className='contentBox'>
+            <div className='directed-writeBox'>2024.10.11</div>
+            <div className='directed-writeBox2'>여행지 추천 해주세요!</div>
+            <div className='directed-writeBox3'>
+              <div className='icon-box'></div>
+            </div>
+            <div className='directed-writeBox4'>
+              <div className='icon-box2'></div>
+            </div>
+          </div>
+
+          <div className='contentBox'>
+            <div className='directed-writeBox'>2024.10.11</div>
+            <div className='directed-writeBox2'>여행지 추천 해주세요!</div>
+            <div className='directed-writeBox3'>
+              <div className='icon-box'></div>
+            </div>
+            <div className='directed-writeBox4'>
+              <div className='icon-box2'></div>
+            </div>
+          </div>
+
         </div>
         <div  className='page-box'>
           <div className='pageBox1'></div>
@@ -127,21 +146,48 @@ export default function MyPage() {
       </div>
 
       <div className='like-box'>
-        <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>VOTE</div>
-        <div className='imageBox'>
-          <div className='WritePostBox'>
-            <div className='imgContainer'></div>
-            <div className='SubtitleBox'></div>
+        <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>WRITE</div>
+        <div className='write-totalBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
+          <div className='write-titleBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
+            <div className='title'>작성일</div>
+            <div className='title2'>제목</div>
+            <div className='title'>수정</div>
+            <div className='title'>삭제</div>
           </div>
-          <div className='WritePostBox'>
-            <div className='imgContainer'></div>
-            <div className='SubtitleBox'></div>
+
+          <div className='contentBox'>
+            <div className='directed-writeBox'>2024.10.11</div>
+            <div className='directed-writeBox2'>여행지 추천 해주세요!</div>
+            <div className='directed-writeBox3'>
+              <div className='icon-box'></div>
+            </div>
+            <div className='directed-writeBox4'>
+              <div className='icon-box2'></div>
+            </div>
           </div>
-          <div className='WritePostBox'>
-            <div className='imgContainer'></div>
-            <div className='SubtitleBox'></div>
+
+          <div className='contentBox'>
+            <div className='directed-writeBox'>2024.10.11</div>
+            <div className='directed-writeBox2'>여행지 추천 해주세요!</div>
+            <div className='directed-writeBox3'>
+              <div className='icon-box'></div>
+            </div>
+            <div className='directed-writeBox4'>
+              <div className='icon-box2'></div>
+            </div>
           </div>
-          
+
+          <div className='contentBox'>
+            <div className='directed-writeBox'>2024.10.11</div>
+            <div className='directed-writeBox2'>여행지 추천 해주세요!</div>
+            <div className='directed-writeBox3'>
+              <div className='icon-box'></div>
+            </div>
+            <div className='directed-writeBox4'>
+              <div className='icon-box2'></div>
+            </div>
+          </div>
+
         </div>
         <div  className='page-box'>
           <div className='pageBox1'></div>
@@ -153,8 +199,12 @@ export default function MyPage() {
           <div className='pageBox2'></div>
         </div>
       </div>
-    </div>
 
+
+      
+    </div>
+    <div style={{ width: "100%", height: "800px" }}></div>
+    <BottomNav></BottomNav>          
     </div>
 
     
