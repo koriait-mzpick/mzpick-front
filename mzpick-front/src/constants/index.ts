@@ -1,4 +1,6 @@
 // variable: 상대 경로 상수 //
+
+export const ROOT_PATH = '/';
 export const HOME_PATH = '/home'
 
 export const SIGN_IN_PATH = '/sign-in'
@@ -28,6 +30,14 @@ export const VOTE_PATH = '/vote'
 export const MY_PAGE_PATH = '/mypage'
 
 export const WRITE_PATH = '/write'
+
+export const OTHERS_PATH = '*';
+
+// variable: 절대경로 상수
+
+export const AUTH_ABSOLUTE_PATH = SIGN_IN_PATH;
+
+export const HOME_ABSOLUTE_PATH = HOME_PATH;
 
 // variable: HTTP BEARER TOKEN COOKIE NAME //
 export const ACCESS_TOKEN = 'accessToken';

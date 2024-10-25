@@ -1,13 +1,13 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { Route, useNavigate, useSearchParams } from "react-router-dom";
-import { SignInResponseDto } from "../../../apis/dto/response/auth";
-import { ResponseDto } from "../../../apis/dto/response";
-import { SignInRequestDto } from "../../../apis/dto/request/auth";
+import { useNavigate } from "react-router-dom";
 import { signInRequest } from "../../../apis";
+import { SignInRequestDto } from "../../../apis/dto/request/auth";
+import { ResponseDto } from "../../../apis/dto/response";
+import { SignInResponseDto } from "../../../apis/dto/response/auth";
 import InputBox from "../../../components/Inputbox";
+import { ACCESS_TOKEN, HOME_PATH, ROOT_PATH, SIGN_UP_PATH } from "../../../constants";
 import '../style.css';
-import { ACCESS_TOKEN, HOME_PATH, SIGN_UP_PATH } from "../../../constants";
 
 // type AuthPath = '회원가입' | '로그인';
 
@@ -48,7 +48,7 @@ function SignIn() {
 
         const { accessToken, expiration } = responseBody as SignInResponseDto;
         const expires = new Date(Date.now() + (expiration * 1000));
-        setCookie(ACCESS_TOKEN, accessToken, { path: HOME_PATH, expires });
+        setCookie(ACCESS_TOKEN, accessToken, { path: ROOT_PATH, expires });
 
         navigator(HOME_PATH);
     };
