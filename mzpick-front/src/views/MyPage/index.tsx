@@ -102,8 +102,17 @@ export default function MyPage() {
           <div className='contentBox'>
             <div className='directed-writeBox'>2024.10.11</div>
             <div className='directed-writeBox2'>여행지 추천 해주세요!</div>
+            <div className='directed-writeBox3'>
+              <div className='icon-box'></div>
+            </div>
+            <div className='directed-writeBox4'>
+              <div className='icon-box2'></div>
+            </div>
+
+            {/* <div className='directed-writeBox'>2024.10.11</div>
+            <div className='directed-writeBox2'>여행지 추천 해주세요!</div>
             <div className='directed-writeBox'></div>
-            <div className='directed-writeBox'></div>
+            <div className='directed-writeBox'></div> */}
           </div>
         </div>
         <div  className='page-box'>
