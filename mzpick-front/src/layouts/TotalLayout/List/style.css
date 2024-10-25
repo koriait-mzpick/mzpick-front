@@ -9,7 +9,6 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    width: calc(100vw - 5px);
     height: calc(100vh - 54px);
     margin-top: 54px;
 }

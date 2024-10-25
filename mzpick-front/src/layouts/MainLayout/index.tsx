@@ -47,6 +47,8 @@ export default function MainLayout() {
   const onItemClickHandler = (path: string) => {
     navigator(path);
     setSideBarOpen(false);
+    setCategoryOpen1(false);
+    setCategoryOpen2(false);
   };
 
 

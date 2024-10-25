@@ -7,14 +7,14 @@ function Content() {
 
   // render: 내용 컴포넌트 렌더링 //
   return (
-    <div id='contnet-main'>
-      <div className='content-top'></div>
-      <div className='content-image'>
-        <div className='contnet-image-left-button'></div>
-        <div className='contnet-image-right-button'></div>
+    <div id='contents-main'>
+      <div className='contents-top'></div>
+      <div className='contents-image'>
+        <div className='contents-image-left-button'></div>
+        <div className='contents-image-right-button'></div>
       </div>
-      <div className='content-'></div>
-      <div></div>
+      <div className='contents-text'></div>
+      <div className='contents-information'></div>
     </div>
   )
 }
@@ -24,16 +24,43 @@ function Comment() {
 
   // render: 댓글 컴포넌트 렌더링 //
   return (
-    <div id='comment-main'></div>
+    <div id='comment-main'>
+      <div className='comment-button-box'>
+        <div className='comment-open-button'></div>
+        <div className='comment-button-box-right'>
+          <div className='comment-update-button'></div>
+          <div className='comment-delete-button'></div>
+        </div>
+      </div>
+      <div className='comment-detail'>
+        <div className='comment-detail-top'>
+          <div className='comment-detail-top-write'></div>
+          <div className='comment-detail-top-add-button'></div>
+        </div>
+        <div className='comment-detail-bottom'>
+          <div className='comment-detail-bottom-writer-box'>
+            <div className='comment-detail-bottom-writer'></div>
+            <div className='comment-detail-bottom-button-box'>
+              <div className='comment-detail-bottom-delete-button'></div>
+              <div className='comment-detail-bottom-update-button'></div>
+            </div>
+          </div>
+          <div className='comment-detail-bottom-text-box'>
+            <div className='comment-detail-bottom-text'></div>
+            <div className='comment-detail-bottom-heart'></div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
 
 export default function Detail() {
   return (
-    <div id='detail-main'>
+    <>
       <Content />
       <Comment />
-    </div>
+    </>
   )
 }
