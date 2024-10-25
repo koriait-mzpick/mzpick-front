@@ -7,16 +7,12 @@ import { SignInRequestDto } from "../../../apis/dto/request/auth";
 import { signInRequest } from "../../../apis";
 import InputBox from "../../../components/Inputbox";
 import '../style.css';
-import { ACCESS_TOKEN, HOME_PATH, SIGN_UP_PATH } from "../../../constants";
-
-// type AuthPath = '회원가입' | '로그인';
-
-// interface AuthComponentProps {
-//     onPathChange: (path: AuthPath) => void;
-// }
+import { ACCESS_TOKEN, ROOT_PATH, SIGN_UP_PATH } from "../../../constants";
+import BottomNav from "../../../layouts/BottomNav";
+import SnsContainer from "../Sns";
 
 // component: 로그인 화면 컴포넌트 //
-function SignIn() {
+export default function SignIn() {
 
     // state: 쿠키 상태 //
     const [cookies, setCookie] = useCookies();
@@ -48,9 +44,9 @@ function SignIn() {
 
         const { accessToken, expiration } = responseBody as SignInResponseDto;
         const expires = new Date(Date.now() + (expiration * 1000));
-        setCookie(ACCESS_TOKEN, accessToken, { path: HOME_PATH, expires });
+        setCookie(ACCESS_TOKEN, accessToken, { path: ROOT_PATH, expires });
 
-        navigator(HOME_PATH);
+        navigator(ROOT_PATH);
     };
 
     // event handler: 아이디 변경 이벤트 처리 //
@@ -74,6 +70,8 @@ function SignIn() {
             password
         };
         signInRequest(requestBody).then(signInResponse);
+        console.log(signInRequest);
+        alert("로그인 완료")
 
     };
 
@@ -98,37 +96,12 @@ function SignIn() {
                 </div>
                 <div className="button-container">
                     <div className="button primary full-width" onClick={onSignInButtonHandler}>로그인</div>
-                    {/* <div className="link" onClick={() => {navigateSignUp}}>회원가입</div> */}
                     <div className="link" onClick={() => onSignUpClickHandler(SIGN_UP_PATH)}>회원가입</div>
                 </div>
-                
-                <div className='sns-container'>
-                    <div className='sns-button kakao'></div>
-                    <div className='sns-button naver'></div>
-                </div>
+                <SnsContainer />
+                <BottomNav />
             </div>
+            
         </div>
     )
-}
-
-// component: 인증 화면 컴포넌트 //
-export default function AuthSignIn() {
-
-    // // state: Query Parameter 상태 //
-    // const [queryParam] = useSearchParams();
-    // const snsId = queryParam.get('snsId');
-    // const joinPath = queryParam.get('joinPath');
-
-    // // effect: 첫 로드시에 Query Param의 snsId와 joinPath가 존재시 회원가입 화면전환 함수 //
-    // useEffect(() => {
-    //     if (snsId && joinPath) setPath('회원가입');
-    // }, []);
-
-
-    // render: 인증 화면 컴포넌트 렌더링 //
-    return (
-        <div id='auth-wrapper'>
-            <SignIn /> 
-        </div>
-    );
 }
