@@ -1,20 +1,29 @@
+import './style.css';
 
-// component: 여행 탑1 컴포넌트 //
-function TravelTop (){
-  return(
+function TravelTop1() {
+
+  return (
     <div id='main-wrapper'>
-    <div className='item-box'>
-      <div className='text-area'>"Travel Top 1"</div>
-      <div className='image-area'></div>
-      <div className='icon-area'></div>
-    </div>
-    <div className='button-box'></div>
+      <div className='item-box'>
+        <div className='text-area'>"Travel Top 1"</div>
+        <div className='icon-area'></div>
+      </div>
+
+      <div className='main-contents'>
+      <button className='image-area'>이미지 영역</button>
+      <div className="decorated-img"></div>
+      <div className='button-box'></div>
+      </div>
     </div>
   )
 }
 
 export default function HOF() {
+
+
   return (
-    <div>HOF</div>
+    <>
+      <TravelTop1 />
+    </>
   )
 }
