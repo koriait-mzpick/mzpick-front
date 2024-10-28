@@ -1,46 +1,49 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { KeyboardEvent, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import type { GetKeyWordResponseDto } from '../../apis/dto/response/keyword';
+import { API_URL } from '../../constants';
+import type { Keyword } from '../../types';
 import './style.css';
 
-interface Keyword {
-  keywordNumber: number;
-  userId: string;
-  keywordContent: string;
-  keywordDate: Date;
-}
-
-const API_URL = 'http://localhost:4000/api/v1/keyword';
-
 export default function Keyword() {
+
   const [cookies] = useCookies(['accessToken']);
   const [keywords, setKeywords] = useState<Keyword[]>([]);
   const [inputValue, setInputValue] = useState('');
+  // const [lastKeyword, setLastKeyword] = useState<string | null>(null);
 
 
   useEffect(() => {
     console.log('쿠키에서 가져온 accessToken:', cookies.accessToken);
   }, [cookies]);
 
+  // function: 키워드 패치 함수 //
   const fetchAllKeywords = async () => {
     try {
       const token = cookies.accessToken;
-
-      const response = await axios.get(API_URL, {
+  
+      const response = await axios.get(`${API_URL}/keyword`, {
         headers: {
           Authorization: `Bearer ${token}`, 
         },
       });
-
+  
       const data = response.data;
-
-      if (Array.isArray(data)) {
-        setKeywords(data);
-      } else if (data) {
-        console.log('키워드 데이터가 배열이 아닙니다:', data);
-        setKeywords([data]);
+  
+  
+      if (data && Array.isArray(data.getKeywordResultsets)) {
+        const keywordList = data.getKeywordResultsets.map((item: GetKeyWordResponseDto, index: number) => ({
+          keywordNumber: index + 1, 
+          userId: 'user1234', 
+          keywordContent: item.keywordContent,
+          keywordDate: new Date(), 
+        }));
+        
+        console.log('Fetched keywords:', keywordList);
+        setKeywords(keywordList);
       } else {
-        console.error('키워드 데이터가 없습니다.');
+        console.error('키워드 데이터가 배열이 아닙니다:', data);
         setKeywords([]);
       }
     } catch (error) {
@@ -48,41 +51,47 @@ export default function Keyword() {
       setKeywords([]);
     }
   };
-
   
-  const postKeyword = async (keywordContent: string) => {
-    try {
-      const token = cookies.accessToken;
-
-      if (!keywordContent.trim()) {
-        console.error("키워드 내용이 비어 있습니다.");
+    // function: 키워드 추가 함수//
+    const postKeyword = async (keywordContent: string) => {
+      
+      if (keywords.some(keyword => keyword.keywordContent === keywordContent)) {
+        alert('이전과 동일한 검색어입니다.');
         return;
       }
-
-      const newKeyword = {
-        userId: 'user123',
-        keywordContent: keywordContent.trim(),
-        keywordDate: new Date(),
-      };
-
-      const response = await axios.post(`${API_URL}/write`, newKeyword, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`, 
-        },
-      });
-
-      if (response.status !== 200) {
-        throw new Error('키워드 저장 실패');
+  
+      try {
+        const token = cookies.accessToken;
+  
+        if (!keywordContent.trim()) {
+          alert("키워드 내용이 비어 있습니다.");
+          return;
+        }
+  
+        const newKeyword = {
+          userId: 'user1234',
+          keywordContent: keywordContent.trim(),
+          keywordDate: new Date(),
+        };
+  
+        const response = await axios.post(`${API_URL}/keyword/write`, newKeyword, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, 
+          },
+        });
+  
+        if (response.status !== 200) {
+          throw new Error('키워드 저장 실패');
+        }
+  
+        fetchAllKeywords(); 
+      } catch (error) {
+        console.error('키워드 저장 실패:', error);
       }
+    };
 
-      fetchAllKeywords(); 
-    } catch (error) {
-      console.error('키워드 저장 실패:', error);
-    }
-  };
-
-
+  // event handler: 키워드 추가 버튼 이벤트 핸들러 //
   const handleAddKeyword = () => {
     if (inputValue.trim()) {
       postKeyword(inputValue);
@@ -92,6 +101,12 @@ export default function Keyword() {
     }
   };
 
+  // event handler: 엔터키 눌렀을시 handleAddKeyword 요청 //
+  const handleKeyDown = (event : KeyboardEvent<HTMLInputElement>) => {
+    if(event.key === 'Enter'){
+      handleAddKeyword();
+    }
+  }
 
   useEffect(() => {
     fetchAllKeywords();
@@ -112,6 +127,7 @@ export default function Keyword() {
             placeholder="키워드를 입력해 주세요"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <div className="add-button" onClick={handleAddKeyword}>
             
@@ -120,19 +136,38 @@ export default function Keyword() {
       </div>
 
       <div className="keyword-contents">
-        <div className="contents1">
-          {keywords.slice(0, 9).map((keyword) => (
-            <div key={keyword.keywordNumber}>
-              {keyword.keywordContent}
-            </div>
-          ))}
-        </div>
-        <div className="contents2">
-          {keywords.slice(10, 19).map((keyword) => (
-            <div key={keyword.keywordNumber}>
-              {keyword.keywordContent}
-            </div>
-          ))}
+        
+      <div className="contents1">
+  {keywords.slice(0, 10).length > 0 ? (
+    keywords.slice(0, 10).map((keyword) => (
+      <a
+        key={keyword.keywordNumber}
+        href={`https://search.naver.com/search.naver?query=${encodeURIComponent(keyword.keywordContent)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div>{keyword.keywordContent}</div>
+      </a>
+    ))
+  ) : (
+    <div>키워드가 없습니다</div>
+  )}
+</div>
+<div className="contents2">
+  {keywords.length > 10 ? (
+    keywords.slice(10, 20).map((keyword) => (
+      <a
+        key={keyword.keywordNumber}
+        href={`https://search.naver.com/search.naver?query=${encodeURIComponent(keyword.keywordContent)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div>{keyword.keywordContent}</div>
+      </a>
+    ))
+  ) : (
+    <div>키워드가 없습니다</div>
+  )}
         </div>
       </div>
     </div>
