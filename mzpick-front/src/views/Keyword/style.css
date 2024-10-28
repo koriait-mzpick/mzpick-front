@@ -51,7 +51,7 @@
     height: 30px;
 }
 
-.keyowrd-contents{
+.keyword-contents{
     display: flex;
     flex-direction: row;
     position: absolute;
@@ -59,21 +59,41 @@
     left: 15%;
     width: 70vw;
     height: 60vh;
-
     border: solid 1px rgba(12, 12, 12, 0.1);
     border-radius: 10px;
+    font-family: 'GongGothicMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-size: 20px;
+    font-weight: bold;
+    overflow: hidden;
 }
 
-.keyowrd-contents .contents1{
+.keyword-contents .contents1 {
     display: flex;
     flex-direction: column;
     width: 50%;
     height: 100%;
+    gap: 15px;
 }
 
-.keyowrd-contents .contents2{
+.keyword-contents .contents2{
     display: flex;
     flex-direction: column;
     width: 50%;
     height: 100%;
+    gap: 15px;
+}
+
+.keyword-contents .contents1, .keyword-contents .contents2 {
+    background-color: rgba(250, 250, 250, 1); 
+    padding: 20px; 
+}
+
+.keyword-contents .contents1 a, .keyword-contents .contents2 a {
+    color: inherit; 
+    text-decoration: none; 
+}
+
+.keyword-contents .contents1 a:hover, .keyword-contents .contents2 a:hover {
+    color: #333; 
 }
