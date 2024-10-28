@@ -12,12 +12,29 @@
   font-style: normal;
 }
 
+/* 이사만루 폰트 */
+@font-face {
+  font-family: 'GongGothicMedium';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard-Thin';
+  src: url(/public/font/Pretendard-Thin.ttf);
+
+}
+
 :root {
   --primary-color: rgba(12, 12, 12, 1);
   --primary-font-color: rgba(245, 245, 245, 1);
+  --primary-font-white-color: rgba(255, 255, 255, 1);
+  --primary-font-gray-color: rgba(116, 116, 116, 1);
 }
 
 .full-width {
   width: 100%;
   box-sizing: border-box;
 }
+

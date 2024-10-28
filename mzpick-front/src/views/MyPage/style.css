@@ -1,0 +1,398 @@
+@font-face {
+    font-family: 'Pretendard-Bold.otf';
+    src: url(/public/font/Pretendard-Bold.otf);
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+.layout{
+    display: flex;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout .header-box {
+    display: flex;
+    width: 100%;
+    height: 149px;
+
+    margin-top: 54px;
+}
+
+.layout .header-box .header-namebox {
+    display: flex;
+
+    width: 180px;
+    height: 30px;
+
+    font-family: 'Pretendard-Bold.otf';
+    font-size: 33px;
+
+    padding-left: 105px;
+    padding-top:  40px;    
+}
+
+.layout .user-infoBox {
+    display: flex;
+    width: 490px;
+    height: 60px;
+
+    padding-top: 40px;
+}
+
+.layout .user-infoBox .user-contentBox {
+    display: flex;
+    flex-direction: column;
+
+    width: 245px;
+    height: 60px;
+}
+
+.layout .user-infoBox .user-contentBox .contentBox1 {
+    display: flex;
+    width: 220px;
+    height: 30px;
+
+    gap: 30px;
+
+}
+
+.layout .user-infoBox .user-contentBox .contentBox2 {
+    display: flex;
+    width: 220px;
+    height: 30px;
+
+    gap: 30px;
+} 
+
+.layout .user-infoBox .user-contentBox .contentBox1 .iconBox {
+    width: 24px;
+    height: 24px;
+
+    background-image: url('/public/image/user-key.png');
+}
+
+.layout .user-infoBox .user-contentBox .contentBox1 .content-board {
+    max-width: fit-content;
+
+    font-family: 'Pretendard-Regular';
+    font-size: 20px;
+}
+
+.layout .user-infoBox .user-contentBox .contentBox2 .iconBox {
+    width: 24px;
+    height: 24px;
+
+    background-image: url('/public/image/user-key.png');
+}
+
+.layout .user-infoBox .user-contentBox .contentBox2 .content-board {
+    max-width: fit-content;
+
+    font-family: 'Pretendard-Regular';
+    font-size: 20px;
+}
+
+.layout .subscribe-box {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    height: 100vh;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 370px;
+}
+
+.layout .subscribe-box .save-box {
+    display: flex;
+    flex-direction: column;
+
+    width: 1385px;
+    height: 350px;
+
+    margin-bottom: 80px;
+
+}
+
+.layout .subscribe-box .like-box {
+    display: flex;
+    flex-direction: column;
+
+    width: 1385px;
+    height: 350px;
+
+    
+
+    margin-bottom: 80px;
+}
+
+.layout .subscribe-box .save-box .textBox {
+    display: flex;
+    width: 1385px;
+    height: 40px;
+
+    text-align: left;
+    font-family: 'Pretendard-Bold.otf';
+    padding-left: 8px;
+}
+
+.layout .subscribe-box .like-box .textBox {
+    display: flex;
+    width: 1385px;
+    height: 40px;
+
+    text-align: left;
+    font-family: 'Pretendard-Bold.otf';
+    padding-left: 8px;
+}
+
+.layout .subscribe-box .save-box .imageBox {
+    display: flex;
+    width: 1235px;
+    height: 280px;
+
+    margin-left: 75px;
+    margin-top: 30px;
+
+    gap: 147px;
+}
+
+.layout .subscribe-box .save-box .imageBox .WritePostBox {
+    display: flex;
+    width: 320px;
+    height: 280px;
+    
+    border: 1px solid rgba(166, 166, 166, 100);
+    border-radius: 10px;
+}
+
+.layout .subscribe-box .like-box .imageBox {
+    display: flex;
+    width: 1235px;
+    height: 280px;
+
+    margin-left: 75px;
+    margin-top: 30px;
+
+    gap: 147px;
+}
+
+.layout .subscribe-box .like-box .imageBox .WritePostBox {
+    display: flex;
+    width: 320px;
+    height: 280px;
+    
+    border: 1px solid rgba(166, 166, 166, 100);
+    border-radius: 10px;
+}
+
+.layout .subscribe-box .save-box .page-box {
+    display: flex;
+    width: 1385px;
+    height: 30px;
+
+    justify-content: center;
+    margin-top: 41px;
+    margin-bottom: 40px;
+}
+
+.layout .subscribe-box .save-box .page-box .pageBox1 {
+    display: flex;
+    width: 25px;
+    height: 25px;
+
+    background-image: url(/public/image/page-arrow-left.png);
+}
+
+.layout .subscribe-box .save-box .page-box .pageBox2 {
+    display: flex;
+    width: 25px;
+    height: 25px;
+
+    background-image: url(/public/image/page-arrow-right.png);
+}
+
+.layout .subscribe-box .save-box .page-box .pageBox {
+    display: flex;
+    width: 25px;
+    height: 25px;
+
+    justify-content: center;
+}
+
+.layout .subscribe-box .like-box .page-box {
+    display: flex;
+    width: 1385px;
+    height: 30px;
+
+    justify-content: center;
+    margin-top: 41px;
+    margin-bottom: 40px;
+}
+
+.layout .subscribe-box .like-box .page-box .pageBox1 {
+    display: flex;
+    width: 25px;
+    height: 25px;
+
+    background-image: url(/public/image/page-arrow-left.png);
+}
+
+.layout .subscribe-box .like-box .page-box .pageBox2 {
+    display: flex;
+    width: 25px;
+    height: 25px;
+
+    background-image: url(/public/image/page-arrow-right.png);
+}
+
+.layout .subscribe-box .like-box .page-box .pageBox {
+    display: flex;
+    width: 25px;
+    height: 25px;
+
+    justify-content: center;
+}
+
+.layout .subscribe-box .like-box .write-totalBox {
+    display: flex;
+
+    width: 1385px;
+    height: 400px;
+
+    flex-direction: column;
+}
+
+.layout .subscribe-box .like-box .write-totalBox .write-titleBox {
+    display: flex;
+
+    width: 1385px;
+    height: 46px;
+
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.layout .subscribe-box .like-box .write-totalBox .write-titleBox .title {
+    display: flex;
+
+    width: 185px;
+    height: 17px;
+
+    font-family: 'Pretendard-Bold.otf';
+    font-size: 15px;   
+
+    justify-content: center;
+}
+
+.layout .subscribe-box .like-box .write-totalBox .write-titleBox .title2 {
+    display: flex;
+    width: 800px;
+    height: 17px;
+
+    font-family: 'Pretendard-Bold.otf';
+    font-size: 15px;   
+
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.layout .subscribe-box .like-box .write-totalBox .contentBox {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 1385px;
+    height: 22px;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.layout .subscribe-box .like-box .write-totalBox .contentBox .directed-writeBox {
+    display: flex;
+
+    width: 185px;
+    height: 17px;
+
+    font-family: 'Pretendard-Regular';
+    font-size: 15px;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+    
+
+}
+
+.layout .subscribe-box .like-box .write-totalBox .contentBox .directed-writeBox2 {
+    display: flex;
+
+    width: 800px;
+    height: 17px;
+
+    font-family: 'Pretendard-Regular';
+    font-size: 15px;
+    
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.layout .subscribe-box .like-box .write-totalBox .contentBox .directed-writeBox3 {
+    display: flex;
+
+    width: 185px;
+    height: 17px;
+
+    font-family: 'Pretendard-Regular';
+    font-size: 15px;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.layout .subscribe-box .like-box .write-totalBox .contentBox .directed-writeBox3 .icon-box {
+    display: flex;
+
+    width: 22px;
+    height: 22px;
+
+    background-image: url(/public/image/EditIcon.png);
+    background-repeat: no-repeat;    
+}
+
+.layout .subscribe-box .like-box .write-totalBox .contentBox .directed-writeBox4 {
+    display: flex;
+
+    width: 185px;
+    height: 17px;
+
+    font-family: 'Pretendard-Regular';
+    font-size: 15px;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.layout .subscribe-box .like-box .write-totalBox .contentBox .directed-writeBox4 .icon-box2 {
+    display: flex;
+
+    width: 22px;
+    height: 22px;
+
+    background-image: url(/public/image/Vector.png);
+    background-repeat: no-repeat;
+} 

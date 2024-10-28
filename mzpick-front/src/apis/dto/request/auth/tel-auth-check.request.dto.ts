@@ -1,4 +1,5 @@
+// interface: 전화번호 인증 확인 Request Body Dto //
 export default interface TelAuthCheckRequestDto {
-    tel_number: string;
-    auth_number: string;
+    telNumber: string;
+    authNumber: string;
 }

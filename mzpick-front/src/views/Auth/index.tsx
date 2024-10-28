@@ -1,83 +1,54 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import InputBox from '../../components/Inputbox';
 import './style.css';
+import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
+import { IdCheckRequestDto, SignInRequestDto, SignUpRequestDto, TelAuthCheckRequestDto, TelAuthRequestDto } from '../../apis/dto/request/auth';
+import { ResponseDto } from '../../apis/dto/response';
+import { idCheckRequest, signInRequest, signUpRequest, telAuthCheckRequest, telAuthRequest } from '../../apis';
+import { SignInResponseDto } from '../../apis/dto/response/auth';
+import AuthSignIn from './SignIn';
+import AuthSignUp from './SignUp';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 
 
 type AuthPath = '회원가입' | '로그인';
+
 interface AuthComponentProps {
-  onPathChange: (path: AuthPath) => void;
+    onPathChange: (path: AuthPath) => void;
 }
 
-// component: 로그인 화면 컴포넌트 //
-function SignIn({ onPathChange }: AuthComponentProps) {
+// component: 인증 화면 컴포넌트 //
+export default function Auth({ onPathChange }: AuthComponentProps) {
 
-  // state: 쿠키 상태 //
-  const [cookies, setCookie] = useCookies();
+    // state: Query Parameter 상태 //
+    const [queryParam] = useSearchParams();
+    const snsId = queryParam.get('snsId');
+    const joinPath = queryParam.get('joinPath');
 
-  // state: 로그인 입력 정보 상태 //
-  const [id, setId] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+    // state: 선택 화면 상태 //
+    const [path, setPath] = useState<AuthPath>('로그인');
 
-  // state: 로그인 입력 메세지 상태 //
-  const [message, setMessage] = useState<string>('');
+    // event handler: 화면 변경 이벤트 처리 //
+    const onPathChangeHandler = (path: AuthPath) => {
+        setPath(path);
+    };
 
-  // event handler: 아이디 변경 이벤트 처리 //
-  const onIdChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setId(value);
-};
+    // effect: 첫 로드시에 Query Param의 snsId와 joinPath가 존재시 회원가입 화면전환 함수 //
+    useEffect(() => {
+        if (snsId && joinPath) setPath('회원가입');
+    }, [snsId, joinPath]);
 
-// event handler: 비밀번호 변경 이벤트 처리 //
-const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setPassword(value);
-};
 
-// // event handler: 로그인 버튼 클릭 이벤트 처리 //
-// const onSignInButtonHandler = () => {
-//     if (!id || !password) return;
-
-//     const requestBody: SignInRequestDto = {
-//         userId: id,
-//         password
-//     };
-//     signInRequest(requestBody).then(signInResponse);
-
-// };
-
-// render: 로그인 화면 컴포넌트 렌더링 //
-return (
-  <div className="auth-box">
-    <div className='title-box'>로그인</div>
-    <div className="input-container">
-              <InputBox value={id} onChange={onIdChangeHandler} message='' messageError type='text' placeholder='ID' />
-              <InputBox value={password} onChange={onPasswordChangeHandler} message={message} messageError type='password' placeholder='Password' />
-          </div>
-          <div className="button-container">
-              {/* <div className="button primary full-width" onClick={onSignInButtonHandler}>로그인</div> */}
-              <div className="link" onClick={() => onPathChange('회원가입')}>회원가입</div>
-          </div>
-    <div className='sns-button-container'>
-      <div className='kakao-button'></div>
-      <div className='naver-button'></div>
-    </div>
-
-  </div>
-  )
-}
-
-export default function Auth() {
-
-  // state: 선택 화면 상태 //
-  const [path, setPath] = useState<AuthPath>('로그인');
-
-  // event handler: 화면 변경 이벤트 처리 //
-  const onPathChangeHandler = (path: AuthPath) => {
-    setPath(path);
-  };
-
-  return (
-    <SignIn onPathChange={onPathChangeHandler}/>
-  )
+    // render: 인증 화면 컴포넌트 렌더링 //
+    return (
+        <div id='auth-wrapper'>
+            {/* {path === '로그인' ?
+            <AuthSignIn onPathChange={onPathChangeHandler}/> :
+            <AuthSignUp onPathChange={onPathChangeHandler}/>
+            } */}
+        </div>
+    );
 }

@@ -1,0 +1,155 @@
+#home {
+    display: flex;
+    flex-direction: column;
+    margin-top: 54px;
+}
+
+#home .scroll-box {
+    position: relative;
+    height: 200vh;
+}
+
+#home .home-media {
+    /* margin-top: 54px; */
+    width: 100vw;
+    height: calc(100vh - 54px);
+    /* height: 100vh; */
+}
+
+#home .home-text {
+    position: sticky;
+    top: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    z-index: -999;
+
+    scroll-snap-align: start;
+    user-select: none;
+    -webkit-user-select:none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#home .home-text .introduce-text {
+    font-family: GongGothicMedium;
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-size: 7.4vw;
+    margin-bottom: 30px;
+}
+
+#home .home-text .icon-box {
+    background-image: url(/public/logologo.png);
+    width: 781px;
+    height: 264px;
+    min-width: auto;
+    min-height: auto;
+    margin-bottom: 30px;
+
+}
+
+#home .home-text .detail-introduce {
+    font-family: 'Pretendard-Thin';
+    src: url(/public/font/Pretendard-Thin.ttf);
+    font-size: 3.7vw;
+    font-weight: 100;
+
+}
+
+#home .home-category {
+    position: sticky;
+    top: 54px;
+    
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(12, 12, 12, 100);
+
+    user-select: none;
+    -webkit-user-select:none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#home   .home-category .category-container {
+    display: grid;
+    grid-template-columns:
+        1fr 1fr 1fr 1fr 1fr;
+
+    height: 100%;
+
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: bold;
+    font-size: 2.7vw;
+    color: rgba(245, 245, 245, 100);
+    text-align: center;
+    /* align-items: center; */
+    /* justify-items: center; */
+
+    cursor: pointer;
+}
+
+#home .home-category .category-container .travel-category {
+    background-image: url(/public/image/TravelImage.png);
+    line-height: 700px;
+    object-fit: scale-down;
+}
+
+#home .home-category .category-container .food-category {
+    background-image: url(/public/image/FoodImage.png);
+    line-height: 700px;
+    object-fit: scale-down;
+}
+
+#home .home-category .category-container .fashion-category {
+    background-image: url(/public/image/fashionimage.png);
+    line-height: 700px;
+    object-fit: scale-down;
+}
+
+#home .home-category .category-container .keyword-category {
+    background-color: black;
+    line-height: 700px;
+}
+
+
+#home .home-category .category-container .hall-of-fame-category {
+    background-image: url(/public/image/HallofFameImage.png);
+    line-height: 700px;
+    object-fit: scale-down;
+}
+
+#home .footer {
+    background-color: rgba(12, 12, 12, 100);
+    width: 100vw;
+    height: 26vh;
+    
+}
+
+#home .footer .name-logo-box {
+    display: flex;
+    justify-content: space-between;
+    color: rgba(255, 255, 255, 100);
+    margin: 30px;
+}
+
+#home .footer .name-logo-box .name-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 4px;
+    margin-right: 100px;
+}
+
+#home .footer .name-logo-box .name-box .name {
+    margin-left: 80px;
+}
+
+#home .footer .contract {
+    color: rgba(255, 255, 255, 100);
+    position: relative;
+}
