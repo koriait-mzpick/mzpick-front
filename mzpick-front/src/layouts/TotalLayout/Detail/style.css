@@ -12,6 +12,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 500px;
 }
 
 #contents-main {
@@ -106,20 +107,16 @@
     border: 1px solid rgba(0, 0, 0, .25);
     border-radius: 10px;
     margin-bottom: 30px;
+    background-color:black ;
 }
 
-#contents-main .contents-image .contents-image-left-button {
+.contents-image-left-button {
     display: flex;
     align-items: center;
-    width: 50px;
+    width: 1000px;
+    height: 500px;
     cursor: pointer;
 }
-/* 
-#contents-main .contents-image .contents-image-left-button:hover {
-    background-color: aqua;
-
-} */
-
 
 #contents-main .contents-text {
     width: 65vw;

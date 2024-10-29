@@ -6,14 +6,14 @@ import './style.css';
 function Content() {
 
   // state: 북마크 상태 //
-  const [boorMarkClick, setBookMarkClick] = useState(false);
+  const [bookMarkClick, setBookMarkClick] = useState(false);
 
   // state: 좋아요 상태 //
   const [likeClick, setLikeClick] = useState(false);
 
   // event handler: 북마크 클릭 이벤트 처리 //
   const bookMarkClickHandler = () => {
-    setBookMarkClick(!boorMarkClick);
+    setBookMarkClick(!bookMarkClick);
   }
 
   // event handler: 좋아요 클릭 이벤트 처리 //
@@ -34,10 +34,10 @@ function Content() {
         </div>
       </div>
       <div className='contents-image'>
-        <div className='contents-image-left-button'></div>
-        <div className='contents-image-right-button'></div>
+        {/* <div className='contents-image-left-button'></div>
+        <div className='contents-image-right-button'></div> */}
       </div>
-      <div className='contents-text'>asdThere are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined</div>
+      <div className='contents-text'>asdThere are many variations of passages of Lorem Ipsum available, but the majority have suffered </div>
       <div className='contents-information'>
         <div className='contents-information-left'>#잉</div>
         <div className='contents-information-right'>
@@ -49,7 +49,7 @@ function Content() {
             <div className='contents-information-view-icon'></div>
             <div className='contents-information-data'>32</div>
           </div>
-          <div className={`contents-information-bookmark ${boorMarkClick ? 'active' : ''}`} onClick={bookMarkClickHandler}></div>
+          <div className={`contents-information-bookmark ${bookMarkClick ? 'active' : ''}`} onClick={bookMarkClickHandler}></div>
         </div>
       </div>
     </div>

@@ -26,6 +26,7 @@ import Restaurant from './views/Travel/Restaurant';
 import Stay from './views/Travel/Stay';
 import Vote from './views/Vote';
 
+
 function Index() {
 
 
