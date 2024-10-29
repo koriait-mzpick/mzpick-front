@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { Route, Routes, useNavigate } from 'react-router-dom';
@@ -21,6 +20,8 @@ import Cafe from './views/Travel/Cafe';
 import MainTravel from './views/Travel/MainTravel';
 import Restaurant from './views/Travel/Restaurant';
 import Stay from './views/Travel/Stay';
+import SignIn from './views/Auth/SignIn';
+import SignUp from './views/Auth/SignUp';
 
 function Index() {
 
@@ -60,11 +61,11 @@ export default function MzPick() {
       </Route>
 
       <Route path={SIGN_IN_PATH} element={<MainLayout />}>
-        < Route path={SIGN_IN_PATH} element={< AuthSignIn />} />
+        < Route path={SIGN_IN_PATH} element={<SignIn />} />
       </Route>
 
       <Route path={SIGN_UP_PATH} element={<MainLayout />}>
-        < Route path={SIGN_UP_PATH} element={< AuthSignUp />} />
+        < Route path={SIGN_UP_PATH} element={< SignUp />} />
       </Route>
 
       <Route path={TRAVEL_PATH} element={<MainLayout />}>

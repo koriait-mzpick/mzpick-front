@@ -8,7 +8,7 @@
     src: url(/public/font/Pretendard-Thin.ttf);
 }
 
-#auth-wrapper {
+.auth-container {
     width: calc(100vw - 5px);
     height: calc(100vh - 54px);
 }
@@ -138,11 +138,6 @@
 .sns-button:hover {
     opacity: 0.8;
     cursor: pointer;
-}
-
-.sns-button.md {
-    width: 40px;
-    height: 40px;
 }
 
 .sns-button.kakao {

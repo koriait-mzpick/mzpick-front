@@ -1,7 +1,3 @@
-// import { create } from "zustand";
-// import SignInUser from "../types/sign-in-user.interface";
-
-
 // interface SignInUserStore {
 //     signInUser: SignInUser | null;
 //     setSignInUser: (signInUser: SignInUser | null) => void;
@@ -70,6 +66,7 @@ const useAuthStore = create<AuthState>((set) => ({
 
 // 사용하는 컴포넌트에서
 const Component = () => {
+
   const { signInUser, setSignInUser } = useAuthStore();
 
   const handleLogin = (userData: SignInUser) => {
