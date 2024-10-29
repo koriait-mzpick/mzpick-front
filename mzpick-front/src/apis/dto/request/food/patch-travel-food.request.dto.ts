@@ -2,7 +2,7 @@
 export default interface PatchTravelFoodRequestDto {
     travelFoodTitle: string;
     travelFoodHashtagContentList: string[];
-    travelFoodLocation: string;
+    travelLocation: string;
     travelFoodPhotoList: string[];
     travelFoodContent: string;
 }
