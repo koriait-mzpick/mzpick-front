@@ -155,18 +155,21 @@
 #contents-main .contents-information .contents-information-right .contents-information-like-icon,
 #comment-main .comment-detail .comment-detail-bottom .comment-detail-text-box .comment-detail-like {
     display: flex;
-    width: 0.95vw;
-    height: 1.53vh;
+    width: 17px;
+    height: 15px;
     background-image: url(/public/image/empty-heart-Icon.png);
-    background-size: contain;
+    background-position: 50% 50%;
+    background-size: cover;
     cursor: pointer;
 }
 
 #contents-main .contents-information .contents-information-right .contents-information-like-icon.active,
 #comment-main .comment-detail .comment-detail-bottom .comment-detail-text-box .comment-detail-like.active {
-    width: 0.95vw;
-    height: 1.51vh;
+    width: 17px;
+    height: 15px;
     background-image: url(/public/image/on-heart-Icon.png);
+    background-position: 50% 50%;
+    background-size: cover;
 }
 
 #contents-main .contents-information .contents-information-right .contents-information-view {
@@ -176,28 +179,31 @@
 }
 #contents-main .contents-information .contents-information-right .contents-information-view-icon {
     display: flex;
-    width: 1.06vw;
-    height: 1.5vh;
+    width: 18px;
+    height: 14px;
     background-image: url(/public/image/view-Icon.png);
-    background-size: contain;
+    background-position: 50% 50%;
+    background-size: cover;
 }
 
 #contents-main .contents-information .contents-information-right .contents-information-bookmark {
     display: flex;
-    width: 0.7vw;
-    height: 1.6vh;
+    width: 11px;
+    height: 15px;
     background-image: url(/public/image/bookmark.png);
-    background-size: contain;
+    background-position: 50% 50%;
+    background-size: cover;
     cursor: pointer;
 }
 
 #contents-main .contents-information .contents-information-right .contents-information-bookmark.active {
     display: flex;
     align-items: center;
-    width: 0.7vw;
-    height: 1.6vh;
+    width: 11px;
+    height: 15px;
     background-image: url(/public/image/bookmark-active.png);
-    background-size: contain;
+    background-position: 50% 50%;
+    background-size: cover;
     cursor: pointer;
 }
 
