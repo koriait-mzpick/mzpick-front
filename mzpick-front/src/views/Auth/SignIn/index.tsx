@@ -11,6 +11,10 @@ import '../style.css';
 
 import SnsContainer from "../Sns";
 import BottomNav from "../../../layouts/BottomNav";
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8305d0565acc07d17eb91fe8087a483e63b170cd
 // type AuthPath = '회원가입' | '로그인';
 
 // interface AuthComponentProps {
