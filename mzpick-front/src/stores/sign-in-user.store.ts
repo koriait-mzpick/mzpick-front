@@ -8,7 +8,7 @@ type SignInUser = {
 
 type AuthState = {
   signInUser: SignInUser | null;
-  setSignInUser: (signInUser: SignInUser) => void;
+  setSignInUser: (signInUser: SignInUser | null) => void;
 };
 
 const useAuthStore = create<AuthState>((set) => ({

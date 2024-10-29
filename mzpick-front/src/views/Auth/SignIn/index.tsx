@@ -8,6 +8,7 @@ import { SignInResponseDto } from "../../../apis/dto/response/auth";
 import InputBox from "../../../components/Inputbox";
 import { ACCESS_TOKEN, ROOT_PATH, SIGN_UP_PATH } from "../../../constants";
 import BottomNav from "../../../layouts/BottomNav";
+import SnsContainer from "../Sns";
 type AuthPath = '회원가입' | '로그인';
 
 // component: 로그인 화면 컴포넌트 //

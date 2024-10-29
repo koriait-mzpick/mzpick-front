@@ -44,8 +44,8 @@
 
 #main-hof-wrapper .main-contents .image-area {
     position: absolute;
-justify-content: center;
-align-items: center;
+    justify-content: center;
+    align-items: center;
     border: solid 1px;
     border-radius: 100%;
     width: 480px;
@@ -53,25 +53,24 @@ align-items: center;
 }
 
 #main-hof-wrapper .deco-container {
-
-    width: 1200px;
-    position: absolute;
-    justify-items: center;
+    width: 100%;
     height: auto;
 }
 
 #main-hof-wrapper .deco-container .decorated-img {
-    position: absolute;
-
+    position: relative;
+    left: 18.3%;
     z-index: -1;
     width: 649px;
     height: 620px;
     background-image: url(/public/image/deco.png);
 }
 
-.button-contaner {
+#main-hof-wrapper .button-contaner{
     display: flex;
     flex-direction: row;
     gap: 8px;
+    justify-content: center;
+    left: 1%;
     cursor: pointer;
 }

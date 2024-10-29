@@ -1,20 +1,22 @@
 
 import { useNavigate } from 'react-router';
-import { HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_TRAVEL_PATH } from '../../constants';
-// import './style.css';
+import { HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_TRAVEL_PATH } from 'src/constants';
+import './style.css';
 
-function FoodTop1() {
-  // function: 네비게이션 상태 //
-  const navigator = useNavigate();
+function TravelTop1() {
 
-  // event handler: 명예의전당 buttonbox 클릭 이벤트 //
-  const onButtonClickEventHandler = (path: string) =>{
-    navigator(path);
-  };
+    // function: 네비게이션 상태 //
+    const navigator = useNavigate();
+
+    // event handler: 명예의전당 buttonbox 클릭 이벤트 //
+    const onButtonClickEventHandler = (path: string) =>{
+      navigator(path);
+    };
+
   return (
     <div id='main-hof-wrapper'>
       <div className='item-box'>
-        <div className='text-area'>"Food Top 1"</div>
+        <div className='text-area'>"Travel Top 1"</div>
         <div className='icon-area'></div>
       </div>
 
@@ -34,12 +36,12 @@ function FoodTop1() {
   )
 }
 
-export default function HOFFood() {
+export default function HOFTravel() {
 
 
   return (
     <>
-      <FoodTop1 />
+      <TravelTop1 />
     </>
   )
 }
