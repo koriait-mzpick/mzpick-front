@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, KeyboardEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { IdCheckRequestDto, SignUpRequestDto, TelAuthCheckRequestDto, TelAuthRequestDto } from "../../../apis/dto/request/auth";
 import { idCheckRequest, signUpRequest, telAuthCheckRequest, telAuthRequest } from "../../../apis";

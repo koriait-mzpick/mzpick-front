@@ -7,6 +7,7 @@ import { ResponseDto } from "../../../apis/dto/response";
 import { SignInResponseDto } from "../../../apis/dto/response/auth";
 import InputBox from "../../../components/Inputbox";
 import { ACCESS_TOKEN, ROOT_PATH, SIGN_UP_PATH } from "../../../constants";
+import '../style.css';
 import BottomNav from "../../../layouts/BottomNav";
 import SnsContainer from "../Sns";
 
@@ -89,7 +90,7 @@ export default function SignIn() {
         <div className='auth-container'>
             <div className="auth-box">
                 <div className='title-box'>로그인</div>
-                <div className="input-container" >
+                <div className="input-container bold" >
                     <InputBox value={id} onChange={onIdChangeHandler} message='' messageError type='text' placeholder='ID' />
                     <InputBox value={password} onChange={onPasswordChangeHandler} message={message} messageError type='password' placeholder='Password' />
                 </div>

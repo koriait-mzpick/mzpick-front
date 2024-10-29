@@ -45,10 +45,6 @@ input::placeholder {
     color: rgba(166, 166, 166);
 }
 
-.signin-placeholder::placeholder {
-    font-family: 'Pretendard-Bold';
-}
-
 .input-box .input-button {
     width: 103px;
     height: 30px;
