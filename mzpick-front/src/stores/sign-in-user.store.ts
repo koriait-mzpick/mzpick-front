@@ -27,4 +27,4 @@ const Component = () => {
   };
 };
 
-export default useAuthStore;
+export default useAuthStore; 
