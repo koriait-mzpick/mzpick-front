@@ -12,20 +12,23 @@
 
 .layout{
     display: flex;
+    
     width: 100%;
-    display: flex;
     flex-direction: column;
 }
 
-.layout .header-box {
+.layout .subscribe-box .header-box {
     display: flex;
+    justify-content: center;
+
     width: 100%;
     height: 149px;
-
-    margin-top: 54px;
+    
+    margin-left: -900px;
+    padding-bottom: 54px;
 }
 
-.layout .header-box .header-namebox {
+.layout .subscribe-box .header-box .header-namebox {
     display: flex;
 
     width: 180px;
@@ -35,18 +38,18 @@
     font-size: 33px;
 
     padding-left: 105px;
-    padding-top:  40px;    
+    padding-top:  60px;    
 }
 
-.layout .user-infoBox {
+.layout .subscribe-box .user-infoBox {
     display: flex;
     width: 490px;
     height: 60px;
 
-    padding-top: 40px;
+    padding-top: 60px;
 }
 
-.layout .user-infoBox .user-contentBox {
+.layout .subscribe-box .user-infoBox .user-contentBox {
     display: flex;
     flex-direction: column;
 
@@ -54,7 +57,7 @@
     height: 60px;
 }
 
-.layout .user-infoBox .user-contentBox .contentBox1 {
+.layout .subscribe-box .user-infoBox .user-contentBox .contentBox1 {
     display: flex;
     width: 220px;
     height: 30px;
@@ -63,7 +66,7 @@
 
 }
 
-.layout .user-infoBox .user-contentBox .contentBox2 {
+.layout .subscribe-box .user-infoBox .user-contentBox .contentBox2 {
     display: flex;
     width: 220px;
     height: 30px;
@@ -71,28 +74,28 @@
     gap: 30px;
 } 
 
-.layout .user-infoBox .user-contentBox .contentBox1 .iconBox {
+.layout .subscribe-box .user-infoBox .user-contentBox .contentBox1 .iconBox {
     width: 24px;
     height: 24px;
 
     background-image: url('/public/image/user-key.png');
 }
 
-.layout .user-infoBox .user-contentBox .contentBox1 .content-board {
+.layout .subscribe-box .user-infoBox .user-contentBox .contentBox1 .content-board {
     max-width: fit-content;
 
     font-family: 'Pretendard-Regular';
     font-size: 20px;
 }
 
-.layout .user-infoBox .user-contentBox .contentBox2 .iconBox {
+.layout .subscribe-box .user-infoBox .user-contentBox .contentBox2 .iconBox {
     width: 24px;
     height: 24px;
 
     background-image: url('/public/image/user-key.png');
 }
 
-.layout .user-infoBox .user-contentBox .contentBox2 .content-board {
+.layout .subscribe-box .user-infoBox .user-contentBox .contentBox2 .content-board {
     max-width: fit-content;
 
     font-family: 'Pretendard-Regular';
@@ -104,12 +107,12 @@
     flex-direction: column;
 
     width: 100%;
-    height: 100vh;
+    /* height: 100vh; */
 
     align-items: center;
     justify-content: center;
 
-    margin-top: 370px;
+    margin-top: 104px;
 }
 
 .layout .subscribe-box .save-box {
@@ -119,8 +122,7 @@
     width: 1385px;
     height: 350px;
 
-    margin-bottom: 80px;
-
+    margin-bottom: 100px;
 }
 
 .layout .subscribe-box .like-box {
@@ -130,9 +132,17 @@
     width: 1385px;
     height: 350px;
 
-    
+    margin-bottom: 100px;
+}
 
-    margin-bottom: 80px;
+.layout .subscribe-box .like-box2 {
+    display: flex;
+    flex-direction: column;
+
+    width: 1385px;
+    height: 350px;
+
+    margin-bottom: 15px;
 }
 
 .layout .subscribe-box .save-box .textBox {
@@ -142,10 +152,22 @@
 
     text-align: left;
     font-family: 'Pretendard-Bold.otf';
+    font-size: 20px;
+
     padding-left: 8px;
 }
 
 .layout .subscribe-box .like-box .textBox {
+    display: flex;
+    width: 1385px;
+    height: 40px;
+
+    text-align: left;
+    font-family: 'Pretendard-Bold.otf';
+    padding-left: 8px;
+}
+
+.layout .subscribe-box .like-box2 .textBox {
     display: flex;
     width: 1385px;
     height: 40px;
@@ -161,7 +183,7 @@
     height: 280px;
 
     margin-left: 75px;
-    margin-top: 30px;
+    margin-top: 40px;
 
     gap: 147px;
 }
@@ -181,12 +203,32 @@
     height: 280px;
 
     margin-left: 75px;
-    margin-top: 30px;
+    margin-top: 40px;
 
     gap: 147px;
 }
 
 .layout .subscribe-box .like-box .imageBox .WritePostBox {
+    display: flex;
+    width: 313px;
+    height: 282px;
+    
+    border: 1px solid rgba(166, 166, 166, 100);
+    border-radius: 10px;
+}
+
+.layout .subscribe-box .like-box2 .imageBox {
+    display: flex;
+    width: 1235px;
+    height: 280px;
+
+    margin-left: 75px;
+    margin-top: 30px;
+
+    gap: 147px;
+}
+
+.layout .subscribe-box .like-box2 .imageBox .WritePostBox {
     display: flex;
     width: 320px;
     height: 280px;
@@ -203,6 +245,9 @@
     justify-content: center;
     margin-top: 41px;
     margin-bottom: 40px;
+
+    font-family: 'Pretendard-Bold.otf';
+    font-size: 14px;
 }
 
 .layout .subscribe-box .save-box .page-box .pageBox1 {
@@ -227,6 +272,7 @@
     height: 25px;
 
     justify-content: center;
+    align-items: center;
 }
 
 .layout .subscribe-box .like-box .page-box {
@@ -237,6 +283,9 @@
     justify-content: center;
     margin-top: 41px;
     margin-bottom: 40px;
+    
+    font-family: 'Pretendard-Bold.otf';
+    font-size: 14px;
 }
 
 .layout .subscribe-box .like-box .page-box .pageBox1 {
@@ -261,6 +310,7 @@
     height: 25px;
 
     justify-content: center;
+    align-items: center;
 }
 
 .layout .subscribe-box .like-box .write-totalBox {
@@ -396,3 +446,261 @@
     background-image: url(/public/image/Vector.png);
     background-repeat: no-repeat;
 } 
+
+
+
+
+
+
+.layout .subscribe-box .like-box2 .page-box {
+    display: flex;
+    width: 1385px;
+    height: 30px;
+
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 41px;
+    margin-bottom: 40px;
+
+    font-family: 'Pretendard-Bold.otf';
+    font-size: 14px;
+}
+
+.layout .subscribe-box .like-box2 .page-box .pageBox1 {
+    display: flex;
+    width: 25px;
+    height: 25px;
+
+    background-image: url(/public/image/page-arrow-left.png);
+}
+
+.layout .subscribe-box .like-box2 .page-box .pageBox2 {
+    display: flex;
+    width: 25px;
+    height: 25px;
+
+    align-items: center;
+    justify-content: center;
+
+    background-image: url(/public/image/page-arrow-right.png);
+}
+
+.layout .subscribe-box .like-box2 .page-box .pageBox {
+    display: flex;
+    width: 25px;
+    height: 25px;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.layout .subscribe-box .like-box2 .write-totalBox {
+    display: flex;
+
+    width: 1385px;
+    height: 400px;
+
+    flex-direction: column;
+}
+
+.layout .subscribe-box .like-box2 .write-totalBox .write-titleBox {
+    display: flex;
+
+    width: 1385px;
+    height: 46px;
+
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.layout .subscribe-box .like-box2 .write-totalBox .write-titleBox .title {
+    display: flex;
+
+    width: 185px;
+    height: 17px;
+
+    font-family: 'Pretendard-Bold.otf';
+    font-size: 15px;   
+
+    justify-content: center;
+}
+
+.layout .subscribe-box .like-box2 .write-totalBox .write-titleBox .title2 {
+    display: flex;
+    width: 800px;
+    height: 17px;
+
+    font-family: 'Pretendard-Bold.otf';
+    font-size: 15px;   
+
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.layout .subscribe-box .like-box2 .write-totalBox .contentBox {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 1385px;
+    height: 22px;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.layout .subscribe-box .like-box2 .write-totalBox .contentBox .directed-writeBox {
+    display: flex;
+
+    width: 185px;
+    height: 17px;
+
+    font-family: 'Pretendard-Regular';
+    font-size: 15px;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+    
+
+}
+
+.layout .subscribe-box .like-box2 .write-totalBox .contentBox .directed-writeBox2 {
+    display: flex;
+
+    width: 800px;
+    height: 17px;
+
+    font-family: 'Pretendard-Regular';
+    font-size: 15px;
+    
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.layout .subscribe-box .like-box2 .write-totalBox .contentBox .directed-writeBox3 {
+    display: flex;
+
+    width: 185px;
+    height: 17px;
+
+    font-family: 'Pretendard-Regular';
+    font-size: 15px;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.layout .subscribe-box .like-box2 .write-totalBox .contentBox .directed-writeBox3 .icon-box {
+    display: flex;
+
+    width: 22px;
+    height: 22px;
+
+    background-image: url(/public/image/EditIcon.png);
+    background-repeat: no-repeat;    
+}
+
+.layout .subscribe-box .like-box2 .write-totalBox .contentBox .directed-writeBox4 {
+    display: flex;
+
+    width: 185px;
+    height: 17px;
+
+    font-family: 'Pretendard-Regular';
+    font-size: 15px;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.layout .subscribe-box .like-box2 .write-totalBox .contentBox .directed-writeBox4 .icon-box2 {
+    display: flex;
+
+    width: 22px;
+    height: 22px;
+
+    background-image: url(/public/image/Vector.png);
+    background-repeat: no-repeat;
+} 
+
+
+.layout .WritePostBox .board-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 313px;
+    height: 282px;
+    border-radius: 10px 10px 0px 0px;
+    background-color: rgba(217, 217, 217, 0);
+}
+
+.layout .WritePostBox .board-box .board-image {
+    width: 320px;
+    height: 216px;
+
+    border-radius: 10px 10px 0px 0px;
+    cursor: pointer;
+}
+
+.layout .WritePostBox .board-box .board-information {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px;
+    height: 20px;
+    padding: 10px;
+}
+
+.layout .board-information-data {
+    display: flex;
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-size: 15px;
+    color: rgba(166, 166, 166, 1);
+}
+
+
+
+.layout .WritePostBox .board-box .board-tag {
+    display: flex;
+    width: 300px;
+    height: 30x;
+    padding-bottom: 15px;
+    font-family: 'Pretendard-Bold';
+    font-size: 24px;
+}
+
+.layout .subscribe-box .like-box2 .totalTextBox .textBox .plusIcon {
+    
+}
+
+.layout .subscribe-box .like-box .totalTextBox .textBox .plusIcon {
+    width: 25px;
+    height: 25px;
+    
+    background-image: url(/public/image/icons8_plus.png);
+    justify-content: space-between;
+    
+}
+
+.layout .subscribe-box .save-box .totalTextBox .textBox .plusIcon {
+
+}
+
+.layout .subscribe-box .like-box2 .totalTextBox {
+    
+}
+
+.layout .subscribe-box .save-box .totalTextBox {
+    
+}
+
+.layout .subscribe-box .like-boz .totalTextBox {
+    
+}
