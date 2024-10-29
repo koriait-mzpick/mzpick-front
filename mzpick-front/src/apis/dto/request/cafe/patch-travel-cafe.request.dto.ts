@@ -2,7 +2,7 @@
 export default interface PatchTravelCafeRequestDto {
     travelCafeTitle: string;
     travelCafeHashtagContentList:string[];
-    travelCafeLocation: string;
+    travelLocation: string;
     travelCafePhotoList: string[];
     travelCafeCategoryList: string[];
     travelCafeContent: string;

@@ -2,7 +2,7 @@
 export default interface PatchTravelStayRequestDto {
     travelStayTitle: string;
     travelStayHashtagContentList:string[];
-    travelStayLocation: string;
+    travelLocation: string;
     travelStayPhotoList: string[];
     travelStayCategoryList: string[];
     travelStayContent: string;
