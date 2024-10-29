@@ -1,7 +1,3 @@
-// import { create } from "zustand";
-// import SignInUser from "../types/sign-in-user.interface";
-
-
 // interface SignInUserStore {
 //     signInUser: SignInUser | null;
 //     setSignInUser: (signInUser: SignInUser | null) => void;
@@ -52,29 +48,30 @@
 import { create } from 'zustand';
 
 type SignInUser = {
-    userId: string;
-    userName: string;
-    // signInUser에 필요한 다른 속성들...
+  userId: string;
+  userName: string;
+  // signInUser에 필요한 다른 속성들...
 };
 
 type AuthState = {
-    signInUser: SignInUser | null;
-    setSignInUser: (signInUser: SignInUser) => void;
+  signInUser: SignInUser | null;
+  setSignInUser: (signInUser: SignInUser) => void;
 };
 
 const useAuthStore = create<AuthState>((set) => ({
-    signInUser: null,
-    setSignInUser: (signInUser) =>
-        set((state) => ({ ...state, signInUser })), // 상태 업데이트
+  signInUser: null,
+  setSignInUser: (signInUser) =>
+    set((state) => ({ ...state, signInUser })), // 상태 업데이트
 }));
 
 // 사용하는 컴포넌트에서
 const Component = () => {
-    const { signInUser, setSignInUser } = useAuthStore();
 
-    const handleLogin = (userData: SignInUser) => {
-        setSignInUser(userData);
-    };
+  const { signInUser, setSignInUser } = useAuthStore();
+
+  const handleLogin = (userData: SignInUser) => {
+    setSignInUser(userData);
+  };
 };
 
 export default useAuthStore;

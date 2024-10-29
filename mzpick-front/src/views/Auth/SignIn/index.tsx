@@ -1,15 +1,18 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { Route, useNavigate, useSearchParams } from "react-router-dom";
-import { SignInResponseDto } from "../../../apis/dto/response/auth";
-import { ResponseDto } from "../../../apis/dto/response";
-import { SignInRequestDto } from "../../../apis/dto/request/auth";
+import { useNavigate } from "react-router-dom";
 import { signInRequest } from "../../../apis";
+import { SignInRequestDto } from "../../../apis/dto/request/auth";
+import { ResponseDto } from "../../../apis/dto/response";
+import { SignInResponseDto } from "../../../apis/dto/response/auth";
 import InputBox from "../../../components/Inputbox";
+import { ACCESS_TOKEN, HOME_PATH, ROOT_PATH, SIGN_UP_PATH } from "../../../constants";
 import '../style.css';
-import { ACCESS_TOKEN, ROOT_PATH, SIGN_UP_PATH } from "../../../constants";
-import BottomNav from "../../../layouts/BottomNav";
-import SnsContainer from "../Sns";
+// type AuthPath = '회원가입' | '로그인';
+
+// interface AuthComponentProps {
+//     onPathChange: (path: AuthPath) => void;
+// }
 
 // component: 로그인 화면 컴포넌트 //
 export default function SignIn() {

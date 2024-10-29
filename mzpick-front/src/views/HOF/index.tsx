@@ -10,9 +10,17 @@ function TravelTop1() {
       </div>
 
       <div className='main-contents'>
-      <button className='image-area'>이미지 영역</button>
+      <div className='image-area'></div>
+      
+      <div className='deco-container'>
       <div className="decorated-img"></div>
-      <div className='button-box'></div>
+      </div>
+      </div>
+      
+      <div className='button-contaner'>
+      <div className='button-box'>○</div>
+      <div className='button-box'>○</div>
+      <div className='button-box'>○</div>
       </div>
     </div>
   )

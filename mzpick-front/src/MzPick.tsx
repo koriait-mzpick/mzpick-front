@@ -7,6 +7,8 @@ import MainLayout from './layouts/MainLayout';
 import Detail from './layouts/TotalLayout/Detail';
 import Write from './layouts/TotalLayout/Write';
 import { useAuthStore } from './stores';
+import AuthSignIn from './views/Auth/SignIn';
+import AuthSignUp from './views/Auth/SignUp';
 import Fashion from './views/Fashion';
 import Food from './views/Food';
 import HOF from './views/HOF';
