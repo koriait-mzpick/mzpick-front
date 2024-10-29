@@ -17,8 +17,8 @@
     display: flex;
     position: absolute;
     justify-content: space-between;
-    width: 95%;
-    margin: 45px 45px 30px 45px;
+    width: 90vw;
+    margin: 45px 0px;
     z-index: 2;
 }
 
@@ -86,10 +86,10 @@
     font-family: 'Pretendard-Regular';
     src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
     font-size: 15px;
+    cursor: pointer;
 }
 
 #list-main .board-top .drop-down-box .drop-down-sub-text:hover {
-    cursor: pointer;
     color: rgba(50, 50, 50, 1);
     background-color: rgba(220, 220, 220, 1);
 }
@@ -112,9 +112,9 @@
     display: flex;
     position: absolute;
     justify-content: center;
-    margin: 115px 45px 0px 45px;
-    width: 95%;
-    gap: 45px;
+    margin: 130px 70px;
+    width: 90vw;
+    gap: 35px;
     z-index: 1;
 }
 
@@ -122,27 +122,28 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 400px;
-    height: 350px;
+    width: 21vw;
+    height: 34vh;
     border-radius: 10px;
     border: 1px solid rgba(0, 0, 0, .25);
-    background-color: rgba(217, 217, 217, 0);
 }
 
 #list-main .board-middle .board-box .board-image {
-    width: 400px;
-    height: 270px;
+    width: 21vw;
+    height: 26vh;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     cursor: pointer;
+    background-color: aqua;
 }
 
 #list-main .board-middle .board-box .board-information {
     display: flex;
+    overflow: hidden;
     justify-content: space-between;
     align-items: center;
-    width: 380px;
-    height: 20px;
+    width: 19.9vw;
+    height: 2vh;
     padding: 10px;
 }
 
@@ -156,6 +157,7 @@
 
 #list-main .board-middle .board-box .board-information .board-information-right {
     display: flex;
+    align-items: center;
     gap: 10px;
 }
 
@@ -167,8 +169,8 @@
 
 #list-main .board-middle .board-box .board-information .board-information-right .board-information-like-icon {
     display: flex;
-    width: 18px;
-    height:16px;
+    width: 1.03vw;
+    height: 1.55vh;
     background-image: url(/public/image/heart-Icon.png);
     background-size: contain;
 }
@@ -180,16 +182,16 @@
 }
 #list-main .board-middle .board-box .board-information .board-information-right .board-information-view-icon {
     display: flex;
-    width: 20px;
-    height:16px;
+    width: 1.06vw;
+    height: 1.5vh;
     background-image: url(/public/image/view-Icon.png);
     background-size: contain;
 }
 
 #list-main .board-middle .board-box .board-information .board-information-right .board-information-bookmark {
     display: flex;
-    width: 13.5px;
-    height: 18px;
+    width: 0.7vw;
+    height: 1.6vh;
     background-image: url(/public/image/bookmark.png);
     background-size: contain;
     cursor: pointer;
@@ -197,8 +199,8 @@
 
 #list-main .board-middle .board-box .board-information .board-information-right .board-information-bookmark.active {
     display: flex;
-    width: 13.5px;
-    height: 18px;
+    width: 0.7vw;
+    height: 1.6vh;
     background-image: url(/public/image/bookmark-active.png);
     background-size: contain;
     cursor: pointer;
@@ -206,9 +208,12 @@
 
 #list-main .board-middle .board-box .board-tag {
     display: flex;
-    width: 380px;
-    height: 30x;
+    overflow: hidden;
+    align-items: center;
+    width: 19.9vw;
+    height: 3vh;
     padding: 10px;
     font-family: 'Pretendard-Bold';
+    src: url(/public/font/Pretendard-Bold.ttf);
     font-size: 24px;
 }
