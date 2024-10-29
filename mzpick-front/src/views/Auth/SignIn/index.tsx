@@ -8,11 +8,8 @@ import { SignInResponseDto } from "../../../apis/dto/response/auth";
 import InputBox from "../../../components/Inputbox";
 import { ACCESS_TOKEN, HOME_PATH, ROOT_PATH, SIGN_UP_PATH } from "../../../constants";
 import '../style.css';
-// type AuthPath = '회원가입' | '로그인';
-
-// interface AuthComponentProps {
-//     onPathChange: (path: AuthPath) => void;
-// }
+import SnsContainer from "../Sns";
+import BottomNav from "../../../layouts/BottomNav";
 
 // component: 로그인 화면 컴포넌트 //
 export default function SignIn() {
