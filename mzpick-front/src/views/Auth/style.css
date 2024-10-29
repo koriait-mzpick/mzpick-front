@@ -59,6 +59,13 @@
     gap: 30px;
 }
 
+.bold input::placeholder {
+    font-family: 'Pretendard-Bold';
+    color: rgba(166, 166, 166, 0.3);
+}
+
+
+
 
 
 /* mzpick 공통 css */
