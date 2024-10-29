@@ -12,7 +12,6 @@ import '../style.css';
 import SnsContainer from "../Sns";
 import BottomNav from "../../../layouts/BottomNav";
 
-
 // component: 로그인 화면 컴포넌트 //
 export default function SignIn() {
 
