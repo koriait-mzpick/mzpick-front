@@ -158,7 +158,9 @@
 
 #main-layout .signin-signup .login-button,
 #main-layout .signin-signup .slice-line,
-#main-layout .signin-signup .signup-button {
+#main-layout .signin-signup .signup-button,
+#main-layout .signin-signup .mypage-button,
+#main-layout .signin-signup .logout-button {
     display: flex;
     height: 20px;
     margin: 17px 0px;

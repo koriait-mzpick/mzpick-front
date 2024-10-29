@@ -1,25 +1,24 @@
 
 import { useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { FASHION_PATH, FOOD_PATH, HOF_PATH, HOME_PATH, KEYWORD_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_CAFE_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH } from '../../constants';
+import { useAuthStore } from 'src/stores';
+import { FASHION_PATH, FOOD_PATH, HOF_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_CAFE_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH } from '../../constants';
 import './style.css';
 
 // component: 메인레이아웃 컴포넌트 //
 export default function MainLayout() {
 
-  // state: path 상태 //
-  // const { pathname } = useLocation();
-
   // state: 사이드바 상태 //
-  const [sideBarOpen, setSideBarOpen] = useState(false);  // 메뉴의 초기값을 false로 설정
+  const [sideBarOpen, setSideBarOpen] = useState(false); 
 
   // state: 사이드바 세부 카테고리 상태 //
   const [travelCategoryOpen, setTravelCategoryOpen] = useState(false);
   const [fashionCategoryOpen, setFashionCategoryOpen] = useState(false);
-  
-  // variable: 경로 이름 //
-  // const isHome = pathname.startsWith(HOME_PATH);
-  // const isTravel = pathname.startsWith(TRAVEL_PATH);
+
+  // state: 쿠키상태 //
+  const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
+  const { signInUser, setSignInUser } = useAuthStore();
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -51,19 +50,35 @@ export default function MainLayout() {
     setFashionCategoryOpen(false);
   };
 
+  const handleLogout = () => {
+    removeCookie('accessToken'); // accessToken 삭제
+    setSignInUser(null); // 상태를 null로 변경
+    navigator(HOME_PATH); // 홈으로 이동
+  };
+
   // render: 메인레이아웃 컴포넌트 렌더링 //
   return (
     <div id='main-layout'>
       <div className='layout-logo'>
         <div className='box'>
-          <div className='icon'></div>
-          <div className='title'>MZPICK</div>
+          <div className='icon' onClick={() => onItemClickHandler(HOME_PATH)}></div>
+          <div className='title'onClick={() => onItemClickHandler(HOME_PATH)}>MZPICK</div>
         </div>
         <div className={`navi-box ${sideBarOpen ? 'active' : ''}`}>
           <div className='signin-signup'>
-            <div className='login-button' onClick={() => onItemClickHandler(SIGN_IN_PATH)}>로그인</div>
-            <div className='slice-line' style={{ cursor: "default" }}>/</div>
-            <div className='signup-button' onClick={() => onItemClickHandler(SIGN_UP_PATH)}>회원가입</div>
+            {cookies.accessToken ? ( 
+              <>
+                <div className='mypage-button' onClick={() => onItemClickHandler(MY_PAGE_PATH)}>마이페이지</div>
+                <div className='slice-line' style={{ cursor: "default" }}>/</div>
+                <div className='logout-button' onClick={handleLogout}>로그아웃</div>
+              </>
+            ) : (
+              <>
+                <div className='login-button' onClick={() => onItemClickHandler(SIGN_IN_PATH)}>로그인</div>
+                <div className='slice-line' style={{ cursor: "default" }}>/</div>
+                <div className='signup-button' onClick={() => onItemClickHandler(SIGN_UP_PATH)}>회원가입</div>
+              </>
+            )}
             <div className='navi-icon' onClick={sideBarOpenHandler}></div>
           </div>
         </div>
@@ -126,3 +141,4 @@ export default function MainLayout() {
     </div>
   );
 }
+
