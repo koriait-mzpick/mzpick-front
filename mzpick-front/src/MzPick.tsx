@@ -28,6 +28,7 @@ import SignIn from './views/Auth/SignIn';
 import SignUp from './views/Auth/SignUp';
 import Vote from './views/Vote';
 
+
 function Index() {
 
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import './style.css';
-import BottomNav from '../../BottomNav';
 
 
 // component: 글쓰기 페이지 컴포넌트 //
@@ -26,9 +25,6 @@ export default function Write() {
           </div>
         </div>
       </div>
-      <>
-      <BottomNav />
-      </>
     </div>
   )
 }
