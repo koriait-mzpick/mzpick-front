@@ -25,6 +25,9 @@ export const FASHION_PATH='/fashion'
 export const KEYWORD_PATH='/keyword'
 
 export const HOF_PATH = '/hof'
+export const HOF_TRAVEL_PATH = '/hof/travel'
+export const HOF_FOOD_PATH = '/hof/food'
+export const HOF_FASHION_PATH = '/hof/fashion'
 
 export const VOTE_PATH = '/vote'
 

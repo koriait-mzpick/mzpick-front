@@ -69,9 +69,11 @@ export default function MainLayout() {
           </div>
         </div>
       </div>
+      
       <div id='main-wrapper'>
-        <Outlet />
+        { <Outlet /> }
       </div>
+
       <div className={`side-bar ${sideBarOpen ? 'active' : ''}`}>
         <div className='close-icon' onClick={sideBarToggleMenu}></div>
         <div className='category' onClick={() => onItemClickHandler(HOME_PATH)}>HOME</div>
