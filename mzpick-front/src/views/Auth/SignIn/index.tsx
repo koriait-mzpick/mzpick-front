@@ -10,6 +10,7 @@ import { ACCESS_TOKEN, HOME_PATH, ROOT_PATH, SIGN_UP_PATH } from "../../../const
 import '../style.css';
 import SnsContainer from "../Sns";
 import BottomNav from "../../../layouts/BottomNav";
+
 // type AuthPath = '회원가입' | '로그인';
 
 // interface AuthComponentProps {
