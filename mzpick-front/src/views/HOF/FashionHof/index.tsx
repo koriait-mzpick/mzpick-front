@@ -15,24 +15,31 @@ function FashionTop1() {
 
   return (
     <div id='main-hof-wrapper'>
-      <div className='item-box'>
+      
         <div className='text-area'>"Fashion Top 1"</div>
         <div className='icon-area'></div>
-      </div>
 
-      <div className='main-contents'>
-      <div className='image-area'></div>
+      {/* <div className='main-contents'> */}
       
+
       <div className='deco-container'>
       <div className="decorated-img"></div>
-      <div className='button-contaner'>
+      <div className='image-area'></div>
+      
+
+      <div className='button-container'>
       <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_TRAVEL_PATH)}>○</div>
       <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_FOOD_PATH)}>○</div>
       <div className='button-box'onClick={() => onButtonClickEventHandler(HOF_FASHION_PATH)}>○</div>
       </div>
+
       </div>
+
+      
       </div>
-    </div>
+
+      
+    
   )
 }
 

@@ -1,3 +1,8 @@
+@keyframes fadeIn {
+    0% { opacity: 0; }   /* 완전히 투명 */
+    100% { opacity: 1; } /* 완전히 불투명 */
+}
+
 #main-hof-wrapper {
     display: flex;
     flex-direction: column;
@@ -7,29 +12,47 @@
 }
 
 
-#main-hof-wrapper .item-box {
+/* #main-hof-wrapper .item-box {
     display: flex;
     position: relative;
     justify-content: space-between;
     margin-top: 54px;
     left: 10%;
-}
+} */
 
-#main-hof-wrapper .item-box .text-area {
+#main-hof-wrapper .text-area {
+    display: flex;
+
+    justify-content: left;
+    left: 10%;
+    margin-top: 80px;
+    margin-left: 54px;
+
     font-family: 'Pretendard-Regular';
     src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
     font-weight: bold;
     font-size: 40px;
+
+    opacity: 0; /* 처음에는 투명하게 시작 */
+    animation: fadeIn 2s forwards; /* 2초 동안 애니메이션 후 마지막 상태 유지 */
 }
 
-#main-hof-wrapper .item-box .icon-area {
+#main-hof-wrapper .icon-area {
+    display: flex;
+
+    position: absolute;
+
+    justify-content: right;
+    right: 5%;
+    margin-top: 54px;
+
     background-image: url(/public/image/medal.png);
     width: 400px;
     height: 400px;
     object-fit: scale-down;
 }
 
-#main-hof-wrapper .main-contents {
+/* #main-hof-wrapper .main-contents {
     display: flex;
     position: absolute;
     top: 1%;
@@ -40,21 +63,17 @@
     width: 70vw;
     height: 100vh;
     /* background-color: black; */
-}
-
-#main-hof-wrapper .main-contents .image-area {
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    border: solid 1px;
-    border-radius: 100%;
-    width: 480px;
-    height: 480px;
-}
 
 #main-hof-wrapper .deco-container {
-    width: 100%;
+    display: flex;
+    position: relative; /* 절대 위치에서 상대 위치로 변경 */
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    max-width: 1200px;
     height: auto;
+    padding: 20px; 
+    margin-bottom: 50px; /* 아래 여백 추가 */
 }
 
 #main-hof-wrapper .deco-container .decorated-img {
@@ -66,11 +85,22 @@
     background-image: url(/public/image/deco.png);
 }
 
-#main-hof-wrapper .button-contaner{
+#main-hof-wrapper .deco-container .decorated-img .image-area {
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px;
+    border-radius: 100%;
+    width: 480px;
+    height: 480px;
+}
+
+#main-hof-wrapper .deco-container .button-container{
     display: flex;
     flex-direction: row;
     gap: 8px;
-    justify-content: center;
     left: 1%;
     cursor: pointer;
+
+    position: relative;
 }
