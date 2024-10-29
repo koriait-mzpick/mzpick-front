@@ -30,7 +30,7 @@ export default function SignUp() {
     const [nameMessage, setNameMessage] = useState<string>('');
     const [idMessage, setIdMessage] = useState<string>('');
     const [passwordMessage, setPasswordMessage] = useState<string>('');
-    const [passwordCheckMessage, setPasswordCheckMassage] = useState<string>('');
+    const [passwordCheckMessage, setPasswordCheckMessage] = useState<string>('');
     const [telNumberMessage, setTelNumberMessage] = useState<string>('');
     const [authNumberMessage, setAuthNumberMessage] = useState<string>('');
 
@@ -38,7 +38,7 @@ export default function SignUp() {
     const [nameMessageError, setNameMessageError] = useState<boolean>(false);
     const [idMessageError, setIdMessageError] = useState<boolean>(false);
     const [passwordMessageError, setPasswordMessageError] = useState<boolean>(false);
-    const [passwordCheckMessageError, setPasswordCheckMassageError] = useState<boolean>(false);
+    const [passwordCheckMessageError, setPasswordCheckMessageError] = useState<boolean>(false);
     const [telNumberMessageError, setTelNumberMessageError] = useState<boolean>(false);
     const [authNumberMessageError, setAuthNumberMessageError] = useState<boolean>(false);
 
@@ -64,10 +64,10 @@ export default function SignUp() {
 
         const message =
             !responseBody ? '서버에 문제가 있습니다.' :
-                responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
-                    responseBody.code === "DI" ? '이미 사용중인 아이디입니다.' :
-                        responseBody.code === "DBE" ? '서버에 문제가 있습니다.' :
-                            responseBody.code === "SU" ? '사용 가능한 아이디입니다.' : ''
+            responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
+            responseBody.code === "DI" ? '이미 사용중인 아이디입니다.' :
+            responseBody.code === "DBE" ? '서버에 문제가 있습니다.' :
+            responseBody.code === "SU" ? '사용 가능한 아이디입니다.' : ''
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         setIdMessage(message);
@@ -81,11 +81,11 @@ export default function SignUp() {
 
         const message =
             !responseBody ? '서버에 문제가 있습니다.' :
-                responseBody.code === "VF" ? '숫자 11자 입력해주세요.' :
-                    responseBody.code === "DT" ? '중복된 전화번호입니다' :
-                        responseBody.code === "TF" ? '서버에 문제가 있습니다.' :
-                            responseBody.code === "DBE" ? '서버에 문제가 있습니다.' :
-                                responseBody.code === "SU" ? '인증번호가 전송되었습니다.' : ''
+            responseBody.code === "VF" ? '숫자 11자 입력해주세요.' :
+            responseBody.code === "DT" ? '중복된 전화번호입니다' :
+            responseBody.code === "TF" ? '서버에 문제가 있습니다.' :
+            responseBody.code === "DBE" ? '서버에 문제가 있습니다.' :
+            responseBody.code === "SU" ? '인증번호가 전송되었습니다.' : ''
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         setTelNumberMessage(message);
@@ -99,10 +99,10 @@ export default function SignUp() {
 
         const message =
             !responseBody ? '서버에 문제가 있습니다.' :
-                responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
-                    responseBody.code === "TAF" ? '인증번호가 일치하지 않습니다.' :
-                        responseBody.code === "DBE" ? '서버에 문제가 있습니다.' :
-                            responseBody.code === "SU" ? '인증번호가 확인되었습니다.' : ''
+            responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
+            responseBody.code === "TAF" ? '인증번호가 일치하지 않습니다.' :
+            responseBody.code === "DBE" ? '서버에 문제가 있습니다.' :
+            responseBody.code === "SU" ? '인증번호가 확인되었습니다.' : ''
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         setAuthNumberMessage(message);
@@ -116,11 +116,11 @@ export default function SignUp() {
 
         const message =
             !responseBody ? '서버에 문제가 있습니다.' :
-                responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
-                    responseBody.code === "DI" ? '중복된 아이디입니다.' :
-                        responseBody.code === "DT" ? '중복된 전화번호입니다.' :
-                            responseBody.code === "TAF" ? '인증번호가 일치하지 않습니다.' :
-                                responseBody.code === "DBE" ? '서버에 문제가 있습니다.' : '';
+            responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
+            responseBody.code === "DI" ? '중복된 아이디입니다.' :
+            responseBody.code === "DT" ? '중복된 전화번호입니다.' :
+            responseBody.code === "TAF" ? '인증번호가 일치하지 않습니다.' :
+            responseBody.code === "DBE" ? '서버에 문제가 있습니다.' : '';
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
@@ -192,8 +192,6 @@ export default function SignUp() {
             userId: id
         };
         idCheckRequest(requestBody).then(idCheckResponse);
-        console.log(idCheckRequest);
-        alert("중복체크 완료");
     };
 
     // event handler: 전화번호 인증 버튼 클릭 이벤트 처리 //
@@ -211,9 +209,6 @@ export default function SignUp() {
 
         const requestBody: TelAuthRequestDto = { telNumber };
         telAuthRequest(requestBody).then(telAuthResponse);
-        console.log(telAuthRequest);
-        alert("전화번호 인증 완료")
-
     };
 
     // event handler: 인증 확인 버튼 클릭 이벤트 처리 //
@@ -224,8 +219,6 @@ export default function SignUp() {
             telNumber, authNumber
         }
         telAuthCheckRequest(requestBody).then(telAuthCheckResponse);
-        console.log(telAuthCheckRequest);
-        alert("인증번호 확인 완료")
     };
 
     // event handler: 회원가입 버튼 클릭 이벤트 처리 //
@@ -242,18 +235,16 @@ export default function SignUp() {
             snsId
         };
         signUpRequest(requestBody).then(signUpResponse);
-        console.log(signUpRequest);
-        alert("회원가입 완료")
     };
 
     // effect: 비밀번호 및 비밀번호 확인 변경 시 실행할 함수 //
     useEffect(() => {
-        if (!passwordCheck || !password) return;
+        if (!password || !passwordCheck) return;
 
-        const isEqual = passwordCheck === password;
-        const checkMessage = isEqual ? '' : '비밀번호가 일치하지 않습니다.';
-        setPasswordCheckMassage(checkMessage);
-        setAuthNumberMessageError(!isEqual);
+        const isEqual = password === passwordCheck;
+        const message = isEqual ? '' : '비밀번호가 일치하지 않습니다.';
+        setPasswordCheckMessage(message);
+        setPasswordCheckMessageError(!isEqual);
         setCheckedPassword(isEqual);
     }, [password, passwordCheck]);
 
