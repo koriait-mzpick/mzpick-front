@@ -1,7 +1,7 @@
 
 import { useNavigate } from 'react-router';
-import { HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_TRAVEL_PATH } from '../../../constants';
-import './style.css';
+import { HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_TRAVEL_PATH } from '../../constants';
+// import './style.css';
 
 function FoodTop1() {
   // function: 네비게이션 상태 //

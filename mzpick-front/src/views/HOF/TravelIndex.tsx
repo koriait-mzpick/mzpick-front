@@ -1,22 +1,22 @@
 
 import { useNavigate } from 'react-router';
-import { HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_TRAVEL_PATH } from '../../../constants';
-import './style.css';
+import { HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_TRAVEL_PATH } from '../../constants';
+// import './style.css';
 
-function FashionTop1() {
+function TravelTop1() {  
 
   // function: 네비게이션 상태 //
   const navigator = useNavigate();
+
 
   // event handler: 명예의전당 buttonbox 클릭 이벤트 //
   const onButtonClickEventHandler = (path: string) =>{
     navigator(path);
   };
-
   return (
     <div id='main-hof-wrapper'>
       <div className='item-box'>
-        <div className='text-area'>"Fashion Top 1"</div>
+        <div className='text-area'>"Travel Top 1"</div>
         <div className='icon-area'></div>
       </div>
 
@@ -25,23 +25,24 @@ function FashionTop1() {
       
       <div className='deco-container'>
       <div className="decorated-img"></div>
+      </div>
       <div className='button-contaner'>
       <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_TRAVEL_PATH)}>○</div>
       <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_FOOD_PATH)}>○</div>
       <div className='button-box'onClick={() => onButtonClickEventHandler(HOF_FASHION_PATH)}>○</div>
       </div>
-      </div>
+
       </div>
     </div>
   )
 }
 
-export default function HOFFashion() {
+export default function HOFTravel() {
 
 
   return (
     <>
-      <FashionTop1 />
+      <TravelTop1 />
     </>
   )
 }
