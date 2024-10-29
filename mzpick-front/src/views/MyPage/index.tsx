@@ -114,7 +114,6 @@ export default function MyPage() {
       <div className='like-box2'>
         <div className='totalTextBox'>
         <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>WRITE</div>
-        <div className='plusIcon'></div>
         </div>
         <div className='write-totalBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
           <div className='write-titleBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
