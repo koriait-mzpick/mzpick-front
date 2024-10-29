@@ -673,7 +673,7 @@
     align-items: center;
     width: 300px;
     height: 3vh;
-    padding: 10px;
+    padding: 0px 10px 14px 10px;
     font-family: 'Pretendard-Bold';
     src: url(/public/font/Pretendard-Bold.ttf);
     font-size: 24px;
