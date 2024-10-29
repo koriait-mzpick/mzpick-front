@@ -1,66 +1,18 @@
 import React, { useState } from 'react'
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import './style.css';
 
-
-
-function SimpleSlider() {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1
-  };
-  return (
-    <div className="slider-container">
-      <Slider {...settings}>
-        <div>
-          <h3>1</h3>
-        </div>
-        <div>
-          <h3>2</h3>
-        </div>
-        <div>
-          <h3>3</h3>
-        </div>
-        <div>
-          <h3>4</h3>
-        </div>
-        <div>
-          <h3>5</h3>
-        </div>
-        <div>
-          <h3>6</h3>
-        </div>
-      </Slider>
-    </div>
-  );
-}
 // component: 내용 컴포넌트 //
 function Content() {
 
-  const settings = {
-    autoplay: true,
-    autoplaySpeed: 2000,
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
   // state: 북마크 상태 //
-  const [boorMarkClick, setBookMarkClick] = useState(false);
+  const [bookMarkClick, setBookMarkClick] = useState(false);
 
   // state: 좋아요 상태 //
   const [likeClick, setLikeClick] = useState(false);
 
   // event handler: 북마크 클릭 이벤트 처리 //
   const bookMarkClickHandler = () => {
-    setBookMarkClick(!boorMarkClick);
+    setBookMarkClick(!bookMarkClick);
   }
 
   // event handler: 좋아요 클릭 이벤트 처리 //
@@ -80,14 +32,10 @@ function Content() {
           <div className='contents-top-vote-button'>투표</div>
         </div>
       </div>
-      <div>
       <div className='contents-image'>
-        <Slider {...settings}>
-        </Slider>
-      </div>
-      </div>
-      {/* <div className='contents-image-left-button'></div>
+        {/* <div className='contents-image-left-button'></div>
         <div className='contents-image-right-button'></div> */}
+      </div>
       <div className='contents-text'>asdThere are many variations of passages of Lorem Ipsum available, but the majority have suffered </div>
       <div className='contents-information'>
         <div className='contents-information-left'>#잉</div>
@@ -100,7 +48,7 @@ function Content() {
             <div className='contents-information-view-icon'></div>
             <div className='contents-information-data'>32</div>
           </div>
-          <div className={`contents-information-bookmark ${boorMarkClick ? 'active' : ''}`} onClick={bookMarkClickHandler}></div>
+          <div className={`contents-information-bookmark ${bookMarkClick ? 'active' : ''}`} onClick={bookMarkClickHandler}></div>
         </div>
       </div>
     </div>
@@ -174,7 +122,6 @@ export default function Detail() {
     <div id='detail-main'>
       {/* <Content />
       <Comment /> */}
-      <SimpleSlider />
     </div>
   )
 }
