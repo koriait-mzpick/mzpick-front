@@ -24,8 +24,8 @@
     width: 100%;
     height: 149px;
     
-    margin-left: -900px;
-    padding-bottom: 54px;
+    margin-left: -1100px;
+    padding-bottom: 30px;
 }
 
 .layout .subscribe-box .header-box .header-namebox {
@@ -112,7 +112,7 @@
     align-items: center;
     justify-content: center;
 
-    margin-top: 104px;
+    margin-top: 54px;
 }
 
 .layout .subscribe-box .save-box {
@@ -123,6 +123,7 @@
     height: 350px;
 
     margin-bottom: 100px;
+    align-items: center;
 }
 
 .layout .subscribe-box .like-box {
@@ -133,6 +134,7 @@
     height: 350px;
 
     margin-bottom: 100px;
+    align-items: center;
 }
 
 .layout .subscribe-box .like-box2 {
@@ -143,6 +145,7 @@
     height: 350px;
 
     margin-bottom: 15px;
+    align-items: center;
 }
 
 .layout .subscribe-box .save-box .textBox {
@@ -151,6 +154,7 @@
     height: 40px;
 
     text-align: left;
+    align-items: center;
     font-family: 'Pretendard-Bold.otf';
     font-size: 20px;
 
@@ -163,17 +167,23 @@
     height: 40px;
 
     text-align: left;
+    align-items: center;
     font-family: 'Pretendard-Bold.otf';
+    font-size: 20px;
+
     padding-left: 8px;
 }
 
 .layout .subscribe-box .like-box2 .textBox {
     display: flex;
     width: 1385px;
-    height: 40px;
+    height: 24px; 
 
     text-align: left;
+    align-items: center;
     font-family: 'Pretendard-Bold.otf';
+    font-size: 20px;
+
     padding-left: 8px;
 }
 
@@ -190,8 +200,8 @@
 
 .layout .subscribe-box .save-box .imageBox .WritePostBox {
     display: flex;
-    width: 320px;
-    height: 280px;
+    width: 313px;
+    height: 282px;
     
     border: 1px solid rgba(166, 166, 166, 100);
     border-radius: 10px;
@@ -686,21 +696,5 @@
     
     background-image: url(/public/image/icons8_plus.png);
     justify-content: space-between;
-    
-}
-
-.layout .subscribe-box .save-box .totalTextBox .textBox .plusIcon {
-
-}
-
-.layout .subscribe-box .like-box2 .totalTextBox {
-    
-}
-
-.layout .subscribe-box .save-box .totalTextBox {
-    
-}
-
-.layout .subscribe-box .like-boz .totalTextBox {
     
 }
