@@ -79,6 +79,32 @@
     
 }
 
+.single-photo {
+    border: 1px solid gray;
+    border-radius: 12px;
+    
+
+    width: 330px;
+    height: 150px;
+
+    background-image: url(/public/image/fashionimage.png);
+    background-size: 100% 100%;
+    
+}
+
+.none-photo {
+    border: 1px solid gray;
+    border-radius: 12px;
+    
+    
+    width: 330px;
+    height: 150px;
+    
+    background-image: url(/public/image/vote-default-image.png);
+    background-size: 100% 100%;
+
+}
+
 .first-photo {
     border: 1px solid gray;
     border-radius: 12px;
@@ -172,3 +198,157 @@
 }
 
 
+.vote-modal {
+    display: flex;
+    flex-direction: column;
+    
+
+    position: fixed;
+    z-index: 9999;
+
+    box-sizing: border-box;
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+    padding: 150px 100px;
+    width: 1920px;
+    height: 820px;
+    
+    background-color: rgba(255, 255, 255, 1);
+
+}
+
+.modal-title {
+    font-size: 50px;
+
+}
+
+.modal-singlephoto {
+    margin-top: 40px;
+
+    
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-photo {
+
+    width: 700px;
+    height: 500px;
+
+    border-radius: 25px;
+    background-image: url(/public/image/fashionimage.png);
+    background-size: 100% 100%;
+
+}
+
+.modal-text {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    margin-left: 370px;
+}
+
+.modal-first-text {
+    
+
+    margin-top: 100px;
+
+    margin-left: 150px;
+    width: 500px;
+    height: 50px;
+
+    font-size: 30px;
+    line-height: 150%;
+
+    border: 1px solid black;
+    border-radius: 12px;
+
+    padding-left: 10px;
+}
+
+.modal-second-text {
+    margin-left: 150px;
+
+    width: 500px;
+    height: 50px;
+
+    font-size: 30px;
+    line-height: 150%;
+
+    border: 1px solid black;
+    border-radius: 12px;
+
+    background-color: black;
+    color: white;
+
+    padding-left: 10px;
+}
+
+.singlemodal-first-text {
+    margin-left: 150px;
+
+    width: 500px;
+    height: 50px;
+
+    font-size: 30px;
+    line-height: 150%;
+
+    border: 1px solid black;
+    border-radius: 12px;
+
+
+    padding-left: 10px;
+}
+
+.singlemodal-text {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    left: 700px;
+    top: 180px;
+}
+.singlemodal-second-text {
+    margin-left: 150px;
+
+    width: 500px;
+    height: 50px;
+
+    font-size: 30px;
+    line-height: 150%;
+
+    border: 1px solid black;
+    border-radius: 12px;
+
+    background-color: black;
+    color: white;
+
+    padding-left: 10px;
+}
+
+.singlemodal-button {
+    
+    margin-left: 150px;
+    width: 100px;
+    height: 40px;
+    border: 1px solid black;
+    border-radius: 6px;
+    
+    padding-left: 10px;
+}
+
+.modal-button {
+    margin-left: 520px;
+    margin-top: 30px;
+    
+
+    width: 100px;
+    height: 40px;
+    border: 1px solid black;
+    border-radius: 6px;
+    
+    padding-left: 10px;
+
+}
