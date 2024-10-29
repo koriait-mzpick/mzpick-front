@@ -1,34 +1,35 @@
-#mian-wrapper {
+#main-hof-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    width: 80vw;
-    height: 100vh;
+    width: 90%;
+    height: 90%;
+    right: 15%;
 }
 
-#main-wrapper .item-box {
+
+#main-hof-wrapper .item-box {
     display: flex;
     position: relative;
     justify-content: space-between;
     margin-top: 54px;
+    left: 10%;
 }
 
-.item-box .text-area {
+#main-hof-wrapper .item-box .text-area {
     font-family: 'Pretendard-Regular';
     src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
     font-weight: bold;
     font-size: 40px;
 }
 
-.item-box .icon-area {
+#main-hof-wrapper .item-box .icon-area {
     background-image: url(/public/image/medal.png);
     width: 400px;
     height: 400px;
     object-fit: scale-down;
 }
 
-#main-wrapper .main-contents {
+#main-hof-wrapper .main-contents {
     display: flex;
     position: absolute;
     top: 1%;
@@ -41,7 +42,7 @@
     /* background-color: black; */
 }
 
-#main-wrapper .main-contents .image-area {
+#main-hof-wrapper .main-contents .image-area {
     position: absolute;
     justify-content: center;
     align-items: center;
@@ -51,31 +52,24 @@
     height: 480px;
 }
 
-#main-wrapper .deco-container {
+#main-hof-wrapper .deco-container {
     width: 100%;
     height: auto;
 }
 
-#main-wrapper .deco-container .decorated-img{
+#main-hof-wrapper .deco-container .decorated-img {
     position: relative;
     left: 18.3%;
-    z-index: -1 ;
+    z-index: -1;
     width: 649px;
     height: 620px;
     background-image: url(/public/image/deco.png);
 }
 
-.button-container{
+#main-hof-wrapper .button-contaner{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    position: absolute;
-    bottom: 0%;
-    padding: 3px;
-}
-
-.button-container .button-box{
-    bottom: 0%;
-    width: 8px;
-    height: 8px;
+    gap: 8px;
+    justify-content: center;
+    left: 1%;
 }
