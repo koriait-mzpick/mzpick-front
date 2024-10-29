@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { KeyboardEvent, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { useAuthStore } from 'src/stores';
 import type { GetKeyWordResponseDto } from '../../apis/dto/response/keyword';
 import { API_URL } from '../../constants';
 import type { Keyword } from '../../types';
@@ -11,8 +12,7 @@ export default function Keyword() {
   const [cookies] = useCookies(['accessToken']);
   const [keywords, setKeywords] = useState<Keyword[]>([]);
   const [inputValue, setInputValue] = useState('');
-  // const [lastKeyword, setLastKeyword] = useState<string | null>(null);
-
+  const { signInUser } = useAuthStore();
 
   useEffect(() => {
     console.log('쿠키에서 가져온 accessToken:', cookies.accessToken);
@@ -35,7 +35,7 @@ export default function Keyword() {
       if (data && Array.isArray(data.getKeywordResultsets)) {
         const keywordList = data.getKeywordResultsets.map((item: GetKeyWordResponseDto, index: number) => ({
           keywordNumber: index + 1, 
-          userId: 'user1234', 
+          userId: useAuthStore, 
           keywordContent: item.keywordContent,
           keywordDate: new Date(), 
 
@@ -70,7 +70,7 @@ export default function Keyword() {
         }
   
         const newKeyword = {
-          userId: 'user1234',
+          userId: useAuthStore,
           keywordContent: keywordContent.trim(),
           keywordDate: new Date(),
         };
