@@ -1,21 +1,17 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ResponseDto } from "../../../apis/dto/response";
 import { IdCheckRequestDto, SignUpRequestDto, TelAuthCheckRequestDto, TelAuthRequestDto } from "../../../apis/dto/request/auth";
 import { idCheckRequest, signUpRequest, telAuthCheckRequest, telAuthRequest } from "../../../apis";
 import InputBox from "../../../components/Inputbox";
 import '../style.css';
 import { SIGN_IN_PATH } from "../../../constants";
+import SnsContainer from "../Sns";
+import BottomNav from "../../../layouts/BottomNav";
+import { ResponseDto } from "../../../apis/dto/response";
 
-// type AuthPath = '회원가입' | '로그인';
-
-// interface AuthComponentProps {
-//     onPathChange: (path: AuthPath) => void;
-// }
 
 // component: 회원가입 화면 컴포넌트 //
-// function SignUp({ onPathChange }: AuthComponentProps) {
-function SignUp() {
+export default function SignUp() {
 
     // state: Query Parameter 상태 //
     const [qeuryParam] = useSearchParams();
@@ -67,11 +63,11 @@ function SignUp() {
     const idCheckResponse = (responseBody: ResponseDto | null) => {
 
         const message =
-        !responseBody ? '서버에 문제가 있습니다.' :
-        responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
-        responseBody.code === "DI" ? '이미 사용중인 아이디입니다.' :
-        responseBody.code === "DBE" ? '서버에 문제가 있습니다.' :
-        responseBody.code === "SU" ? '사용 가능한 아이디입니다.' : ''
+            !responseBody ? '서버에 문제가 있습니다.' :
+                responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
+                    responseBody.code === "DI" ? '이미 사용중인 아이디입니다.' :
+                        responseBody.code === "DBE" ? '서버에 문제가 있습니다.' :
+                            responseBody.code === "SU" ? '사용 가능한 아이디입니다.' : ''
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         setIdMessage(message);
@@ -85,11 +81,11 @@ function SignUp() {
 
         const message =
             !responseBody ? '서버에 문제가 있습니다.' :
-            responseBody.code === "VF" ? '숫자 11자 입력해주세요.' :
-            responseBody.code === "DT" ? '중복된 전화번호입니다' :
-            responseBody.code === "TF" ? '서버에 문제가 있습니다.' :
-            responseBody.code === "DBE" ? '서버에 문제가 있습니다.' :
-            responseBody.code === "SU" ? '인증번호가 전송되었습니다.' : ''
+                responseBody.code === "VF" ? '숫자 11자 입력해주세요.' :
+                    responseBody.code === "DT" ? '중복된 전화번호입니다' :
+                        responseBody.code === "TF" ? '서버에 문제가 있습니다.' :
+                            responseBody.code === "DBE" ? '서버에 문제가 있습니다.' :
+                                responseBody.code === "SU" ? '인증번호가 전송되었습니다.' : ''
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         setTelNumberMessage(message);
@@ -103,10 +99,10 @@ function SignUp() {
 
         const message =
             !responseBody ? '서버에 문제가 있습니다.' :
-            responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
-            responseBody.code === "TAF" ? '인증번호가 일치하지 않습니다.' :
-            responseBody.code === "DBE" ? '서버에 문제가 있습니다.' :
-            responseBody.code === "SU" ? '인증번호가 확인되었습니다.' : ''
+                responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
+                    responseBody.code === "TAF" ? '인증번호가 일치하지 않습니다.' :
+                        responseBody.code === "DBE" ? '서버에 문제가 있습니다.' :
+                            responseBody.code === "SU" ? '인증번호가 확인되었습니다.' : ''
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         setAuthNumberMessage(message);
@@ -120,11 +116,11 @@ function SignUp() {
 
         const message =
             !responseBody ? '서버에 문제가 있습니다.' :
-            responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
-            responseBody.code === "DI" ? '중복된 아이디입니다.' :
-            responseBody.code === "DT" ? '중복된 전화번호입니다.' :
-            responseBody.code === "TAF" ? '인증번호가 일치하지 않습니다.' :
-            responseBody.code === "DBE" ? '서버에 문제가 있습니다.' : '';
+                responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
+                    responseBody.code === "DI" ? '중복된 아이디입니다.' :
+                        responseBody.code === "DT" ? '중복된 전화번호입니다.' :
+                            responseBody.code === "TAF" ? '인증번호가 일치하지 않습니다.' :
+                                responseBody.code === "DBE" ? '서버에 문제가 있습니다.' : '';
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
@@ -267,7 +263,7 @@ function SignUp() {
         <div className='auth-container'>
             <div className="auth-box">
                 <div className='title-box'>회원가입</div>
-                
+
                 <div className="input-container">
                     <InputBox messageError={nameMessageError} message={nameMessage} value={name} type='text' placeholder='이름을 입력해주세요.' onChange={onNameChangeHandler} />
                     <InputBox messageError={idMessageError} message={idMessage} value={id} type='text' placeholder='아이디를 입력해주세요.' buttonName='중복 확인' onChange={onIdChangeHandler} onButtonClick={onIdCheckClickHandler} />
@@ -279,41 +275,9 @@ function SignUp() {
                 <div className="button-container">
                     <div className={`button ${isComplete ? 'primary' : 'disable'} full-width`} onClick={onSignUpButtonHandler}>회원가입</div>
                 </div>
-                <div className='sns-container'>
-                    <div className='sns-button kakao'></div>
-                    <div className='sns-button naver'></div>
-                </div>
+                <SnsContainer />
+                <BottomNav />
             </div>
         </div>
     )
-}
-
-// component: 인증 화면 컴포넌트 //
-export default function AuthSignUp() {
-
-    // // state: Query Parameter 상태 //
-    // const [queryParam] = useSearchParams();
-    // const snsId = queryParam.get('snsId');
-    // const joinPath = queryParam.get('joinPath');
-
-    // // state: 선택 화면 상태 //
-    // const [path, setPath] = useState<AuthPath>('로그인');
-
-    // // event handler: 화면 변경 이벤트 처리 //
-    // const onPathChangeHandler = (path: AuthPath) => {
-    //     setPath(path);
-    // };
-
-    // // effect: 첫 로드시에 Query Param의 snsId와 joinPath가 존재시 회원가입 화면전환 함수 //
-    // useEffect(() => {
-    //     if (snsId && joinPath) setPath('회원가입');
-    // }, []);
-
-
-    // render: 인증 화면 컴포넌트 렌더링 //
-    return (
-        <div id='auth-wrapper'>
-                <SignUp />
-        </div>
-    );
 }

@@ -140,11 +140,6 @@
     cursor: pointer;
 }
 
-.sns-button.md {
-    width: 40px;
-    height: 40px;
-}
-
 .sns-button.kakao {
     background-image: url(/public/image/kakao-button.png);
 }

@@ -101,7 +101,6 @@ export default function SignIn() {
                 <SnsContainer />
                 <BottomNav />
             </div>
-            
         </div>
     )
 }
