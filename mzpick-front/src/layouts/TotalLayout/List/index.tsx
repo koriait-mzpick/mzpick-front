@@ -9,7 +9,7 @@ export default function List() {
   const [dropDownOpen, setDropDownOpen] = useState(false);
 
   // state: 북마크 상태 //
-  const [boorMarkClick, setBookMarkClick] = useState(false);
+  const [bookMarkClick, setBookMarkClick] = useState(false);
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -29,7 +29,7 @@ export default function List() {
   
   // event handler: 북마크 클릭 이벤트 처리 //
   const bookMarkClickHandler = () => {
-    setBookMarkClick(!boorMarkClick);
+    setBookMarkClick(!bookMarkClick);
   }
 
   // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
@@ -68,7 +68,7 @@ export default function List() {
                 <div className='board-information-view-icon'></div>
                 <div className='board-information-data'>32</div>
               </div>
-              <div className={`board-information-bookmark ${boorMarkClick ? 'active' : ''}`} onClick={bookMarkClickHandler}></div>
+              <div className={`board-information-bookmark ${bookMarkClick ? 'active' : ''}`} onClick={bookMarkClickHandler}></div>
             </div>
           </div>
           <div className='board-tag'>#자야나야장</div>
