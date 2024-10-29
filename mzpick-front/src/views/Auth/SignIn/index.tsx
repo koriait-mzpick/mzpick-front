@@ -6,7 +6,9 @@ import { SignInRequestDto } from "../../../apis/dto/request/auth";
 import { ResponseDto } from "../../../apis/dto/response";
 import { SignInResponseDto } from "../../../apis/dto/response/auth";
 import InputBox from "../../../components/Inputbox";
-import { ACCESS_TOKEN, HOME_PATH, ROOT_PATH, SIGN_UP_PATH } from "../../../constants";
+import { ACCESS_TOKEN, ROOT_PATH, SIGN_UP_PATH } from "../../../constants";
+import BottomNav from "../../../layouts/BottomNav";
+import SnsContainer from "../Sns";
 import '../style.css';
 // type AuthPath = '회원가입' | '로그인';
 

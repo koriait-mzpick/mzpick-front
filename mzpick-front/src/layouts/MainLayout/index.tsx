@@ -7,19 +7,12 @@ import './style.css';
 // component: 메인레이아웃 컴포넌트 //
 export default function MainLayout() {
 
-  // state: path 상태 //
-  // const { pathname } = useLocation();
-
   // state: 사이드바 상태 //
-  const [sideBarOpen, setSideBarOpen] = useState(false);  // 메뉴의 초기값을 false로 설정
+  const [sideBarOpen, setSideBarOpen] = useState(false); 
 
   // state: 사이드바 세부 카테고리 상태 //
   const [travelCategoryOpen, setTravelCategoryOpen] = useState(false);
   const [fashionCategoryOpen, setFashionCategoryOpen] = useState(false);
-  
-  // variable: 경로 이름 //
-  // const isHome = pathname.startsWith(HOME_PATH);
-  // const isTravel = pathname.startsWith(TRAVEL_PATH);
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -56,8 +49,8 @@ export default function MainLayout() {
     <div id='main-layout'>
       <div className='layout-logo'>
         <div className='box'>
-          <div className='icon'></div>
-          <div className='title'>MZPICK</div>
+          <div className='icon' onClick={() => onItemClickHandler(HOME_PATH)}></div>
+          <div className='title'onClick={() => onItemClickHandler(HOME_PATH)}>MZPICK</div>
         </div>
         <div className={`navi-box ${sideBarOpen ? 'active' : ''}`}>
           <div className='signin-signup'>
