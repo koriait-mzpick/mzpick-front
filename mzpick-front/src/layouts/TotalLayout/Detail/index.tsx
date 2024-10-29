@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './style.css';
 
+
 // component: 내용 컴포넌트 //
 function Content() {
 
@@ -120,8 +121,8 @@ function Comment() {
 export default function Detail() {
   return (
     <div id='detail-main'>
-      {/* <Content />
-      <Comment /> */}
+      <Content />
+      <Comment />
     </div>
   )
 }
