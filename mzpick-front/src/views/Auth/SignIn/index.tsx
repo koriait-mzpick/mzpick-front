@@ -88,7 +88,7 @@ export default function SignIn() {
         <div className='auth-container'>
             <div className="auth-box">
                 <div className='title-box'>로그인</div>
-                <div className="input-container">
+                <div className="input-container" >
                     <InputBox value={id} onChange={onIdChangeHandler} message='' messageError type='text' placeholder='ID' />
                     <InputBox value={password} onChange={onPasswordChangeHandler} message={message} messageError type='password' placeholder='Password' />
                 </div>
