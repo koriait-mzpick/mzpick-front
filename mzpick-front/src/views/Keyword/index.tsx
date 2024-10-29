@@ -38,6 +38,7 @@ export default function Keyword() {
           userId: 'user1234', 
           keywordContent: item.keywordContent,
           keywordDate: new Date(), 
+
         }));
         
         console.log('Fetched keywords:', keywordList);

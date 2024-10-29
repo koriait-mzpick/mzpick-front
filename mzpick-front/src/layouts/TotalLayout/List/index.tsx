@@ -8,16 +8,8 @@ export default function List() {
   // state: 드롭다운 상태//
   const [dropDownOpen, setDropDownOpen] = useState(false);
 
-  const dropDown = () => {
-    setDropDownOpen(!dropDownOpen);
-  }
-
+  // state: 북마크 상태 //
   const [boorMarkClick, setBookMarkClick] = useState(false);
-
-  const bookMark = () => {
-    setBookMarkClick(!boorMarkClick);
-  }
-
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -30,6 +22,16 @@ export default function List() {
     return `${yy}.${mm}.${dd}`;
   };
 
+  // event handler: 드롭다운 오픈 이벤트 처리 //
+  const dropDownOpenhandler = () => {
+    setDropDownOpen(!dropDownOpen);
+  }
+  
+  // event handler: 북마크 클릭 이벤트 처리 //
+  const bookMarkClickHandler = () => {
+    setBookMarkClick(!boorMarkClick);
+  }
+
   // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
   const onItemClickHandler = (path: string) => {
     navigator(path);
@@ -40,7 +42,7 @@ export default function List() {
     <div id='list-main'>
       <div className='board-top'>
         <div className='drop-down-box'>
-          <div className='drop-down-main' onClick={dropDown}>
+          <div className='drop-down-main' onClick={dropDownOpenhandler}>
             <div className='drop-down-main-text'>여행</div>
             <div className='drop-down-button'></div>
           </div>
@@ -66,10 +68,10 @@ export default function List() {
                 <div className='board-information-view-icon'></div>
                 <div className='board-information-data'>32</div>
               </div>
-              <div className={`board-information-bookmark ${boorMarkClick ? 'active' : ''}`} onClick={bookMark}></div>
+              <div className={`board-information-bookmark ${boorMarkClick ? 'active' : ''}`} onClick={bookMarkClickHandler}></div>
             </div>
           </div>
-          <div className='board-tag'>#</div>
+          <div className='board-tag'>#자야나야장</div>
         </div>
       </div>
     </div>

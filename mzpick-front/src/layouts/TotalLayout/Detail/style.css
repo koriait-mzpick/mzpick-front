@@ -1,12 +1,312 @@
-#contents-main {
-    display: flex;
-    width: 100%;
-    height: calc(100vh-54px);
+@font-face {
+    font-family: 'Pretendard-Thin';
+    src: url(/public/font/Pretendard-Thin.ttf);
 }
 
-#contents-main .contents-top{
+@font-face {
+    font-family: 'Pretendard-Bold';
+    src: url(/public/font/Pretendard-Bold.ttf);
+}
+
+#detail-main {
     display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#contents-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh-54px);
+    margin-top: 54px;
+}
+
+#contents-main .contents-top {
+    display: flex;
+    justify-content: space-between;
     width: 65vw;
-    height: 200px;
-    background-color: antiquewhite;
+    border-bottom: 1px solid var(--primary-color);
+    padding-bottom: 10px;
+    margin: 70px 0px 30px 0px;
+}
+
+#contents-main .contents-top .contents-top-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#contents-main .contents-top .contents-top-left .contents-top-title,
+#contents-main .contents-information .contents-information-left,
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-name {
+    font-family: 'Pretendard-Bold';
+    src: url(/public/font/Pretendard-Bold.ttf);
+    font-size: 24px;
+    color: var(--primary-color);
+}
+
+#contents-main .contents-top .contents-top-left .contents-top-title {
+    font-size: 40px;
+}
+
+#contents-main .contents-top .contents-top-left .contents-top-date {
+    font-family: 'Pretendard-Thin';
+    src: url(/public/font/Pretendard-Thin.ttf);
+    font-size: 20px;
+    color: var(--primary-color);
+}
+
+#contents-main .contents-top .contents-top-vote-button,
+#comment-main .comment-button-box .comment-open-button,
+#comment-main .comment-button-box .comment-button-box-right .comment-update-button,
+#comment-main .comment-button-box .comment-button-box-right .comment-delete-button,
+#comment-main .comment-detail .comment-detail-top .comment-detail-add-button,
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button .comment-detail-delete-button,
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button .comment-detail-update-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    border: 1px solid rgba(166, 166, 166, 1);
+    border-radius: 5px;
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-size: 15px;
+    color: var(--primary-font-gray-color);
+    background-color: var(--primary-font-color);
+    cursor: pointer;
+}
+
+#contents-main .contents-top .contents-top-vote-button:hover,
+#comment-main .comment-button-box .comment-open-button:hover, 
+#comment-main .comment-button-box .comment-button-box-right .comment-update-button:hover,
+#comment-main .comment-button-box .comment-button-box-right .comment-delete-button:hover,
+#comment-main .comment-detail .comment-detail-top .comment-detail-add-button:hover,
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button .comment-detail-delete-button:hover,
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button .comment-detail-update-button:hover {
+    border-color: var(--primary-font-gray-color);
+    color: rgba(50, 50, 50, 1);
+    background-color: rgba(220, 220, 220, 1);
+}
+
+#contents-main .contents-top .contents-top-vote-button-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+#contents-main .contents-image {
+    display: flex;
+    justify-content: space-between;
+    width: 65vw;
+    height: 58vh;
+    border: 1px solid rgba(0, 0, 0, .25);
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+#contents-main .contents-image .contents-image-left-button {
+    display: flex;
+    align-items: center;
+    width: 50px;
+    cursor: pointer;
+}
+/* 
+#contents-main .contents-image .contents-image-left-button:hover {
+    background-color: aqua;
+
+} */
+
+
+#contents-main .contents-text {
+    width: 65vw;
+    font-family: 'Pretendard-Thin';
+    src: url(/public/font/Pretendard-Thin.ttf);
+    font-size: 20px;
+    color: var(--primary-color);
+    margin-bottom: 40px;
+}
+
+#contents-main .contents-information {
+    display: flex;
+    justify-content: space-between;
+    width: 65vw;
+    border-bottom: 1px solid var(--primary-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+#contents-main .contents-information .contents-information-right {
+    display: flex;
+    align-items: center;
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-size: 15px;
+    color: rgba(166, 166, 166, 1);
+    gap: 10px;
+}
+
+#contents-main .contents-information .contents-information-right .contents-information-like {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#contents-main .contents-information .contents-information-right .contents-information-like-icon,
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-text-box .comment-detail-like {
+    display: flex;
+    width: 0.95vw;
+    height: 1.53vh;
+    background-image: url(/public/image/empty-heart-Icon.png);
+    background-size: contain;
+    cursor: pointer;
+}
+
+#contents-main .contents-information .contents-information-right .contents-information-like-icon.active,
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-text-box .comment-detail-like.active {
+    width: 0.95vw;
+    height: 1.51vh;
+    background-image: url(/public/image/on-heart-Icon.png);
+}
+
+#contents-main .contents-information .contents-information-right .contents-information-view {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+#contents-main .contents-information .contents-information-right .contents-information-view-icon {
+    display: flex;
+    width: 1.06vw;
+    height: 1.5vh;
+    background-image: url(/public/image/view-Icon.png);
+    background-size: contain;
+}
+
+#contents-main .contents-information .contents-information-right .contents-information-bookmark {
+    display: flex;
+    width: 0.7vw;
+    height: 1.6vh;
+    background-image: url(/public/image/bookmark.png);
+    background-size: contain;
+    cursor: pointer;
+}
+
+#contents-main .contents-information .contents-information-right .contents-information-bookmark.active {
+    display: flex;
+    align-items: center;
+    width: 0.7vw;
+    height: 1.6vh;
+    background-image: url(/public/image/bookmark-active.png);
+    background-size: contain;
+    cursor: pointer;
+}
+
+#comment-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#comment-main .comment-button-box {
+    display: flex;
+    justify-content: space-between;
+    width: 65vw;
+    margin-bottom: 50px;
+}
+
+#comment-main .comment-button-box .comment-button-box-right {
+    display: flex;
+    gap: 30px;
+}
+
+#comment-main .comment-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 65vw;
+    border: 1px solid rgba(166, 166, 166, 1);
+    border-radius: 10px;
+    margin-bottom: 70px;
+    background-color: rgba(250, 250, 250, 1);
+}
+
+#comment-main .comment-detail .comment-detail-top {
+    display: flex;
+    flex-direction: column;
+    width: 57vw;
+    border: 1px solid rgba(166, 166, 166, 1);
+    border-radius: 10px;
+    margin: 30px 0px 40px 0px;
+    background-color: rgba(250, 250, 250, 1);
+}
+
+#comment-main .comment-detail .comment-detail-top .comment-detail-write,
+#comment-main .comment-detail .comment-detail-top .comment-detail-write::placeholder,
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-text-box .comment-detail-text {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-size: 20px;
+    color: var(--primary-color);
+}
+
+#comment-main .comment-detail .comment-detail-top .comment-detail-write {
+    border-radius: 10px;
+    padding: 20px;
+    background-color: rgba(250, 250, 250, 1);
+    border: none;
+    outline: none;
+    resize: none;
+}
+
+#comment-main .comment-detail .comment-detail-top .comment-detail-write::placeholder {
+    color: rgba(166, 166, 166, 1);
+}
+
+#comment-main .comment-detail .comment-detail-top .comment-detail-add-button-box {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+#comment-main .comment-detail .comment-detail-bottom {
+    display: flex;
+    flex-direction: column;
+    width: 57vw;
+    border-bottom: 1px solid var(--primary-color);
+    margin-bottom: 40px;
+}
+
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 35px;
+}
+
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button {
+    display: flex;
+    gap: 15px;
+}
+
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button .comment-detail-delete-button,
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button .comment-detail-update-button {
+    display: flex;
+    width: 60px;
+    height: 25px;
+}
+
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-text-box {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+    gap: 10px;
+}
+
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-text-box .comment-detail-like-box {
+    display: flex;
+    justify-content: flex-end;
 }
