@@ -1,6 +1,7 @@
 export default interface Travel{
     travelNumber: number;
     userId: string;
+    travelLocation: string;
     travelPhoto: string;
     travelHashtagList: string[];
     travelLikeUserList: string[];
