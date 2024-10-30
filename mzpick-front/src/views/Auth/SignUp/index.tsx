@@ -1,13 +1,13 @@
 import { ChangeEvent, useEffect, useState, KeyboardEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { IdCheckRequestDto, SignUpRequestDto, TelAuthCheckRequestDto, TelAuthRequestDto } from "../../../apis/dto/request/auth";
-import { idCheckRequest, signUpRequest, telAuthCheckRequest, telAuthRequest } from "../../../apis";
 import InputBox from "../../../components/Inputbox";
 import '../style.css';
 import { SIGN_IN_PATH } from "../../../constants";
 import SnsContainer from "../Sns";
 import BottomNav from "../../../layouts/BottomNav";
 import { ResponseDto } from "../../../apis/dto/response";
+import { idCheckRequest, signUpRequest, telAuthCheckRequest, telAuthRequest } from "src/apis/auth/dto";
+import { IdCheckRequestDto, TelAuthRequestDto, TelAuthCheckRequestDto, SignUpRequestDto } from "src/apis/auth/dto/request";
 
 
 // component: 회원가입 화면 컴포넌트 //
