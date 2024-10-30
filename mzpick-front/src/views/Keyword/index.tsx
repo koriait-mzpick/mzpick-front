@@ -2,10 +2,10 @@ import axios from 'axios';
 import { KeyboardEvent, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useAuthStore } from 'src/stores';
-import type { GetKeyWordResponseDto } from '../../apis/dto/response/keyword';
 import { API_URL } from '../../constants';
 import type { Keyword } from '../../types';
 import './style.css';
+import { GetKeyWordResponseDto } from 'src/apis/keyword/dto/response';
 
 export default function Keyword() {
 
