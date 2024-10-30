@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import './style.css';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TRAVEL_DETAIL_PATH, WRITE_PATH } from '../../../constants';
+import { TRAVEL_DETAIL_PATH, WRITE_PATH } from 'src/constants';
+import './style.css';
 
 export default function List() {
 

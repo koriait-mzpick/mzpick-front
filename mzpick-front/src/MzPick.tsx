@@ -12,7 +12,6 @@ import SignIn from './views/Auth/SignIn';
 import SignUp from './views/Auth/SignUp';
 import Fashion from './views/Fashion';
 import Food from './views/Food';
-import HOF from './views/HOF';
 import HOFFashion from './views/HOF/FashionHof';
 import HOFFood from './views/HOF/FoodHof';
 import HOFTravel from './views/HOF/TravelHof';
@@ -94,7 +93,7 @@ export default function MzPick() {
       </Route>
 
       <Route path={HOF_PATH} element={<MainLayout />}>
-        < Route path={HOF_PATH} element={< HOF />} />
+        < Route path={HOF_PATH} element={< HOFTravel />} />
         < Route path={HOF_TRAVEL_PATH } element={< HOFTravel />} />
         < Route path={HOF_FOOD_PATH} element={< HOFFood />} />
         < Route path={HOF_FASHION_PATH} element={< HOFFashion />} />
@@ -110,7 +109,9 @@ export default function MzPick() {
 
       <Route path={OTHERS_PATH} element={<Index />} />
 
+      <Route path={VOTE_PATH} element={<MainLayout />}>
       <Route path={VOTE_PATH} element={< Vote />} />
+      </Route>
     </Routes>
   );
 }
