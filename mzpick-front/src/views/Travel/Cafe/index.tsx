@@ -7,7 +7,6 @@ import { ResponseDto } from 'src/apis/dto/response';
 import { TRAVEL_CAFE_DETAIL_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
 import { Cafe } from 'src/types';
 import './style.css';
-
 export default function CafeMain() {
 
   // state: 쿠키상태 //
@@ -105,6 +104,8 @@ const onDropDownSelect = (destination: string) => {
   useEffect(getCafeList, []);
 
   // render: 여행 게시판 리스트 컴포넌트 렌더링//  
+
+
   return (
     <div id='list-main'>
       <div className='board-top'>
