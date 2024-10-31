@@ -20,7 +20,6 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: calc(100vh-54px);
     margin-top: 54px;
 }
 
@@ -64,8 +63,7 @@
 #comment-main .comment-button-box .comment-button-box-right .comment-update-button,
 #comment-main .comment-button-box .comment-button-box-right .comment-delete-button,
 #comment-main .comment-detail .comment-detail-top .comment-detail-add-button,
-#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button .comment-detail-delete-button,
-#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button .comment-detail-update-button {
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-delete-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,8 +84,7 @@
 #comment-main .comment-button-box .comment-button-box-right .comment-update-button:hover,
 #comment-main .comment-button-box .comment-button-box-right .comment-delete-button:hover,
 #comment-main .comment-detail .comment-detail-top .comment-detail-add-button:hover,
-#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button .comment-detail-delete-button:hover,
-#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button .comment-detail-update-button:hover {
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-delete-button:hover {
     border-color: var(--primary-font-gray-color);
     color: rgba(50, 50, 50, 1);
     background-color: rgba(220, 220, 220, 1);
@@ -152,8 +149,7 @@
     gap: 5px;
 }
 
-#contents-main .contents-information .contents-information-right .contents-information-like-icon,
-#comment-main .comment-detail .comment-detail-bottom .comment-detail-text-box .comment-detail-like {
+#contents-main .contents-information .contents-information-right .contents-information-like-icon {
     display: flex;
     width: 17px;
     height: 15px;
@@ -163,8 +159,7 @@
     cursor: pointer;
 }
 
-#contents-main .contents-information .contents-information-right .contents-information-like-icon.active,
-#comment-main .comment-detail .comment-detail-bottom .comment-detail-text-box .comment-detail-like.active {
+#contents-main .contents-information .contents-information-right .contents-information-like-icon.active {
     width: 17px;
     height: 15px;
     background-image: url(/public/image/on-heart-Icon.png);
@@ -287,29 +282,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 35px;
+    padding-bottom: 10px;
 }
 
-#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button {
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-delete-button {
     display: flex;
-    gap: 15px;
-}
-
-#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button .comment-detail-delete-button,
-#comment-main .comment-detail .comment-detail-bottom .comment-detail-writer .comment-detail-button .comment-detail-update-button {
-    display: flex;
-    width: 60px;
+    width: 40px;
     height: 25px;
 }
 
-#comment-main .comment-detail .comment-detail-bottom .comment-detail-text-box {
-    display: flex;
-    flex-direction: column;
+#comment-main .comment-detail .comment-detail-bottom .comment-detail-text {
     padding-bottom: 10px;
-    gap: 10px;
-}
-
-#comment-main .comment-detail .comment-detail-bottom .comment-detail-text-box .comment-detail-like-box {
-    display: flex;
-    justify-content: flex-end;
 }

@@ -1,18 +1,22 @@
 import React, { ChangeEvent, useRef, useState } from 'react'
 import './style.css';
+import { useCookies } from 'react-cookie';
 
 
 // component: 글쓰기 페이지 컴포넌트 //
 export default function Write() {
 
+  // state: cookie 상태 //
+  const [cookie] = useCookies();
+
   // state: 이미지 입력 참조 //
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
   // state: 이미지 미리보기 URL 상태 //
-  const [previewUrl, setPreviewUrl] = useState<string>('');
-  
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
   // state: 첨부파일 상태 //
-  const [attachedFile, setAttachedFile] = useState<File | null>(null);
+  const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
 
   // event handler: 첨부파일 버튼 클릭 이벤트 처리 //
   const attachedFileButtonClickHandler = () => {
@@ -22,17 +26,17 @@ export default function Write() {
   };
 
   // event handler: 이미지 변경 이벤트 처리 함수 //
-  const imageInputChangehandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const imageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
-    if (!files || !files.length) return;
-
-    const file = files[0];
-    setAttachedFile(file);
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-    fileReader.onloadend = () => {
-      setPreviewUrl(fileReader.result as string);
-    };
+    if (!files || files.length === 0) return;
+    const newFiles = Array.from(files);
+    if (newFiles.length > 3) {
+      alert("최대 3장까지만 업로드할 수 있습니다.");
+      return;
+    }
+    setAttachedFiles(newFiles);
+    const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file));
+    setPreviewUrls(newPreviewUrls);
   };
 
   // render: 글쓰기 페이지 컴포넌트 렌더링//
@@ -43,15 +47,15 @@ export default function Write() {
         <div className='write-box-middle'>
           <input className='middle-tag' placeholder='태그를 입력하세요. (최대 3개)' />
           <div className='middle-attached-file' onClick={attachedFileButtonClickHandler}>
-            <input ref={imageInputRef} style={{ display: 'none' }} type='file' accept='image/*' multiple onChange={imageInputChangehandler} />
+            <input ref={imageInputRef} style={{ display: 'none' }} type='file' accept='image/*' multiple onChange={imageInputChangeHandler} />
           </div>
         </div>
         <div className='write-box-contents-box'>
-          <textarea className='contents-box-text' placeholder='내용을 입력하세요.' />
+          <textarea className='contents-box-text' placeholder='내용을 입력하세요. (* 사진은 최대 3장 첨부할 수 있습니다.)' />
           <div className='contents-box-preview-image-box'>
-            <div className='contents-box-preview-image' style={{ backgroundImage: `url(${previewUrl})` }}></div>
-            <div className='contents-box-preview-image'></div>
-            <div className='contents-box-preview-image'></div>
+            {previewUrls.map((url, index) => (
+              <img className='contents-box-preview-image' key={index} src={url} alt={`preview ${index}`} />
+            ))}
           </div>
         </div>
         <div className='write-box-bottom'>
