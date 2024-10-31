@@ -108,7 +108,8 @@
 }
 
 #list-main .board-middle {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
     position: absolute;
     justify-content: center;
     margin: 130px 70px;

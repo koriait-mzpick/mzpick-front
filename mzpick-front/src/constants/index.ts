@@ -12,6 +12,9 @@ export const SIGN_UP_PATH = '/sign-up'
 
 export const TRAVEL_PATH='/travel'
 export const TRAVEL_DETAIL_PATH='/travel/detail'
+export const TRAVEL_CAFE_DETAIL_PATH='/travel/cafe/detail'
+export const TRAVEL__STAY_DETAIL_PATH='/travel/stay/detail'
+export const TRAVEL_RESTAURANT_DETAIL_PATH='/travel/restaurant/detail'
 
 export const TRAVEL_MAP_PATH='/travel/map'
 export const TRAVEL_RESTAURANT_PATH='/travel/restaurant'

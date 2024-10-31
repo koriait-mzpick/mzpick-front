@@ -4,7 +4,7 @@ export default interface Cafe {
     travelLocation: string;
     travelCafeCategoryList: string[];
     travelCafePhoto: string;
-    travelCafeHashtag: string[];
+    travelCafeHashtagList: string[];
     travelCafeCategory: string[];
     travelCafeLikeUserList: string[];
     travelCafeSaveUserList: string[];
