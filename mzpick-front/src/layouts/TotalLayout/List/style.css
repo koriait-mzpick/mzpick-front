@@ -9,7 +9,6 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: calc(100vh - 54px);
     margin-top: 54px;
 }
 
@@ -219,5 +218,5 @@
     padding: 0px 10px 14px 10px;
     font-family: 'Pretendard-Bold';
     src: url(/public/font/Pretendard-Bold.ttf);
-    font-size: 24px;
+    font-size: 20px;
 }

@@ -62,17 +62,9 @@ function Comment() {
   // state: 댓글창 상태 //
   const [commentOpen, setCommentOpen] = useState(false);
 
-  // state: 댓글 좋아요 상태 //
-  const [commentLikeClick, setCommentLikeClick] = useState(false);
-
   // event handler: 댓글창 오픈 이벤트 처리 //
   const commentOpenHandler = () => {
     setCommentOpen(!commentOpen);
-  }
-
-  // event handler: 댓글 좋아요 클릭 이벤트 처리 //
-  const commentLikeClcikHandler = () => {
-    setCommentLikeClick(!commentLikeClick);
   }
 
   // render: 댓글 컴포넌트 렌더링 //
@@ -99,17 +91,9 @@ function Comment() {
           <div className='comment-detail-bottom'>
             <div className='comment-detail-writer'>
               <div className='comment-detail-name'>DAN</div>
-              <div className='comment-detail-button'>
-                <div className='comment-detail-delete-button'>수정</div>
-                <div className='comment-detail-update-button'>삭제</div>
-              </div>
+              <div className='comment-detail-delete-button'>삭제</div>
             </div>
-            <div className='comment-detail-text-box'>
-              <div className='comment-detail-text'>It is a long established fact that a reader will be disIt is a long established fact that a reader will be distracted by the reada</div>
-              <div className='comment-detail-like-box'>
-                <div className={`comment-detail-like ${commentLikeClick ? 'active' : ''}`} onClick={commentLikeClcikHandler}></div>
-              </div>
-            </div>
+            <div className='comment-detail-text'>It is a long established fact that</div>
           </div>
         </div>
       }
