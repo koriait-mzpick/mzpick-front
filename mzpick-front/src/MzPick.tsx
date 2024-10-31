@@ -18,7 +18,7 @@ import HOFTravel from './views/HOF/TravelHof';
 import Home from './views/Home';
 import Keyword from './views/Keyword';
 import MyPage from './views/MyPage';
-import Travel from './views/Travel';
+import TravelMap from './views/Travel';
 import Cafe from './views/Travel/Cafe';
 import MainTravel from './views/Travel/MainTravel';
 import Restaurant from './views/Travel/Restaurant';
@@ -73,7 +73,7 @@ export default function MzPick() {
       </Route>
 
       <Route path={TRAVEL_PATH} element={<MainLayout />}>
-        < Route path={TRAVEL_MAP_PATH} element={< Travel />} />
+        < Route path={TRAVEL_MAP_PATH} element={< TravelMap />} />
         < Route path={TRAVEL_PATH} element={< MainTravel />} />
         < Route path={TRAVEL_DETAIL_PATH} element={< Detail />} />
         < Route path={TRAVEL_RESTAURANT_PATH} element={< Restaurant />} />
