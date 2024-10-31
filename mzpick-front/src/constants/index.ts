@@ -30,6 +30,7 @@ export const HOF_FOOD_PATH = '/hof/food'
 export const HOF_FASHION_PATH = '/hof/fashion'
 
 export const VOTE_PATH = '/vote'
+export const VOTE_DETAILPATH = '/vote-detail'
 
 export const MY_PAGE_PATH = '/mypage'
 
