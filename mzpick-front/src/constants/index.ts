@@ -44,5 +44,7 @@ export const AUTH_ABSOLUTE_PATH = SIGN_IN_PATH;
 
 export const HOME_ABSOLUTE_PATH = HOME_PATH;
 
+export const TRAVEL_ABSOLUTE_DETAIL_PATH = (travelNumber: number) => `/travel/detail/${travelNumber}`;
+
 // variable: HTTP BEARER TOKEN COOKIE NAME //
 export const ACCESS_TOKEN = 'accessToken';
