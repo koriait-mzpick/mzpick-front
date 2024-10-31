@@ -1,12 +1,64 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import axios from 'axios';
-
+import { area } from './area';
 import './style.css';
+import { useSearchLocationStore } from 'src/stores';
 declare global {
   interface Window {
     kakao: any;
   }
 }
+
+// export const [loactionTitle, setLocationTitle] = useState<string>("");
+
+const AreaSelect = () => {
+  // 상태 관리
+  const [selectedArea, setSelectedArea] = useState<string>("");
+  const [selectedSubArea, setSelectedSubArea] = useState<string>("");
+
+  const { setSearchLocation } = useSearchLocationStore();
+
+  // 선택된 지역에 따라 하위 지역 목록을 가져옴
+  const subAreas = area.find((area) => area.name === selectedArea)?.subArea || [];
+
+  // 이벤트 핸들러
+  const onSelectAreaChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedArea(e.target.value);
+    setSelectedSubArea(""); // 새로운 지역 선택 시 하위 지역 초기화
+  };
+
+  const onSelectSubAreaChangeHanler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubArea(e.target.value);
+  };
+
+  const onSearchButtonClickHandler = () => {
+    setSearchLocation(selectedArea + ' ' + selectedSubArea);
+  }
+
+  return (
+    <div className='search-wrapper'>
+        <select value={selectedArea} onChange={onSelectAreaChangeHandler} className="location-select">
+          <option value="">지역을 선택해주세요</option>
+          {area.map((area) => (
+            <option key={area.name} value={area.name}>
+              {area.name}
+            </option>
+          ))}
+        </select>
+        {selectedArea && (
+          <select value={selectedSubArea} onChange={onSelectSubAreaChangeHanler} className="location-select">
+            <option value="" >시, 군, 구를 선택해주세요</option>
+            {subAreas.map((subArea) => (
+              <option key={subArea} value={subArea}>
+                {subArea}
+              </option>
+            ))}
+          </select>
+        )}
+      <div className='search-button' onClick={onSearchButtonClickHandler}>검색</div>
+    </div>
+  );
+};
 
 
 
@@ -29,46 +81,34 @@ const MapBox = () => {
 
 export default function TraveMap() {
 
+  const { searchLocation, setSearchLocation } = useSearchLocationStore();
+
+  const onSearchLocationChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setSearchLocation(value);
+  }
+
   return (
     <div id='main-wrapper'>
       <div id='map-main'>
-        <div className='right-map-wrapper'>
+        <div className='map-wrapper'>
           <MapBox />
         </div>
         <div className='bar-box'>
           <div className='vertical-bar'></div>
         </div>
-        <div className='left-map-wrapper'>
+        <div className='map-wrapper'>
           <div className='right-box'>
-            <div className='head-travel-title'>경상남도 김해시</div>
+            <div className='head-travel-title'>{searchLocation}</div>
             <div className='middle-icon-box'>
               <div className='left-icon' />
               <div className='middle-icon' />
               <div className='right-icon' />
             </div>
-            <div className='bottom-location-select'>
-              <div className='location-input-box'>
-                <input className='input-box' type="text" placeholder='검색어를 입력해주세요' />
-              </div>
-              <div className='location-selet-box'>
-                <div className='location-select'>
-                  <select className='select-box' name="" id="">
-                    <option value="">제주</option>
-                    <option value="">제주</option>
-                    <option value="">제주</option>
-                    <option value="">제주</option>
-                  </select>
-                </div>
-                <div className='location-select'>
-                  <select className='select-box' name="" id="">
-                    <option value="">제주</option>
-                    <option value="">제주</option>
-                    <option value="">제주</option>
-                    <option value="">제주</option>
-                  </select>
-                </div>
-              </div>
+            <div className='bottom-location-search'>
+              <input className='input-box' type="text" value={searchLocation} placeholder='검색어를 입력해주세요' onChange={onSearchLocationChangeHandler} />
             </div>
+            <AreaSelect />
           </div>
 
         </div>
