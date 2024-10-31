@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import './MzPick.css';
-import { ACCESS_TOKEN, FASHION_PATH, FOOD_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, OTHERS_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, VOTE_PATH, WRITE_PATH } from './constants';
+import { ACCESS_TOKEN, FASHION_PATH, FOOD_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, OTHERS_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, VOTE_DETAILPATH, VOTE_PATH, WRITE_PATH } from './constants';
 
 import MainLayout from './layouts/MainLayout';
 import Detail from './layouts/TotalLayout/Detail';
@@ -24,6 +24,7 @@ import MainTravel from './views/Travel/MainTravel';
 import Restaurant from './views/Travel/Restaurant';
 import Stay from './views/Travel/Stay';
 import Vote from './views/Vote';
+import VoteDetail from './views/Vote/Vote-Detail';
 
 
 function Index() {
@@ -111,6 +112,7 @@ export default function MzPick() {
 
       <Route path={VOTE_PATH} element={<MainLayout />}>
       <Route path={VOTE_PATH} element={< Vote />} />
+      <Route path={VOTE_DETAILPATH} element={< VoteDetail />} />
       </Route>
     </Routes>
   );
