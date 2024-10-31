@@ -3,13 +3,15 @@ import axios from 'axios';
 import { area } from './area';
 import './style.css';
 import { useSearchLocationStore } from 'src/stores';
+import { Map } from "react-kakao-maps-sdk"
 declare global {
   interface Window {
     kakao: any;
   }
 }
-
-// export const [loactionTitle, setLocationTitle] = useState<string>("");
+interface MapContainerProps {
+  searchLocation: string;
+}
 
 const AreaSelect = () => {
   // 상태 관리
@@ -18,6 +20,7 @@ const AreaSelect = () => {
 
   const { setSearchLocation } = useSearchLocationStore();
 
+
   // 선택된 지역에 따라 하위 지역 목록을 가져옴
   const subAreas = area.find((area) => area.name === selectedArea)?.subArea || [];
 
@@ -25,6 +28,7 @@ const AreaSelect = () => {
   const onSelectAreaChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedArea(e.target.value);
     setSelectedSubArea(""); // 새로운 지역 선택 시 하위 지역 초기화
+    setSearchLocation("");
   };
 
   const onSelectSubAreaChangeHanler = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -60,39 +64,58 @@ const AreaSelect = () => {
   );
 };
 
+const {kakao} = window;
+
+const MapBox = ({searchLocation}:any) => {
+
+  const [position, setPosition] = useState<{lat: number, lng: number}>({lat: 37.5642135, lng: 127.269311});
+  
+  useEffect(()=>{
+    if(!searchLocation) return;
+
+    const geocoder = new kakao.maps.services.Geocoder();
+
+    geocoder.addressSearch(searchLocation,function(result:any, status:any){
+      if(status === kakao.maps.services.Status.OK){
+        const coords = new kakao.maps.LatLng(result[0].y,result[0].x);
+        const position = { lng: coords.La, lat: coords.Ma };
+        setPosition(position);
+      } else{
+        alert('주소를 찾을 수 없습니다.');
+      }
+    })
+  },[searchLocation]);
 
 
-const MapBox = () => {
-
-  useEffect(() => {
-    let container = document.getElementById(`map`); // 지도를 담을 영역의 DOM 레퍼런스
-    let options = {
-      center: new window.kakao.maps.LatLng(37.564214, 127.001699), // 지도 중심 좌표
-      level: 11, // 지도의 레벨(확대, 축소 정도)
-    };
-
-    let map = new window.kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
-  }, []);
 
   return (
-    <div id="map" />
+    <Map // 지도를 표시할 Container
+      id="map"
+      center={position}
+      level={3} // 지도의 확대 레벨
+    />
   );
 };
 
 export default function TraveMap() {
 
   const { searchLocation, setSearchLocation } = useSearchLocationStore();
+  const [searchWord, setSearchWord] = useState<string>('');
 
   const onSearchLocationChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setSearchLocation(value);
+    setSearchWord(value);
+  }
+
+  const onSearchButtonClickHandler = () => {
+    setSearchLocation(searchWord);
   }
 
   return (
     <div id='main-wrapper'>
       <div id='map-main'>
         <div className='map-wrapper'>
-          <MapBox />
+          <MapBox searchLocation={searchLocation}/>
         </div>
         <div className='bar-box'>
           <div className='vertical-bar'></div>
@@ -106,7 +129,8 @@ export default function TraveMap() {
               <div className='right-icon' />
             </div>
             <div className='bottom-location-search'>
-              <input className='input-box' type="text" value={searchLocation} placeholder='검색어를 입력해주세요' onChange={onSearchLocationChangeHandler} />
+              <input className='input-box' type="text" value={searchWord} placeholder='검색어를 입력해주세요' onChange={onSearchLocationChangeHandler} />
+              <div onClick={onSearchButtonClickHandler}>검색</div>
             </div>
             <AreaSelect />
           </div>
