@@ -79,6 +79,7 @@
     align-items: center;
     justify-content: space-between;
     width: 31vw;
+    height: 11vh;
 
 
 }
@@ -88,7 +89,7 @@
     background-size: 100%;
     background-repeat: no-repeat;
     width: 4vw;
-    height: 6vh;
+    height: 8vh;
 }
 
 .middle-icon-box .middle-icon {
@@ -96,7 +97,7 @@
     background-size: 100%;
     background-repeat: no-repeat;
     width: 4vw;
-    height: 6vh;
+    height: 8vh;
 
 }
 
@@ -105,7 +106,7 @@
     background-size: 100%;
     background-repeat: no-repeat;
     width: 4vw;
-    height: 6vh;
+    height: 8vh;
 }
 
 .right-box .bottom-location-search {
