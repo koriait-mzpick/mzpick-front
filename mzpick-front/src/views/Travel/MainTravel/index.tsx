@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { ResponseDto } from 'src/apis/dto/response';
 import { getTravelListRequest } from 'src/apis/travel';
 import { GetTravelListResponseDto } from 'src/apis/travel/dto/response';
-import { TRAVEL_DETAIL_PATH, WRITE_PATH } from 'src/constants';
+import { TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
 import { Travel } from 'src/types';
 import './style.css';
 
@@ -50,20 +50,32 @@ export default function MainTravel() {
 
     const searchParams = new URLSearchParams(location.search);
     const query = searchParams.get('query');
-    // const query = "경상남도 김해시"
+    console.log(query)
     if (query) {
-      setViewList(travelList.filter(item => item.travelLocation.includes(query)));
+
+      const filteredList = travelList.filter(item => item.travelLocation.includes(query));
+      setViewList(filteredList);
+
+      if (filteredList.length === 0) {
+        alert('검색 결과가 없습니다.');
+      }
     } else {
       setViewList(travelList);
     }
   }
 
-  // //function: 검색어를 가진상태로 드롭다운을 통해 이동 //
-  const onDropDownSelect = (location: string) => {
-    navigate(`/map?query=${location}`);
-  };
+  // function: 검색어를 가진상태로 드롭다운을 통해 이동 //
+const onDropDownSelect = (destination: string) => {
+  const searchParams = new URLSearchParams(location.search);
+  const query = searchParams.get('query');
+  
+  if (query) {
+    navigate(`${destination}/map?query=${query}`);
+  } else {
+    navigate(`${destination}`);
+  }
+};
 
-  useEffect(getTravelList, [location.search]);
 
 
   // function: 네비게이터 함수 //
@@ -104,12 +116,9 @@ export default function MainTravel() {
             <div className='drop-down-button'></div>
           </div>
           <div className={`drop-down-sub ${dropDownOpen ? 'active' : ''}`}>
-            {/* <div className='drop-down-sub-text' >외식</div>
-            <div className='drop-down-sub-text' >카페</div>
-            <div className='drop-down-sub-text' >숙박</div> */}
-            <div className='drop-down-sub-text' onClick={() => onDropDownSelect('외식')}>외식</div>
-            <div className='drop-down-sub-text' onClick={() => onDropDownSelect('카페')}>카페</div>
-            <div className='drop-down-sub-text' onClick={() => onDropDownSelect('숙박')}>숙박</div>
+            <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_RESTAURANT_PATH)}>외식</div>
+            <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_CAFE_PATH)}>카페</div>
+            <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_STAY_PATH)}>숙박</div>
           </div>
         </div>
         <div className='write-button' onClick={() => onItemClickHandler(WRITE_PATH)}>글쓰기</div>
