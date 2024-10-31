@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { KeyboardEvent, useEffect, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useAuthStore } from 'src/stores';
 import { API_URL } from '../../constants';
@@ -92,20 +92,26 @@ export default function Keyword() {
       }
     };
 
+  const onKeywordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  }
+
   // event handler: 키워드 추가 버튼 이벤트 핸들러 //
   const handleAddKeyword = () => {
     if (inputValue.trim()) {
       postKeyword(inputValue);
-      setInputValue('');
     } else {
       console.error("입력된 키워드가 유효하지 않습니다.");
     }
   };
 
   // event handler: 엔터키 눌렀을시 handleAddKeyword 요청 //
-  const handleKeyDown = (event : KeyboardEvent<HTMLInputElement>) => {
-    if(event.key === 'Enter'){
+  const handleKeyDown = (event : KeyboardEvent<HTMLInputElement> | any) => {
+    
+    if(event.isComposing || event.keyCode === 229) return; 
+    if (event.key === 'Enter') {
       handleAddKeyword();
+      setInputValue('');
     }
   }
 
@@ -127,7 +133,7 @@ export default function Keyword() {
             type="text"
             placeholder="키워드를 입력해 주세요"
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={onKeywordChangeHandler}
             onKeyDown={handleKeyDown}
           />
           <div className="add-button" onClick={handleAddKeyword}>
