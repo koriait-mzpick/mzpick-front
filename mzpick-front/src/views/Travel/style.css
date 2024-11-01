@@ -92,13 +92,20 @@
     height: 8vh;
 }
 
-.middle-icon-box .middle-icon {
+.middle-icon-box .middle-icon-1 {
     background-image: url(../../../public/image/food-bank.png);
     background-size: 100%;
     background-repeat: no-repeat;
     width: 4vw;
     height: 8vh;
+}
 
+.middle-icon-box .middle-icon-2 {
+    background-size: 100%;
+    background-image: url(../../../public/image/cafe-cup.png);
+    background-repeat: no-repeat;
+    width: 4vw;
+    height: 8vh;
 }
 
 .middle-icon-box .right-icon {
@@ -119,7 +126,7 @@
 .input-box {
     border-width: 0 0 1px;
     font-size: 20px;
-    width: 30.832vw;
+    width: 28.832vw;
     /* hx */
 }
 
@@ -134,28 +141,39 @@
     align-items: center;
     gap: 1vw;
 }
+.search-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1vw;
+}
 
 .location-select {
-    border-radius: 20vw;
-    height: 3vh;
+    height: 4vh;
     width: 14vw;
     line-height: 3vh;
     font-size: 1.04vw;
     font-weight: 400;
-    border-radius: 20vw;
+    border-radius: 0.7vw;
     text-align: center;
     border: 2px dashed var(--border-color);
     color: var(--text-color);
 }
 
 .search-button {
-    width: 6vw;
-    height: 3vh;
+    width: 3.60vw;
+    height: 6.38vh;
     border: 2px dashed var(--border-color);
     text-align: center;
-    border-radius: 20vw;
-    line-height: 3vh;
+    border-radius: 1vw;
+    line-height: 6.38vh;
     font-size: 1.04vw;
     font-weight: 400;
     color: var(--text-color);
+}
+
+.select-box{
+    display: flex;
+    gap: 2vw;
 }
