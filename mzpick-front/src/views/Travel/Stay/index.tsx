@@ -44,19 +44,19 @@ export default function StayMain() {
       return;
     }
 
-    const { stay } = resposenBody as GetStayListResponseDto;
+    const { travelStayList } = resposenBody as GetStayListResponseDto;
 
-    setViewList(stay);
+    setViewList(travelStayList);
 
 if (searchLocation) {
-  const filteredList = stay.filter(item => item.travelLocation.includes(searchLocation));
+  const filteredList = travelStayList.filter(item => item.travelLocation.includes(searchLocation));
   setViewList(filteredList);
 
   if (filteredList.length === 0) {
     alert('검색 결과가 없습니다.');
   }
 } else {
-  setViewList(stay);
+  setViewList(travelStayList);
 }
 }
 
