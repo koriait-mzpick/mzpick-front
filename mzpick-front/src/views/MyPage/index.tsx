@@ -1,9 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './style.css';
-import { url } from 'inspector';
 import BottomNav from '../../layouts/BottomNav';
+import { MyPageCafeSave } from 'src/types/mypage/cafe';
+import { usePagination } from 'src/hooks';
+import { GetMyPageCafeSaveResponseDto } from 'src/apis/mypage/dto/response/save';
+import ResponseDto from 'src/apis/dto/response/response.dto';
+import Pagination from 'src/components/Pagination';
 
 export default function MyPage() {
+
+  // interface : Properties //
+  interface TableSaveProps {
+    save: MyPageCafeSave;
+    getToolList: () => void;
+    onUpdateButtonClickHandler: (toolNumber: number) => void;
+  }
+
+  // state : 원본 리스트 상태 //
+  const [originalList, setOriginalList] = useState<MyPageCafeSave[]>([]);
+
+  // Pagination //
+  const { 
+    currentPage, totalPage, totalCount, viewList, pageList,
+    setTotalList, initViewList,
+    onPageClickHandler, onPreSectionClickHandler, onNextSectionClickHandler
+  } = usePagination<MyPageCafeSave>();
+
+      // function: get tool list response 처리 함수 //
+      const getMyPageCafeSaveResponse = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
+        // const message = 
+            !responseBody ? '서버에 문제가 있습니다.' :
+        //     responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+        //     responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        // const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+        // if (!isSuccessed) {
+        //     alert(message);
+        //     return;
+        // }
+
+      // TotalList 상태 업데이트,  originalList 상태 업데이트 
+      // const { myPageCafeSave } = responseBody as GetMyPageCafeSaveResponseDto;
+      //   setTotalList(myPageCafeSave);
+      //   setOriginalList(myPageCafeSave);
+      // };
+
+
   return (
     <div className='layout'>
 
@@ -212,7 +254,14 @@ export default function MyPage() {
           </div>
 
         </div>
-        <div  className='page-box'>
+        <Pagination 
+          pageList={pageList} 
+          currentPage={currentPage} 
+          onPageClickHandler={onPageClickHandler}
+          onPreSectionClickHandler={onPreSectionClickHandler}
+          onNextSectionClickHandler={onNextSectionClickHandler}
+        />
+        {/* <div  className='page-box'>
           <div className='pageBox1'></div>
           <div className='pageBox'>1</div>
           <div className='pageBox'>2</div>
@@ -220,7 +269,7 @@ export default function MyPage() {
           <div className='pageBox'>4</div>
           <div className='pageBox'>5</div>
           <div className='pageBox2'></div>
-        </div>
+        </div> */}
       </div>
       </div>
 
