@@ -22,7 +22,7 @@ import TraveMap from './views/Travel';
 import CafeMain from './views/Travel/Cafe';
 import MainTravel from './views/Travel/MainTravel';
 import RestaurantMain from './views/Travel/Restaurant';
-import Stay from './views/Travel/Stay';
+import StayMain from './views/Travel/Stay';
 import Vote from './views/Vote';
 import VoteDetail from './views/Vote/Vote-Detail';
 
@@ -78,7 +78,7 @@ export default function MzPick() {
         < Route path={TRAVEL_DETAIL_PATH} element={< Detail />} />
         < Route path={TRAVEL_RESTAURANT_PATH} element={< RestaurantMain />} />
         < Route path={TRAVEL_CAFE_PATH} element={< CafeMain />} />
-        < Route path={TRAVEL_STAY_PATH} element={< Stay />} />
+        < Route path={TRAVEL_STAY_PATH} element={< StayMain />} />
       </Route>
 
       <Route path={FASHION_PATH} element={<MainLayout />}>
