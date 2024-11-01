@@ -115,7 +115,9 @@ export default function StayMain() {
       <div className='board-middle'>
         {viewList.map((item) => (
           <div key={item.traveStayNumber} className='board-box'>
-            <div className='board-image' onClick={() => navigate(`${TRAVEL__STAY_DETAIL_PATH}/${item.traveStayNumber}`)}></div>
+            <div className='board-image' onClick={() => navigate(`${TRAVEL__STAY_DETAIL_PATH}/${item.traveStayNumber}`)}>
+              <img src={item.travelStayPhoto} alt={`Travel ${item.traveStayNumber}`} className='board-image-content' />
+            </div>
             <div className='board-information'>
               <div className='board-information-data'>{changeDateFormat(item.travelStayDate)}</div>
               <div className='board-information-right'>

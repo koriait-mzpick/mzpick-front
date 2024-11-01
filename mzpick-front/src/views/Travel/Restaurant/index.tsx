@@ -115,7 +115,9 @@ export default function RestaurantMain() {
       <div className='board-middle'>
         {viewList.map((item) => (
           <div key={item.traveFoodNumber} className='board-box'>
-            <div className='board-image' onClick={() => navigate(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.traveFoodNumber}`)}></div>
+            <div className='board-image' onClick={() => navigate(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.traveFoodNumber}`)}>
+            <img src={item.travelFoodPhoto} alt={`Travel ${item.traveFoodNumber}`} className='board-image-content' />
+            </div>        
             <div className='board-information'>
               <div className='board-information-data'>{changeDateFormat(item.travelFoodDate)}</div>
               <div className='board-information-right'>
