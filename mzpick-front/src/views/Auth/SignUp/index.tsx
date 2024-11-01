@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import InputBox from "../../../components/Inputbox";
 import '../style.css';
@@ -248,14 +248,21 @@ export default function SignUp() {
         setCheckedPassword(isEqual);
     }, [password, passwordCheck]);
 
+        // event handler: 엔터키 누르면 로그인 키다운 이벤트 처리 //
+        const signUpKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+            if (event.key === 'Enter') {
+                onSignUpButtonHandler();
+            }
+        };
+
 
     // render: 회원가입 화면 컴포넌트 렌더링 //
     return (
-        <div className='auth-container'>
-            <div className="auth-box">
+        <div className='auth-container' onKeyDown={signUpKeyDownHandler}>
+            <div className="auth-box" >
                 <div className='title-box'>회원가입</div>
 
-                <div className="input-container">
+                <div className="input-container" >
                     <InputBox messageError={nameMessageError} message={nameMessage} value={name} type='text' placeholder='이름을 입력해주세요.' onChange={onNameChangeHandler} />
                     <InputBox messageError={idMessageError} message={idMessage} value={id} type='text' placeholder='아이디를 입력해주세요.' buttonName='중복 확인' onChange={onIdChangeHandler} onButtonClick={onIdCheckClickHandler} />
                     <InputBox messageError={passwordMessageError} message={passwordMessage} value={password} type='password' placeholder='비밀번호를 입력해주세요.' onChange={onPasswordChangeHandler} />

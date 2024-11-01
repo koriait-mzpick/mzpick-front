@@ -64,8 +64,8 @@
 #main-hof-wrapper .wrapper-container .deco-container .image-box .image-area {
     position: absolute;
 
-    width: 28vw;
-    height: 63vh;
+    width: 30vw;
+    height: 50vh;
 
     border-radius: 100%;
     background-image: url(/public/image/fashionex.png);

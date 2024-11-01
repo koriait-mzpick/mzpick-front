@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { ResponseDto } from "../../../apis/dto/response";
@@ -85,14 +85,21 @@ export default function SignIn() {
         setMessage('');
     }, [id, password]);
 
+    // event handler: 엔터키 누르면 로그인 키다운 이벤트 처리 //
+    const signInKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            onSignInButtonHandler();
+        }
+    };
+
     // render: 로그인 화면 컴포넌트 렌더링 //
     return (
         <div className='auth-container'>
             <div className="auth-box">
                 <div className='title-box'>로그인</div>
-                <div className="input-container bold" >
+                <div className="input-container bold" onKeyDown={signInKeyDownHandler} >
                     <InputBox value={id} onChange={onIdChangeHandler} message='' messageError type='text' placeholder='ID' />
-                    <InputBox value={password} onChange={onPasswordChangeHandler} message={message} messageError type='password' placeholder='Password' />
+                    <InputBox value={password} onChange={onPasswordChangeHandler} message={message} messageError type='password' placeholder='Password'  />
                 </div>
                 <div className="button-container">
                     <div className="button primary full-width" onClick={onSignInButtonHandler}>로그인</div>
