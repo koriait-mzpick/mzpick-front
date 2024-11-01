@@ -152,7 +152,9 @@ export default function MainTravel() {
       <div className='board-middle'>
         {viewList.map((item) => (
           <div key={item.travelNumber} className='board-box'>
-            <div className='board-image' onClick={() => navigate(`${TRAVEL_DETAIL_PATH}/${item.travelNumber}`)}></div>
+            <div className='board-image' onClick={() => navigate(`${TRAVEL_DETAIL_PATH}/${item.travelNumber}`)}>
+            <img src={item.travelPhoto} alt={`Travel ${item.travelNumber}`} className='board-image-content' />
+            </div>
             <div className='board-information'>
               <div className='board-information-data'>{changeDateFormat(item.travelDate)}</div>
               <div className='board-information-right'>

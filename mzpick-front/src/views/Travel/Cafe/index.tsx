@@ -114,7 +114,9 @@ export default function CafeMain() {
       <div className='board-middle'>
         {viewList.map((item) => (
           <div key={item.traveCafeNumber} className='board-box'>
-            <div className='board-image' onClick={() => navigate(`${TRAVEL_CAFE_DETAIL_PATH}/${item.traveCafeNumber}`)}></div>
+            <div className='board-image' onClick={() => navigate(`${TRAVEL_CAFE_DETAIL_PATH}/${item.traveCafeNumber}`)}>
+            <img src={item.travelCafePhoto} alt={`Travel ${item.traveCafeNumber}`} className='board-image-content' />
+            </div>            
             <div className='board-information'>
               <div className='board-information-data'>{changeDateFormat(item.travelCafeDate)}</div>
               <div className='board-information-right'>
