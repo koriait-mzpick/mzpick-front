@@ -61,7 +61,7 @@ const AreaSelect = () => {
   return (
     <div className='search-wrapper'>
       <div className='search-box'>
-        <input className='input-box' type="text" value={searchWord} placeholder='검색어를 입력해주세요' onChange={onSearchLocationChangeHandler} />
+        <input className='map-input-box' type="text" value={searchWord} placeholder='검색어를 입력해주세요' onChange={onSearchLocationChangeHandler} />
         <div className='select-box'>
           <select value={selectedArea} onChange={onSelectAreaChangeHandler} className="location-select">
             <option value="">지역을 선택해주세요</option>
