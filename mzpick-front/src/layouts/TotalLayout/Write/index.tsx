@@ -15,7 +15,8 @@ export default function Write() {
 
   // state: 게시글 인풋 상태 //
   const [travelTitle, setTravelTitle] = useState<string>('');
-  const [travelHashtagContentList, setTravelHashtagContentList] = useState<string[]>([]);
+  // const [travelHashtagContentList, setTravelHashtagContentList] = useState<string[]>([]);
+  const [travelHashtagContentList, setTravelHashtagContentList] = useState<string>('');
   const [travelLocation, setTravelLocation] = useState<string>('');
   const [travelPhotoList, setTravelPhotoList] = useState<File[]>([]);
   const [travelContent, setTravelContent] = useState<string>('');
@@ -53,7 +54,7 @@ export default function Write() {
     const { files } = event.target;
     if (!files || files.length === 0) return;
     const newFiles = Array.from(files);
-    if (newFiles.length > 3) {
+    if (newFiles.length < 3) {
       alert("최대 3장까지만 업로드할 수 있습니다.");
       return;
     }
@@ -69,10 +70,10 @@ export default function Write() {
   };
 
   // event handler: 태그 변경 이벤트 처리 //
-  // const travelHashtagContentListChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = event.target;
-  //   setTravelHashtagContentList(value);
-  // };
+  const travelHashtagContentListChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setTravelHashtagContentList(value);
+  };
 
   // event handler: 지역 변경 이벤트 처리 //
   const travelLocationhangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -87,7 +88,7 @@ export default function Write() {
   };
   
   // event handler: 등록 버튼 클릭 이벤트 처리 함수 //
-  const registerButtonClickHandler = async () => {
+  const registerButtonClickHandler =  async () => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
 
@@ -100,12 +101,21 @@ export default function Write() {
     //   formData.append('photos', file);
     // });
 
+    let urlString: string[] = [];
+    if (travelPhotoList && travelPhotoList.length > 0) {
+      const formData = new FormData();
+    travelPhotoList.forEach((file, index) => {
+      formData.append('files[]', file);
+    });
+    // urlString = await fileUploadRequest(formData)
 
-    // const requestBody: PostTravelRequestDto = {
-    //   travelPhotoList,
-    //   travelTitle, travelHashtagContentList, travelLocation, travelContent
-    // }
-    // postcTravelRequest(requestBody, accessToken).then(postTravelResponse);
+    }
+
+    const requestBody: PostTravelRequestDto = {
+      travelPhotoList: urlString,
+      travelTitle, travelHashtagContentList, travelLocation, travelContent
+    }
+    postcTravelRequest(requestBody, accessToken).then(postTravelResponse);
   }
 
   // render: 글쓰기 페이지 컴포넌트 렌더링//
@@ -114,7 +124,7 @@ export default function Write() {
       <div className='write-box'>
         <input className='write-box-title' value={travelTitle}  placeholder='제목을 입력하세요.' onChange={travelTitleChangeHandler} />
         <div className='write-box-middle'>
-          <input className='middle-tag' placeholder='태그를 입력하세요. (최대 3개)' />
+          <input className='middle-tag' value={travelHashtagContentList} placeholder='태그를 입력하세요. (최대 3개)' onChange={travelHashtagContentListChangeHandler} />
           <input className='middle-location' value={travelLocation} placeholder='지역을 입력하세요.' onChange={travelLocationhangeHandler}/>
           <div className='middle-attached-file' onClick={attachedFileButtonClickHandler}>
             <input ref={photoInputRef} style={{ display: 'none' }} type='file' accept='image/*' multiple onChange={photoInputChangeHandler} />
