@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState, KeyboardEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import InputBox from "../../../components/Inputbox";
 import '../style.css';
