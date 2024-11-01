@@ -4,8 +4,8 @@ import BottomNav from '../../layouts/BottomNav';
 import { MyPageCafeSave } from 'src/types/mypage/cafe';
 import { usePagination } from 'src/hooks';
 import { GetMyPageCafeSaveResponseDto } from 'src/apis/mypage/dto/response/save';
-import ResponseDto from 'src/apis/dto/response/response.dto';
 import Pagination from 'src/components/Pagination';
+import ResponseDto from 'src/apis/dto/response/response.dto';
 
 export default function MyPage() {
 
@@ -28,22 +28,22 @@ export default function MyPage() {
 
       // function: get tool list response 처리 함수 //
       const getMyPageCafeSaveResponse = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
-        // const message = 
+        const message = 
             !responseBody ? '서버에 문제가 있습니다.' :
-        //     responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-        //     responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
-        // const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-        // if (!isSuccessed) {
-        //     alert(message);
-        //     return;
-        // }
+        const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+        if (!isSuccessed) {
+            alert(message);
+            return;
+        }
 
       // TotalList 상태 업데이트,  originalList 상태 업데이트 
-      // const { myPageCafeSave } = responseBody as GetMyPageCafeSaveResponseDto;
-      //   setTotalList(myPageCafeSave);
-      //   setOriginalList(myPageCafeSave);
-      // };
+      const { myPageCafeSave } = responseBody as GetMyPageCafeSaveResponseDto;
+        setTotalList(myPageCafeSave);
+        setOriginalList(myPageCafeSave);
+      };
 
 
   return (
