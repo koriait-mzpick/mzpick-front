@@ -5,7 +5,9 @@ import { getCafeListRequest } from 'src/apis/cafe';
 import { GetCafeListResponseDto } from 'src/apis/cafe/dto/response';
 import { ResponseDto } from 'src/apis/dto/response';
 import { TRAVEL_CAFE_DETAIL_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
+import { useSearchLocationStore } from 'src/stores';
 import { Cafe } from 'src/types';
+
 import './style.css';
 export default function CafeMain() {
 
@@ -19,11 +21,13 @@ export default function CafeMain() {
   const [originalList, setOriginalList] = useState<Cafe[]>([]);
   // state: 검색어 상태 //
   const location = useLocation();
+    // state:Zustand에서 searchLocation 상태 불러오기
+    const { searchLocation } = useSearchLocationStore();
 
   const [viewList, setViewList] = useState<Cafe[]>([]);
 
   // function: get Travel List 함수 //
-  const getCafeList = () => {
+  const getTravelList = () => {
     getCafeListRequest(1).then(getCafeResponseDto);
   }
 
@@ -42,37 +46,26 @@ export default function CafeMain() {
 
     const { travelCafeList } = resposenBody as GetCafeListResponseDto;
 
-    setOriginalList(travelCafeList);
     setViewList(travelCafeList);
 
-    const searchParams = new URLSearchParams(location.search);
-    const query = searchParams.get('query');
-    console.log(query)
-    if (query) {
+if (searchLocation) {
+  const filteredList = travelCafeList.filter(item => item.travelLocation.includes(searchLocation));
+  setViewList(filteredList);
 
-      const filteredList = travelCafeList.filter(item => item.travelLocation.includes(query));
-      setViewList(filteredList);
-
-      if (filteredList.length === 0) {
-        alert('검색 결과가 없습니다.');
-      }
-    } else {
-      setViewList(travelCafeList);
-    }
+  if (filteredList.length === 0) {
+    alert('검색 결과가 없습니다.');
   }
+} else {
+  setViewList(travelCafeList);
+}
+}
 
-  // function: 검색어를 가진상태로 드롭다운을 통해 이동 //
+// function: 드롭다운 선택 시 이동
 const onDropDownSelect = (destination: string) => {
-  const searchParams = new URLSearchParams(location.search);
-  const query = searchParams.get('query');
-  
-  if (query) {
-    navigate(`${destination}/map?query=${query}`);
-  } else {
-    navigate(`${destination}`);
-  }
+  navigate (`${destination}`)
 };
 
+useEffect(getTravelList, []);
 
 
   // function: 네비게이터 함수 //
@@ -101,22 +94,20 @@ const onDropDownSelect = (destination: string) => {
     navigate(path);
   };
 
-  useEffect(getCafeList, []);
+  useEffect(getTravelList, []);
 
   // render: 여행 게시판 리스트 컴포넌트 렌더링//  
-
-
   return (
     <div id='list-main'>
       <div className='board-top'>
         <div className='drop-down-box'>
           <div className='drop-down-main' onClick={dropDownOpenhandler}>
-            <div className='drop-down-main-text'>여행</div>
+            <div className='drop-down-main-text'>카페</div>
             <div className='drop-down-button'></div>
           </div>
           <div className={`drop-down-sub ${dropDownOpen ? 'active' : ''}`}>
-            <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_PATH)}>여행</div>
             <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_RESTAURANT_PATH)}>외식</div>
+            <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_PATH)}>여행</div>
             <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_STAY_PATH)}>숙박</div>
           </div>
         </div>

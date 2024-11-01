@@ -5,6 +5,7 @@ import { ResponseDto } from 'src/apis/dto/response';
 import { getTravelListRequest } from 'src/apis/travel';
 import { GetTravelListResponseDto } from 'src/apis/travel/dto/response';
 import { TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
+import { useSearchLocationStore } from 'src/stores';
 import { Travel } from 'src/types';
 import './style.css';
 
@@ -22,6 +23,8 @@ export default function MainTravel() {
   const [originalList, setOriginalList] = useState<Travel[]>([]);
   // state: 검색어 상태 //
   const location = useLocation();
+    // state:Zustand에서 searchLocation 상태 불러오기
+    const { searchLocation } = useSearchLocationStore();
 
   const [viewList, setViewList] = useState<Travel[]>([]);
 
@@ -45,37 +48,59 @@ export default function MainTravel() {
 
     const { travelList } = resposenBody as GetTravelListResponseDto;
 
-    setOriginalList(travelList);
+    // setOriginalList(travelList);
     setViewList(travelList);
 
-    const searchParams = new URLSearchParams(location.search);
-    const query = searchParams.get('query');
-    console.log(query)
-    if (query) {
+//     const searchParams = new URLSearchParams(location.search);
+//     const query = searchParams.get('query');
+//     console.log(query)
+//     if (query) {
 
-      const filteredList = travelList.filter(item => item.travelLocation.includes(query));
-      setViewList(filteredList);
+//       const filteredList = travelList.filter(item => item.travelLocation.includes(query));
+//       setViewList(filteredList);
 
-      if (filteredList.length === 0) {
-        alert('검색 결과가 없습니다.');
-      }
-    } else {
-      setViewList(travelList);
-    }
-  }
+//       if (filteredList.length === 0) {
+//         alert('검색 결과가 없습니다.');
+//       }
+//     } else {
+//       setViewList(travelList);
+//     }
+//   }
 
-  // function: 검색어를 가진상태로 드롭다운을 통해 이동 //
-const onDropDownSelect = (destination: string) => {
-  const searchParams = new URLSearchParams(location.search);
-  const query = searchParams.get('query');
+//   // function: 검색어를 가진상태로 드롭다운을 통해 이동 //
+// const onDropDownSelect = (destination: string) => {
+//   const searchParams = new URLSearchParams(location.search);
+//   const query = searchParams.get('query');
   
-  if (query) {
-    navigate(`${destination}/map?query=${query}`);
-  } else {
-    navigate(`${destination}`);
+//   if (query) {
+//     navigate(`${destination}/map?query=${query}`);
+//   } else {
+//     navigate(`${destination}`);
+//   }
+// };
+if (searchLocation) {
+  const filteredList = travelList.filter(item => item.travelLocation.includes(searchLocation));
+  setViewList(filteredList);
+
+  if (filteredList.length === 0) {
+    alert('검색 결과가 없습니다.');
   }
+} else {
+  setViewList(travelList);
+}
+}
+
+// function: 드롭다운 선택 시 이동
+const onDropDownSelect = (destination: string) => {
+  navigate (`${destination}`)
+// if (searchLocation) {
+//   navigate(`${destination}/map?query=${searchLocation}`);
+// } else {
+//   navigate(destination);
+// }
 };
 
+useEffect(getTravelList, []);
 
 
   // function: 네비게이터 함수 //

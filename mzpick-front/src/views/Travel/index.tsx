@@ -1,12 +1,13 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
-import axios from 'axios';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Map } from "react-kakao-maps-sdk";
+import { useSearchLocationStore } from 'src/stores';
 import { area } from './area';
 import './style.css';
+
 import { useSearchLocationStore } from 'src/stores';
 import { Map } from "react-kakao-maps-sdk"
 import { useLocation, useNavigate } from 'react-router';
 import { TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, VOTE_PATH } from '../../constants';
-
 
 declare global {
   interface Window {
