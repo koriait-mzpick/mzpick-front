@@ -5,10 +5,11 @@ import { getCafeListRequest } from 'src/apis/cafe';
 import { GetCafeListResponseDto } from 'src/apis/cafe/dto/response';
 import { ResponseDto } from 'src/apis/dto/response';
 import { TRAVEL_CAFE_DETAIL_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
-import { useSearchLocationStore } from 'src/stores';
+import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Cafe } from 'src/types';
 
 import './style.css';
+
 export default function CafeMain() {
 
   // state: 쿠키상태 //
@@ -16,15 +17,18 @@ export default function CafeMain() {
   // state: 드롭다운 상태//
   const [dropDownOpen, setDropDownOpen] = useState(false);
   // state: 북마크 상태 //
-  const [bookMarkClick, setBookMarkClick] = useState(false);
+  const [bookMark, setBookMark] = useState(false);
   // state: 원본 리스트 상태 //
   const [originalList, setOriginalList] = useState<Cafe[]>([]);
   // state: 검색어 상태 //
   const location = useLocation();
-    // state:Zustand에서 searchLocation 상태 불러오기
-    const { searchLocation } = useSearchLocationStore();
+  // state:Zustand에서 searchLocation 상태 불러오기
+  const { searchLocation } = useSearchLocationStore();
+  // state: signInUser상태 //
+  const { signInUser } = useAuthStore();
 
   const [viewList, setViewList] = useState<Cafe[]>([]);
+
 
   // function: get Travel List 함수 //
   const getTravelList = () => {
@@ -48,22 +52,23 @@ export default function CafeMain() {
 
     setViewList(travelCafeList);
 
-if (searchLocation) {
-  const filteredList = travelCafeList.filter(item => item.travelLocation.includes(searchLocation));
-  setViewList(filteredList);
 
-  if (filteredList.length === 0) {
-    alert('검색 결과가 없습니다.');
+    if (searchLocation) {
+      const filteredList = travelCafeList.filter(item => item.travelLocation.includes(searchLocation));
+      setViewList(filteredList);
+
+      if (filteredList.length === 0) {
+        alert('검색 결과가 없습니다.');
+      }
+    } else {
+      setViewList(travelCafeList);
+    }
   }
-} else {
-  setViewList(travelCafeList);
-}
-}
 
-// function: 드롭다운 선택 시 이동
-const onDropDownSelect = (destination: string) => {
-  navigate (`${destination}`)
-};
+  // function: 드롭다운 선택 시 이동
+  const onDropDownSelect = (destination: string) => {
+    navigate(`${destination}`)
+  };
 
   // function: 네비게이터 함수 //
   const navigate = useNavigate();
@@ -81,10 +86,6 @@ const onDropDownSelect = (destination: string) => {
     setDropDownOpen(!dropDownOpen);
   }
 
-  // event handler: 북마크 클릭 이벤트 처리 //
-  const bookMarkClickHandler = () => {
-    setBookMarkClick(!bookMarkClick);
-  }
 
   // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
   const onItemClickHandler = (path: string) => {
@@ -125,7 +126,7 @@ const onDropDownSelect = (destination: string) => {
                   <div className='board-information-view-icon'></div>
                   <div className='board-information-data'>{item.travelCafeViewCount}</div>
                 </div>
-                <div className={`board-information-bookmark ${bookMarkClick ? 'active' : ''}`} onClick={() => setBookMarkClick(!bookMarkClick)}></div>
+                <div className={`board-information-bookmark ${signInUser && item.travelCafeSaveUserList.includes(signInUser.userId) ? 'active' : ''}`} ></div>
               </div>
             </div>
             <div className='board-tag'>{item.travelCafeHashtagList}</div>

@@ -4,6 +4,9 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import './MzPick.css';
 import { ACCESS_TOKEN, FASHION_PATH, FOOD_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, VOTE_DETAILPATH, VOTE_PATH, WRITE_PATH } from './constants';
 
+import { ResponseDto } from './apis/dto/response';
+import { getMyPageUserDetailRequest } from './apis/mypage';
+import { GetMyPageUserDetailResponseDto } from './apis/mypage/dto/response/user';
 import MainLayout from './layouts/MainLayout';
 import Detail from './layouts/TotalLayout/Detail';
 import Write from './layouts/TotalLayout/Write';
@@ -48,14 +51,39 @@ function Index() {
   );
 }
 export default function MzPick() {
-    // state: 로그인 유저 정보 상태 //
-    const { signInUser, setSignInUser } = useAuthStore();
+  // state: 로그인 유저 정보 상태 //
+  const { signInUser, setSignInUser } = useAuthStore();
 
-    // state: cookie 상태 //
-    const [cookies, setCookie, removeCookie] = useCookies();
+  // state: cookie 상태 //
+  const [cookies, setCookie, removeCookie] = useCookies();
 
-    // function: 네비게이터 함수 //
-    const navigator = useNavigate();
+  // variable: access token //
+  const accessToken = cookies[ACCESS_TOKEN];
+
+  // function: 네비게이터 함수 //
+  const navigator = useNavigate();
+
+  // function: get my page user detail response 처리 함수 //
+  const getMyPageUserDetailResponse = (responseBody: GetMyPageUserDetailResponseDto | ResponseDto | null) => {
+    const message = !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+      const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+      if (!isSuccessed) {
+        alert(message);
+        return;
+      }
+      
+      const { userId, name: userName } = responseBody as GetMyPageUserDetailResponseDto;
+      setSignInUser({ userId, userName });
+  };
+
+  // effect: access token이 변경될 시 실행할 함수 //
+  useEffect(() => {
+    if (accessToken) {
+      getMyPageUserDetailRequest(accessToken).then(getMyPageUserDetailResponse);
+    }
+  }, [accessToken]);
 
   return (
     <Routes>

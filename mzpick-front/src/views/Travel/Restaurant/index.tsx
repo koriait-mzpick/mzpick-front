@@ -5,7 +5,7 @@ import { ResponseDto } from 'src/apis/dto/response';
 import { getRestaurantListRequest } from 'src/apis/restaurant';
 import { GetRestaurantListResponseDto } from 'src/apis/restaurant/dto/response';
 import { TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
-import { useSearchLocationStore } from 'src/stores';
+import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Restaurant } from 'src/types';
 import './style.css';
 
@@ -21,8 +21,10 @@ export default function RestaurantMain() {
   const [originalList, setOriginalList] = useState<Restaurant[]>([]);
   // state: 검색어 상태 //
   const location = useLocation();
-    // state:Zustand에서 searchLocation 상태 불러오기
-    const { searchLocation } = useSearchLocationStore();
+  // state:Zustand에서 searchLocation 상태 불러오기
+  const { searchLocation } = useSearchLocationStore();
+  // state: signInUser상태 //
+  const { signInUser } = useAuthStore();
 
   const [viewList, setViewList] = useState<Restaurant[]>([]);
 
@@ -48,22 +50,22 @@ export default function RestaurantMain() {
 
     setViewList(travelFoodList);
 
-if (searchLocation) {
-  const filteredList = travelFoodList.filter(item => item.travelLocation.includes(searchLocation));
-  setViewList(filteredList);
+    if (searchLocation) {
+      const filteredList = travelFoodList.filter(item => item.travelLocation.includes(searchLocation));
+      setViewList(filteredList);
 
-  if (filteredList.length === 0) {
-    alert('검색 결과가 없습니다.');
+      if (filteredList.length === 0) {
+        alert('검색 결과가 없습니다.');
+      }
+    } else {
+      setViewList(travelFoodList);
+    }
   }
-} else {
-  setViewList(travelFoodList);
-}
-}
 
-// function: 드롭다운 선택 시 이동
-const onDropDownSelect = (destination: string) => {
-  navigate (`${destination}`)
-};
+  // function: 드롭다운 선택 시 이동
+  const onDropDownSelect = (destination: string) => {
+    navigate(`${destination}`)
+  };
 
   // function: 네비게이터 함수 //
   const navigate = useNavigate();
@@ -125,7 +127,7 @@ const onDropDownSelect = (destination: string) => {
                   <div className='board-information-view-icon'></div>
                   <div className='board-information-data'>{item.travelFoodViewCount}</div>
                 </div>
-                <div className={`board-information-bookmark ${bookMarkClick ? 'active' : ''}`} onClick={() => setBookMarkClick(!bookMarkClick)}></div>
+                <div className={`board-information-bookmark ${signInUser && item.travelFoodSaveUserList.includes(signInUser.userId) ? 'active' : ''}`} ></div>
               </div>
             </div>
             <div className='board-tag'>{item.travelFoodHashtagList}</div>
