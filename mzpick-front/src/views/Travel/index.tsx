@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState , KeyboardEvent} from 'react';
 import { useSearchLocationStore } from 'src/stores';
 import { area } from './area';
 import './style.css';
 
-import { Map } from "react-kakao-maps-sdk"
+import { Map, MapMarker } from "react-kakao-maps-sdk"
 import { useLocation, useNavigate } from 'react-router';
 import { TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, VOTE_PATH } from '../../constants';
 
@@ -58,10 +58,17 @@ const AreaSelect = () => {
     if (!searchWord) setSearchLocation(selectedArea + ' ' + selectedSubArea);
   }
 
+  const onkeyDownSearchKeywordHandler = (event : KeyboardEvent<HTMLInputElement> | any) => {
+    
+    if(event.isComposing || event.keyCode === 229) return; 
+    if (event.key === 'Enter') {
+      setSearchLocation(searchWord);
+    }
+  }
   return (
     <div className='search-wrapper'>
       <div className='search-box'>
-        <input className='map-input-box' type="text" value={searchWord} placeholder='검색어를 입력해주세요' onChange={onSearchLocationChangeHandler} />
+        <input className='map-input-box' type="text" value={searchWord} placeholder='지역의 전체 이름을 입력해주세요 ex)부산광역시 남구' onKeyDown={onkeyDownSearchKeywordHandler} onChange={onSearchLocationChangeHandler} />
         <div className='select-box'>
           <select value={selectedArea} onChange={onSelectAreaChangeHandler} className="location-select">
             <option value="">지역을 선택해주세요</option>
@@ -110,10 +117,14 @@ const MapBox = ({ searchLocation }: any) => {
 
   return (
     <Map // 지도를 표시할 Container
-      id="map"
+      id='map'
       center={position}
-      level={3} // 지도의 확대 레벨
-    />
+      level={4} // 지도의 확대 레벨
+      >
+      <MapMarker // 마커를 생성합니다
+        position={position}
+        />
+    </Map>
   );
 };
 

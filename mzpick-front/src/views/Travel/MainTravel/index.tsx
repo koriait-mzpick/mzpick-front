@@ -24,7 +24,7 @@ export default function MainTravel() {
   // state: 검색어 상태 //
   const location = useLocation();
     // state:Zustand에서 searchLocation 상태 불러오기
-    const { searchLocation } = useSearchLocationStore();
+    const { searchLocation,  } = useSearchLocationStore();
 
   const [viewList, setViewList] = useState<Travel[]>([]);
 
@@ -83,6 +83,7 @@ if (searchLocation) {
   setViewList(filteredList);
 
   if (filteredList.length === 0) {
+    console.log("111111");
     alert('검색 결과가 없습니다.');
   }
 } else {
@@ -99,8 +100,6 @@ const onDropDownSelect = (destination: string) => {
 //   navigate(destination);
 // }
 };
-
-useEffect(getTravelList, []);
 
 
   // function: 네비게이터 함수 //
