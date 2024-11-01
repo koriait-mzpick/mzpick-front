@@ -1,10 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Map } from "react-kakao-maps-sdk";
 import { useSearchLocationStore } from 'src/stores';
 import { area } from './area';
 import './style.css';
 
-import { useSearchLocationStore } from 'src/stores';
 import { Map } from "react-kakao-maps-sdk"
 import { useLocation, useNavigate } from 'react-router';
 import { TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, VOTE_PATH } from '../../constants';
@@ -106,8 +104,6 @@ const MapBox = ({ searchLocation }: any) => {
         const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
         const position = { lng: coords.La, lat: coords.Ma };
         setPosition(position);
-      } else {
-        alert('주소를 찾을 수 없습니다.');
       }
     })
   }, [searchLocation]);
