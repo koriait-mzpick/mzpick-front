@@ -9,6 +9,7 @@ export default function Vote() {
   const [check, setCheck] = useState<boolean>(false);
   const [secondCheck, setSecondCheck] = useState<boolean>(false);
 
+
   const onClickModalHandler = () => {
     setModal(!modal);
   }
@@ -22,10 +23,20 @@ export default function Vote() {
   }
 
   const onClickCheckHandler = () => {
-    setCheck(!check);
+    if(secondCheck == false){
+      setCheck(!check);
+    } else if(secondCheck == true){
+      setSecondCheck(!secondCheck)
+      setCheck(!check)
+    }
   }
   const onClickSecondCheckHandler = () => {
-    setSecondCheck(!secondCheck);
+    if(check == false){
+      setSecondCheck(!secondCheck);
+    } else if(check == true){
+      setCheck(!check);
+      setSecondCheck(!secondCheck);
+    }
   }
   return (
     <div id='vote-main'>
@@ -46,11 +57,15 @@ export default function Vote() {
       </div> */}
         {nonePhotomodal &&
         <div className='vote-nonephoto-modal'>
-          <div className='modal-close' onClick={onClickNoneModalHandler} style={{cursor:"pointer"}}>x</div>
-          <div className='modal-title'>제목 | 제주도 갈까유 말까유</div>
+          <div className='close-main'>
+            <div className='modal-title'>제목 | 제주도 갈까유 말까유</div>
+            <div className='modal-close' onClick={onClickNoneModalHandler} style={{cursor:"pointer"}}>x</div>
+          </div>
           <div className='vote-modal-main'>
+
             <div className='modal-main-box'>
               <div className='modal-text-two'>
+                
                 <div className='modal-text-all' onClick={onClickCheckHandler}>
                   <div className='modal-first-text' style={{cursor:'pointer'}}>간다</div>
                   <div className='modal-first-text-two' style={{cursor:'pointer'}}>0%</div>
@@ -59,6 +74,7 @@ export default function Vote() {
                 <div className='modal-first-cehck' style={{cursor:'pointer'}}></div>
                 }
               </div>  
+              
               <div className='modal-text'>
                 <div className='modal-text-all-two' onClick={onClickSecondCheckHandler}>
                   <div className='modal-second-text' style={{cursor:'pointer'}}>안 간다</div>
@@ -67,9 +83,10 @@ export default function Vote() {
                 {secondCheck &&
                 <div className='modal-second-text-check' style={{cursor:'pointer'}}></div>
                 }
-                </div>  
+              </div>  
                 <button className='modal-button' style={{cursor:'pointer'}}>투표</button>
             </div>
+
           </div>
           <div className='vote-modal-bottom'>
               <button className='vote-user'>작성자</button>
@@ -94,21 +111,38 @@ export default function Vote() {
         { singlePhotomodal &&
         
         <div className='vote-nonephoto-modal' >
-          <div className='modal-close' onClick={onClickSingleModalHandler} style={{cursor:"pointer"}}>x</div>
-
-        <div className='singlemodal-title'>제목</div>
+         <div className='close-main'>
+            <div className='modal-title'>제목</div>
+            <div className='modal-close' onClick={onClickSingleModalHandler} style={{cursor:"pointer"}}>x</div>
+          </div>
         
         <div className='modal-singlephoto'>
+          <div className='modal-photo-all'>
             <div className='modal-photo'></div>
-            <div className='modal-photo-text'>제주</div>
-          <div className='singlemodal-text'>
-            <div className='singlemodal-first-text' style={{cursor:'pointer'}}>간다</div>
-            <div className='singlemodal-second-text' style={{cursor:'pointer'}}>안 간다</div>
-          <button className='singlemodal-button' style={{cursor:'pointer'}}>투표</button>
+            <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
           </div>
+          <div className='singlemodal-text'>
+            <div className='single-check'>
+                <div className='singlemodal-first-text' style={{cursor:'pointer'}} onClick={onClickCheckHandler}>간다</div>
+                {check &&
+                <div className='modal-singlefirst-cehck' style={{cursor:'pointer'}}></div>
+                }
+            </div>
+            <div className='single-secondcheck'>
+                <div className='singlemodal-second-text' style={{cursor:'pointer'}} onClick={onClickSecondCheckHandler}>안 간다</div>
+                {secondCheck &&
+                <div className='modal-singlesecond-text-check' style={{cursor:'pointer'}}></div>
+                }
+                </div>
+          <button className='singlemodal-button' style={{cursor:'pointer'}}>투표</button>
+            </div>
         </div>
+        <div className='vote-modal-bottom'>
+              <button className='vote-user'>작성자</button>
+          </div>
 
       </div>
+      
       }
         <div className='vote-list' onClick={onClickSingleModalHandler}>
           <div className='vote-name'>jenny</div>
@@ -128,21 +162,59 @@ export default function Vote() {
 
         {modal &&
           <div className='vote-nonephoto-modal' >
-          <div className='modal-close' onClick={onClickModalHandler} style={{cursor:"pointer"}}>x</div>
-            
-            <div className='doublemodal-title'>제목</div>
-            
-            <div className='modal-doublephoto'>
-                <div className='modal-firstphoto'></div>
-                <div className='modal-secondphoto'></div>
-              </div>
-              <div className='doublemodal-text'>
-                <div className='doublemodal-first-text' style={{cursor:'pointer'}}>간다</div>
-                  <div className='doublemodal-second-text' style={{cursor:'pointer'}}>안 간다</div>
-            </div>
-                <div className='double-button'>
-              <button className='doublemodal-button' style={{cursor:'pointer'}}>투표</button>
+          <div className='double-close-main'>
+            <div className='double-modal-title'>제목</div>
+            <div className='double-modal-close' onClick={onClickModalHandler} style={{cursor:"pointer"}}>x</div>
+          </div>
+              <div className='double-main'>
+                <div className='double-main-box'>
+                  <div className='modal-doublephoto'>
+                    <div className='total-photo'>
+                      <div className='modal-firstphoto'></div>
+                      <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
+                    </div>
+
+                    <div className='double-contents' >
+                      <div className='double-first-textall' onClick={onClickCheckHandler}>
+                        <div className='doublemodal-first-text' style={{cursor:'pointer'}}>간다</div>
+                        <div className='doublemodal-first-text-second' style={{cursor:'pointer'}}>0%</div>
+                      </div>
+                      {check &&
+                      <div className='modal-doublefirst-check' style={{cursor:'pointer'}}></div>
+                    } 
+                    </div>
+                  </div>
+
+                  <div className='modal-doublephoto'>
+                    <div className='total-photo'>
+                      <div className='modal-secondphoto'></div>
+                      <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
+                    </div>
+
+                    <div className='double-contents' >
+                      <div className='double-second-textall' onClick={onClickSecondCheckHandler}>
+                      <div className='doublemodal-second-text' style={{cursor:'pointer'}}>안 간다</div>
+                      <div className='doublemodal-second-text-second' style={{cursor:'pointer'}}>50%</div>
+                      </div>
+                      {secondCheck &&
+                      <div className='modal-doublesecond-check' style={{cursor:'pointer'}}></div>
+                      }
+                    </div>
+                  </div>
+                  
                 </div>
+
+                <div className='double-bottom'>
+
+                  <div className='doublevote-buttons'>
+                    <button className='doublemodal-button' style={{cursor:'pointer'}}>투표</button>
+                  </div>
+                <div className='doublevote-mainbutton'>
+              <button className='vote-user'>작성자</button>
+                </div>
+                </div>
+             </div>
+
          </div>
         }
         <div className='vote-list' onClick={onClickModalHandler}>
