@@ -65,9 +65,6 @@ const onDropDownSelect = (destination: string) => {
   navigate (`${destination}`)
 };
 
-useEffect(getStayList, []);
-
-
   // function: 네비게이터 함수 //
   const navigate = useNavigate();
 
