@@ -68,18 +68,11 @@ export default function Write() {
     setTravelTitle(value);
   };
 
-  // // event handler: 태그 변경 이벤트 처리 //
+  // event handler: 태그 변경 이벤트 처리 //
   // const travelHashtagContentListChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
   //   const { value } = event.target;
   //   setTravelHashtagContentList(value);
   // };
-
-  const travelHashtagContentListChangeHandler = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    const newtravelHashtagContentList = [...travelHashtagContentList];
-    newtravelHashtagContentList[index] = value;
-    setTravelHashtagContentList(newtravelHashtagContentList);
-  };
 
   // event handler: 지역 변경 이벤트 처리 //
   const travelLocationhangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -94,26 +87,26 @@ export default function Write() {
   };
   
   // event handler: 등록 버튼 클릭 이벤트 처리 함수 //
-  // const registerButtonClickHandler = async () => {
-  //   const accessToken = cookies[ACCESS_TOKEN];
-  //   if (!accessToken) return;
+  const registerButtonClickHandler = async () => {
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
 
-  //   if (!travelTitle || !travelHashtagContentList || !travelLocation || !travelPhotoList || !travelContent) {
-  //     alert('모두 입력해주세요.');
-  //     return;
-  //   }
-  //   // const formData = new FormData();
-  //   // travelPhotoList.forEach(file => {
-  //   //   formData.append('photos', file);
-  //   // });
+    if (!travelTitle || !travelHashtagContentList || !travelLocation || !travelPhotoList || !travelContent) {
+      alert('모두 입력해주세요.');
+      return;
+    }
+    // const formData = new FormData();
+    // travelPhotoList.forEach(file => {
+    //   formData.append('photos', file);
+    // });
 
 
-  //   const requestBody: PostTravelRequestDto = {
-  //     travelPhotoList,
-  //     travelTitle, travelHashtagContentList, travelLocation, travelContent
-  //   }
-  //   postcTravelRequest(requestBody, accessToken).then(postTravelResponse);
-  // }
+    // const requestBody: PostTravelRequestDto = {
+    //   travelPhotoList,
+    //   travelTitle, travelHashtagContentList, travelLocation, travelContent
+    // }
+    // postcTravelRequest(requestBody, accessToken).then(postTravelResponse);
+  }
 
   // render: 글쓰기 페이지 컴포넌트 렌더링//
   return (
@@ -137,7 +130,7 @@ export default function Write() {
         </div>
         <div className='write-box-bottom'>
           <div className='bottom-button-box'>
-            {/* <div className='bottom-button-box-register' onClick={registerButtonClickHandler}>등록</div> */}
+            <div className='bottom-button-box-register' onClick={registerButtonClickHandler}>등록</div>
             <div className='bottom-button-box-cancel'>취소</div>
           </div>
         </div>
