@@ -2,8 +2,11 @@
 import { useNavigate } from 'react-router';
 import { HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_TRAVEL_PATH } from 'src/constants';
 import './style.css';
+import { useState } from 'react';
 
 function FashionTop1() {
+
+
 
     // function: 네비게이션 상태 //
     const navigator = useNavigate();
@@ -12,6 +15,8 @@ function FashionTop1() {
     const onButtonClickEventHandler = (path: string) =>{
       navigator(path);
     };
+
+
 
   return (
     <div id='main-hof-wrapper'>

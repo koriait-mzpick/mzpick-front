@@ -11,6 +11,7 @@ interface Props {
 
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     onButtonClick?: () => void;
+    onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export default function InputBox({ 
@@ -22,12 +23,14 @@ export default function InputBox({
     buttonName, 
     onChange,
     onButtonClick,
+    onKeyDown,
+    
 }: Props) {
 
     return (
         <div className="input-box">
             <div className="input-area">
-                <div className="input-text">
+                <div className="input-text" >
                     <input value={value} type={type} placeholder={placeholder} onChange={onChange} />
                     <div className="shadow"></div>
                 </div>
