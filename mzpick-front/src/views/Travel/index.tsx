@@ -1,9 +1,8 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
-import axios from 'axios';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Map } from "react-kakao-maps-sdk";
+import { useSearchLocationStore } from 'src/stores';
 import { area } from './area';
 import './style.css';
-import { useSearchLocationStore } from 'src/stores';
-import { Map } from "react-kakao-maps-sdk"
 declare global {
   interface Window {
     kakao: any;
