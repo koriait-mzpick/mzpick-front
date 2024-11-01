@@ -25,7 +25,8 @@
 }
 
 #main-write .write-box .write-box-title,
-#main-write .write-box .write-box-middle  .middle-tag,
+#main-write .write-box .write-box-middle .middle-tag,
+#main-write .write-box .write-box-middle .middle-location,
 #main-write .write-box .write-box-contents-box .contents-box-text {
     width: 940px;
     border-radius: 10px;
@@ -61,11 +62,17 @@
 }
 
 #main-write .write-box .write-box-middle .middle-tag {
-    width: 850px;
+    width: 610px;
+    height: 50px;
+}
+
+#main-write .write-box .write-box-middle .middle-location {
+    width: 150px;
     height: 50px;
 }
 
 #main-write .write-box .write-box-middle .middle-tag::placeholder,
+#main-write .write-box .write-box-middle .middle-location::placeholder,
 #main-write .write-box .write-box-contents-box .contents-box-text::placeholder {
     font-family: 'Pretendard-Regular';
     src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
@@ -105,7 +112,7 @@
     resize: none;
 }
 
-#main-write .write-box .write-box-contents-box .contents-box-preview-image-box {
+#main-write .write-box .write-box-contents-box .contents-box-preview-photo-box {
     display: flex;
     width: 880px;
     height: 300px;
@@ -113,7 +120,7 @@
     gap: 20px;
 }
 
-#main-write .write-box .write-box-contents-box .contents-box-preview-image-box .contents-box-preview-image {
+#main-write .write-box .write-box-contents-box .contents-box-preview-photo-box .contents-box-preview-photo {
     width: 280px;
     height: 230px;
     border-radius: 10px;
