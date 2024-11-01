@@ -6,8 +6,6 @@ export default function HOF() {
     return (
         <>
         <HOFTravel/>
-        <HOFFood/>
-        <HOFFashion/>
         </>
     )
 }

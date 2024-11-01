@@ -15,31 +15,24 @@ function FashionTop1() {
 
   return (
     <div id='main-hof-wrapper'>
-      
+      <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+      <div className='wrapper-container'>
         <div className='text-area'>"Fashion Top 1"</div>
-        <div className='icon-area'></div>
-
-      {/* <div className='main-contents'> */}
-      
-
-      <div className='deco-container'>
-      <div className="decorated-img"></div>
-      <div className='image-area'></div>
-      
-
-      <div className='button-container'>
-      <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_TRAVEL_PATH)}>○</div>
-      <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_FOOD_PATH)}>○</div>
-      <div className='button-box'onClick={() => onButtonClickEventHandler(HOF_FASHION_PATH)}>○</div>
+        <div className='deco-container'>
+          <div className='image-box'>
+            <div className='decorated-img'></div>
+              <div className='image-area'></div>
+                
+          </div>
+          <div className='button-container'>
+            <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_TRAVEL_PATH)}>○</div>
+            <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_FOOD_PATH)}>○</div>
+            <div className='button-box'onClick={() => onButtonClickEventHandler(HOF_FASHION_PATH)}>○</div>
+          </div>
+        </div>
+      <div className='icon-area'></div>
       </div>
-
-      </div>
-
-      
-      </div>
-
-      
-    
+    </div>
   )
 }
 

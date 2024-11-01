@@ -1,8 +1,140 @@
+import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { useLocation, useNavigate } from 'react-router';
+import { ResponseDto } from 'src/apis/dto/response';
+import { getStayListRequest } from 'src/apis/stay';
+import { GetStayListResponseDto } from 'src/apis/stay/dto/response';
+import { TRAVEL__STAY_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, WRITE_PATH } from 'src/constants';
+import { useSearchLocationStore } from 'src/stores';
+import { Stay } from 'src/types';
 import './style.css';
 
-export default function Stay() {
+export default function StayMain() {
+
+  // state: 쿠키상태 //
+  const [cookies] = useCookies();
+  // state: 드롭다운 상태//
+  const [dropDownOpen, setDropDownOpen] = useState(false);
+  // state: 북마크 상태 //
+  const [bookMarkClick, setBookMarkClick] = useState(false);
+  // state: 원본 리스트 상태 //
+  const [originalList, setOriginalList] = useState<Stay[]>([]);
+  // state: 검색어 상태 //
+  const location = useLocation();
+    // state:Zustand에서 searchLocation 상태 불러오기
+    const { searchLocation } = useSearchLocationStore();
+
+  const [viewList, setViewList] = useState<Stay[]>([]);
+
+  // function: get Travel List 함수 //
+  const getStayList = () => {
+    getStayListRequest(1).then(getStayResponseDto);
+  }
+
+  // function: get Travel Response 함수 //
+  const getStayResponseDto = (resposenBody: GetStayListResponseDto | ResponseDto | null) => {
+    const message =
+      !resposenBody ? '서버에 문제가 있습니다.' :
+        resposenBody.code === 'AF' ? '잘못된 접근입니다.' :
+          resposenBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = resposenBody !== null && resposenBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    const { stay } = resposenBody as GetStayListResponseDto;
+
+    setViewList(stay);
+
+if (searchLocation) {
+  const filteredList = stay.filter(item => item.travelLocation.includes(searchLocation));
+  setViewList(filteredList);
+
+  if (filteredList.length === 0) {
+    alert('검색 결과가 없습니다.');
+  }
+} else {
+  setViewList(stay);
+}
+}
+
+// function: 드롭다운 선택 시 이동
+const onDropDownSelect = (destination: string) => {
+  navigate (`${destination}`)
+};
+
+useEffect(getStayList, []);
+
+
+  // function: 네비게이터 함수 //
+  const navigate = useNavigate();
+
+  // function: 날짜 포맷 변경 함수 //
+  const changeDateFormat = (date: string) => {
+    const yy = date.substring(2, 4);
+    const mm = date.substring(5, 7);
+    const dd = date.substring(8, 10);
+    return `${yy}.${mm}.${dd}`;
+  };
+
+  // event handler: 드롭다운 오픈 이벤트 처리 //
+  const dropDownOpenhandler = () => {
+    setDropDownOpen(!dropDownOpen);
+  }
+
+  // event handler: 북마크 클릭 이벤트 처리 //
+  const bookMarkClickHandler = () => {
+    setBookMarkClick(!bookMarkClick);
+  }
+
+  // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
+  const onItemClickHandler = (path: string) => {
+    navigate(path);
+  };
+
+  useEffect(getStayList, []);
+
+  // render: 여행 게시판 리스트 컴포넌트 렌더링//  
   return (
-    <>
-    </>
-  )
+    <div id='list-main'>
+      <div className='board-top'>
+        <div className='drop-down-box'>
+          <div className='drop-down-main' onClick={dropDownOpenhandler}>
+            <div className='drop-down-main-text'>숙박</div>
+            <div className='drop-down-button'></div>
+          </div>
+          <div className={`drop-down-sub ${dropDownOpen ? 'active' : ''}`}>
+            <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_PATH)}>여행</div>
+            <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_RESTAURANT_PATH)}>외식</div>
+            <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_CAFE_PATH)}>카페</div>
+          </div>
+        </div>
+        <div className='write-button' onClick={() => onItemClickHandler(WRITE_PATH)}>글쓰기</div>
+      </div>
+      <div className='board-middle'>
+        {viewList.map((item) => (
+          <div key={item.traveStayNumber} className='board-box'>
+            <div className='board-image' onClick={() => navigate(`${TRAVEL__STAY_DETAIL_PATH}/${item.traveStayNumber}`)}></div>
+            <div className='board-information'>
+              <div className='board-information-data'>{changeDateFormat(item.travelStayDate)}</div>
+              <div className='board-information-right'>
+                <div className='board-information-like'>
+                  <div className='board-information-like-icon'></div>
+                  <div className='board-information-data'>{item.travelStayLikeCount}</div>
+                </div>
+                <div className='board-information-view'>
+                  <div className='board-information-view-icon'></div>
+                  <div className='board-information-data'>{item.travelStayViewCount}</div>
+                </div>
+                <div className={`board-information-bookmark ${bookMarkClick ? 'active' : ''}`} onClick={() => setBookMarkClick(!bookMarkClick)}></div>
+              </div>
+            </div>
+            <div className='board-tag'>{item.travelStayHashtag}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }

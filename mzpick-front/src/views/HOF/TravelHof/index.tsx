@@ -13,27 +13,26 @@ function TravelTop1() {
       navigator(path);
     };
 
-  return (
-    <div id='main-hof-wrapper'>
-      <div className='item-box'>
-        <div className='text-area'>"Travel Top 1"</div>
+    return (
+      <div id='main-hof-wrapper'>
+        <div className='wrapper-container'>
+          <div className='text-area'>"Travle Top 1"</div>
+          <div className='deco-container'>
+            <div className='image-box'>
+              <div className="decorated-img"></div>
+                <div className='image-area'></div>
+                  
+            </div>
+            <div className='button-container'>
+              <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_TRAVEL_PATH)}>○</div>
+              <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_FOOD_PATH)}>○</div>
+              <div className='button-box'onClick={() => onButtonClickEventHandler(HOF_FASHION_PATH)}>○</div>
+            </div>
+          </div>
         <div className='icon-area'></div>
+        </div>
       </div>
-
-      <div className='main-contents'>
-      <div className='image-area'></div>
-      
-      <div className='deco-container'>
-      <div className="decorated-img"></div>
-      <div className='button-contaner'>
-      <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_TRAVEL_PATH)}>○</div>
-      <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_FOOD_PATH)}>○</div>
-      <div className='button-box'onClick={() => onButtonClickEventHandler(HOF_FASHION_PATH)}>○</div>
-      </div>
-      </div>
-      </div>
-    </div>
-  )
+    )
 }
 
 export default function HOFTravel() {
