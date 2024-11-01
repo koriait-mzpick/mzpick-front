@@ -10,7 +10,7 @@ const TRAVEL_MODULE_URL = `${MZPICK_API_DOMAIN}/api/v1/travel`;
 
 const GET_TRAVEL_LIST_API_URL = `${TRAVEL_MODULE_URL}/`;
 const GET_TRAVEL_DETAIL_API_URL = (travelNumber: number | string) => `${TRAVEL_MODULE_URL}/${travelNumber}`;
-const POST_TRAVEL_API_URL = `${TRAVEL_MODULE_URL}/}`;
+const POST_TRAVEL_API_URL = `${TRAVEL_MODULE_URL}/`;
 const PATCH_TRAVEL_API_URL = (travelNumber: number | string) => `${TRAVEL_MODULE_URL}/${travelNumber}`;
 const DELETE_TRAVEL_API_URL = (travelNumber: number | string) => `${TRAVEL_MODULE_URL}/${travelNumber}`;
 const POST_UP_VIEW_TRAVEL_API_URL = (travelNumber: number | string) => `${TRAVEL_MODULE_URL}/view/${travelNumber}`;

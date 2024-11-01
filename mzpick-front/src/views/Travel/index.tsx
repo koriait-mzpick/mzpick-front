@@ -39,6 +39,7 @@ const AreaSelect = () => {
 
   const onSelectSubAreaChangeHanler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSubArea(e.target.value);
+    
   };
 
   const onSearchLocationChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {

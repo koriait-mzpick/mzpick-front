@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import './style.css';
 import { useCookies } from 'react-cookie';
 import { ResponseDto } from 'src/apis/dto/response';
@@ -15,8 +15,7 @@ export default function Write() {
 
   // state: 게시글 인풋 상태 //
   const [travelTitle, setTravelTitle] = useState<string>('');
-  // const [travelHashtagContentList, setTravelHashtagContentList] = useState<string[]>([]);
-  const [travelHashtagContentList, setTravelHashtagContentList] = useState<string>('');
+  const [travelHashtagContentList, setTravelHashtagContentList] = useState<string[]>([]);
   const [travelLocation, setTravelLocation] = useState<string>('');
   const [travelPhotoList, setTravelPhotoList] = useState<File[]>([]);
   const [travelContent, setTravelContent] = useState<string>('');
@@ -51,14 +50,16 @@ export default function Write() {
   
   // event handler: 이미지 변경 이벤트 처리 함수 //
   const photoInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const { files } = event.target;
-    if (!files || files.length === 0) return;
-    const newFiles = Array.from(files);
-    if (newFiles.length < 3) {
+    if (travelPhotoList.length >= 3) {
       alert("최대 3장까지만 업로드할 수 있습니다.");
       return;
     }
+    const { files } = event.target;
+    if (!files || files.length === 0) return;
+    const file = files[0];
+    const newFiles = [...travelPhotoList, file];
     const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file));
+    console.log(newPreviewUrls, newFiles)
     setTravelPhotoList(newFiles);
     setPreviewUrls(newPreviewUrls);
   };
@@ -72,7 +73,7 @@ export default function Write() {
   // event handler: 태그 변경 이벤트 처리 //
   const travelHashtagContentListChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setTravelHashtagContentList(value);
+    setTravelHashtagContentList(value.split(","));
   };
 
   // event handler: 지역 변경 이벤트 처리 //
@@ -85,6 +86,7 @@ export default function Write() {
   const travelContentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
     setTravelContent(value);
+    console.log(travelHashtagContentList);
   };
   
   // event handler: 등록 버튼 클릭 이벤트 처리 함수 //
@@ -96,24 +98,21 @@ export default function Write() {
       alert('모두 입력해주세요.');
       return;
     }
-    // const formData = new FormData();
-    // travelPhotoList.forEach(file => {
-    //   formData.append('photos', file);
-    // });
 
-    let urlString: string[] = [];
-    if (travelPhotoList && travelPhotoList.length > 0) {
+    const travelPhotoListUrl: string[] = [];
+    for (const file of travelPhotoList) {
       const formData = new FormData();
-    travelPhotoList.forEach((file, index) => {
-      formData.append('files[]', file);
-    });
-    // urlString = await fileUploadRequest(formData)
-
+      formData.append('file', file);
+      const url = await fileUploadRequest(formData);
+      if (url) travelPhotoListUrl.push(url);
     }
 
     const requestBody: PostTravelRequestDto = {
-      travelPhotoList: urlString,
-      travelTitle, travelHashtagContentList, travelLocation, travelContent
+      travelPhotoList: travelPhotoListUrl,
+      travelTitle, 
+      travelHashtagContentList,
+      travelLocation,
+      travelContent
     }
     postcTravelRequest(requestBody, accessToken).then(postTravelResponse);
   }
@@ -127,7 +126,7 @@ export default function Write() {
           <input className='middle-tag' value={travelHashtagContentList} placeholder='태그를 입력하세요. (최대 3개)' onChange={travelHashtagContentListChangeHandler} />
           <input className='middle-location' value={travelLocation} placeholder='지역을 입력하세요.' onChange={travelLocationhangeHandler}/>
           <div className='middle-attached-file' onClick={attachedFileButtonClickHandler}>
-            <input ref={photoInputRef} style={{ display: 'none' }} type='file' accept='image/*' multiple onChange={photoInputChangeHandler} />
+            <input ref={photoInputRef} style={{ display: 'none' }} type='file' accept='image/*' onChange={photoInputChangeHandler} />
           </div>
         </div>
         <div className='write-box-contents-box'>
