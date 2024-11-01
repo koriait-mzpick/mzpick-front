@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState, Component } from 'react'
 import './style.css';
 import { useCookies } from 'react-cookie';
 import { ResponseDto } from 'src/apis/dto/response';
@@ -6,6 +6,7 @@ import { ACCESS_TOKEN } from 'src/constants';
 import { PostTravelRequestDto } from 'src/apis/travel/dto/request';
 import { postcTravelRequest } from 'src/apis/travel';
 import { fileUploadRequest } from 'src/apis';
+import { useNavigate } from 'react-router-dom';
 
 // component: 글쓰기 페이지 컴포넌트 //
 export default function Write() {
@@ -25,6 +26,13 @@ export default function Write() {
 
   // state: 이미지 미리보기 URL 상태 //
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
+  // variable: 등록 가능 여부 //
+  const isWriteComplete = travelTitle && travelHashtagContentList && travelLocation && travelPhotoList && travelContent;
+
+  // function: 네비게이터 함수 //
+  const navigator = useNavigate();
+
 
   // function: post Travel response 처리 함수 //
   const postTravelResponse = (responseBody: ResponseDto | null) => {
@@ -52,6 +60,13 @@ export default function Write() {
   const photoInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     if (travelPhotoList.length >= 3) {
       alert("최대 3장까지만 업로드할 수 있습니다.");
+      if (window.confirm("초기화 하시고 다시 첨부 하시겠습니까?")){
+        setTravelPhotoList([]);
+        setPreviewUrls([]);
+        alert("다시 첨부 해주시기 바랍니다.");
+      } else{
+        alert("취소 되었습니다.");
+      }
       return;
     }
     const { files } = event.target;
@@ -99,6 +114,13 @@ export default function Write() {
       return;
     }
 
+    if (window.confirm("등록하시겠습니까?")) {
+      alert("등록이 완료되었습니다!");
+    } else {
+      alert("취소되었습니다.");
+      return;
+    } 
+
     const travelPhotoListUrl: string[] = [];
     for (const file of travelPhotoList) {
       const formData = new FormData();
@@ -115,6 +137,8 @@ export default function Write() {
       travelContent
     }
     postcTravelRequest(requestBody, accessToken).then(postTravelResponse);
+
+
   }
 
   // render: 글쓰기 페이지 컴포넌트 렌더링//
@@ -139,7 +163,7 @@ export default function Write() {
         </div>
         <div className='write-box-bottom'>
           <div className='bottom-button-box'>
-            <div className='bottom-button-box-register' onClick={registerButtonClickHandler}>등록</div>
+            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={registerButtonClickHandler}>등록</div>
             <div className='bottom-button-box-cancel'>취소</div>
           </div>
         </div>

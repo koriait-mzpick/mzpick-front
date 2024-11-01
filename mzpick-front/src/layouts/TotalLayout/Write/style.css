@@ -156,7 +156,7 @@
     cursor: default;
 }
 
-/* #main-write .write-box .write-box-bottom .bottom-button-box-register, */
+#main-write .write-box .write-box-bottom .bottom-button-box-register.active,
 #main-write .write-box .write-box-bottom .bottom-button-box-cancel {
     display: flex;
     justify-content: center;
