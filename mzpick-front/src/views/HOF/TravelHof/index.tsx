@@ -14,28 +14,30 @@ function TravelTop1() {
     const navigator = useNavigate();
 
     // state: travel top1 상태 //
-    const [topTravel, setTopTravel] = useState<GetTravelHallOfFameResponseDto | ResponseDto | null>(null);
-
-    // const getTravelHof = () => {
-
-    //   const setTopTravel = getTravelHallOfFameRequest();
-    // }
+    const [topTravelphotoLink, setTopTravelphotoLink] = useState<string>('');
+    const [topTravelNumber, setTopTravelNumber] = useState<string | number>();
 
 
-    const getTravelHof = async () => {
-      try {
-        const response = await getTravelHallOfFameRequest(); 
-        console.log('API Response:', response); 
-        if (response && response.code === 'SU')
-        setTopTravel(response);
-      } catch (error) {
-        console.error('Error:', error); 
+    const getTopTravelResponse = (responseBody: GetTravelHallOfFameResponseDto | ResponseDto | null) => {
+      const message = 
+      !responseBody ? '서버에 문제가 있습니다':
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'NB' ? '등록된 게시판이 없습니다': '';
+
+      const isSuccessed = responseBody !== null && responseBody.code ==='SU';
+      if(!isSuccessed){
+        alert(message);
+        return;
       }
-    };
+
+      const { travelNumber,  photoLink } = responseBody as GetTravelHallOfFameResponseDto;
+      setTopTravelphotoLink(photoLink);
+      setTopTravelNumber(travelNumber); 
+    }
 
     // effect: travel top1 불러오기 함수 //
-    useEffect(() => {
-      getTravelHof(); 
+    useEffect(()=>{
+      getTravelHallOfFameRequest().then(getTopTravelResponse);
     }, []);
 
     // event handler: 명예의전당 buttonbox 클릭 이벤트 //
@@ -53,22 +55,9 @@ function TravelTop1() {
           <div className='icon-area'></div>
             <div className='image-box'>
               <div className="decorated-img"></div>
-              
-              { topTravel ? ( 
-                'photoLink' in topTravel ? (
               <div className='image-area'>
-                <img src={topTravel.photoLink} alt="Top Travel" />
+                <img style={{ width: '100px' }} src={topTravelphotoLink} alt="Top Travel" />
               </div>
-              ) : (
-                <p>No photo available</p>
-                
-              )
-            ) : (
-              <p>Loading...</p> // 로딩 중일 때 메시지
-            
-              
-              )}
-
               <div className='button-container'>
                 <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_TRAVEL_PATH)}>○</div>
                 <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_FOOD_PATH)}>○</div>
