@@ -45,8 +45,6 @@ function TravelTop1() {
       navigator(path);
     };
 
-    console.log('topTravel:', topTravel);
-
     // render: 명예의 전당 travel 화면 컴포넌트 렌더링 //
     return (
       <div id='main-hof-wrapper'>
@@ -56,7 +54,10 @@ function TravelTop1() {
             <div className='image-box'>
               <div className="decorated-img"></div>
               <div className='image-area'>
-                <img style={{ width: '100px' }} src={topTravelphotoLink} alt="Top Travel" />
+                
+                  <div className='link-area' style={{ backgroundImage: `url(${topTravelphotoLink})`}}></div>
+                
+                
               </div>
               <div className='button-container'>
                 <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_TRAVEL_PATH)}>○</div>
