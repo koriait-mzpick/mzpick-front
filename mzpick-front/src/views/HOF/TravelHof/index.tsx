@@ -14,14 +14,32 @@ function TravelTop1() {
     const navigator = useNavigate();
 
     // state: travel top1 상태 //
-    const [topTravel, setTopTravel] = useState<GetTravelHallOfFameResponseDto>();
+    const [topTravelphotoLink, setTopTravelphotoLink] = useState<string>('');
+    const [topTravelNumber, setTopTravelNumber] = useState<string | number>();
 
-    const getTravelHof = () => {
-      const setTopTravel = getTravelHallOfFameRequest();
+
+    const getTopTravelResponse = (responseBody: GetTravelHallOfFameResponseDto | ResponseDto | null) => {
+      const message = 
+      !responseBody ? '서버에 문제가 있습니다':
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'NB' ? '등록된 게시판이 없습니다': '';
+
+      const isSuccessed = responseBody !== null && responseBody.code ==='SU';
+      if(!isSuccessed){
+        alert(message);
+        return;
+      }
+
+      const { travelNumber,  photoLink } = responseBody as GetTravelHallOfFameResponseDto;
+      setTopTravelphotoLink(photoLink);
+      setTopTravelNumber(travelNumber); 
     }
 
     // effect: travel top1 불러오기 함수 //
-    useEffect(getTravelHof, []);
+    useEffect(()=>{
+      getTravelHallOfFameRequest().then(getTopTravelResponse);
+      console.log();
+    }, []);
 
     // event handler: 명예의전당 buttonbox 클릭 이벤트 //
     const onButtonClickEventHandler = (path: string) =>{
@@ -35,11 +53,9 @@ function TravelTop1() {
           <div className='icon-area'></div>
             <div className='image-box'>
               <div className="decorated-img"></div>
-              { topTravel && (
               <div className='image-area'>
-                <img src={topTravel.photoLink} alt="Top Travel" />
+                <img style={{ width: '100px' }} src={topTravelphotoLink} alt="Top Travel" />
               </div>
-              ) }
               <div className='button-container'>
                 <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_TRAVEL_PATH)}>○</div>
                 <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_FOOD_PATH)}>○</div>
