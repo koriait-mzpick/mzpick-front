@@ -51,6 +51,8 @@
     background-repeat: no-repeat; 
 }
 
+
+
 #main-hof-wrapper .wrapper-container .image-box {
     grid-column: 1 / span 3;
     grid-row: 2;
@@ -92,4 +94,8 @@
     display: flex;
     gap: 20px;
     cursor: pointer;
+}
+
+#main-hof-wrapper .wrapper-container .image-box .image-area .image-area-photo{
+    background-size: 100%;
 }
