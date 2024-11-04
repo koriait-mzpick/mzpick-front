@@ -38,7 +38,6 @@ function TravelTop1() {
     // effect: travel top1 불러오기 함수 //
     useEffect(()=>{
       getTravelHallOfFameRequest().then(getTopTravelResponse);
-      console.log();
     }, []);
 
     // event handler: 명예의전당 buttonbox 클릭 이벤트 //
@@ -46,6 +45,9 @@ function TravelTop1() {
       navigator(path);
     };
 
+    console.log('topTravel:', topTravel);
+
+    // render: 명예의 전당 travel 화면 컴포넌트 렌더링 //
     return (
       <div id='main-hof-wrapper'>
         <div className='wrapper-container'>
