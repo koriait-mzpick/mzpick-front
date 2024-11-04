@@ -2,13 +2,9 @@
     display: flex;
     width: 1385px;
     height: 30px;
-
+    position: relative;
     justify-content: center;
-    align-items: center;
-
-    margin-top: 41px;
-    margin-bottom: 40px;
-
+    top: 1000px;
     font-family: 'Pretendard-Bold.otf';
     font-size: 14px;
 }
