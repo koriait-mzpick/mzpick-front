@@ -41,6 +41,7 @@ export const MY_PAGE_PATH = '/mypage'
 
 export const WRITE_PATH = '/write'
 
+export const SNS_SUCCESS_PATH = '/sns-success';
 export const OTHERS_PATH = '*';
 
 // variable: 절대경로 상수

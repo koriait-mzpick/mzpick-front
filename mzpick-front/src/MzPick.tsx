@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import './MzPick.css';
-import { ACCESS_TOKEN, FASHION_PATH, FOOD_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, WRITE_PATH } from './constants';
+import { Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
+
+import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, FASHION_PATH, FOOD_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, ROOT_PATH, SIGN_IN_PATH, SIGN_UP_PATH, SNS_SUCCESS_PATH, TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, VOTE_DETAILPATH, VOTE_PATH, WRITE_PATH } from './constants';
 
 import { ResponseDto } from './apis/dto/response';
 import { getMyPageUserDetailRequest } from './apis/mypage';
@@ -31,9 +31,8 @@ import VoteDetail from './views/Vote/VoteDetail';
 import VoteDetailPhoto from './views/Vote/VoteDetailPhoto';
 import VoteDoublePhoto from './views/Vote/VoteDoublePhoto';
 
-
+// component: root path 컴포넌트 //
 function Index() {
-
 
   // state: 쿠키 상태 //
   const [cookies, setCookie] = useCookies();
@@ -52,7 +51,39 @@ function Index() {
     <></>
   );
 }
+
+// component: Sns Success 컴포넌트 //
+function SnsSuccess() {
+
+  // state: Query Parameter 상태 //
+  const [qeuryParam] = useSearchParams();
+  const accessToken = qeuryParam.get('accessToken');
+  const expiration = qeuryParam.get('expiration');
+
+  // state: cookie 상태 //
+  const [cookies, setCookie] = useCookies();
+
+  // function: 네비게이터 함수 //
+  const navigator = useNavigate();
+
+  // effect: Sns Success 컴포넌트 로드시 accessToken과 expiration을 확인하여 로그인 처리 함수 //
+  useEffect(() => {
+      if (accessToken && expiration) {
+          const expires = new Date(Date.now() + (Number(expiration) * 1000));
+          setCookie(ACCESS_TOKEN, accessToken, { path: ROOT_PATH, expires });
+
+          navigator(HOME_PATH);
+      } 
+      else navigator(AUTH_ABSOLUTE_PATH);
+  }, []);
+
+  // render: Sns Success 컴포넌트 렌더링 //
+  return <></>;
+}
+
+// component: MzPick 컴포넌트 //
 export default function MzPick() {
+
   // state: 로그인 유저 정보 상태 //
   const { signInUser, setSignInUser } = useAuthStore();
 
@@ -87,6 +118,7 @@ export default function MzPick() {
     }
   }, [accessToken]);
 
+   // render: MzPick 컴포넌트 렌더링 //
   return (
     <Routes>
       <Route index element={<Index />} />
@@ -146,6 +178,7 @@ export default function MzPick() {
         <Route path={VOTE_DETAILPHOTOPATH} element={< VoteDetailPhoto />} />
         <Route path={VOTE_DOUBLEPHOTOPATH} element={< VoteDoublePhoto />} />
       </Route>
+      <Route path={SNS_SUCCESS_PATH} element={<SnsSuccess />} />
     </Routes>
   );
 }
