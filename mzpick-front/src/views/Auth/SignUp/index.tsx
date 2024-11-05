@@ -6,7 +6,7 @@ import { SIGN_IN_PATH } from "../../../constants";
 import SnsContainer from "../Sns";
 import BottomNav from "../../../layouts/BottomNav";
 import { ResponseDto } from "../../../apis/dto/response";
-import { idCheckRequest, signUpRequest, telAuthCheckRequest, telAuthRequest } from "src/apis/auth/dto";
+import { idCheckRequest, telAuthRequest, telAuthCheckRequest, signUpRequest } from "src/apis/auth/dto";
 import { IdCheckRequestDto, TelAuthRequestDto, TelAuthCheckRequestDto, SignUpRequestDto } from "src/apis/auth/dto/request";
 
 
