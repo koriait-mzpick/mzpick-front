@@ -183,6 +183,15 @@
     background-size: cover;
 }
 
+#list-main .board-middle .board-box .board-information .board-information-right .board-information-like-icon.active{
+    display: flex;
+    width: 17px;
+    height: 15px;
+    background-image: url(/public/image/on-heart-Icon.png);
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
 #list-main .board-middle .board-box .board-information .board-information-right .board-information-view {
     display: flex;
     align-items: center;
