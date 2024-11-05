@@ -1,6 +1,6 @@
 import React, { ChangeEvent, MouseEvent, useState } from 'react'
-import VoteDetail from './Vote-Detail';
 import './style.css';
+import VoteDetail from './VoteDetail';
 
 export default function Vote() {
   const [modal, setModal] = useState<boolean>(false);
