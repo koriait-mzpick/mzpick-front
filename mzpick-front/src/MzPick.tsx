@@ -18,7 +18,7 @@ import Fashion from './views/Fashion';
 import Food from './views/Food';
 import HOFFashion from './views/HOF/FashionHof';
 import HOFFood from './views/HOF/FoodHof';
-// import HOFTravel from './views/HOF/TravelHof';
+import HOFTravel from './views/HOF/TravelHof';
 import Home from './views/Home';
 import Keyword from './views/Keyword';
 import MyPage from './views/MyPage';
@@ -158,8 +158,8 @@ export default function MzPick() {
       </Route>
 
       <Route path={HOF_PATH} element={<MainLayout />}>
-        {/* < Route path={HOF_PATH} element={< HOFTravel />} /> */}
-        {/* < Route path={HOF_TRAVEL_PATH } element={< HOFTravel />} /> */}
+        < Route path={HOF_PATH} element={< HOFTravel />} />
+        < Route path={HOF_TRAVEL_PATH } element={< HOFTravel />} />
         < Route path={HOF_FOOD_PATH} element={< HOFFood />} />
         < Route path={HOF_FASHION_PATH} element={< HOFFashion />} />
       </Route>
