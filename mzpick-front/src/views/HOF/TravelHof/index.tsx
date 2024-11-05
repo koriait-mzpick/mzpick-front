@@ -1,48 +1,50 @@
 
 import { useNavigate } from 'react-router';
 import { HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_TRAVEL_PATH } from 'src/constants';
-import './style.css';
+import '../style.css';
 import { GetTravelHallOfFameResponseDto } from 'src/apis/hall_of_fame/dto/response';
 import { useEffect, useState } from 'react';
 import { getTravelHallOfFameRequest } from 'src/apis/hall_of_fame';
 import { ResponseDto } from 'src/apis/dto/response';
-import { getTravelDetailRequest, getTravelListRequest } from 'src/apis/travel';
-import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
+import { TravelPhoto } from 'src/types';
 
 function TravelTop1() {
-
-    // state: 여행지 //
-    const [travelNumber, setTravelNumber] = useState<string>('');
-
-    const [topItem, setTopItem] = useState(null);
-
-
-    const TravelDetail = () => {
-      const [topTravelPost, setTopTravelPost] = useState<GetTravelDetailResponseDto | null>(null);
-      const [error, setError] = useState('');
-  
-
 
     // function: 네비게이션 상태 //
     const navigator = useNavigate();
 
-    // function: 명예의전당 여행지 Response 처리 함수 //
-    const GetTravelHallOfFameResponse = (responseBody: ResponseDto) => {
+    // state: travel top1 상태 //
+    const [topTravelphotoLink, setTopTravelphotoLink] = useState<string>('');
+    const [topTravelNumber, setTopTravelNumber] = useState<string | number>();
+
+
+    const getTopTravelResponse = (responseBody: GetTravelHallOfFameResponseDto | ResponseDto | null) => {
       const message = 
-        !responseBody ? '서버에 문제가 있습니다.' : 
-        responseBody.code === "VF" ? '올바른 데이터가 아닙니다.' :
+      !responseBody ? '서버에 문제가 있습니다':
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'NB' ? '등록된 게시판이 없습니다': '';
 
+      const isSuccessed = responseBody !== null && responseBody.code ==='SU';
+      if(!isSuccessed){
+        alert(message);
+        return;
+      }
 
-        responseBody.code === "SU" ? '사용 가능' : ''
-
-        const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-
+      const { travelNumber,  photoLink } = responseBody as GetTravelHallOfFameResponseDto;
+      setTopTravelphotoLink(photoLink);
+      setTopTravelNumber(travelNumber); 
     }
+
+    // effect: travel top1 불러오기 함수 //
+    useEffect(()=>{
+      getTravelHallOfFameRequest().then(getTopTravelResponse);
+    }, []);
 
     // event handler: 명예의전당 buttonbox 클릭 이벤트 //
     const onButtonClickEventHandler = (path: string) =>{
       navigator(path);
     };
+
 
         // effect: 명예의전당 top 1 불러오기 함수 //
       //   useEffect(() => {
@@ -77,32 +79,32 @@ function TravelTop1() {
   
   
 
+    // render: 명예의 전당 travel 화면 컴포넌트 렌더링 //
     return (
       <div id='main-hof-wrapper'>
         <div className='wrapper-container'>
           <div className='text-area'>"Travle Top 1"</div>
-          <div className='deco-container'>
+          <div className='icon-area'></div>
             <div className='image-box'>
               <div className="decorated-img"></div>
-              {/* <img src={topItem.imageUrl} /> */}
-                <div className='image-area'></div>
-                  
-            </div>
-            <div className='button-container'>
-              <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_TRAVEL_PATH)}>○</div>
-              <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_FOOD_PATH)}>○</div>
-              <div className='button-box'onClick={() => onButtonClickEventHandler(HOF_FASHION_PATH)}>○</div>
+              <div className='image-area'>
+                
+                  <div className='link-area' style={{ backgroundImage: `url(${topTravelphotoLink})`}}></div>
+                
+                
+              </div>
+              <div className='button-container'>
+                <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_TRAVEL_PATH)}>○</div>
+                <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_FOOD_PATH)}>○</div>
+                <div className='button-box' onClick={() => onButtonClickEventHandler(HOF_FASHION_PATH)}>○</div>
+              </div>
             </div>
           </div>
-        <div className='icon-area'></div>
         </div>
-      </div>
     )
-}
 }
 
 export default function HOFTravel() {
-
 
   return (
     <>
@@ -114,4 +116,3 @@ export default function HOFTravel() {
 // function getTravelResponseDto(value: ResponseDto | GetTravelListResponseDto | null): ResponseDto | GetTravelListResponseDto | PromiseLike<ResponseDto | GetTravelListResponseDto | null> | null {
 //   throw new Error('Function not implemented.');
 // }
-

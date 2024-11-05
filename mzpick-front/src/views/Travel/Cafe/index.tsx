@@ -8,7 +8,12 @@ import { TRAVEL_CAFE_DETAIL_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_ST
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Cafe } from 'src/types';
 
+import { getTotalCountRequest } from 'src/apis/pagination';
+import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
+import Pagination from 'src/components/Pagination';
 import './style.css';
+
+const SECTION_PER_PAGE = 5;
 
 export default function CafeMain() {
 
@@ -27,13 +32,28 @@ export default function CafeMain() {
   // state: signInUser상태 //
   const { signInUser } = useAuthStore();
 
+  const [count, setCount] = useState<number>(0);
+  const [pageList, setPageList] = useState<number[]>([]);
+  const [totalPage, setTotalPage] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalSection, setTotalSection] = useState<number>(0);
+  const [currentSection, setCurrentSection] = useState<number>(1);
+
   const [viewList, setViewList] = useState<Cafe[]>([]);
 
 
-  // function: get Travel List 함수 //
-  const getTravelList = () => {
-    getCafeListRequest(1).then(getCafeResponseDto);
+  // function: get Travel Cafe List 함수 //
+  const getTravelCafelList = (page: number) => {
+    getCafeListRequest(page).then(getCafeResponseDto);
   }
+    // function: get total count response //
+    const getTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+      const { count } = dto as GetTotalCountResponseDto;
+      const totalPage = Math.ceil(count / 8);
+      setTotalPage(totalPage);
+      const totalSection = Math.ceil(totalPage / SECTION_PER_PAGE);
+      setTotalSection(totalSection);
+    }
 
   // function: get Travel Response 함수 //
   const getCafeResponseDto = (resposenBody: GetCafeListResponseDto | ResponseDto | null) => {
@@ -81,18 +101,49 @@ export default function CafeMain() {
     return `${yy}.${mm}.${dd}`;
   };
 
-  // event handler: 드롭다운 오픈 이벤트 처리 //
+ // event handler: 드롭다운 오픈 이벤트 처리 //
   const dropDownOpenhandler = () => {
-    setDropDownOpen(!dropDownOpen);
-  }
+  setDropDownOpen(!dropDownOpen);
+}
 
+// event handler: 네비게이션 아이템 클릭 이벤트 처리 //
+const onItemClickHandler = (path: string) => {
+  navigate(path);
+};
 
-  // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
-  const onItemClickHandler = (path: string) => {
-    navigate(path);
+const onPageClickHandler = (page: number) => {
+  setCurrentPage(page);
+} 
+const onPreSectionClickHandler = () => {
+  if (currentSection === 1) return;
+  setCurrentSection(currentSection - 1);
+  setCurrentPage((currentSection - 1) * SECTION_PER_PAGE);
+} 
+const onNextSectionClickHandler = () => {
+  if (currentSection === totalSection) return;
+  setCurrentSection(currentSection + 1);
+  setCurrentPage(currentSection * SECTION_PER_PAGE + 1);
+} 
+
+useEffect(() => {
+  getTotalCountRequest().then(getTotalCountResponse);
+}, []);
+
+useEffect(() => {
+  const pageList: number[] = [];
+  const startPage = (currentSection - 1) * SECTION_PER_PAGE + 1;
+  const endPage = currentSection * SECTION_PER_PAGE;
+  for (let page = startPage; page <= endPage; page++) {
+    pageList.push(page);
+    if (page === totalPage) break;
   };
+  
+  setPageList(pageList);
+}, [currentSection, totalPage]);
 
-  useEffect(getTravelList, []);
+useEffect(() => {
+  getTravelCafelList(currentPage);
+}, [currentPage])
 
   // render: 여행 게시판 리스트 컴포넌트 렌더링//  
   return (
@@ -114,12 +165,14 @@ export default function CafeMain() {
       <div className='board-middle'>
         {viewList.map((item) => (
           <div key={item.traveCafeNumber} className='board-box'>
-            <div className='board-image' onClick={() => navigate(`${TRAVEL_CAFE_DETAIL_PATH}/${item.traveCafeNumber}`)}></div>
+            <div className='board-image' onClick={() => navigate(`${TRAVEL_CAFE_DETAIL_PATH}/${item.traveCafeNumber}`)}>
+            <img src={item.travelCafePhoto} alt={`Travel ${item.traveCafeNumber}`} className='board-image-content' />
+            </div>            
             <div className='board-information'>
               <div className='board-information-data'>{changeDateFormat(item.travelCafeDate)}</div>
               <div className='board-information-right'>
                 <div className='board-information-like'>
-                  <div className='board-information-like-icon'></div>
+                  <div className={`board-information-like-icon ${signInUser && item.travelCafeLikeUserList.includes(signInUser.userId)? 'active':''}`}></div>
                   <div className='board-information-data'>{item.travelCafeLikeCount}</div>
                 </div>
                 <div className='board-information-view'>
@@ -133,6 +186,8 @@ export default function CafeMain() {
           </div>
         ))}
       </div>
+      <Pagination currentPage={currentPage} pageList={pageList} onPageClickHandler={onPageClickHandler} onNextSectionClickHandler={onNextSectionClickHandler} onPreSectionClickHandler={onPreSectionClickHandler} />
+
     </div>
   );
 }

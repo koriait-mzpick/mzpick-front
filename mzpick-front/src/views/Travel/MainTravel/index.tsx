@@ -2,12 +2,17 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useLocation, useNavigate } from 'react-router';
 import { ResponseDto } from 'src/apis/dto/response';
+import { getTotalCountRequest } from 'src/apis/pagination';
+import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import { getTravelListRequest } from 'src/apis/travel';
 import { GetTravelListResponseDto } from 'src/apis/travel/dto/response';
+import Pagination from 'src/components/Pagination';
 import { TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Travel } from 'src/types';
 import './style.css';
+
+const SECTION_PER_PAGE = 5;
 
 
 // component: 여행 게시판 리스트 컴포넌트 //
@@ -28,13 +33,27 @@ export default function MainTravel() {
   // state: signInUser상태 //
   const { signInUser } = useAuthStore();
 
+  const [count, setCount] = useState<number>(0);
+  const [pageList, setPageList] = useState<number[]>([]);
+  const [totalPage, setTotalPage] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalSection, setTotalSection] = useState<number>(0);
+  const [currentSection, setCurrentSection] = useState<number>(1);
+
   const [viewList, setViewList] = useState<Travel[]>([]);
 
   // function: get Travel List 함수 //
-  const getTravelList = () => {
-    getTravelListRequest(1).then(getTravelResponseDto);
+  const getTravelList = (page: number) => {
+    getTravelListRequest(page).then(getTravelResponseDto);
   }
-
+  // function: get total count response //
+  const getTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+    const { count } = dto as GetTotalCountResponseDto;
+    const totalPage = Math.ceil(count / 8);
+    setTotalPage(totalPage);
+    const totalSection = Math.ceil(totalPage / SECTION_PER_PAGE);
+    setTotalSection(totalSection);
+  }
   // function: get Travel Response 함수 //
   const getTravelResponseDto = (resposenBody: GetTravelListResponseDto | ResponseDto | null) => {
     const message =
@@ -50,42 +69,13 @@ export default function MainTravel() {
 
     const { travelList } = resposenBody as GetTravelListResponseDto;
 
-    // setOriginalList(travelList);
     setViewList(travelList);
 
-    //     const searchParams = new URLSearchParams(location.search);
-    //     const query = searchParams.get('query');
-    //     console.log(query)
-    //     if (query) {
-
-    //       const filteredList = travelList.filter(item => item.travelLocation.includes(query));
-    //       setViewList(filteredList);
-
-    //       if (filteredList.length === 0) {
-    //         alert('검색 결과가 없습니다.');
-    //       }
-    //     } else {
-    //       setViewList(travelList);
-    //     }
-    //   }
-
-    //   // function: 검색어를 가진상태로 드롭다운을 통해 이동 //
-    // const onDropDownSelect = (destination: string) => {
-    //   const searchParams = new URLSearchParams(location.search);
-    //   const query = searchParams.get('query');
-
-    //   if (query) {
-    //     navigate(`${destination}/map?query=${query}`);
-    //   } else {
-    //     navigate(`${destination}`);
-    //   }
-    // };
     if (searchLocation) {
       const filteredList = travelList.filter(item => item.travelLocation.includes(searchLocation));
       setViewList(filteredList);
 
       if (filteredList.length === 0) {
-        console.log("111111");
         alert('검색 결과가 없습니다.');
       }
     } else {
@@ -96,11 +86,6 @@ export default function MainTravel() {
   // function: 드롭다운 선택 시 이동
   const onDropDownSelect = (destination: string) => {
     navigate(`${destination}`)
-    // if (searchLocation) {
-    //   navigate(`${destination}/map?query=${searchLocation}`);
-    // } else {
-    //   navigate(destination);
-    // }
   };
 
 
@@ -120,17 +105,49 @@ export default function MainTravel() {
     setDropDownOpen(!dropDownOpen);
   }
 
-  // event handler: 북마크 클릭 이벤트 처리 //
-  const bookMarkClickHandler = () => {
-    setBookMarkClick(!bookMarkClick);
-  }
+  // // event handler: 북마크 클릭 이벤트 처리 //
+  // const bookMarkClickHandler = () => {
+  //   setBookMarkClick(!bookMarkClick);
+  // }
 
   // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
   const onItemClickHandler = (path: string) => {
     navigate(path);
   };
+  
+  const onPageClickHandler = (page: number) => {
+    setCurrentPage(page);
+  } 
+  const onPreSectionClickHandler = () => {
+    if (currentSection === 1) return;
+    setCurrentSection(currentSection - 1);
+    setCurrentPage((currentSection - 1) * SECTION_PER_PAGE);
+  } 
+  const onNextSectionClickHandler = () => {
+    if (currentSection === totalSection) return;
+    setCurrentSection(currentSection + 1);
+    setCurrentPage(currentSection * SECTION_PER_PAGE + 1);
+  } 
 
-  useEffect(getTravelList, []);
+  useEffect(() => {
+    getTotalCountRequest().then(getTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    const pageList: number[] = [];
+    const startPage = (currentSection - 1) * SECTION_PER_PAGE + 1;
+    const endPage = currentSection * SECTION_PER_PAGE;
+    for (let page = startPage; page <= endPage; page++) {
+      pageList.push(page);
+      if (page === totalPage) break;
+    };
+    
+    setPageList(pageList);
+  }, [currentSection, totalPage]);
+
+  useEffect(() => {
+    getTravelList(currentPage);
+  }, [currentPage])
 
   // render: 여행 게시판 리스트 컴포넌트 렌더링//  
   return (
@@ -152,12 +169,14 @@ export default function MainTravel() {
       <div className='board-middle'>
         {viewList.map((item) => (
           <div key={item.travelNumber} className='board-box'>
-            <div className='board-image' onClick={() => navigate(`${TRAVEL_DETAIL_PATH}/${item.travelNumber}`)}></div>
+            <div className='board-image' onClick={() => navigate(`${TRAVEL_DETAIL_PATH}/${item.travelNumber}`)}>
+            <img src={item.travelPhoto} alt={`Travel ${item.travelNumber}`} className='board-image-content' />
+            </div>
             <div className='board-information'>
               <div className='board-information-data'>{changeDateFormat(item.travelDate)}</div>
               <div className='board-information-right'>
                 <div className='board-information-like'>
-                  <div className='board-information-like-icon'></div>
+                  <div className={`board-information-like-icon ${signInUser && item.travelLikeUserList.includes(signInUser.userId)}`}></div>
                   <div className='board-information-data'>{item.travelLikeCount}</div>
                 </div>
                 <div className='board-information-view'>
@@ -171,6 +190,7 @@ export default function MainTravel() {
           </div>
         ))}
       </div>
+      <Pagination currentPage={currentPage} pageList={pageList} onPageClickHandler={onPageClickHandler} onNextSectionClickHandler={onNextSectionClickHandler} onPreSectionClickHandler={onPreSectionClickHandler} />
     </div>
   );
 }
