@@ -11,6 +11,7 @@ import { TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_ST
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Travel } from 'src/types';
 import './style.css';
+import { MyPageCafeSave } from 'src/types/mypage/cafe';
 
 const SECTION_PER_PAGE = 5;
 
