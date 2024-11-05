@@ -45,6 +45,40 @@ function TravelTop1() {
       navigator(path);
     };
 
+
+        // effect: 명예의전당 top 1 불러오기 함수 //
+      //   useEffect(() => {
+      //     const fetchTravelData = async () => {
+      //         try {
+      //             const response = await getTravelDetailRequest(travelNumber); // 데이터 요청
+      //             console.log('응답 데이터:', response); // 응답 데이터 확인
+
+      //             const travelPosts: GetTravelDetailResponseDto[] = response.resultSet; // 게시물 목록
+
+      //             if (travelPosts.length === 0) {
+      //               setTopTravelPost(null);
+      //               return;
+      //           }
+  
+
+      //             const sortedPosts = travelPosts.sort((a, b) => {
+      //                 const aScore = a.travelViewCount + a.travelLikeCount; 
+      //                 const bScore = b.travelViewCount + b.travelLikeCount; 
+      //                 return bScore - aScore;
+      //             });
+  
+      //             setTopTravelPost(sortedPosts[0]); 
+      //         } catch (err) {
+      //             setError('게시물을 가져오는 데 오류가 발생했습니다.');
+      //         }
+      //     };
+  
+      //     fetchTravelData();
+      // }, []);
+  
+  
+  
+
     // render: 명예의 전당 travel 화면 컴포넌트 렌더링 //
     return (
       <div id='main-hof-wrapper'>
@@ -73,6 +107,12 @@ function TravelTop1() {
 export default function HOFTravel() {
 
   return (
-      <TravelTop1 />
+    <>
+      {/* <TravelTop1 /> */}
+    </>
   )
 }
+
+// function getTravelResponseDto(value: ResponseDto | GetTravelListResponseDto | null): ResponseDto | GetTravelListResponseDto | PromiseLike<ResponseDto | GetTravelListResponseDto | null> | null {
+//   throw new Error('Function not implemented.');
+// }
