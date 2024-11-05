@@ -69,12 +69,6 @@ export default function FashionMain() {
     setViewList(fashionList);
   }
 
-  // function: 드롭다운 선택 시 이동
-  const onDropDownSelect = (destination: string) => {
-    navigate(`${destination}`)
-  };
-
-
   // function: 네비게이터 함수 //
   const navigate = useNavigate();
 
@@ -86,15 +80,6 @@ export default function FashionMain() {
     return `${yy}.${mm}.${dd}`;
   };
 
-  // event handler: 드롭다운 오픈 이벤트 처리 //
-  const dropDownOpenhandler = () => {
-    setDropDownOpen(!dropDownOpen);
-  }
-
-  // // event handler: 북마크 클릭 이벤트 처리 //
-  // const bookMarkClickHandler = () => {
-  //   setBookMarkClick(!bookMarkClick);
-  // }
 
   // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
   const onItemClickHandler = (path: string) => {
@@ -135,7 +120,7 @@ export default function FashionMain() {
     getFashionList(currentPage);
   }, [currentPage])
 
-  // render: 여행 게시판 리스트 컴포넌트 렌더링//  
+  // render: 패션 게시판 리스트 컴포넌트 렌더링//  
   return (
     <div id='list-main'>
       <div className='board-top-fashion'>
