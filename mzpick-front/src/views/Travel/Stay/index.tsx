@@ -170,7 +170,7 @@ useEffect(() => {
               <div className='board-information-data'>{changeDateFormat(item.travelStayDate)}</div>
               <div className='board-information-right'>
                 <div className='board-information-like'>
-                  <div className='board-information-like-icon'></div>
+                  <div className={`board-information-like-icon ${signInUser && item.travelStayLikeUserList.includes(signInUser.userId)? 'active' : ''}`}></div>
                   <div className='board-information-data'>{item.travelStayLikeCount}</div>
                 </div>
                 <div className='board-information-view'>

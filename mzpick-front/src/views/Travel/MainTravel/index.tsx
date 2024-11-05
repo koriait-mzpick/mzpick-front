@@ -176,7 +176,7 @@ export default function MainTravel() {
               <div className='board-information-data'>{changeDateFormat(item.travelDate)}</div>
               <div className='board-information-right'>
                 <div className='board-information-like'>
-                  <div className='board-information-like-icon'></div>
+                  <div className={`board-information-like-icon ${signInUser && item.travelLikeUserList.includes(signInUser.userId)}`}></div>
                   <div className='board-information-data'>{item.travelLikeCount}</div>
                 </div>
                 <div className='board-information-view'>

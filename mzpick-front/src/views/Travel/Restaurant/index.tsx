@@ -172,7 +172,7 @@ export default function RestaurantMain() {
               <div className='board-information-data'>{changeDateFormat(item.travelFoodDate)}</div>
               <div className='board-information-right'>
                 <div className='board-information-like'>
-                  <div className='board-information-like-icon'></div>
+                  <div className={`board-information-like-icon ${signInUser && item.travelFoodLikeUserList.includes(signInUser.userId)? 'active' : ''}`}></div>
                   <div className='board-information-data'>{item.travelFoodLikeCount}</div>
                 </div>
                 <div className='board-information-view'>
