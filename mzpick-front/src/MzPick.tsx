@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import './MzPick.css';
 import { useCookies } from 'react-cookie';
 import { Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -30,6 +31,7 @@ import Vote from './views/Vote';
 import VoteDetail from './views/Vote/VoteDetail';
 import VoteDetailPhoto from './views/Vote/VoteDetailPhoto';
 import VoteDoublePhoto from './views/Vote/VoteDoublePhoto';
+
 
 // component: root path 컴포넌트 //
 function Index() {
