@@ -8,6 +8,40 @@ import { useCookies } from 'react-cookie';
 import { getTravelCommentListRequest, getTravelDetailRequest } from 'src/apis/travel';
 import { TravelDetail } from 'src/types';
 
+// slider
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+// const [travelPhotoList, setTravelPhotoList] = useState<string[]>([]);
+
+function CarouselComponent() {
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  }
+  return (
+    <Slider {...settings}>
+      {/* {travelPhotoList.map((photo, index) => (
+        <img className='contents-image-item' src={photo} alt={`travel-photo-${index + 1}`} />
+        ))} */}
+      <div className='contents-image-item'>
+        <h3>1</h3>
+      </div>
+      <div className='contents-image-item'>
+        <h3>2</h3>
+      </div>
+      <div className='contents-image-item'>
+        <h3>3</h3>
+      </div>
+    </Slider>
+  )
+}
+
+
 
 // component: 내용 컴포넌트 //
 function Content() {
@@ -107,11 +141,13 @@ function Content() {
         </div>
       </div>
       <div className='contents-image'>
-        {travelPhotoList.map((photo, index) => (
+        <CarouselComponent />
+
+        {/* {travelPhotoList.map((photo, index) => (
           <img className='contents-image-item' src={photo} alt={`travel-photo-${index+1}`} />
         ))}
         <img className='contents-image-item' src={travelPhotoList[0]} />
-        {/* <div className='contents-image-left-button'></div>
+        <div className='contents-image-left-button'></div>
         <div className='contents-image-right-button'></div> */}
       </div>
       <div className='contents-text'></div>
