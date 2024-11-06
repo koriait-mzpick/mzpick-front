@@ -38,6 +38,7 @@ export const VOTE_PATH = '/vote'
 export const VOTE_DETAILPATH = '/vote/vote-detail'
 export const VOTE_DETAILPHOTOPATH = '/vote/vote-photo'
 export const VOTE_DOUBLEPHOTOPATH = '/vote/vote-doublephoto'
+export const VOTE_WRITEPATH = '/vote/vote-write'
 
 export const MY_PAGE_PATH = '/mypage'
 

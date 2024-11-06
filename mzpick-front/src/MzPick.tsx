@@ -31,7 +31,7 @@ import Vote from './views/Vote';
 import VoteDetail from './views/Vote/VoteDetail';
 import VoteDetailPhoto from './views/Vote/VoteDetailPhoto';
 import VoteDoublePhoto from './views/Vote/VoteDoublePhoto';
-import FashionWrite from './views/Fashion/Write';
+import VoteWrite from './views/Vote/VoteWrite';
 
 
 // component: root path 컴포넌트 //
@@ -182,6 +182,7 @@ export default function MzPick() {
         <Route path={VOTE_DETAILPATH} element={< VoteDetail />} />
         <Route path={VOTE_DETAILPHOTOPATH} element={< VoteDetailPhoto />} />
         <Route path={VOTE_DOUBLEPHOTOPATH} element={< VoteDoublePhoto />} />
+        <Route path={VOTE_WRITEPATH} element={< VoteWrite />} />
       </Route>
       <Route path={SNS_SUCCESS_PATH} element={<SnsSuccess />} />
     </Routes>
