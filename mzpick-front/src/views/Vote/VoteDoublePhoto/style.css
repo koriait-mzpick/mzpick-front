@@ -38,6 +38,12 @@
     font-size: 32px;
     font-weight: 700;
 }
+#main .doubledetail-top .doublevote-choice .double-nomal::placeholder
+
+{
+    font-size: 2rem;
+   
+}
 
 #main .doubledetail-top .doublevote-choice .double-board {
     display: grid;
@@ -154,7 +160,7 @@
     grid-template-rows: 1fr;
     justify-content: center; 
     align-items: center;
-    text-align: left;
+    text-align: center;
 
     padding-top: 10px;
     padding-left: 10px;
@@ -173,7 +179,7 @@
     grid-template-rows: 1fr;
     justify-content: center; 
     align-items: center;
-    text-align: left;
+    text-align: center;
 
     padding-top: 10px;
     padding-left: 10px;
@@ -185,6 +191,7 @@
     font-weight: 500;
 }
 #main .doubledetail-contents .photos-one .photo-one{
+    cursor: pointer;
     display: grid;
     grid-template-columns: 5vw 5vw;
     grid-template-rows: repeat(2 1fr);
@@ -202,6 +209,7 @@
 }
 
 #main .doubledetail-contents .photos-two .photo-two{
+    cursor: pointer;
     display: grid;
     grid-template-columns: 5vw 5vw;
     grid-template-rows: repeat(2 1fr);

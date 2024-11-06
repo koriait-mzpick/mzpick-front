@@ -2,7 +2,7 @@ import React from 'react'
 
 import './style.css';
 import { useNavigate } from 'react-router';
-import { VOTE_DETAILPHOTOPATH } from 'src/constants';
+import { VOTE_DETAILPHOTOPATH, VOTE_PATH } from 'src/constants';
 
 
 export default function VoteDetail() {
@@ -11,12 +11,17 @@ export default function VoteDetail() {
   const onClickNavigator = () => {
     navigator(VOTE_DETAILPHOTOPATH);
   }
+  const onClicVoteCancelNavigator = () => {
+    const isConfirm = window.confirm('나가시겠습니까?')
+    if (!isConfirm) return;
+    navigator(VOTE_PATH)
+  }
   return (
     <div id='main'>
       <div className='detail-top'>
         <div className='detail-title'></div>
           <div className='vote-choice'>
-           <div className='nomal'>제목을 입력하세요.</div>
+           <input className='nomal' placeholder='제목을 입력하세요.'></input>
             <div className='board'>
               <div className='normal-vote'>일반투표</div>
              <div className='normal-board' onClick={onClickNavigator}>게시물투표</div>
@@ -31,7 +36,7 @@ export default function VoteDetail() {
 
         <div className='detail-buttons'>
           <div className='detail-post'>등록</div>
-          <div className='detail-cancel'>취소</div>
+          <div className='detail-cancel' onClick={onClicVoteCancelNavigator}>취소</div>
         </div>
     </div>
   )

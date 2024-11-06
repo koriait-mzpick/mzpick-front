@@ -42,7 +42,7 @@ export default function StayMain() {
 
   // function: get Travel List 함수 //
   const getStayList = (page:number) => {
-    getStayListRequest(page).then(getStayResponseDto);
+    getStayListRequest(page,searchLocation).then(getStayResponseDto);
   }
     // function: get total count response //
     const getStayTotalCountResponse = (dto: GetStayTotalCountResponseDto | ResponseDto | null) => {

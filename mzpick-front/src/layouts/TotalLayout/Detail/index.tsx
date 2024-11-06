@@ -8,6 +8,40 @@ import { useCookies } from 'react-cookie';
 import { getTravelCommentListRequest, getTravelDetailRequest } from 'src/apis/travel';
 import { TravelDetail } from 'src/types';
 
+// slider
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+// const [travelPhotoList, setTravelPhotoList] = useState<string[]>([]);
+
+function CarouselComponent() {
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  }
+  return (
+    <Slider {...settings}>
+      {/* {travelPhotoList.map((photo, index) => (
+        <img className='contents-image-item' src={photo} alt={`travel-photo-${index + 1}`} />
+        ))} */}
+      <div className='contents-image-item'>
+        <h3>1</h3>
+      </div>
+      <div className='contents-image-item'>
+        <h3>2</h3>
+      </div>
+      <div className='contents-image-item'>
+        <h3>3</h3>
+      </div>
+    </Slider>
+  )
+}
+
+
 
 // component: 내용 컴포넌트 //
 function Content() {
@@ -19,7 +53,7 @@ function Content() {
 
   // state: 게시글 정보 상태 //
   // const [travelNumber, setTravelNumber] = useState<number | string>('');
-  const [travelDetail, setTravelDetail] = useState<TravelDetail[]>([]);
+  const [travelDetail, setTravelDetail] = useState<TravelDetail>();
   const [userId, setUserId] = useState<string>();
   const [travelLocation, setTravelLocation] = useState<string>('');
   const [travelTitle, setTravelTitle] = useState<string>('');
@@ -31,6 +65,7 @@ function Content() {
   const [travelLikeCount, setTravelLikeCount] = useState<number>(0);
   const [travelSaveCount, setTravelSaveCount] = useState<number>(0);
   const [travelDate, setTravelDate] = useState<string>('');
+  const [detail, setDetail] = useState<TravelDetail>();
 
   // state: 북마크 상태 //
   const [bookMarkClick, setBookMarkClick] = useState(false);
@@ -57,22 +92,21 @@ function Content() {
     }
 
     const { travelDetail } = responseBody as GetTravelDetailResponseDto;
-    // setTravelNumber(travelNumber);
-    // setUserId(travelDetail)
-    // setTravelTitle(travelTitle);
-    // setTravelLocation(travelLocation);
-    // setTravelTitle(travelTitle);
-    // setTravelPhotoList(travelPhotoList);
-    // setTravelHashtagList(travelHashtagList);
-    // setTravelLikeUserList(travelLikeUserList);
-    // setTravelSaveUserList(travelSaveUserList);
-    // setTravelViewCount(travelViewCount);
-    // setTravelLikeCount(travelLikeCount);
-    // setTravelSaveCount(travelSaveCount);
-    // setTravelDate(travelDate);
+    console.log(travelDetail.userId);
+    console.log(detail);
     setTravelDetail(travelDetail);
-
-    
+    setUserId(travelDetail.userId);
+    setTravelTitle(travelDetail.travelTitle);
+    setTravelLocation(travelDetail.travelLocation);
+    setTravelTitle(travelDetail.travelTitle);
+    setTravelPhotoList(travelDetail.travelPhotoList);
+    setTravelHashtagList(travelDetail.travelHashtagList);
+    setTravelLikeUserList(travelDetail.travelLikeUserList);
+    setTravelSaveUserList(travelDetail.travelSaveUserList);
+    setTravelViewCount(travelDetail.travelViewCount);
+    setTravelLikeCount(travelDetail.travelLikeCount);
+    setTravelSaveCount(travelDetail.travelSaveCount);
+    setTravelDate(travelDetail.travelContent);
   };
 
   // event handler: 북마크 클릭 이벤트 처리 //
@@ -106,8 +140,14 @@ function Content() {
           <div className='contents-top-vote-button'>투표</div>
         </div>
       </div>
-      <div className='contents-image'>{travelPhotoList}
-        {/* <div className='contents-image-left-button'></div>
+      <div className='contents-image'>
+        <CarouselComponent />
+
+        {/* {travelPhotoList.map((photo, index) => (
+          <img className='contents-image-item' src={photo} alt={`travel-photo-${index+1}`} />
+        ))}
+        <img className='contents-image-item' src={travelPhotoList[0]} />
+        <div className='contents-image-left-button'></div>
         <div className='contents-image-right-button'></div> */}
       </div>
       <div className='contents-text'></div>
