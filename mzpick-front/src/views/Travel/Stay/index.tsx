@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useLocation, useNavigate } from 'react-router';
 import { ResponseDto } from 'src/apis/dto/response';
-import { getTotalCountRequest } from 'src/apis/pagination';
-import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
+import { getStayTotalCountRequest } from 'src/apis/pagination';
+import { GetStayTotalCountResponseDto } from 'src/apis/pagination/response';
 import { getStayListRequest } from 'src/apis/stay';
 import { GetStayListResponseDto } from 'src/apis/stay/dto/response';
 import Pagination from 'src/components/Pagination';
@@ -45,8 +45,8 @@ export default function StayMain() {
     getStayListRequest(page).then(getStayResponseDto);
   }
     // function: get total count response //
-    const getTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
-      const { count } = dto as GetTotalCountResponseDto;
+    const getStayTotalCountResponse = (dto: GetStayTotalCountResponseDto | ResponseDto | null) => {
+      const { count } = dto as GetStayTotalCountResponseDto;
       const totalPage = Math.ceil(count / 8);
       setTotalPage(totalPage);
       const totalSection = Math.ceil(totalPage / SECTION_PER_PAGE);
@@ -124,7 +124,7 @@ const onNextSectionClickHandler = () => {
 } 
 
 useEffect(() => {
-  getTotalCountRequest().then(getTotalCountResponse);
+  getStayTotalCountRequest().then(getStayTotalCountResponse);
 }, []);
 
 useEffect(() => {
