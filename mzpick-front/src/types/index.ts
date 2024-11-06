@@ -8,6 +8,7 @@ import SignInUser from "./sign-in-user.interface"
 import Stay from "./stay.interface"
 import TravelVote from "./travel-vote.interface"
 import Travel from "./travel.interface"
+import TravelDetail from "./travelDetail.interface"
 import TravelPhoto from "./travelPhoto.interface"
 
 export type { 
@@ -20,7 +21,7 @@ export type {
     Restaurant,
     Fashion,
     FashionVote,
-    TravelVote
-
+    TravelVote,
+    TravelDetail
 }
 

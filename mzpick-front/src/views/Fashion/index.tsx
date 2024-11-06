@@ -7,7 +7,7 @@ import { GetFashionListResponseDto } from 'src/apis/fashion/dto/response';
 import { getFashionTotalCountRequest } from 'src/apis/pagination';
 import { GetFashionTotalCountResponseDto } from 'src/apis/pagination/response';
 import Pagination from 'src/components/Pagination';
-import { FASHION_DETAIL_PATH, WRITE_PATH } from 'src/constants';
+import { FASHION_DETAIL_PATH, FASHION_WRITE_PATH, WRITE_PATH } from 'src/constants';
 import { useAuthStore } from 'src/stores';
 import { Fashion } from 'src/types';
 import './style.css';
@@ -140,7 +140,7 @@ export default function FashionMain() {
   return (
     <div id='list-main'>
       <div className='board-top-fashion'>
-        <div className='write-button' onClick={() => onItemClickHandler(WRITE_PATH)}>글쓰기</div>
+        <div className='write-button' onClick={() => onItemClickHandler(FASHION_WRITE_PATH)}>글쓰기</div>
       </div>
       <div className='board-middle'>
         {(selectedHashtag ? filteredPostList : viewList).map((item) => (
