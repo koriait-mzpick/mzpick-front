@@ -49,8 +49,6 @@ export const deleteMyPageUserRequest = async (accessToken: string) => {
     return responseBody;
 };
 
-
-
 // function: 마이페이지 여행 리스트 요청 함수 //
 export const getMyPageTravelBoardRequest = async (accessToken: string) => {
     const responseBody = await axios.get(GET_MYPAGE_TRAVEL_BOARD_API_URL, bearerAuthorization(accessToken))

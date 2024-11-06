@@ -21,7 +21,7 @@ const usePagination = <T>() => {
         const totalCount = totalList.length;
         setTotalCount(totalCount);
         const totalPage = Math.ceil(totalCount / ITEMS_PER_PAGE);
-        setTotalPage(totalPage);
+        setTotalPage(totalPage);    
         const totalSection = Math.ceil(totalPage / PAGES_PER_SECTION);
         setTotalSection(totalSection);
 
@@ -49,7 +49,7 @@ const usePagination = <T>() => {
 
             const startPage = PAGES_PER_SECTION * currentSection - (PAGES_PER_SECTION - 1);
             let endPage = PAGES_PER_SECTION * currentSection;
-            if (endPage >  totalPage) endPage * totalPage;
+            if (endPage >  totalPage) endPage = totalPage;
 
             const pageList = [];
             for (let page = startPage; page <= endPage; page++) {
@@ -87,7 +87,7 @@ const usePagination = <T>() => {
             initPageList(totalPage);
         },[totalCount, currentSection]);
 
-        // effect : 현재 페이지가 변경괼 시 실행할 함수 //
+        // effect : 현재 페이지가 변경될 시 실행할 함수 //
         useEffect(() => {
             initViewList(totalList);
         }, [currentPage]);
