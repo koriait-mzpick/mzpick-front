@@ -44,7 +44,7 @@ export default function RestaurantMain() {
 
   // function: get Travel List 함수 //
   const getTravelRestaurantList = (page:number) => {
-    getRestaurantListRequest(page).then(getRestaurantResponseDto);
+    getRestaurantListRequest(page, searchLocation).then(getRestaurantResponseDto);
   }
     // function: get total count response //
     const getFoodTotalCountResponse = (dto: GetFoodTotalCountResponseDto | ResponseDto | null) => {

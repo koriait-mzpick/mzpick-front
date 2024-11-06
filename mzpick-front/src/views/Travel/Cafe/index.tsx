@@ -44,7 +44,7 @@ export default function CafeMain() {
 
   // function: get Travel Cafe List 함수 //
   const getTravelCafelList = (page: number) => {
-    getCafeListRequest(page).then(getCafeResponseDto);
+    getCafeListRequest(page,searchLocation).then(getCafeResponseDto);
   }
     // function: get total count response //
     const getCafeTotalCountResponse = (dto: GetCafeTotalCountResponseDto | ResponseDto | null) => {
