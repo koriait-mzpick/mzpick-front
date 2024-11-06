@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
 import { ResponseDto } from 'src/apis/dto/response';
-import { getTotalCountRequest } from 'src/apis/pagination';
-import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
-import Pagination from 'src/components/Pagination';
-import { FASHION_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
-import { useAuthStore, useSearchLocationStore } from 'src/stores';
-import { Fashion } from 'src/types';
-import './style.css';
 import { getFashionListRequest } from 'src/apis/fashion';
 import { GetFashionListResponseDto } from 'src/apis/fashion/dto/response';
+import { getFashionTotalCountRequest } from 'src/apis/pagination';
+import { GetFashionTotalCountResponseDto } from 'src/apis/pagination/response';
+import Pagination from 'src/components/Pagination';
+import { FASHION_DETAIL_PATH, FASHION_WRITE_PATH, WRITE_PATH } from 'src/constants';
+import { useAuthStore } from 'src/stores';
+import { Fashion } from 'src/types';
+import './style.css';
 
 const SECTION_PER_PAGE = 5;
 
@@ -46,8 +46,8 @@ export default function FashionMain() {
     getFashionListRequest(page).then(getFashionResponseDto);
   }
   // function: get total count response //
-  const getTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
-    const { count } = dto as GetTotalCountResponseDto;
+  const getFashionTotalCountResponse = (dto: GetFashionTotalCountResponseDto | ResponseDto | null) => {
+    const { count } = dto as GetFashionTotalCountResponseDto;
     const totalPage = Math.ceil(count / 8);
     setTotalPage(totalPage);
     const totalSection = Math.ceil(totalPage / SECTION_PER_PAGE);
@@ -115,7 +115,7 @@ export default function FashionMain() {
 
   useEffect(() => {
 
-    getTotalCountRequest().then(getTotalCountResponse);
+    getFashionTotalCountRequest().then(getFashionTotalCountResponse);
 
     const pageList: number[] = [];
     const startPage = (currentSection - 1) * SECTION_PER_PAGE + 1;
@@ -140,7 +140,7 @@ export default function FashionMain() {
   return (
     <div id='list-main'>
       <div className='board-top-fashion'>
-        <div className='write-button' onClick={() => onItemClickHandler(WRITE_PATH)}>글쓰기</div>
+        <div className='write-button' onClick={() => onItemClickHandler(FASHION_WRITE_PATH)}>글쓰기</div>
       </div>
       <div className='board-middle'>
         {(selectedHashtag ? filteredPostList : viewList).map((item) => (

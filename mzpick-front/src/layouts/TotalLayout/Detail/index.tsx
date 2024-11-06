@@ -1,15 +1,79 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './style.css';
+import { ResponseDto } from 'src/apis/dto/response';
+import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ACCESS_TOKEN, TRAVEL_PATH } from 'src/constants';
+import { useCookies } from 'react-cookie';
+import { getTravelCommentListRequest, getTravelDetailRequest } from 'src/apis/travel';
+import { TravelDetail } from 'src/types';
 
 
 // component: 내용 컴포넌트 //
 function Content() {
+
+  // state: 쿠키상태 //
+  const [cookies] = useCookies();
+
+  const { travelNumber } = useParams<{ travelNumber: string }>();
+
+  // state: 게시글 정보 상태 //
+  // const [travelNumber, setTravelNumber] = useState<number | string>('');
+  const [travelDetail, setTravelDetail] = useState<TravelDetail>();
+  const [userId, setUserId] = useState<string>();
+  const [travelLocation, setTravelLocation] = useState<string>('');
+  const [travelTitle, setTravelTitle] = useState<string>('');
+  const [travelPhotoList, setTravelPhotoList] = useState<string[]>([]);
+  const [travelHashtagList, setTravelHashtagList] = useState<string[]>([]);
+  const [travelLikeUserList, setTravelLikeUserList] = useState<string[]>([]);
+  const [travelSaveUserList, setTravelSaveUserList] = useState<string[]>([]);
+  const [travelViewCount, setTravelViewCount] = useState<number>(0);
+  const [travelLikeCount, setTravelLikeCount] = useState<number>(0);
+  const [travelSaveCount, setTravelSaveCount] = useState<number>(0);
+  const [travelDate, setTravelDate] = useState<string>('');
+  const [detail, setDetail] = useState<TravelDetail>();
 
   // state: 북마크 상태 //
   const [bookMarkClick, setBookMarkClick] = useState(false);
 
   // state: 좋아요 상태 //
   const [likeClick, setLikeClick] = useState(false);
+
+  // function: 네비게이터 함수 //
+  const navigator = useNavigate();
+
+  // function: get travel detail response 처리 함수 //
+  const getTravelDetailtResponse = (responseBody: GetTravelDetailResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      navigator(TRAVEL_PATH);
+      return;
+    }
+
+    const { travelDetail } = responseBody as GetTravelDetailResponseDto;
+    console.log(travelDetail.userId);
+    console.log(detail);
+    setTravelDetail(travelDetail);
+    setUserId(travelDetail.userId);
+    setTravelTitle(travelDetail.travelTitle);
+    setTravelLocation(travelDetail.travelLocation);
+    setTravelTitle(travelDetail.travelTitle);
+    setTravelPhotoList(travelDetail.travelPhotoList);
+    setTravelHashtagList(travelDetail.travelHashtagList);
+    setTravelLikeUserList(travelDetail.travelLikeUserList);
+    setTravelSaveUserList(travelDetail.travelSaveUserList);
+    setTravelViewCount(travelDetail.travelViewCount);
+    setTravelLikeCount(travelDetail.travelLikeCount);
+    setTravelSaveCount(travelDetail.travelSaveCount);
+    setTravelDate(travelDetail.travelContent);
+  };
 
   // event handler: 북마크 클릭 이벤트 처리 //
   const bookMarkClickHandler = () => {
@@ -21,33 +85,46 @@ function Content() {
     setLikeClick(!likeClick);
   }
 
+  // effect:  게시글 정보 요청 함수 //
+  useEffect(() => {
+    if (!travelNumber) return;
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    getTravelDetailRequest(travelNumber).then(getTravelDetailtResponse);
+  }, [travelNumber]);
+
   // render: 내용 컴포넌트 렌더링 //
   return (
     <div id='contents-main'>
       <div className='contents-top'>
         <div className='contents-top-left'>
-          <div className='contents-top-title'>제목</div>
-          <div className='contents-top-date'>2024-12-12</div>
+          <div className='contents-top-title'>{travelTitle}</div>
+          <div className='contents-top-date'>{travelDate}</div>
         </div>
         <div className='contents-top-vote-button-box'>
           <div className='contents-top-vote-button'>투표</div>
         </div>
       </div>
       <div className='contents-image'>
+        {travelPhotoList.map((photo, index) => (
+          <img className='contents-image-item' src={photo} alt={`travel-photo-${index+1}`} />
+        ))}
+        <img className='contents-image-item' src={travelPhotoList[0]} />
         {/* <div className='contents-image-left-button'></div>
         <div className='contents-image-right-button'></div> */}
       </div>
-      <div className='contents-text'>asdThere are many variations of passages of Lorem Ipsum available, but the majority have suffered </div>
+      <div className='contents-text'></div>
       <div className='contents-information'>
-        <div className='contents-information-left'>#잉</div>
+        <div className='contents-information-left'>{travelHashtagList}</div>
         <div className='contents-information-right'>
           <div className='contents-information-like'>
             <div className={`contents-information-like-icon ${likeClick ? 'active' : ''}`} onClick={likeClcikHandler}></div>
-            <div className='contents-information-data'>32123123</div>
+            <div className='contents-information-data'></div>
           </div>
           <div className='contents-information-view'>
             <div className='contents-information-view-icon'></div>
-            <div className='contents-information-data'>32</div>
+            <div className='contents-information-data'></div>
           </div>
           <div className={`contents-information-bookmark ${bookMarkClick ? 'active' : ''}`} onClick={bookMarkClickHandler}></div>
         </div>

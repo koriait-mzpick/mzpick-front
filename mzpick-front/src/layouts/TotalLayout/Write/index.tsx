@@ -23,10 +23,10 @@ export default function Write() {
   const [travelContent, setTravelContent] = useState<string>('');
   const [travelPhotoList, setTravelPhotoList] = useState<File[]>([]);
 
-  // state: 이미지 입력 참조 //
+  // state: 사진 입력 참조 //
   const photoInputRef = useRef<HTMLInputElement | null>(null);
 
-  // state: 이미지 미리보기 URL 상태 //
+  // state: 사진 미리보기 URL 상태 //
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   // variable: 등록 가능 여부 //
@@ -35,8 +35,7 @@ export default function Write() {
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
 
-
-  // function: post Travel response 처리 함수 //
+  // function: post travel response 처리 함수 //
   const postTravelResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
@@ -48,37 +47,7 @@ export default function Write() {
     if (!isSuccessed) {
       alert(message);
       return;
-    }
-  }
-
-  // event handler: 첨부파일 버튼 클릭 이벤트 처리 //
-  const attachedFileButtonClickHandler = () => {
-    const { current } = photoInputRef;
-    if (!current) return;
-    current.click();
-  };
-
-  // event handler: 이미지 변경 이벤트 처리 함수 //
-  const photoInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    if (travelPhotoList.length >= 3) {
-      alert("최대 3장까지만 업로드할 수 있습니다.");
-      if (window.confirm("초기화 하시고 다시 첨부 하시겠습니까?")) {
-        setTravelPhotoList([]);
-        setPreviewUrls([]);
-        alert("다시 첨부 해주시기 바랍니다.");
-      } else {
-        alert("취소 되었습니다.");
-      }
-      return;
-    }
-    const { files } = event.target;
-    if (!files || files.length === 0) return;
-    const file = files[0];
-    const newFiles = [...travelPhotoList, file];
-    const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file));
-    console.log(newPreviewUrls, newFiles)
-    setTravelPhotoList(newFiles);
-    setPreviewUrls(newPreviewUrls);
+    };
   };
 
   // event handler: 제목 변경 이벤트 처리 //
@@ -95,8 +64,8 @@ export default function Write() {
       setTravelHashtagContent(value);
     } else {
       alert("최대 글자수는 10자입니다.");
-    }
-  }
+    };
+  };
 
   // event handler: 해시태그 추가 이벤트 처리 //
   const travelHashtagContentAddHandler = (event: KeyboardEvent<HTMLInputElement> | any) => {
@@ -108,7 +77,7 @@ export default function Write() {
     if (event.key === 'Backspace' && travelHashtagContent === '' && travelHashtagContentList.length > 0)
       setTravelHashtagContentList(travelHashtagContentList.slice(0, -1));
     console.log(travelHashtagContentList)
-  }
+  };
 
   // event handler: 해시태그 제거 이벤트 처리 //
   const travelHashtagContentDeleteHandler = (index: number) => {
@@ -127,15 +96,50 @@ export default function Write() {
     setTravelContent(value);
   };
 
+  // event handler: 첨부파일 버튼 클릭 이벤트 처리 //
+  const attachedFileButtonClickHandler = () => {
+    const { current } = photoInputRef;
+    if (!current) return;
+    current.click();
+  };
+
+  // event handler: 사진 변경 이벤트 처리 함수 //
+  const photoInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    if (travelPhotoList.length >= 3) {
+      alert("최대 3장까지만 업로드할 수 있습니다.");
+      if (window.confirm("초기화 하시고 다시 첨부 하시겠습니까?")) {
+        setTravelPhotoList([]);
+        setPreviewUrls([]);
+        alert("다시 첨부 해주시기 바랍니다.");
+      } else {
+        alert("취소 되었습니다.");
+      }
+      return;
+    };
+    const { files } = event.target;
+    if (!files || files.length === 0) return;
+    const file = files[0];
+    const newFiles = [...travelPhotoList, file];
+    const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file));
+    console.log(newPreviewUrls, newFiles)
+    setTravelPhotoList(newFiles);
+    setPreviewUrls(newPreviewUrls);
+  };
+
+  // event handler: 사진 제거 이벤트 처리 //
+  const travelPhotoListDeleteHandler = (index: number) => {
+    setPreviewUrls(previewUrls.filter((_, i) => i !== index));
+    setTravelPhotoList([]);
+  };
+
   // event handler: 등록 버튼 클릭 이벤트 처리 함수 //
   const registerButtonClickHandler = async (path: string) => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-
     if (!travelTitle || !travelHashtagContentList || !travelLocation || !travelContent || travelPhotoList.length === 0) {
       alert('모두 입력해주세요.');
       return;
-    }
+    };
 
     if (window.confirm("등록하시겠습니까?")) {
       alert("등록이 완료되었습니다.");
@@ -143,7 +147,7 @@ export default function Write() {
     } else {
       alert("취소되었습니다.");
       return;
-    }
+    };
 
     const travelPhotoListUrl: string[] = [];
     for (const file of travelPhotoList) {
@@ -151,7 +155,7 @@ export default function Write() {
       formData.append('file', file);
       const url = await fileUploadRequest(formData);
       if (url) travelPhotoListUrl.push(url);
-    }
+    };
 
     const requestBody: PostTravelRequestDto = {
       travelPhotoList: travelPhotoListUrl,
@@ -161,13 +165,13 @@ export default function Write() {
       travelContent
     }
     postcTravelRequest(requestBody, accessToken).then(postTravelResponse);
-  }
+  };
 
   // event handler: 취소 버튼 클릭 이벤트 처리 함수 //
   const cancelButtonClickHandler = (path: string) => {
     if (window.confirm("글쓰기를 취소하시겠습니까?"))
       navigator(path);
-  }
+  };
 
   // render: 글쓰기 페이지 컴포넌트 렌더링//
   return (
@@ -192,7 +196,7 @@ export default function Write() {
           <textarea className='contents-box-text' value={travelContent} placeholder='내용을 입력하세요. (* 사진은 최대 3장 첨부할 수 있습니다.)' onChange={travelContentChangeHandler} />
           <div className='contents-box-preview-photo-box'>
             {previewUrls.map((url, index) => (
-              <img className='contents-box-preview-photo' key={index} src={url} alt={`preview ${index}`} />
+              <img className='contents-box-preview-photo' key={index} src={url} alt={`preview ${index}`} onClick={() => travelPhotoListDeleteHandler(index)}/>
             ))}
           </div>
         </div>
