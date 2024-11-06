@@ -15,7 +15,7 @@ import { GetFashionListResponseDto } from 'src/apis/fashion/dto/response';
 const SECTION_PER_PAGE = 5;
 
 
-// component: 여행 게시판 리스트 컴포넌트 //
+// component: 패션 게시판 리스트 컴포넌트 //
 export default function FashionMain() {
 
   // state: 쿠키상태 //
@@ -38,6 +38,8 @@ export default function FashionMain() {
   const [currentSection, setCurrentSection] = useState<number>(1);
 
   const [viewList, setViewList] = useState<Fashion[]>([]);
+  const [selectedHashtag, setSelectedHashtag] = useState<string>('');
+  const [filteredPostList, setFilteredPostList] = useState<Fashion[]>([]);
 
   // function: get Fashion List 함수 //
   const getFashionList = (page: number) => {
@@ -65,7 +67,6 @@ export default function FashionMain() {
     }
 
     const { fashionList } = resposenBody as GetFashionListResponseDto;
-
     setViewList(fashionList);
   }
 
@@ -85,26 +86,37 @@ export default function FashionMain() {
   const onItemClickHandler = (path: string) => {
     navigate(path);
   };
-  
+
   const onPageClickHandler = (page: number) => {
     setCurrentPage(page);
-  } 
+  }
+
+  const onHashtagClickHandler = (hashtag: string) => {
+    setFilteredPostList(viewList);
+    if (selectedHashtag === hashtag) {
+      setSelectedHashtag('');
+      setFilteredPostList([]);
+      return;
+    }
+    setSelectedHashtag(hashtag);
+  }
+
   const onPreSectionClickHandler = () => {
     if (currentSection === 1) return;
     setCurrentSection(currentSection - 1);
     setCurrentPage((currentSection - 1) * SECTION_PER_PAGE);
-  } 
+  }
+  
   const onNextSectionClickHandler = () => {
     if (currentSection === totalSection) return;
     setCurrentSection(currentSection + 1);
     setCurrentPage(currentSection * SECTION_PER_PAGE + 1);
-  } 
+  }
 
   useEffect(() => {
+
     getTotalCountRequest().then(getTotalCountResponse);
-  }, []);
 
-  useEffect(() => {
     const pageList: number[] = [];
     const startPage = (currentSection - 1) * SECTION_PER_PAGE + 1;
     const endPage = currentSection * SECTION_PER_PAGE;
@@ -112,13 +124,17 @@ export default function FashionMain() {
       pageList.push(page);
       if (page === totalPage) break;
     };
-    
-    setPageList(pageList);
-  }, [currentSection, totalPage]);
 
-  useEffect(() => {
+    setPageList(pageList);
+
     getFashionList(currentPage);
-  }, [currentPage])
+    if(!selectedHashtag) {
+      setFilteredPostList(viewList);
+    }
+    const filtered = viewList.filter((item) => item.fashionHashtagList.some((hashtag) => hashtag === selectedHashtag));
+    setFilteredPostList(filtered);
+
+  }, [currentPage, selectedHashtag, totalPage])
 
   // render: 패션 게시판 리스트 컴포넌트 렌더링//  
   return (
@@ -127,10 +143,10 @@ export default function FashionMain() {
         <div className='write-button' onClick={() => onItemClickHandler(WRITE_PATH)}>글쓰기</div>
       </div>
       <div className='board-middle'>
-        {viewList.map((item) => (
+        {(selectedHashtag ? filteredPostList : viewList).map((item) => (
           <div key={item.fashionNumber} className='board-box'>
             <div className='board-image' onClick={() => navigate(`${FASHION_DETAIL_PATH}/${item.fashionNumber}`)}>
-            <img src={item.fashionPhoto} alt={`Fashion ${item.fashionNumber}`} className='board-image-content' />
+              <img src={item.fashionPhoto} alt={`Fashion ${item.fashionNumber}`} className='board-image-content' />
             </div>
             <div className='board-information'>
               <div className='board-information-data'>{changeDateFormat(item.fashionDate)}</div>
@@ -146,7 +162,11 @@ export default function FashionMain() {
                 <div className={`board-information-bookmark ${signInUser && item.fashionSaveUserList.includes(signInUser.userId) ? 'active' : ''}`} ></div>
               </div>
             </div>
-            <div className='board-tag'>{item.fashionHashtagList}</div>
+            <div className='board-tag'>
+              {item.fashionHashtagList.map((hashtag, index) => (
+                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>{hashtag}</div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
