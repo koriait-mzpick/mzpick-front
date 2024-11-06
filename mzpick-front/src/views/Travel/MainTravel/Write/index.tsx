@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import path from 'path';
 
 // component: 글쓰기 페이지 컴포넌트 //
-export default function Write() {
+export default function TravelWrite() {
 
   // state: cookie 상태 //
   const [cookies] = useCookies();
@@ -76,12 +76,7 @@ export default function Write() {
     }
     if (event.key === 'Backspace' && travelHashtagContent === '' && travelHashtagContentList.length > 0)
       setTravelHashtagContentList(travelHashtagContentList.slice(0, -1));
-  };
-
-  // event handler: 커서 이동시 해시태그 추가 이벤트 처리 //
-  const travelHashtagContentBlurHandler = () => {
-      setTravelHashtagContentList([...travelHashtagContentList, travelHashtagContent.trim()]);
-      setTravelHashtagContent('');
+    console.log(travelHashtagContentList)
   };
 
   // event handler: 해시태그 제거 이벤트 처리 //
@@ -190,7 +185,7 @@ export default function Write() {
                 {'#' + tag}
               </div>
             ))}
-            <input className='middle-hashtag-write' type='text' value={travelHashtagContent} placeholder='태그 (최대 3개)' onChange={travelHashtagContentChangeHandler} onKeyDown={travelHashtagContentAddHandler} onBlur={travelHashtagContentBlurHandler} />
+            <input className='middle-hashtag-write' type='text' value={travelHashtagContent} placeholder='태그 (최대 3개)' onChange={travelHashtagContentChangeHandler} onKeyDown={travelHashtagContentAddHandler} />
           </div>
           <input className='middle-location' value={travelLocation} placeholder='지역을 입력하세요.' onChange={travelLocationhangeHandler} />
           <div className='middle-attached-file' onClick={attachedFileButtonClickHandler}>
