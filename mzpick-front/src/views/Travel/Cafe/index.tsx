@@ -8,8 +8,8 @@ import { TRAVEL_CAFE_DETAIL_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_ST
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Cafe } from 'src/types';
 
-import { getTotalCountRequest } from 'src/apis/pagination';
-import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
+import { getCafeTotalCountRequest } from 'src/apis/pagination';
+import { GetCafeTotalCountResponseDto } from 'src/apis/pagination/response';
 import Pagination from 'src/components/Pagination';
 import './style.css';
 
@@ -47,8 +47,8 @@ export default function CafeMain() {
     getCafeListRequest(page).then(getCafeResponseDto);
   }
     // function: get total count response //
-    const getTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
-      const { count } = dto as GetTotalCountResponseDto;
+    const getCafeTotalCountResponse = (dto: GetCafeTotalCountResponseDto | ResponseDto | null) => {
+      const { count } = dto as GetCafeTotalCountResponseDto;
       const totalPage = Math.ceil(count / 8);
       setTotalPage(totalPage);
       const totalSection = Math.ceil(totalPage / SECTION_PER_PAGE);
@@ -126,7 +126,7 @@ const onNextSectionClickHandler = () => {
 } 
 
 useEffect(() => {
-  getTotalCountRequest().then(getTotalCountResponse);
+  getCafeTotalCountRequest().then(getCafeTotalCountResponse);
 }, []);
 
 useEffect(() => {

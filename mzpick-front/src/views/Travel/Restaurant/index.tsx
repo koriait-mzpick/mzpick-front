@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useLocation, useNavigate } from 'react-router';
 import { ResponseDto } from 'src/apis/dto/response';
-import { getTotalCountRequest } from 'src/apis/pagination';
-import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
+import { getFoodTotalCountRequest } from 'src/apis/pagination';
+import { GetFoodTotalCountResponseDto, GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import { getRestaurantListRequest } from 'src/apis/restaurant';
 import { GetRestaurantListResponseDto } from 'src/apis/restaurant/dto/response';
 import Pagination from 'src/components/Pagination';
@@ -47,7 +47,7 @@ export default function RestaurantMain() {
     getRestaurantListRequest(page).then(getRestaurantResponseDto);
   }
     // function: get total count response //
-    const getTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+    const getFoodTotalCountResponse = (dto: GetFoodTotalCountResponseDto | ResponseDto | null) => {
       const { count } = dto as GetTotalCountResponseDto;
       const totalPage = Math.ceil(count / 8);
       setTotalPage(totalPage);
@@ -126,7 +126,7 @@ export default function RestaurantMain() {
   } 
 
   useEffect(() => {
-    getTotalCountRequest().then(getTotalCountResponse);
+    getFoodTotalCountRequest().then(getFoodTotalCountResponse);
   }, []);
 
   useEffect(() => {
