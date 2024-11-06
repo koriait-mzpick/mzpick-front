@@ -7,7 +7,8 @@ import { ACCESS_TOKEN, TRAVEL_PATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
 import { getTravelCommentListRequest, getTravelDetailRequest } from 'src/apis/travel';
 import { TravelDetail } from 'src/types';
-
+import { SvgIcon } from '@mui/material';
+import { NavigateNext as NavigateNextIcon, NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
 // slider
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -15,30 +16,29 @@ import "slick-carousel/slick/slick-theme.css";
 
 // const [travelPhotoList, setTravelPhotoList] = useState<string[]>([]);
 
-function CarouselComponent() {
+function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed props typing
   const settings = {
     dots: true,
-    infinite: false,
+    infinite: true,  // Changed to true for continuous sliding
     speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1
-  }
+    slidesToScroll: 1,
+    arrows: true,
+    adaptiveHeight: true,
+    waitForAnimate: false,
+    nextArrow: <SvgIcon component={NavigateNextIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />,
+    prevArrow: <SvgIcon component={NavigateBeforeIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />
+  };
+
   return (
-    <Slider {...settings}>
-      {/* {travelPhotoList.map((photo, index) => (
-        <img className='contents-image-item' src={photo} alt={`travel-photo-${index + 1}`} />
-        ))} */}
-      <div className='contents-image-item'>
-        <h3>1</h3>
-      </div>
-      <div className='contents-image-item'>
-        <h3>2</h3>
-      </div>
-      <div className='contents-image-item'>
-        <h3>3</h3>
-      </div>
+    <Slider {...settings} className='contents-image' >
+      {photoList.map((photo, index) => (
+        <div key={index}>
+          <img className='contents-image-item' src={photo} alt={`travel-photo-${index + 1}`} />
+        </div>
+      ))}
     </Slider>
-  )
+  );
 }
 
 
@@ -64,6 +64,7 @@ function Content() {
   const [travelViewCount, setTravelViewCount] = useState<number>(0);
   const [travelLikeCount, setTravelLikeCount] = useState<number>(0);
   const [travelSaveCount, setTravelSaveCount] = useState<number>(0);
+  const [travelContent, setTravelContent] = useState<string>('');
   const [travelDate, setTravelDate] = useState<string>('');
   const [detail, setDetail] = useState<TravelDetail>();
 
@@ -98,7 +99,6 @@ function Content() {
     setUserId(travelDetail.userId);
     setTravelTitle(travelDetail.travelTitle);
     setTravelLocation(travelDetail.travelLocation);
-    setTravelTitle(travelDetail.travelTitle);
     setTravelPhotoList(travelDetail.travelPhotoList);
     setTravelHashtagList(travelDetail.travelHashtagList);
     setTravelLikeUserList(travelDetail.travelLikeUserList);
@@ -106,7 +106,16 @@ function Content() {
     setTravelViewCount(travelDetail.travelViewCount);
     setTravelLikeCount(travelDetail.travelLikeCount);
     setTravelSaveCount(travelDetail.travelSaveCount);
-    setTravelDate(travelDetail.travelContent);
+    setTravelDate(travelDetail.travelDate);
+    setTravelContent(travelDetail.travelContent);
+  };
+
+  // function: 날짜 포맷 변경 함수 //
+  const changeDateFormat = (date: string) => {
+    const yy = date.substring(2, 4);
+    const mm = date.substring(5, 7);
+    const dd = date.substring(8, 10);
+    return `${yy}.${mm}.${dd}`;
   };
 
   // event handler: 북마크 클릭 이벤트 처리 //
@@ -134,25 +143,23 @@ function Content() {
       <div className='contents-top'>
         <div className='contents-top-left'>
           <div className='contents-top-title'>{travelTitle}</div>
-          <div className='contents-top-date'>{travelDate}</div>
+          <div className='contents-top-date'>{changeDateFormat(travelDate)}</div>
         </div>
         <div className='contents-top-vote-button-box'>
           <div className='contents-top-vote-button'>투표</div>
         </div>
       </div>
-      <div className='contents-image'>
-        <CarouselComponent />
-
-        {/* {travelPhotoList.map((photo, index) => (
-          <img className='contents-image-item' src={photo} alt={`travel-photo-${index+1}`} />
-        ))}
-        <img className='contents-image-item' src={travelPhotoList[0]} />
-        <div className='contents-image-left-button'></div>
-        <div className='contents-image-right-button'></div> */}
-      </div>
-      <div className='contents-text'></div>
+      <CarouselComponent photoList={travelPhotoList} />
+      <div className='contents-text'>{travelContent}</div>
       <div className='contents-information'>
-        <div className='contents-information-left'>{travelHashtagList}</div>
+        <div className='contents-information-left'>
+          <div className='contents-information-hashtag'>
+            {travelHashtagList.map((hashtag: string, index: number) => (
+              <div key={index} className='board-tag-item'>{hashtag}</div>
+            ))}
+          </div>
+
+        </div>
         <div className='contents-information-right'>
           <div className='contents-information-like'>
             <div className={`contents-information-like-icon ${likeClick ? 'active' : ''}`} onClick={likeClcikHandler}></div>
