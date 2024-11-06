@@ -22,8 +22,8 @@ const PUT_RESTAURANT_SAVE_API_URL = (travelFoodNumber: number | string) => `${RE
 // ! restaurant
 
 // function: 맛집 리스트 요청 함수 //
-export const getRestaurantListRequest = async (page: number | string, searchLocation: string) => {
-    const responseBody = await axios.get(GET_RESTAURANT_LIST_API_URL, { params: { page, searchLocation } })
+export const getRestaurantListRequest = async (page: number | string, searchLocation: string, hashtag:string) => {
+    const responseBody = await axios.get(GET_RESTAURANT_LIST_API_URL, { params: { page, searchLocation,hashtag } })
         .then(responseDataHandler<GetRestaurantListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;

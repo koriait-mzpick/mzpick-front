@@ -22,8 +22,8 @@ const PUT_CAFE_SAVE_API_URL = (travelCafeNumber: number | string) => `${CAFE_MOD
 // ! cafe API 요청
 
 // function: 카페 리스트 요청 함수 //
-export const getCafeListRequest = async (page: number | string, searchLocation: string) => {
-    const responseBody = await axios.get(GET_CAFE_LIST_API_URL, { params: { page,searchLocation } })
+export const getCafeListRequest = async (page: number | string, searchLocation: string, hashtag: string) => {
+    const responseBody = await axios.get(GET_CAFE_LIST_API_URL, { params: { page,searchLocation,hashtag} })
         .then(responseDataHandler<GetCafeListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
