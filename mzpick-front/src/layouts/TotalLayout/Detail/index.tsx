@@ -71,6 +71,8 @@ function Content() {
     // setTravelSaveCount(travelSaveCount);
     // setTravelDate(travelDate);
     setTravelDetail(travelDetail);
+
+    
   };
 
   // event handler: 북마크 클릭 이벤트 처리 //
