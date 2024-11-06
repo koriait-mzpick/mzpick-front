@@ -42,8 +42,8 @@ export default function FashionMain() {
   const [filteredPostList, setFilteredPostList] = useState<Fashion[]>([]);
 
   // function: get Fashion List 함수 //
-  const getFashionList = (page: number) => {
-    getFashionListRequest(page).then(getFashionResponseDto);
+  const getFashionList = (page: number, hashtag: string) => {
+    getFashionListRequest(page, hashtag).then(getFashionResponseDto);
   }
   // function: get total count response //
   const getFashionTotalCountResponse = (dto: GetFashionTotalCountResponseDto | ResponseDto | null) => {
@@ -115,6 +115,10 @@ export default function FashionMain() {
 
   useEffect(() => {
 
+  }, [currentSection, totalPage]);
+
+  useEffect(() => {
+
     getFashionTotalCountRequest().then(getFashionTotalCountResponse);
 
     const pageList: number[] = [];
@@ -124,17 +128,12 @@ export default function FashionMain() {
       pageList.push(page);
       if (page === totalPage) break;
     };
-
+    
     setPageList(pageList);
 
-    getFashionList(currentPage);
-    if(!selectedHashtag) {
-      setFilteredPostList(viewList);
-    }
-    const filtered = viewList.filter((item) => item.fashionHashtagList.some((hashtag) => hashtag === selectedHashtag));
-    setFilteredPostList(filtered);
+    getFashionList(currentPage, selectedHashtag);
 
-  }, [currentPage, selectedHashtag, totalPage])
+  }, [currentPage, currentSection,selectedHashtag, totalPage])
 
   // render: 패션 게시판 리스트 컴포넌트 렌더링//  
   return (
