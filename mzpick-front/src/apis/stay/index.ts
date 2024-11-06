@@ -23,8 +23,8 @@ const PUT_STAY_SAVE_API_URL = (travelStayNumber: number | string) => `${STAY_MOD
 // ! STAY 숙박 요청 
 
 // function: 숙박 리스트 요청 함수 //
-export const getStayListRequest = async (page: number | string, searchLocation: string) => {
-    const responseBody = await axios.get(GET_STAY_LIST_API_URL, { params: { page,searchLocation } })
+export const getStayListRequest = async (page: number | string, searchLocation: string, hashtag:string) => {
+    const responseBody = await axios.get(GET_STAY_LIST_API_URL, { params: { page,searchLocation,hashtag } })
         .then(responseDataHandler<GetStayListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;

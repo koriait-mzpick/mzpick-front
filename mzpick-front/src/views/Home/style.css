@@ -118,6 +118,7 @@
 }
 
 #home .home-category .category-container .keyword-category {
+    background-image: url(/public/image/typewrite.jpg);
     background-color: black;
     line-height: 700px;
     object-fit: scale-down;

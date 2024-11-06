@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <div id='home'>
       <div className='home-media'>
-        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/mnGtc3wECc0?si=xcdDElbK80f3B8uA"
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/mnGtc3wECc0?autoplay=1&loop=1&mute=1&playlist=mnGtc3wECc0"
           title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen>
         </iframe>
       </div>

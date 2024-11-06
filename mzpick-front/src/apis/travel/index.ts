@@ -23,8 +23,8 @@ const PUT_TRAVEL_SAVE_API_URL = (travelNumber: number | string) => `${TRAVEL_MOD
 // ! TRAVEL 요청 
 
 // function: 여행 리스트 요청 함수 //
-export const getTravelListRequest = async (page: number | string, searchLocation: string) => {
-    const responseBody = await axios.get(GET_TRAVEL_LIST_API_URL, { params: { page, searchLocation } })
+export const getTravelListRequest = async (page: number | string, searchLocation: string,hashtag: string) => {
+    const responseBody = await axios.get(GET_TRAVEL_LIST_API_URL, { params: { page, searchLocation,hashtag } })
         .then(responseDataHandler<GetTravelListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
