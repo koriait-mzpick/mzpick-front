@@ -67,6 +67,7 @@ export default function FashionMain() {
     }
 
     const { fashionList } = resposenBody as GetFashionListResponseDto;
+    console.log(fashionList)
     setViewList(fashionList);
   }
 
@@ -92,13 +93,12 @@ export default function FashionMain() {
   }
 
   const onHashtagClickHandler = (hashtag: string) => {
-    setFilteredPostList(viewList);
     if (selectedHashtag === hashtag) {
       setSelectedHashtag('');
-      setFilteredPostList([]);
       return;
     }
     setSelectedHashtag(hashtag);
+    console.log(selectedHashtag);
   }
 
   const onPreSectionClickHandler = () => {
@@ -115,10 +115,6 @@ export default function FashionMain() {
 
   useEffect(() => {
 
-  }, [currentSection, totalPage]);
-
-  useEffect(() => {
-
     getFashionTotalCountRequest().then(getFashionTotalCountResponse);
 
     const pageList: number[] = [];
@@ -132,7 +128,7 @@ export default function FashionMain() {
     setPageList(pageList);
 
     getFashionList(currentPage, selectedHashtag);
-
+    console.log(selectedHashtag)
   }, [currentPage, currentSection,selectedHashtag, totalPage])
 
   // render: 패션 게시판 리스트 컴포넌트 렌더링//  
@@ -142,7 +138,7 @@ export default function FashionMain() {
         <div className='write-button' onClick={() => onItemClickHandler(FASHION_WRITE_PATH)}>글쓰기</div>
       </div>
       <div className='board-middle'>
-        {(selectedHashtag ? filteredPostList : viewList).map((item) => (
+        {viewList.map((item) => (
           <div key={item.fashionNumber} className='board-box'>
             <div className='board-image' onClick={() => navigate(`${FASHION_DETAIL_PATH}/${item.fashionNumber}`)}>
               <img src={item.fashionPhoto} alt={`Fashion ${item.fashionNumber}`} className='board-image-content' />
