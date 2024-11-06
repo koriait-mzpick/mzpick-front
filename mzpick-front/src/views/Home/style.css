@@ -97,23 +97,32 @@
     background-image: url(/public/image/TravelImage.png);
     line-height: 700px;
     object-fit: scale-down;
+    background-size: cover;
+    background-position: 50% 50%;
 }
 
 #home .home-category .category-container .food-category {
     background-image: url(/public/image/FoodImage.png);
     line-height: 700px;
     object-fit: scale-down;
+    background-size: cover;
+    background-position: 50% 50%;
 }
 
 #home .home-category .category-container .fashion-category {
     background-image: url(/public/image/fashionimage.png);
     line-height: 700px;
     object-fit: scale-down;
+    background-size: cover;
+    background-position: 50% 50%;
 }
 
 #home .home-category .category-container .keyword-category {
     background-color: black;
     line-height: 700px;
+    object-fit: scale-down;
+    background-size: cover;
+    background-position: 50% 50%;
 }
 
 
@@ -121,6 +130,8 @@
     background-image: url(/public/image/HallofFameImage.png);
     line-height: 700px;
     object-fit: scale-down;
+    background-size: cover;
+    background-position: 50% 50%;
 }
 
 #home .footer {
