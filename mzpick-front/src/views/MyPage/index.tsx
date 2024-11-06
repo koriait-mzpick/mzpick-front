@@ -4,7 +4,6 @@ import BottomNav from '../../layouts/BottomNav';
 import { MyPageCafeSave } from 'src/types/mypage/cafe';
 import { usePagination } from 'src/hooks';
 import { GetMyPageCafeSaveResponseDto } from 'src/apis/mypage/dto/response/save';
-import Pagination from 'src/components/Pagination';
 import { getTotalCountRequest } from 'src/apis/pagination';
 import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import ResponseDto from 'src/apis/dto/response/response.dto';
@@ -13,6 +12,7 @@ import { ACCESS_TOKEN, WRITE_PATH } from 'src/constants';
 import axios from 'axios';
 import { getMyPageCafeSaveListRequest } from 'src/apis/mypage';
 import { useCookies } from 'react-cookie';
+import Pagination from 'src/components/Pagination2';
 
 const SECTION_PER_PAGE = 5;
 
@@ -202,15 +202,8 @@ export default function MyPage() {
           </div>
           
         </div>
-        <div  className='page-box'>
-          <div className='pageBox1'></div>
-          <div className='pageBox'>1</div>
-          <div className='pageBox'>2</div>
-          <div className='pageBox'>3</div>
-          <div className='pageBox'>4</div>
-          <div className='pageBox'>5</div>
-          <div className='pageBox2'></div>
-        </div>
+        <Pagination currentPage={currentPage} pageList={pageList} onPageClickHandler={onPageClickHandler} onNextSectionClickHandler={onNextSectionClickHandler} onPreSectionClickHandler={onPreSectionClickHandler} />
+
       </div>
 
       <div className='like-box2'>
@@ -260,15 +253,8 @@ export default function MyPage() {
           </div>
 
         </div>
-        <div  className='page-box'>
-          <div className='pageBox1'></div>
-          <div className='pageBox'>1</div>
-          <div className='pageBox'>2</div>
-          <div className='pageBox'>3</div>
-          <div className='pageBox'>4</div>
-          <div className='pageBox'>5</div>
-          <div className='pageBox2'></div>
-        </div>
+        <Pagination currentPage={currentPage} pageList={pageList} onPageClickHandler={onPageClickHandler} onNextSectionClickHandler={onNextSectionClickHandler} onPreSectionClickHandler={onPreSectionClickHandler} />
+
       </div>
 
       <div className='like-box2'>
@@ -315,13 +301,8 @@ export default function MyPage() {
           </div>
 
         </div>
-        <Pagination 
-          pageList={pageList} 
-          currentPage={currentPage} 
-          onPageClickHandler={onPageClickHandler}
-          onPreSectionClickHandler={onPreSectionClickHandler}
-          onNextSectionClickHandler={onNextSectionClickHandler}
-        />
+        <Pagination currentPage={currentPage} pageList={pageList} onPageClickHandler={onPageClickHandler} onNextSectionClickHandler={onNextSectionClickHandler} onPreSectionClickHandler={onPreSectionClickHandler} />
+
       </div>
       </div>
 
