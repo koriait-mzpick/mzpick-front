@@ -1,16 +1,6 @@
 import { ResponseDto } from "src/apis/dto/response";
+import { FashionDetail } from "src/types";
 
 export default interface GetFashionDetailResponseDto extends ResponseDto {
-    fashionTitle: string;
-    userId: string;
-    fashionNumber: number;
-    fashionPhotoList: string[];
-    fashionHashtagList: string[];
-    fashionLikeUserList: string[];
-    fashionSaveUserList: string[];
-    totalPrice: number;
-    fashionLikeCount: number;
-    fashionSaveCount: number;
-    fashionViewCount: number;
-    fashionDate: string;
+    fashionDetail : FashionDetail
 }
