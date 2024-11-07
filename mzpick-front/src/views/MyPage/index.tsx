@@ -29,6 +29,8 @@ export default function MyPage() {
   const [totalSection, setTotalSection] = useState<number>(0);
   const [currentSection, setCurrentSection] = useState<number>(1);
 
+  const accessToken = cookies[ACCESS_TOKEN];
+
   // const [viewList, setViewList] = useState<MyPageCafeSave[]>([]);
     
     
@@ -43,7 +45,7 @@ export default function MyPage() {
 
     // function: getSave List 함수 //
     const getCafeSaveList = () => {
-      getMyPageCafeSaveListRequest(ACCESS_TOKEN).then(GetMyPageCafeSaveResponseDto);
+      getMyPageCafeSaveListRequest(accessToken).then(GetMyPageCafeSaveResponseDto);
     }
 
     // function: get Save Response 함수 //
