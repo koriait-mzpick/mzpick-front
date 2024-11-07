@@ -13,8 +13,6 @@ import axios from 'axios';
 import { getMyPageCafeSaveListRequest } from 'src/apis/mypage';
 import { useCookies } from 'react-cookie';
 import Pagination from 'src/components/Pagination2';
-import { useAuthStore } from 'src/stores';
-import { SignInUser } from 'src/types';
 
 const SECTION_PER_PAGE = 5;
 
@@ -26,14 +24,13 @@ export default function MyPage() {
   const [count, setCount] = useState<number>(0);
   const [pageList, setPageList] = useState<number[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
+  const [totalList, setTotalList] = useState<MyPageCafeSave[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalSection, setTotalSection] = useState<number>(0);
   const [currentSection, setCurrentSection] = useState<number>(1);
-  const [totalList, setTotalList] = useState<MyPageCafeSave[]>([]);
-  const [originalList, setOriginalList] = useState<MyPageCafeSave[]>([]);
 
-  const [viewList, setViewList] = useState<MyPageCafeSave[]>([]);
-
+  // const [viewList, setViewList] = useState<MyPageCafeSave[]>([]);
+    
     
     // function: get total count response //
     const getTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
@@ -46,27 +43,26 @@ export default function MyPage() {
 
     // function: getSave List 함수 //
     const getCafeSaveList = () => {
-      getMyPageCafeSaveListRequest(ACCESS_TOKEN).then(GetMyPageCafeSaveResponse);
+      getMyPageCafeSaveListRequest(ACCESS_TOKEN).then(GetMyPageCafeSaveResponseDto);
     }
 
     // function: get Save Response 함수 //
-    const GetMyPageCafeSaveResponse = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
+    const GetMyPageCafeSaveResponseDto = (resposeBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
       const message =
-        !responseBody ? '서버에 문제가 있습니다.' :
-          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-          responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        !resposeBody ? '서버에 문제가 있습니다.' :
+          resposeBody.code === 'AF' ? '잘못된 접근입니다.' :
+          resposeBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
-      const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+      const isSuccessed = resposeBody !== null && resposeBody.code === 'SU';
       if (!isSuccessed) {
         alert(message);
         return;
     }
 
      // TotalList 상태 업데이트,  originalList 상태 업데이트 
-    const { myPageSaveCafes } = responseBody as GetMyPageCafeSaveResponseDto;
-    // setTotalList(myPageSaveCafes);
-    // setOriginalList(myPageSaveCafes);
-    setViewList(myPageSaveCafes);
+    const { myPageCafeSaves } = resposeBody as GetMyPageCafeSaveResponseDto;
+    setTotalList(myPageCafeSaves);
+    setOriginalList(myPageCafeSaves);
 };
 
   const onButtonClickEventHandler = (path: string) => {
@@ -77,6 +73,9 @@ export default function MyPage() {
   interface TableSaveProps {
     save: MyPageCafeSave;
   }
+
+  // state : 원본 리스트 상태 //
+  const [originalList, setOriginalList] = useState<MyPageCafeSave[]>([]);
   
   const onPageClickHandler = (page: number) => {
     setCurrentPage(page);
@@ -108,13 +107,6 @@ export default function MyPage() {
     
     setPageList(pageList);
   }, [currentSection, totalPage]);
-
-    const changeDateFormat = (date: string) => {
-    const yy = date.substring(2, 4);
-    const mm = date.substring(5, 7);
-    const dd = date.substring(8, 10);
-    return `${yy}.${mm}.${dd}`;
-  };
 
   useEffect(() => {
     getCafeSaveList();
@@ -154,25 +146,25 @@ export default function MyPage() {
               </div>
             </div>
           </div>
-          {viewList.map((item) => (
+
           <div className='save-box'>
         <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >SAVE</div>
         <div className='imageBox'>
-          <div key={item.travelCafeNumber} className='WritePostBox'>
+          <div className='WritePostBox'>
             <div className='board-box'>
-            <img src={item.travelCafePhoto} alt={`Travel ${item.travelCafeNumber}`} className='board-image' />
+          <div className='board-image'></div>
           <div className='board-information'>
-            <div className='board-information-data'></div>
+            <div className='board-information-data'>24.12.12</div>
           
           </div>
-          <div className='board-tag'>{item.travelCafeHashTagList}</div>
+          <div className='board-tag'>#</div>
         </div>
           </div>
           <div className='WritePostBox'>
           <div className='board-box'>
           <div className='board-image'></div>
           <div className='board-information'>
-            <div className='board-information-data'>{changeDateFormat(item.travelCafeDate)}</div>
+            <div className='board-information-data'>24.12.12</div>
           
           </div>
           <div className='board-tag'>#</div>
@@ -190,9 +182,9 @@ export default function MyPage() {
           </div>
         </div>
         <Pagination currentPage={currentPage} pageList={pageList} onPageClickHandler={onPageClickHandler} onNextSectionClickHandler={onNextSectionClickHandler} onPreSectionClickHandler={onPreSectionClickHandler} />
-      </div>
-      ))}
 
+
+      </div>
       <div className='like-box'>
         <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>LIKE</div>
         <div className='imageBox'>
@@ -321,5 +313,4 @@ export default function MyPage() {
       </div>
   );
 }
-
 
