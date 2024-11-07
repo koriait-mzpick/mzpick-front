@@ -1,8 +1,8 @@
 import axios from "axios";
-import { MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler, bearerAuthorization } from "..";
+import { bearerAuthorization, MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from "..";
 import { ResponseDto } from "../dto/response";
-import { PostFashionRequestDto, PatchFashionRequestDto, PostFashionCommentRequestDto } from "./dto/request";
-import { GetFashionListResponseDto, GetFashionDetailResponseDto, GetFashionCommentResponseDto, GetFashionSaveListResponseDto, GetFashionLikeListResponseDto } from "./dto/response";
+import { PatchFashionRequestDto, PostFashionCommentRequestDto, PostFashionRequestDto } from "./dto/request";
+import { GetFashionCommentResponseDto, GetFashionDetailResponseDto, GetFashionLikeListResponseDto, GetFashionListResponseDto, GetFashionSaveListResponseDto } from "./dto/response";
 
 
 // variable: FASHION API URL 상수 //
@@ -10,7 +10,7 @@ const FASHION_MODULE_URL = `${MZPICK_API_DOMAIN}/api/v1/fashion`;
 
 const GET_FASHION_LIST_API_URL = `${FASHION_MODULE_URL}/`;
 const GET_FASHION_DETAIL_API_URL = (fashionNumber: number | string) => `${FASHION_MODULE_URL}/${fashionNumber}`;
-const POST_FASHION_API_URL = `${FASHION_MODULE_URL}/}`;
+const POST_FASHION_API_URL = `${FASHION_MODULE_URL}/`;
 const PATCH_FASHION_API_URL = (fashionNumber: number | string) => `${FASHION_MODULE_URL}/${fashionNumber}`;
 const DELETE_FASHION_API_URL = (fashionNumber: number | string) => `${FASHION_MODULE_URL}/${fashionNumber}`;
 const POST_UP_VIEW_FASHION_API_URL = (fashionNumber: number | string) => `${FASHION_MODULE_URL}/view/${fashionNumber}`;
