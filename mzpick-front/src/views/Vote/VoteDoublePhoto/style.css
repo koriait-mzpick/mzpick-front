@@ -193,16 +193,20 @@
 #main .doubledetail-contents .photos-one .photo-one{
     cursor: pointer;
     display: grid;
-    grid-template-columns: 5vw 5vw;
-    grid-template-rows: repeat(2 1fr);
-    justify-content: center;  
+    grid-template-columns: 5vw;
+    grid-template-rows: 14vw;
+    justify-content: center; 
+    align-items: center; 
+
+    font-size: 4rem;
+    padding-left: 42px;
+    color: rgb(179, 172, 172);
     
     height: 15vw;
-    color: black;
-    background-color: rgb(232, 226, 226);
+    background-color:  rgb(235, 228, 228);
     background-image: url(/public/image/add.png);
     background-repeat: no-repeat;
-    background-size: 10%;
+    background-size: 100%;
     background-position: 50% 50%;
 
     border-radius: 12px;
@@ -211,16 +215,21 @@
 #main .doubledetail-contents .photos-two .photo-two{
     cursor: pointer;
     display: grid;
-    grid-template-columns: 5vw 5vw;
-    grid-template-rows: repeat(2 1fr);
+    grid-template-columns: 5vw;
+    grid-template-rows: 13.5vw;
+
     justify-content: center;  
-    
+    align-items: center;
+
+    font-size: 4rem;
+    padding-left: 42px;
+    color: rgb(179, 172, 172);
+
     height: 15vw;
-    color: black;
-    background-color: rgb(232, 226, 226);
+    background-color:  rgb(235, 228, 228);
     background-image: url(/public/image/add.png);
     background-repeat: no-repeat;
-    background-size: 10%;
+    background-size: 100%;
     background-position: 50% 50%;
 
     border-radius: 12px;

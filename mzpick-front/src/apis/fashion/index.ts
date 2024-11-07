@@ -23,8 +23,8 @@ const PUT_FASHION_SAVE_API_URL = (fashionNumber: number | string) => `${FASHION_
 // ! Fashion
 
 // function: 패션 리스트 요청 함수 //
-export const getFashionListRequest = async (page: number | string) => {
-    const responseBody = await axios.get(GET_FASHION_LIST_API_URL, { params: { page } })
+export const getFashionListRequest = async (page: number | string ,hashtag: string ) => {
+    const responseBody = await axios.get(GET_FASHION_LIST_API_URL, { params: { page, hashtag} })
         .then(responseDataHandler<GetFashionListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;

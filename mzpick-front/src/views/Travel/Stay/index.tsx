@@ -37,12 +37,14 @@ export default function StayMain() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalSection, setTotalSection] = useState<number>(0);
   const [currentSection, setCurrentSection] = useState<number>(1);
+  const [selectedHashtag, setSelectedHashtag] = useState<string>('');
+  const [filteredPostList, setFilteredPostList] = useState<Stay[]>([]);
 
   const [viewList, setViewList] = useState<Stay[]>([]);
 
   // function: get Travel List 함수 //
-  const getStayList = (page:number) => {
-    getStayListRequest(page).then(getStayResponseDto);
+  const getStayList = (page:number, hashtag: string) => {
+    getStayListRequest(page,searchLocation,hashtag).then(getStayResponseDto);
   }
     // function: get total count response //
     const getStayTotalCountResponse = (dto: GetStayTotalCountResponseDto | ResponseDto | null) => {
@@ -112,6 +114,17 @@ const onItemClickHandler = (path: string) => {
 const onPageClickHandler = (page: number) => {
   setCurrentPage(page);
 } 
+
+const onHashtagClickHandler = (hashtag: string) => {
+  setFilteredPostList(viewList);
+  if (selectedHashtag === hashtag) {
+    setSelectedHashtag('');
+    setFilteredPostList([]);
+    return;
+  }
+  setSelectedHashtag(hashtag);
+}
+
 const onPreSectionClickHandler = () => {
   if (currentSection === 1) return;
   setCurrentSection(currentSection - 1);
@@ -140,8 +153,8 @@ useEffect(() => {
 }, [currentSection, totalPage]);
 
 useEffect(() => {
-  getStayList(currentPage);
-}, [currentPage])
+  getStayList(currentPage,selectedHashtag);
+}, [currentPage,selectedHashtag])
 
   // render: 여행 게시판 리스트 컴포넌트 렌더링//  
   return (
@@ -180,7 +193,11 @@ useEffect(() => {
                 <div className={`board-information-bookmark ${signInUser && item.travelStaySaveUserList.includes(signInUser.userId) ? 'active' : ''}`} ></div>
               </div>
             </div>
-            <div className='board-tag'>{item.travelStayHashtag}</div>
+            <div className='board-tag'>
+              {item.travelStayHashtag.map((hashtag, index) => (
+                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>{hashtag}</div>
+              ))}
+            </div>
           </div>
         ))}
       </div>

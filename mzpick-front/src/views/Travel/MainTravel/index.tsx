@@ -11,7 +11,6 @@ import { TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_ST
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Travel } from 'src/types';
 import './style.css';
-import { MyPageCafeSave } from 'src/types/mypage/cafe';
 
 const SECTION_PER_PAGE = 5;
 
@@ -40,12 +39,14 @@ export default function MainTravel() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalSection, setTotalSection] = useState<number>(0);
   const [currentSection, setCurrentSection] = useState<number>(1);
+  const [selectedHashtag, setSelectedHashtag] = useState<string>('');
+  const [filteredPostList, setFilteredPostList] = useState<Travel[]>([]);
 
   const [viewList, setViewList] = useState<Travel[]>([]);
 
   // function: get Travel List 함수 //
-  const getTravelList = (page: number) => {
-    getTravelListRequest(page).then(getTravelResponseDto);
+  const getTravelList = (page: number,  hashtag: string) => {
+    getTravelListRequest(page, searchLocation,hashtag).then(getTravelResponseDto);
   }
   // function: get total count response //
   const getTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
@@ -119,6 +120,16 @@ export default function MainTravel() {
   const onPageClickHandler = (page: number) => {
     setCurrentPage(page);
   } 
+  
+const onHashtagClickHandler = (hashtag: string) => {
+  setFilteredPostList(viewList);
+  if (selectedHashtag === hashtag) {
+    setSelectedHashtag('');
+    setFilteredPostList([]);
+    return;
+  }
+  setSelectedHashtag(hashtag);
+}
   const onPreSectionClickHandler = () => {
     if (currentSection === 1) return;
     setCurrentSection(currentSection - 1);
@@ -147,8 +158,8 @@ export default function MainTravel() {
   }, [currentSection, totalPage]);
 
   useEffect(() => {
-    getTravelList(currentPage);
-  }, [currentPage])
+    getTravelList(currentPage,selectedHashtag);
+  }, [currentPage,selectedHashtag])
 
   // render: 여행 게시판 리스트 컴포넌트 렌더링//  
   return (
@@ -168,7 +179,7 @@ export default function MainTravel() {
         <div className='write-button' onClick={() => onItemClickHandler(WRITE_PATH)}>글쓰기</div>
       </div>
       <div className='board-middle'>
-        {viewList.map((item) => (
+      {viewList.map((item) => (
           <div key={item.travelNumber} className='board-box'>
             <div className='board-image' onClick={() => navigate(`${TRAVEL_DETAIL_PATH}/${item.travelNumber}`)}>
             <img src={item.travelPhoto} alt={`Travel ${item.travelNumber}`} className='board-image-content' />
@@ -187,7 +198,11 @@ export default function MainTravel() {
                 <div className={`board-information-bookmark ${signInUser && item.travelSaveUserList.includes(signInUser.userId) ? 'active' : ''}`} ></div>
               </div>
             </div>
-            <div className='board-tag'>{item.travelHashtagList}</div>
+            <div className='board-tag'>
+              {item.travelHashtagList.map((hashtag, index) => (
+                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>{hashtag}</div>
+              ))}
+            </div>
           </div>
         ))}
       </div>

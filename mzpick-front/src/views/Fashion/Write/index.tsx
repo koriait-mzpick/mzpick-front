@@ -2,12 +2,12 @@ import React, { ChangeEvent, useEffect, useRef, useState, Component, KeyboardEve
 import './style.css';
 import { useCookies } from 'react-cookie';
 import { ResponseDto } from 'src/apis/dto/response';
-import { ACCESS_TOKEN, TRAVEL_PATH } from 'src/constants';
-import { PostTravelRequestDto } from 'src/apis/travel/dto/request';
-import { postcTravelRequest } from 'src/apis/travel';
+import { ACCESS_TOKEN, FASHION_PATH, TRAVEL_PATH } from 'src/constants';
 import { fileUploadRequest } from 'src/apis';
 import { useNavigate } from 'react-router-dom';
 import path from 'path';
+import { postFashionRequest } from 'src/apis/fashion';
+import { PostFashionRequestDto } from 'src/apis/fashion/dto/request';
 
 // component: 글쓰기 페이지 컴포넌트 //
 export default function FashionWrite() {
@@ -16,12 +16,12 @@ export default function FashionWrite() {
   const [cookies] = useCookies();
 
   // state: 게시글 인풋 상태 //
-  const [travelTitle, setTravelTitle] = useState<string>('');
-  const [travelHashtagContent, setTravelHashtagContent] = useState<string>('');
-  const [travelHashtagContentList, setTravelHashtagContentList] = useState<string[]>([]);
-  const [travelLocation, setTravelLocation] = useState<string>('');
-  const [travelContent, setTravelContent] = useState<string>('');
-  const [travelPhotoList, setTravelPhotoList] = useState<File[]>([]);
+  const [fashionTitle, setFashionTitle] = useState<string>('');
+  const [fashionHashtagContent, setFashionHashtagContent] = useState<string>('');
+  const [fashionHashtagContentList, setFashionHashtagContentList] = useState<string[]>([]);
+  const [fashionTotalPrice, setFashionTotalPrice] = useState<number>();
+  const [fashionContent, setFashionContent] = useState<string>('');
+  const [fashionPhotoList, setFashionPhotoList] = useState<File[]>([]);
 
   // state: 사진 입력 참조 //
   const photoInputRef = useRef<HTMLInputElement | null>(null);
@@ -30,12 +30,12 @@ export default function FashionWrite() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   // variable: 등록 가능 여부 //
-  const isWriteComplete = travelTitle && travelHashtagContentList && travelLocation && travelContent && travelPhotoList.length !== 0;
+  const isWriteComplete = fashionTitle && fashionHashtagContentList && fashionTotalPrice && fashionContent && fashionPhotoList.length !== 0;
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
 
-  // function: post travel response 처리 함수 //
+  // function: post fashion response 처리 함수 //
   const postFashionResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
@@ -51,49 +51,50 @@ export default function FashionWrite() {
   };
 
   // event handler: 제목 변경 이벤트 처리 //
-  const travelTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const fashionTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setTravelTitle(value);
+    setFashionTitle(value);
   };
 
   // event handler: 해시태그 변경 이벤트 처리 //
-  const travelHashtagContentChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const fashionHashtagContentChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const maxLength = 10;
     const { value } = event.target;
     if (value.length <= maxLength) {
-      setTravelHashtagContent(value);
+      setFashionHashtagContent(value);
     } else {
       alert("최대 글자수는 10자입니다.");
     };
   };
 
   // event handler: 해시태그 추가 이벤트 처리 //
-  const travelHashtagContentAddHandler = (event: KeyboardEvent<HTMLInputElement> | any) => {
+  const fashionHashtagContentAddHandler = (event: KeyboardEvent<HTMLInputElement> | any) => {
     if (event.isComposing || event.keyCode === 229) return;
-    if (event.key === 'Enter' && travelHashtagContent.trim() !== '' && travelHashtagContentList.length < 3) {
-      setTravelHashtagContentList([...travelHashtagContentList, travelHashtagContent.trim()]);
-      setTravelHashtagContent('');
+    if (event.key === 'Enter' && fashionHashtagContent.trim() !== '' && fashionHashtagContentList.length < 3) {
+      setFashionHashtagContentList([...fashionHashtagContentList, fashionHashtagContent.trim()]);
+      setFashionHashtagContent('');
     }
-    if (event.key === 'Backspace' && travelHashtagContent === '' && travelHashtagContentList.length > 0)
-      setTravelHashtagContentList(travelHashtagContentList.slice(0, -1));
-    console.log(travelHashtagContentList)
+    if (event.key === 'Backspace' && fashionHashtagContent === '' && fashionHashtagContentList.length > 0)
+      setFashionHashtagContentList(fashionHashtagContentList.slice(0, -1));
+    console.log(fashionHashtagContentList)
   };
 
   // event handler: 해시태그 제거 이벤트 처리 //
-  const travelHashtagContentDeleteHandler = (index: number) => {
-    setTravelHashtagContentList(travelHashtagContentList.filter((_, i) => i !== index));
+  const fashionHashtagContentDeleteHandler = (index: number) => {
+    setFashionHashtagContentList(fashionHashtagContentList.filter((_, i) => i !== index));
   };
 
-  // event handler: 지역 변경 이벤트 처리 //
-  const travelLocationhangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  // event handler: 가격 변경 이벤트 처리 //
+  const fashionTotalPriceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setTravelLocation(value);
+    const numberValue = Number(value);
+    setFashionTotalPrice(isNaN(numberValue) ? 0 : numberValue);
   };
 
   // event handler: 내용 변경 이벤트 처리 //
-  const travelContentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const fashionContentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
-    setTravelContent(value);
+    setFashionContent(value);
   };
 
   // event handler: 첨부파일 버튼 클릭 이벤트 처리 //
@@ -105,10 +106,10 @@ export default function FashionWrite() {
 
   // event handler: 사진 변경 이벤트 처리 함수 //
   const photoInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    if (travelPhotoList.length >= 3) {
+    if (fashionPhotoList.length >= 3) {
       alert("최대 3장까지만 업로드할 수 있습니다.");
       if (window.confirm("초기화 하시고 다시 첨부 하시겠습니까?")) {
-        setTravelPhotoList([]);
+        setFashionPhotoList([]);
         setPreviewUrls([]);
         alert("다시 첨부 해주시기 바랍니다.");
       } else {
@@ -119,24 +120,24 @@ export default function FashionWrite() {
     const { files } = event.target;
     if (!files || files.length === 0) return;
     const file = files[0];
-    const newFiles = [...travelPhotoList, file];
+    const newFiles = [...fashionPhotoList, file];
     const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file));
     console.log(newPreviewUrls, newFiles)
-    setTravelPhotoList(newFiles);
+    setFashionPhotoList(newFiles);
     setPreviewUrls(newPreviewUrls);
   };
 
   // event handler: 사진 제거 이벤트 처리 //
-  const travelPhotoListDeleteHandler = (index: number) => {
+  const fashionPhotoListDeleteHandler = (index: number) => {
     setPreviewUrls(previewUrls.filter((_, i) => i !== index));
-    setTravelPhotoList([]);
+    setFashionPhotoList([]);
   };
 
   // event handler: 등록 버튼 클릭 이벤트 처리 함수 //
   const registerButtonClickHandler = async (path: string) => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-    if (!travelTitle || !travelHashtagContentList || !travelLocation || !travelContent || travelPhotoList.length === 0) {
+    if (!fashionTitle || !fashionHashtagContentList || !fashionTotalPrice || !fashionContent || fashionPhotoList.length === 0) {
       alert('모두 입력해주세요.');
       return;
     };
@@ -149,22 +150,22 @@ export default function FashionWrite() {
       return;
     };
 
-    const travelPhotoListUrl: string[] = [];
-    for (const file of travelPhotoList) {
+    const fashionPhotoListUrl: string[] = [];
+    for (const file of fashionPhotoList) {
       const formData = new FormData();
       formData.append('file', file);
       const url = await fileUploadRequest(formData);
-      if (url) travelPhotoListUrl.push(url);
+      if (url) fashionPhotoListUrl.push(url);
     };
 
-    const requestBody: PostTravelRequestDto = {
-      travelPhotoList: travelPhotoListUrl,
-      travelTitle,
-      travelHashtagContentList,
-      travelLocation,
-      travelContent
+    const requestBody: PostFashionRequestDto = {
+      fashionPhoto: fashionPhotoListUrl,
+      fashionTitle,
+      fashionHashtagContentList,
+      fashionTotalPrice,
+      fashionContent
     }
-    // postcTravelRequest(requestBody, accessToken).then(postTravelResponse);
+    postFashionRequest(requestBody, accessToken).then(postFashionResponse);
   };
 
   // event handler: 취소 버튼 클릭 이벤트 처리 함수 //
@@ -177,33 +178,33 @@ export default function FashionWrite() {
   return (
     <div id='main-write'>
       <div className='write-box'>
-        <input className='write-box-title' value={travelTitle} placeholder='제목을 입력하세요.' onChange={travelTitleChangeHandler} />
+        <input className='write-box-title' value={fashionTitle} placeholder='제목을 입력하세요.' onChange={fashionTitleChangeHandler} />
         <div className='write-box-middle'>
           <div className='middle-hashtag-box'>
-            {travelHashtagContentList.map((tag, index) => (
-              <div className='middle-hashtag' key={index} onClick={() => travelHashtagContentDeleteHandler(index)}>
+            {fashionHashtagContentList.map((tag, index) => (
+              <div className='middle-hashtag' key={index} onClick={() => fashionHashtagContentDeleteHandler(index)}>
                 {'#' + tag}
               </div>
             ))}
-            <input className='middle-hashtag-write' type='text' value={travelHashtagContent} placeholder='태그 (최대 3개)' onChange={travelHashtagContentChangeHandler} onKeyDown={travelHashtagContentAddHandler} />
+            <input className='middle-hashtag-write' type='text' value={fashionHashtagContent} placeholder='태그 (최대 3개)' onChange={fashionHashtagContentChangeHandler} onKeyDown={fashionHashtagContentAddHandler} />
           </div>
-          <input className='middle-location' value={travelLocation} placeholder='지역을 입력하세요.' onChange={travelLocationhangeHandler} />
+          <input className='middle-location' value={fashionTotalPrice} placeholder='총 가격' onChange={fashionTotalPriceChangeHandler} />
           <div className='middle-attached-file' onClick={attachedFileButtonClickHandler}>
             <input ref={photoInputRef} style={{ display: 'none' }} type='file' accept='image/*' onChange={photoInputChangeHandler} />
           </div>
         </div>
         <div className='write-box-contents-box'>
-          <textarea className='contents-box-text' value={travelContent} placeholder='내용을 입력하세요. (* 사진은 최대 3장 첨부할 수 있습니다.)' onChange={travelContentChangeHandler} />
+          <textarea className='contents-box-text' value={fashionContent} placeholder='내용을 입력하세요. (* 사진은 최대 3장 첨부할 수 있습니다.)' onChange={fashionContentChangeHandler} />
           <div className='contents-box-preview-photo-box'>
             {previewUrls.map((url, index) => (
-              <img className='contents-box-preview-photo' key={index} src={url} alt={`preview ${index}`} onClick={() => travelPhotoListDeleteHandler(index)}/>
+              <img className='contents-box-preview-photo' key={index} src={url} alt={`preview ${index}`} onClick={() => fashionPhotoListDeleteHandler(index)}/>
             ))}
           </div>
         </div>
         <div className='write-box-bottom'>
           <div className='bottom-button-box'>
-            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => registerButtonClickHandler(TRAVEL_PATH)}>등록</div>
-            <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(TRAVEL_PATH)}>취소</div>
+            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => registerButtonClickHandler(FASHION_PATH)}>등록</div>
+            <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(FASHION_PATH)}>취소</div>
           </div>
         </div>
       </div>

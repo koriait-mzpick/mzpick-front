@@ -38,13 +38,15 @@ export default function RestaurantMain() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalSection, setTotalSection] = useState<number>(0);
   const [currentSection, setCurrentSection] = useState<number>(1);
+  const [selectedHashtag, setSelectedHashtag] = useState<string>('');
+  const [filteredPostList, setFilteredPostList] = useState<Restaurant[]>([]);
 
 
   const [viewList, setViewList] = useState<Restaurant[]>([]);
 
   // function: get Travel List 함수 //
-  const getTravelRestaurantList = (page:number) => {
-    getRestaurantListRequest(page).then(getRestaurantResponseDto);
+  const getTravelRestaurantList = (page:number, hashtag: string) => {
+    getRestaurantListRequest(page, searchLocation, hashtag).then(getRestaurantResponseDto);
   }
     // function: get total count response //
     const getFoodTotalCountResponse = (dto: GetFoodTotalCountResponseDto | ResponseDto | null) => {
@@ -114,6 +116,17 @@ export default function RestaurantMain() {
   const onPageClickHandler = (page: number) => {
     setCurrentPage(page);
   } 
+
+  const onHashtagClickHandler = (hashtag: string) => {
+    setFilteredPostList(viewList);
+    if (selectedHashtag === hashtag) {
+      setSelectedHashtag('');
+      setFilteredPostList([]);
+      return;
+    }
+    setSelectedHashtag(hashtag);
+  }
+
   const onPreSectionClickHandler = () => {
     if (currentSection === 1) return;
     setCurrentSection(currentSection - 1);
@@ -142,8 +155,8 @@ export default function RestaurantMain() {
   }, [currentSection, totalPage]);
 
   useEffect(() => {
-    getTravelRestaurantList(currentPage);
-  }, [currentPage])
+    getTravelRestaurantList(currentPage,selectedHashtag);
+  }, [currentPage,selectedHashtag])
 
   // render: 여행 게시판 리스트 컴포넌트 렌더링//  
   return (
@@ -182,7 +195,11 @@ export default function RestaurantMain() {
                 <div className={`board-information-bookmark ${signInUser && item.travelFoodSaveUserList.includes(signInUser.userId) ? 'active' : ''}`} ></div>
               </div>
             </div>
-            <div className='board-tag'>{item.travelFoodHashtagList}</div>
+            <div className='board-tag'>
+              {item.travelFoodHashtagList.map((hashtag, index) => (
+                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>{hashtag}</div>
+              ))}
+            </div>
           </div>
         ))}
       </div>

@@ -1,10 +1,10 @@
 // variable: STAY API URL 상수 //
 
 import axios from "axios";
-import { MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler, bearerAuthorization } from "..";
+import { bearerAuthorization, MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from "..";
 import { ResponseDto } from "../dto/response";
-import { PostTravelStayRequestDto, PatchTravelStayRequestDto, PostTravelStayCommentRequestDto } from "./dto/request";
-import { GetStayListResponseDto, GetStayDetailResponseDto, GetStayCommentResponseDto } from "./dto/response";
+import { PatchTravelStayRequestDto, PostTravelStayCommentRequestDto, PostTravelStayRequestDto } from "./dto/request";
+import { GetStayCommentResponseDto, GetStayDetailResponseDto, GetStayListResponseDto } from "./dto/response";
 
 const STAY_MODULE_URL = `${MZPICK_API_DOMAIN}/api/v1/stay`;
 
@@ -23,8 +23,8 @@ const PUT_STAY_SAVE_API_URL = (travelStayNumber: number | string) => `${STAY_MOD
 // ! STAY 숙박 요청 
 
 // function: 숙박 리스트 요청 함수 //
-export const getStayListRequest = async (page: number | string) => {
-    const responseBody = await axios.get(GET_STAY_LIST_API_URL, { params: { page } })
+export const getStayListRequest = async (page: number | string, searchLocation: string, hashtag:string) => {
+    const responseBody = await axios.get(GET_STAY_LIST_API_URL, { params: { page,searchLocation,hashtag } })
         .then(responseDataHandler<GetStayListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;

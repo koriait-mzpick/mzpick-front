@@ -49,6 +49,10 @@ export default function VoteWrite() {
     // state: 네비게이터 경로 이동 상태 //
     const navigator = useNavigate();
 
+    // state: 경로 이동 핸들러 //
+    const onClickPathChangeHandler = () => {
+        navigator(VOTE_DETAILPHOTOPATH);
+    }
     
     // function: post vote write response 처리 함수 //
   const postVoteWriteResponse = (responseBody: ResponseDto | null) => {
@@ -130,7 +134,7 @@ export default function VoteWrite() {
            <input className='nomal' placeholder='제목을 입력하세요.' value={title} onChange={onTitleHandler}></input>
             <div className='board'>
               <div className='normal-vote'>일반투표</div>
-             <div className='normal-board' onClick={onClickNavigator}>게시물투표</div>
+             <div className='normal-board' onClick={onClickPathChangeHandler}>게시물투표</div>
           </div>
         </div>
       </div>
