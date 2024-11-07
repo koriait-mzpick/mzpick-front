@@ -9,7 +9,7 @@ const RESTAURANT_MODULE_URL = `${MZPICK_API_DOMAIN}/api/v1/food`;
 
 const GET_RESTAURANT_LIST_API_URL = `${RESTAURANT_MODULE_URL}/`;
 const GET_RESTAURANT_DETAIL_API_URL = (travelFoodNumber: number | string) => `${RESTAURANT_MODULE_URL}/${travelFoodNumber}`;
-const POST_RESTAURANT_API_URL = `${RESTAURANT_MODULE_URL}/}`;
+const POST_RESTAURANT_API_URL = `${RESTAURANT_MODULE_URL}/`;
 const PATCH_RESTAURANT_API_URL = (travelFoodNumber: number | string) => `${RESTAURANT_MODULE_URL}/${travelFoodNumber}`;
 const DELETE_RESTAURANT_API_URL = (travelFoodNumber: number | string) => `${RESTAURANT_MODULE_URL}/${travelFoodNumber}`;
 const POST_UP_VIEW_RESTAURANT_API_URL = (travelFoodNumber: number | string) => `${RESTAURANT_MODULE_URL}/view/${travelFoodNumber}`;

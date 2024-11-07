@@ -7,14 +7,14 @@ import { GetStayTotalCountResponseDto } from 'src/apis/pagination/response';
 import { getStayListRequest } from 'src/apis/stay';
 import { GetStayListResponseDto } from 'src/apis/stay/dto/response';
 import Pagination from 'src/components/Pagination';
-import { TRAVEL_STAY_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, WRITE_PATH } from 'src/constants';
+import { TRAVEL_STAY_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, WRITE_PATH, TRAVEL_STAY_WRITE_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Stay } from 'src/types';
 import './style.css';
 
 const SECTION_PER_PAGE = 5;
 
-export default function StayMain() {
+export default function TravelStay() {
 
   // state: 쿠키상태 //
   const [cookies] = useCookies();
@@ -171,7 +171,7 @@ useEffect(() => {
             <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_CAFE_PATH)}>카페</div>
           </div>
         </div>
-        <div className='write-button' onClick={() => onItemClickHandler(WRITE_PATH)}>글쓰기</div>
+        <div className='write-button' onClick={() => onItemClickHandler(TRAVEL_STAY_WRITE_PATH)}>글쓰기</div>
       </div>
       <div className='board-middle'>
         {viewList.map((item) => (
