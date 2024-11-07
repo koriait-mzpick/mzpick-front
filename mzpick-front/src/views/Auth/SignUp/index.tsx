@@ -9,7 +9,6 @@ import { ResponseDto } from "../../../apis/dto/response";
 import { idCheckRequest, telAuthRequest, telAuthCheckRequest, signUpRequest } from "src/apis/auth/dto";
 import { IdCheckRequestDto, TelAuthRequestDto, TelAuthCheckRequestDto, SignUpRequestDto } from "src/apis/auth/dto/request";
 
-
 // component: 회원가입 화면 컴포넌트 //
 export default function SignUp() {
 
@@ -234,6 +233,7 @@ export default function SignUp() {
             joinPath: joinPath ? joinPath : 'home',
             snsId
         };
+        console.log(snsId);
         signUpRequest(requestBody).then(signUpResponse);
     };
 
