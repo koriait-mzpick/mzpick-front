@@ -13,6 +13,7 @@ import { NavigateNext as NavigateNextIcon, NavigateBefore as NavigateBeforeIcon 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import styled from 'styled-components';
 
 // const [travelPhotoList, setTravelPhotoList] = useState<string[]>([]);
 
@@ -28,16 +29,40 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed p
     waitForAnimate: false,
     nextArrow: <SvgIcon component={NavigateNextIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />,
     prevArrow: <SvgIcon component={NavigateBeforeIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />
+    
   };
+  const CustomSlider = styled(Slider)`
+    margin: 0 auto;
+    .slick-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slick-list {
+      height: 100%;
+    }
+    .slick-track {
+      display: flex;
+      align-items: center;
+    }
+    
+    // 이미지 컨테이너 스타일링 추가
+    .contents-image-item {
+      margin: 0 auto;
+      max-width: 100%;
+      max-height: 500px; // 필요에 따라 조정
+      object-fit: contain;
+    }
+  `;
 
   return (
-    <Slider {...settings} className='contents-image' >
+    <CustomSlider {...settings} className='contents-image'>
       {photoList.map((photo, index) => (
-        <div key={index}>
-          <img className='contents-image-item' src={photo} alt={`travel-photo-${index + 1}`} />
+        <div key={index} style={{ display: 'flex', justifyContent: 'center' }}>
+          <img className='contents-image-item' src={photo} alt={`fashion-photo-${index + 1}`} />
         </div>
       ))}
-    </Slider>
+    </CustomSlider>
   );
 }
 

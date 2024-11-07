@@ -40,7 +40,6 @@ export default function MainTravel() {
   const [totalSection, setTotalSection] = useState<number>(0);
   const [currentSection, setCurrentSection] = useState<number>(1);
   const [selectedHashtag, setSelectedHashtag] = useState<string>('');
-  const [filteredPostList, setFilteredPostList] = useState<Travel[]>([]);
 
   const [viewList, setViewList] = useState<Travel[]>([]);
 
@@ -122,10 +121,8 @@ export default function MainTravel() {
   } 
   
 const onHashtagClickHandler = (hashtag: string) => {
-  setFilteredPostList(viewList);
   if (selectedHashtag === hashtag) {
     setSelectedHashtag('');
-    setFilteredPostList([]);
     return;
   }
   setSelectedHashtag(hashtag);
