@@ -76,7 +76,7 @@ function SnsSuccess() {
           const expires = new Date(Date.now() + (Number(expiration) * 1000));
           setCookie(ACCESS_TOKEN, accessToken, { path: ROOT_PATH, expires });
 
-          navigator(HOME_PATH);
+          navigator(HOME_ABSOLUTE_PATH);
       } 
       else navigator(AUTH_ABSOLUTE_PATH);
   }, []);
