@@ -147,7 +147,7 @@ export default function FashionMain() {
               <div className='board-information-data'>{changeDateFormat(item.fashionDate)}</div>
               <div className='board-information-right'>
                 <div className='board-information-like'>
-                  <div className={`board-information-like-icon ${signInUser && item.fashionLikeUserList.includes(signInUser.userId)}`}></div>
+                  <div className={`board-information-like-icon ${signInUser && item.fashionLikeUserList.includes(signInUser.userId)? 'active' : ''}`}></div>
                   <div className='board-information-data'>{item.fashionLikeCount}</div>
                 </div>
                 <div className='board-information-view'>
