@@ -10,7 +10,6 @@ import { getMyPageUserDetailRequest } from './apis/mypage';
 import { GetMyPageUserDetailResponseDto } from './apis/mypage/dto/response/user';
 import MainLayout from './layouts/MainLayout';
 import Detail from './layouts/TotalLayout/Detail';
-import Write from './layouts/TotalLayout/Write';
 import { useAuthStore } from './stores';
 import SignIn from './views/Auth/SignIn';
 import SignUp from './views/Auth/SignUp';
@@ -144,6 +143,7 @@ export default function MzPick() {
         < Route path={TRAVEL_MAP_PATH} element={< TraveMap/>} />
         < Route path={TRAVEL_PATH} element={< MainTravel />} />
         < Route path={`${TRAVEL_DETAIL_PATH}/:travelNumber`} element={< Detail />} />
+        < Route path={TRAVEL_WRITE_PATH} element={< TravelWrite />} />
         < Route path={TRAVEL_RESTAURANT_PATH} element={< RestaurantMain />} />
         < Route path={TRAVEL_CAFE_PATH} element={< CafeMain />} />
         < Route path={TRAVEL_STAY_PATH} element={< StayMain />} />
@@ -174,10 +174,6 @@ export default function MzPick() {
 
       <Route path={MY_PAGE_PATH} element={<MainLayout />}>
         < Route path={MY_PAGE_PATH} element={< MyPage />} />
-      </Route>
-
-      <Route path={WRITE_PATH} element={<MainLayout />}>
-        <Route path={WRITE_PATH} element={<Write />} />
       </Route>
 
       {/* <Route path={OTHERS_PATH} element={<Index />} /> */}

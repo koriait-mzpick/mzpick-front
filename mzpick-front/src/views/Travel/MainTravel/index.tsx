@@ -7,7 +7,7 @@ import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import { getTravelListRequest } from 'src/apis/travel';
 import { GetTravelListResponseDto } from 'src/apis/travel/dto/response';
 import Pagination from 'src/components/Pagination';
-import { TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
+import { TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, TRAVEL_WRITE_PATH, WRITE_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Travel } from 'src/types';
 import './style.css';
@@ -176,7 +176,7 @@ const onHashtagClickHandler = (hashtag: string) => {
             <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_STAY_PATH)}>숙박</div>
           </div>
         </div>
-        <div className='write-button' onClick={() => onItemClickHandler(WRITE_PATH)}>글쓰기</div>
+        <div className='write-button' onClick={() => onItemClickHandler(TRAVEL_WRITE_PATH)}>글쓰기</div>
       </div>
       <div className='board-middle'>
       {viewList.map((item) => (
@@ -200,7 +200,7 @@ const onHashtagClickHandler = (hashtag: string) => {
             </div>
             <div className='board-tag'>
               {item.travelHashtagList.map((hashtag, index) => (
-                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>{hashtag}</div>
+                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>#{hashtag}</div>
               ))}
             </div>
           </div>

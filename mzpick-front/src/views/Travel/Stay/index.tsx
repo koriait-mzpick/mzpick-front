@@ -195,7 +195,7 @@ useEffect(() => {
             </div>
             <div className='board-tag'>
               {item.travelStayHashtag.map((hashtag, index) => (
-                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>{hashtag}</div>
+                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>#{hashtag}</div>
               ))}
             </div>
           </div>

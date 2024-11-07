@@ -30,7 +30,7 @@ export default function TravelWrite() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   // variable: 등록 가능 여부 //
-  const isWriteComplete = travelTitle && travelHashtagContentList && travelLocation && travelContent && travelPhotoList.length !== 0;
+  const isWriteComplete = travelTitle && travelHashtagContentList.length > 0 &&  travelLocation && travelContent && travelPhotoList.length !== 0;
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -60,8 +60,10 @@ export default function TravelWrite() {
   const travelHashtagContentChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const maxLength = 10;
     const { value } = event.target;
+    const filteredValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣\s]/g, '');
+    
     if (value.length <= maxLength) {
-      setTravelHashtagContent(value);
+      setTravelHashtagContent(filteredValue);
     } else {
       alert("최대 글자수는 10자입니다.");
     };
@@ -76,7 +78,14 @@ export default function TravelWrite() {
     }
     if (event.key === 'Backspace' && travelHashtagContent === '' && travelHashtagContentList.length > 0)
       setTravelHashtagContentList(travelHashtagContentList.slice(0, -1));
-    console.log(travelHashtagContentList)
+  };
+
+  // event handler: 커서 이동시 해시태그 추가 이벤트 처리 //
+  const travelHashtagContentBlurHandler = () => {
+    if (travelHashtagContentList.length >= 3) return;
+    if (travelHashtagContent == '') return;
+    setTravelHashtagContentList([...travelHashtagContentList, travelHashtagContent.trim()])
+    setTravelHashtagContent('');
   };
 
   // event handler: 해시태그 제거 이벤트 처리 //
@@ -136,7 +145,7 @@ export default function TravelWrite() {
   const registerButtonClickHandler = async (path: string) => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-    if (!travelTitle || !travelHashtagContentList || !travelLocation || !travelContent || travelPhotoList.length === 0) {
+    if (!travelTitle || travelHashtagContentList.length === 0 || !travelLocation || !travelContent || travelPhotoList.length === 0) {
       alert('모두 입력해주세요.');
       return;
     };
@@ -182,10 +191,10 @@ export default function TravelWrite() {
           <div className='middle-hashtag-box'>
             {travelHashtagContentList.map((tag, index) => (
               <div className='middle-hashtag' key={index} onClick={() => travelHashtagContentDeleteHandler(index)}>
-                {'#' + tag}
+                #{tag}
               </div>
             ))}
-            <input className='middle-hashtag-write' type='text' value={travelHashtagContent} placeholder='태그 (최대 3개)' onChange={travelHashtagContentChangeHandler} onKeyDown={travelHashtagContentAddHandler} />
+            <input className='middle-hashtag-write' type='text' value={travelHashtagContent} placeholder='태그 (최대 3개)' onChange={travelHashtagContentChangeHandler} onKeyDown={travelHashtagContentAddHandler} onBlur={travelHashtagContentBlurHandler} />
           </div>
           <input className='middle-location' value={travelLocation} placeholder='지역을 입력하세요.' onChange={travelLocationhangeHandler} />
           <div className='middle-attached-file' onClick={attachedFileButtonClickHandler}>
@@ -196,7 +205,7 @@ export default function TravelWrite() {
           <textarea className='contents-box-text' value={travelContent} placeholder='내용을 입력하세요. (* 사진은 최대 3장 첨부할 수 있습니다.)' onChange={travelContentChangeHandler} />
           <div className='contents-box-preview-photo-box'>
             {previewUrls.map((url, index) => (
-              <img className='contents-box-preview-photo' key={index} src={url} alt={`preview ${index}`} onClick={() => travelPhotoListDeleteHandler(index)}/>
+              <img className='contents-box-preview-photo' key={index} src={url} alt={`preview ${index}`} onClick={() => travelPhotoListDeleteHandler(index)} />
             ))}
           </div>
         </div>
