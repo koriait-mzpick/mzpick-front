@@ -10,7 +10,7 @@ const STAY_MODULE_URL = `${MZPICK_API_DOMAIN}/api/v1/stay`;
 
 const GET_STAY_LIST_API_URL = `${STAY_MODULE_URL}/`;
 const GET_STAY_DETAIL_API_URL = (travelStayNumber: number | string) => `${STAY_MODULE_URL}/${travelStayNumber}`;
-const POST_STAY_API_URL = `${STAY_MODULE_URL}/}`;
+const POST_STAY_API_URL = `${STAY_MODULE_URL}/`;
 const PATCH_STAY_API_URL = (travelStayNumber: number | string) => `${STAY_MODULE_URL}/${travelStayNumber}`;
 const DELETE_STAY_API_URL = (travelStayNumber: number | string) => `${STAY_MODULE_URL}/${travelStayNumber}`;
 const POST_UP_VIEW_STAY_API_URL = (travelStayNumber: number | string) => `${STAY_MODULE_URL}/view/${travelStayNumber}`;

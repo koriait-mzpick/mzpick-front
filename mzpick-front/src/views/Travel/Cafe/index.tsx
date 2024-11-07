@@ -15,7 +15,7 @@ import './style.css';
 
 const SECTION_PER_PAGE = 5;
 
-export default function CafeMain() {
+export default function TravelCafe() {
 
   // state: 쿠키상태 //
   const [cookies] = useCookies();

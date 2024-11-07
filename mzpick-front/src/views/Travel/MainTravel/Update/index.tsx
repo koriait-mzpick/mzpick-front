@@ -2,13 +2,13 @@ import React, { ChangeEvent, useEffect, useRef, useState, Component, KeyboardEve
 import './style.css';
 import { useCookies } from 'react-cookie';
 import { ResponseDto } from 'src/apis/dto/response';
-import { ACCESS_TOKEN, TRAVEL_ABSOLUTE_DETAIL_PATH, TRAVEL_PATH, WRITE_PATH } from 'src/constants';
-import { PatchTravelRequestDto, PostTravelRequestDto } from 'src/apis/travel/dto/request';
-import { getTravelDetailRequest, getTravelListRequest, pathcTravelRequest, postcTravelRequest } from 'src/apis/travel';
+import { ACCESS_TOKEN, TRAVEL_ABSOLUTE_DETAIL_PATH, TRAVEL_DETAIL_PATH, TRAVEL_PATH, WRITE_PATH } from 'src/constants';
+import { PatchTravelRequestDto } from 'src/apis/travel/dto/request';
+import { getTravelDetailRequest, pathcTravelRequest } from 'src/apis/travel';
 import { fileUploadRequest } from 'src/apis';
 import { useNavigate, useParams } from 'react-router-dom';
 import path from 'path';
-import { GetTravelDetailResponseDto, GetTravelListResponseDto } from 'src/apis/travel/dto/response';
+import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
 import { TravelDetail } from 'src/types';
 
 // component: 글쓰기 페이지 컴포넌트 //
@@ -36,7 +36,7 @@ export default function TravelUpdate() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   // variable: 등록 가능 여부 //
-  const isWriteComplete = travelTitle && travelHashtagContentList && travelLocation && travelContent && travelPhotoList.length !== 0;
+  const isWriteComplete = travelTitle && travelHashtagContentList.length > 0 && travelLocation && travelContent && travelPhotoList.length !== 0;
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -93,12 +93,14 @@ export default function TravelUpdate() {
   const travelHashtagContentChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const maxLength = 10;
     const { value } = event.target;
+    const filteredValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣\s]/g, '');
+
     if (value.length <= maxLength) {
-      setTravelHashtagContent(value);
+      setTravelHashtagContent(filteredValue);
     } else {
       alert("최대 글자수는 10자입니다.");
-    }
-  }
+    };
+  };
 
   // event handler: 해시태그 추가 이벤트 처리 //
   const travelHashtagContentAddHandler = (event: KeyboardEvent<HTMLInputElement> | any) => {
@@ -110,7 +112,15 @@ export default function TravelUpdate() {
     if (event.key === 'Backspace' && travelHashtagContent === '' && travelHashtagContentList.length > 0)
       setTravelHashtagContentList(travelHashtagContentList.slice(0, -1));
     console.log(travelHashtagContentList)
-  }
+  };
+
+  // event handler: 커서 이동시 해시태그 추가 이벤트 처리 //
+  const travelHashtagContentBlurHandler = () => {
+    if (travelHashtagContentList.length >= 3) return;
+    if (travelHashtagContent == '') return;
+    setTravelHashtagContentList([...travelHashtagContentList, travelHashtagContent.trim()])
+    setTravelHashtagContent('');
+  };
 
   // event handler: 해시태그 제거 이벤트 처리 //
   const travelHashtagContentDeleteHandler = (index: number) => {
@@ -248,7 +258,7 @@ export default function TravelUpdate() {
         </div>
         <div className='write-box-bottom'>
           <div className='bottom-button-box'>
-            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => updeteButtonClickHandler(TRAVEL_PATH)}>수정</div>
+            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => updeteButtonClickHandler(`${TRAVEL_DETAIL_PATH}/${travelNumber}`)}>수정</div>
             <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(TRAVEL_PATH)}>취소</div>
           </div>
         </div>

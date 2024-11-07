@@ -15,7 +15,7 @@ import './style.css';
 
 const SECTION_PER_PAGE = 5;
 
-export default function RestaurantMain() {
+export default function TravelRestaurant() {
 
   // state: 쿠키상태 //
   const [cookies] = useCookies();
