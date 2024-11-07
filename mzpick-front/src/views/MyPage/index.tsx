@@ -13,6 +13,8 @@ import axios from 'axios';
 import { getMyPageCafeSaveListRequest } from 'src/apis/mypage';
 import { useCookies } from 'react-cookie';
 import Pagination from 'src/components/Pagination2';
+import { useAuthStore } from 'src/stores';
+import { SignInUser } from 'src/types';
 
 const SECTION_PER_PAGE = 5;
 
@@ -44,11 +46,11 @@ export default function MyPage() {
 
     // function: getSave List 함수 //
     const getCafeSaveList = () => {
-      getMyPageCafeSaveListRequest(ACCESS_TOKEN).then(GetMyPageCafeSaveResponseDto);
+      getMyPageCafeSaveListRequest(ACCESS_TOKEN).then(GetMyPageCafeSaveResponse);
     }
 
     // function: get Save Response 함수 //
-    const GetMyPageCafeSaveResponseDto = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
+    const GetMyPageCafeSaveResponse = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
       const message =
         !responseBody ? '서버에 문제가 있습니다.' :
           responseBody.code === 'AF' ? '잘못된 접근입니다.' :
@@ -62,8 +64,8 @@ export default function MyPage() {
 
      // TotalList 상태 업데이트,  originalList 상태 업데이트 
     const { myPageSaveCafes } = responseBody as GetMyPageCafeSaveResponseDto;
-    setTotalList(myPageSaveCafes);
-    setOriginalList(myPageSaveCafes);
+    // setTotalList(myPageSaveCafes);
+    // setOriginalList(myPageSaveCafes);
     setViewList(myPageSaveCafes);
 };
 
