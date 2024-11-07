@@ -96,7 +96,7 @@
 #home .home-category .category-container {
     display: grid;
     grid-template-columns:
-        1fr 1fr 1fr 1fr 1fr;
+        1fr 1fr 1fr 1fr;
 
     height: 100%;
 
@@ -120,13 +120,13 @@
     background-position: 50% 50%;
 }
 
-#home .home-category .category-container .food-category {
+/* #home .home-category .category-container .food-category {
     background-image: url(/public/image/FoodImage.png);
     line-height: 700px;
     object-fit: scale-down;
     background-size: cover;
     background-position: 50% 50%;
-}
+} */
 
 #home .home-category .category-container .fashion-category {
     background-image: url(/public/image/fashionimage.png);
