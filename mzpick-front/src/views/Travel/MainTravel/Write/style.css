@@ -1,0 +1,197 @@
+@font-face {
+    font-family: 'Pretendard-Bold';
+    src: url(/public/font/Pretendard-Bold.ttf);
+}
+
+#main-write {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(250, 250, 250, 1);
+}
+
+#main-write .write-box {
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    align-items: center;
+    width: 1100px;
+    height: 100vh;
+    margin-top: 54px;
+    padding: 45px 45px 0px 45px;
+    gap: 30px;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+#main-write .write-box .write-box-title,
+#main-write .write-box .write-box-middle .middle-hashtag-box .middle-hashtag-write,
+#main-write .write-box .write-box-middle .middle-location,
+#main-write .write-box .write-box-contents-box .contents-box-text {
+    width: 940px;
+    border-radius: 10px;
+    padding: 0px 30px;
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-size: 20px;
+    color: var(--primary-color);
+    background-color: rgba(250, 250, 250, 1);
+    border: none;
+    outline: none;
+}
+
+#main-write .write-box .write-box-title {
+    height: 80px;
+    font-family: 'Pretendard-Bold';
+    font-size: 35px;
+}
+
+#main-write .write-box .write-box-title::placeholder {
+    font-family: 'Pretendard-Bold';
+    font-size: 35px;
+    color: rgba(166, 166, 166, 1);
+}
+
+#main-write .write-box .write-box-middle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1000px;
+    height: 50px;
+    gap: 30px;
+}
+
+#main-write .write-box .write-box-middle .middle-hashtag-box {
+    display: flex;
+    align-items: center;
+    width: 670px;
+    height: 50px;
+    padding: 0px 0px 0px 30px;
+    border-radius: 10px;
+    gap: 10px;
+    background-color: rgba(250, 250, 250, 1);
+}
+
+.middle-hashtag {
+    display: flex;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    padding: 5px;
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-size: 15px;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+#main-write .write-box .write-box-middle .middle-hashtag-box .middle-hashtag-write {
+    /* width: 8vw; */
+    width: 150px;
+    padding: 0px;
+}
+
+#main-write .write-box .write-box-middle .middle-location {
+    width: 150px;
+    height: 50px;
+}
+
+#main-write .write-box .write-box-middle .middle-hashtag-box .middle-hashtag-write::placeholder,
+#main-write .write-box .write-box-middle .middle-location::placeholder,
+#main-write .write-box .write-box-contents-box .contents-box-text::placeholder {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-size: 20px;
+    color: rgba(166, 166, 166, 1);
+}
+
+#main-write .write-box .write-box-middle .middle-attached-file {
+    display: flex;
+    width: 53px;
+    height: 50px;
+    margin-right: 10px;
+    background-image: url(/public/image/attached-file-Icon.png);
+    background-position: 50% 50%;
+    background-size: cover;
+    cursor: pointer;
+}
+
+#main-write .write-box .write-box-middle .middle-attached-file:hover {
+    background-image: url(/public/image/attached-file-hover.png);
+}
+
+#main-write .write-box .write-box-contents-box {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    flex-direction: column;
+    width: 940px;
+    border-radius: 10px;
+    padding: 30px;
+    gap: 30px;
+    background-color: rgba(250, 250, 250, 1);
+}
+
+#main-write .write-box .write-box-contents-box .contents-box-text {
+    height: 100%;
+    resize: none;
+}
+
+#main-write .write-box .write-box-contents-box .contents-box-preview-photo-box {
+    display: flex;
+    width: 880px;
+    height: 300px;
+    padding: 30px;
+    gap: 20px;
+}
+
+#main-write .write-box .write-box-contents-box .contents-box-preview-photo-box .contents-box-preview-photo {
+    width: 280px;
+    height: 230px;
+    border-radius: 10px;
+    background-position: 50% 50%;
+    background-size: cover;
+    cursor: pointer;
+}
+
+#main-write .write-box .write-box-bottom {
+    display: flex;
+    justify-content: flex-end;
+    width: 1000px;
+    height: 40px;
+    margin-bottom: 134px;
+}
+
+#main-write .write-box .write-box-bottom .bottom-button-box {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+#main-write .write-box .write-box-bottom .bottom-button-box-register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    border: 1px solid rgba(166, 166, 166, 1);
+    border-radius: 10px;
+    font-family: 'Pretendard-Bold';
+    font-size: 20px;
+    color: rgba(166, 166, 166, 1);
+    cursor: default;
+}
+
+#main-write .write-box .write-box-bottom .bottom-button-box-register.active,
+#main-write .write-box .write-box-bottom .bottom-button-box-cancel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    font-family: 'Pretendard-Bold';
+    font-size: 20px;
+    color: rgba(255, 255, 255, 1);
+    background-color: var(--primary-color);
+    cursor: pointer;
+}

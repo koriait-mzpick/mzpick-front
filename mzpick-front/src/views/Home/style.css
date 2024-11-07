@@ -16,6 +16,25 @@
     /* height: 100vh; */
 }
 
+.home-media iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.home-media .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    pointer-events: none;
+}
+
 #home .home-text {
     position: sticky;
     top: 54px;
@@ -29,7 +48,7 @@
 
     scroll-snap-align: start;
     user-select: none;
-    -webkit-user-select:none;
+    -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
 }
@@ -62,19 +81,19 @@
 #home .home-category {
     position: sticky;
     top: 54px;
-    
+
     width: 100vw;
     height: 100vh;
 
     background-color: rgba(12, 12, 12, 100);
 
     user-select: none;
-    -webkit-user-select:none;
+    -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
 }
 
-#home   .home-category .category-container {
+#home .home-category .category-container {
     display: grid;
     grid-template-columns:
         1fr 1fr 1fr 1fr 1fr;
@@ -139,7 +158,7 @@
     background-color: rgba(12, 12, 12, 100);
     width: 100vw;
     height: 26vh;
-    
+
 }
 
 #home .footer .name-logo-box {
