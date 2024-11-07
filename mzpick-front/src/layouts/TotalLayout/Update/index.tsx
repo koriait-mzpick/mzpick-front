@@ -9,9 +9,10 @@ import { fileUploadRequest } from 'src/apis';
 import { useNavigate, useParams } from 'react-router-dom';
 import path from 'path';
 import { GetTravelDetailResponseDto, GetTravelListResponseDto } from 'src/apis/travel/dto/response';
+import { TravelDetail } from 'src/types';
 
 // component: 글쓰기 페이지 컴포넌트 //
-export default function Update() {
+export default function TravelUpdate() {
 
   // state: 게시글번호 상태 //
   const { travelNumber } = useParams();
@@ -20,6 +21,7 @@ export default function Update() {
   const [cookies] = useCookies();
 
   // state: 게시글 인풋 상태 //
+  const [travelDetail, setTravelDetail] = useState<TravelDetail>();
   const [travelTitle, setTravelTitle] = useState<string>('');
   const [travelHashtagContent, setTravelHashtagContent] = useState<string>('');
   const [travelHashtagContentList, setTravelHashtagContentList] = useState<string[]>([]);
@@ -54,14 +56,14 @@ export default function Update() {
       return;
     }
 
-  //   const { travelNumber, userId, travelLocation, travelTitle, travelPhotoList, travelHashtagList, travelLikeUserList, travelSaveUserList,
-  //           travelViewCount, travelLikeCount, travelSaveCount, travelDate } = responseBody as GetTravelDetailResponseDto;
-  //   setTravelTitle(travelTitle);
-  //   setTravelLocation(travelLocation);
-  //   setTravelTitle(travelTitle);
-  //   setPreviewUrls(travelPhotoList);
-  //   setTravelHashtagContentList(travelHashtagList);
-  // };
+    const { travelDetail } = responseBody as GetTravelDetailResponseDto;
+    setTravelDetail(travelDetail);
+    setTravelTitle(travelDetail.travelTitle);
+    setTravelLocation(travelDetail.travelLocation);
+    setTravelPhotoList(travelPhotoList);
+    setTravelHashtagContentList(travelDetail.travelHashtagList);
+    setTravelContent(travelDetail.travelContent);
+  };
 
   // function: patch travel detail response 처리 함수 //
   const patchTravelDetailResponse = (responseBody: ResponseDto | null) => {
@@ -254,5 +256,3 @@ export default function Update() {
     </div>
   )
 }
-}
-
