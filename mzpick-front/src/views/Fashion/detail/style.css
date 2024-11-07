@@ -97,7 +97,7 @@
 }
 
 #contents-main .contents-image {
-    width: 65vw;
+    width: 45vw;
     /* display: flex;
     align-items: center;
     justify-content: center; */
@@ -107,8 +107,8 @@
 #contents-main .contents-image .contents-image-item {
     border-radius: 10px;
     align-items: center;
-    width: 50%;
-    height: 50%;
+    width: 60%;
+    height: 60%;
     object-fit: cover;
 }
 

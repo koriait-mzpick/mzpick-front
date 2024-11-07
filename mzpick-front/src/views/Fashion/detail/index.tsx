@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ,MouseEvent} from 'react'
 import './style.css';
 import { ResponseDto } from 'src/apis/dto/response';
 import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
@@ -12,10 +12,11 @@ import { NavigateNext as NavigateNextIcon, NavigateBefore as NavigateBeforeIcon 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { GetFashionDetailResponseDto } from 'src/apis/fashion/dto/response';
-import { getFashionDetailRequest } from 'src/apis/fashion';
+import { GetFashionDetailResponseDto, GetFashionLikeListResponseDto, GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
+import { getFashionDetailRequest, getFashionLikeListRequest, getFashionSaveListRequest, postUpViewFashionRequest, putFashionLikeRequest, putFashionSaveRequest } from 'src/apis/fashion';
 import { FashionDetail } from 'src/types';
-
+import styled from "styled-components";
+import { useAuthStore } from 'src/stores';
 
 function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed props typing
   const settings = {
@@ -29,16 +30,40 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed p
     waitForAnimate: false,
     nextArrow: <SvgIcon component={NavigateNextIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />,
     prevArrow: <SvgIcon component={NavigateBeforeIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />
+    
   };
+  const CustomSlider = styled(Slider)`
+    margin: 0 auto;
+    .slick-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slick-list {
+      height: 100%;
+    }
+    .slick-track {
+      display: flex;
+      align-items: center;
+    }
+    
+    // 이미지 컨테이너 스타일링 추가
+    .contents-image-item {
+      margin: 0 auto;
+      max-width: 100%;
+      max-height: 500px; // 필요에 따라 조정
+      object-fit: contain;
+    }
+  `;
 
   return (
-    <Slider {...settings} className='contents-image' >
+    <CustomSlider {...settings} className='contents-image'>
       {photoList.map((photo, index) => (
-        <div key={index}>
+        <div key={index} style={{ display: 'flex', justifyContent: 'center' }}>
           <img className='contents-image-item' src={photo} alt={`fashion-photo-${index + 1}`} />
         </div>
       ))}
-    </Slider>
+    </CustomSlider>
   );
 }
 
@@ -55,7 +80,6 @@ function Content() {
   // state: 게시글 정보 상태 //
   const [fashionDetail, setFashionDetail] = useState<FashionDetail>();
   const [userId, setUserId] = useState<string>();
-  const [fashionLocation, setFashionLocation] = useState<string>('');
   const [fashionTitle, setFashionTitle] = useState<string>('');
   const [fashionPhotoList, setFashionPhotoList] = useState<string[]>([]);
   const [fashionHashtagList, setFashionHashtagList] = useState<string[]>([]);
@@ -69,15 +93,12 @@ function Content() {
   const [detail, setDetail] = useState<FashionDetail>();
 
   // state: 북마크 상태 //
-  const [bookMarkClick, setBookMarkClick] = useState(false);
 
-  // state: 좋아요 상태 //
-  const [likeClick, setLikeClick] = useState(false);
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
 
-  // function: get travel detail response 처리 함수 //
+  // function: get Fashion detail response 처리 함수 //
   const getFashionDetailtResponse = (responseBody: GetTravelDetailResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
@@ -116,22 +137,13 @@ function Content() {
     return `${yy}.${mm}.${dd}`;
   };
 
-  // event handler: 북마크 클릭 이벤트 처리 //
-  const bookMarkClickHandler = () => {
-    setBookMarkClick(!bookMarkClick);
-  }
-
-  // event handler: 좋아요 클릭 이벤트 처리 //
-  const likeClcikHandler = () => {
-    setLikeClick(!likeClick);
-  }
 
   // effect:  게시글 정보 요청 함수 //
   useEffect(() => {
     if (!fashionNumber) return;
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-
+    postUpViewFashionRequest(fashionNumber).then();
     getFashionDetailRequest(fashionNumber).then(getFashionDetailtResponse);
   }, [fashionNumber]);
 
@@ -156,22 +168,166 @@ function Content() {
               <div key={index} className='board-tag-item'>{hashtag}</div>
             ))}
           </div>
-
         </div>
         <div className='contents-information-right'>
-          <div className='contents-information-like'>
-            <div className={`contents-information-like-icon ${likeClick ? 'active' : ''}`} onClick={likeClcikHandler}></div>
-            <div className='contents-information-data'></div>
-          </div>
+          <Like />
           <div className='contents-information-view'>
-            <div className='contents-information-view-icon'>
-              <div>{fashionViewCount}</div>
-            </div>
-            <div className='contents-information-data'></div>
+            <div className='contents-information-view-icon'></div>
+            <div className='contents-information-data'>{fashionViewCount}</div>
           </div>
-          <div className={`contents-information-bookmark ${bookMarkClick ? 'active' : ''}`} onClick={bookMarkClickHandler}></div>
+          <Save/>
         </div>
       </div>
+    </div>
+  )
+}
+
+//function 저장 //
+function Save(){
+  const [cookies] = useCookies();
+
+  const { fashionNumber } = useParams<{ fashionNumber: string }>();
+  const { signInUser } = useAuthStore();
+
+  const [fashionSaveList, setFashionSaveList] = useState<string[]>([]);
+
+  const isSaved = signInUser !== null && fashionSaveList.includes(signInUser.userId);
+
+  const putFashionSaveResponse = (responseBody : ResponseDto | null) => {
+    const message = 
+    !responseBody ? '서버에 문제가 있습니다.' :
+    responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+    responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+    responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    if (!fashionNumber) return;
+    getFashionSaveListRequest(fashionNumber).then(getFashionSaveListResponse);
+  }
+
+  const putFashionSave = () => {
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken ) return;
+    if (!fashionNumber) return;
+    putFashionSaveRequest(fashionNumber, accessToken).then(putFashionSaveResponse);
+  }
+
+  const saveClcikHandler = () => {
+    // 좋아요 누르는 API 요청
+    putFashionSave();
+  }
+
+  const getFashionSaveListResponse = (responseBody: GetFashionSaveListResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+
+      const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+      if (!isSuccessed) {
+        alert(message);
+        return;
+      }
+
+      const { userIdList } = responseBody as GetFashionSaveListResponseDto;
+      setFashionSaveList(userIdList);
+  }
+
+  useEffect(() => {
+    // fashionNumber를 이용하여 좋아요 리스트 가져오기
+    if (!fashionNumber) return;
+    getFashionSaveListRequest(fashionNumber).then(getFashionSaveListResponse);
+  }, []);
+
+  return(
+    <div className={`contents-information-bookmark ${isSaved ? 'active' : ''}`} onClick={saveClcikHandler}></div>
+  )
+
+}
+//function 좋아요 //
+
+function Like() {
+
+  // state: 쿠키상태 //
+  const [cookies] = useCookies();
+
+  const { fashionNumber } = useParams<{ fashionNumber: string }>();
+  const { signInUser } = useAuthStore();
+
+  // state: 좋아요 상태 //
+  const [fashionLikeList, setFashionLikeList] = useState<string[]>([]);
+
+  const isLiked = signInUser !== null && fashionLikeList.includes(signInUser.userId);
+
+  // response -> 성공했다면 fashionNumber를 이용하여 좋아요 리스트 가져오기
+
+  const putFashionLikeResponse =  (responseBody: ResponseDto | null) => {
+    const message = 
+    !responseBody ? '서버에 문제가 있습니다.' :
+    responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+    responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+    responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    if (!fashionNumber) return;
+    getFashionLikeListRequest(fashionNumber).then(getFashionLikeListResponse);
+  }
+
+  const putFashionLike = () => {
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken ) return;
+    if (!fashionNumber) return;
+    putFashionLikeRequest(fashionNumber, accessToken).then(putFashionLikeResponse);
+  }
+
+
+
+  // event handler: 좋아요 클릭 이벤트 처리 //
+  const likeClcikHandler = () => {
+    // 좋아요 누르는 API 요청
+    putFashionLike();
+  }
+  
+  const getFashionLikeListResponse = (responseBody: GetFashionLikeListResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+
+      const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+      if (!isSuccessed) {
+        alert(message);
+        return;
+      }
+
+      const { userIdList } = responseBody as GetFashionLikeListResponseDto;
+      setFashionLikeList(userIdList);
+  }
+
+  useEffect(() => {
+    // fashionNumber를 이용하여 좋아요 리스트 가져오기
+    if (!fashionNumber) return;
+    getFashionLikeListRequest(fashionNumber).then(getFashionLikeListResponse);
+  }, []);
+
+  return (
+    <div className='contents-information-like'>
+      <div className={`contents-information-like-icon ${isLiked ? 'active' : ''}`} onClick={likeClcikHandler}></div>
+      <div className='contents-information-data'>{fashionLikeList.length}</div>
     </div>
   )
 }

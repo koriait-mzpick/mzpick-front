@@ -2,7 +2,7 @@ import axios from "axios";
 import { MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler, bearerAuthorization } from "..";
 import { ResponseDto } from "../dto/response";
 import { PostFashionRequestDto, PatchFashionRequestDto, PostFashionCommentRequestDto } from "./dto/request";
-import { GetFashionListResponseDto, GetFashionDetailResponseDto, GetFashionCommentResponseDto } from "./dto/response";
+import { GetFashionListResponseDto, GetFashionDetailResponseDto, GetFashionCommentResponseDto, GetFashionSaveListResponseDto, GetFashionLikeListResponseDto } from "./dto/response";
 
 
 // variable: FASHION API URL 상수 //
@@ -17,9 +17,10 @@ const POST_UP_VIEW_FASHION_API_URL = (fashionNumber: number | string) => `${FASH
 const GET_FASHION_COMMENT_LIST_API_URL = (fashionNumber: number | string) => `${FASHION_MODULE_URL}/comment/${fashionNumber}`;
 const POST_FASHION_COMMENT_API_URL = (fashionNumber: number | string) => `${FASHION_MODULE_URL}/comment/${fashionNumber}`;
 const DELETE_FASHION_COMMENT_API_URL = (fashionCommentNumber: number | string) => `${FASHION_MODULE_URL}/comment/${fashionCommentNumber}`;
+const GET_FASHION_LIKE_LIST_API_URL = (fashionNumber: number | string) => `${FASHION_MODULE_URL}/like/${fashionNumber}`;
 const PUT_FASHION_LIKE_API_URL = (fashionNumber: number | string) => `${FASHION_MODULE_URL}/like/${fashionNumber}`;
+const GET_FASHION_SAVE_LIST_API_URL = (fashionNumber: number | string) => `${FASHION_MODULE_URL}/save/${fashionNumber}`;
 const PUT_FASHION_SAVE_API_URL = (fashionNumber: number | string) => `${FASHION_MODULE_URL}/save/${fashionNumber}`;
-
 // ! Fashion
 
 // function: 패션 리스트 요청 함수 //
@@ -96,16 +97,30 @@ export const deleteFashionCommentRequest = async (fashionCommentNumber: number |
 
 // function : 패션 좋아요 버튼 클릭 요청 함수 //
 export const putFashionLikeRequest = async (fashionNumber: number | string, accessToken: string) => {
-    const responseBody = await axios.put(PUT_FASHION_LIKE_API_URL(fashionNumber), bearerAuthorization(accessToken))
+    const responseBody = await axios.put(PUT_FASHION_LIKE_API_URL(fashionNumber), {}, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+export const getFashionLikeListRequest = async (fashionNumber: number | string) => {
+    const responseBody = await axios.get(GET_FASHION_LIKE_LIST_API_URL(fashionNumber))
+        .then(responseDataHandler<GetFashionLikeListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
 };
 
 // function : 패션 저장 버튼 클릭 요청 함수 //
 export const putFashionSaveRequest = async (fashionNumber: number | string, accessToken: string) => {
-    const responseBody = await axios.put(PUT_FASHION_SAVE_API_URL(fashionNumber), bearerAuthorization(accessToken))
+    const responseBody = await axios.put(PUT_FASHION_SAVE_API_URL(fashionNumber),{}, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+// function : 패션 저장 리스트 요청 함수 //
+export const getFashionSaveListRequest = async (fashionNumber: number | string) => {
+    const responseBody = await axios.get(GET_FASHION_SAVE_LIST_API_URL(fashionNumber))
+        .then(responseDataHandler<GetFashionSaveListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
 };
