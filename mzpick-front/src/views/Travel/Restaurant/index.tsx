@@ -7,7 +7,7 @@ import { GetFoodTotalCountResponseDto, GetTotalCountResponseDto } from 'src/apis
 import { getRestaurantListRequest } from 'src/apis/restaurant';
 import { GetRestaurantListResponseDto } from 'src/apis/restaurant/dto/response';
 import Pagination from 'src/components/Pagination';
-import { TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
+import { TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_RESTAURANT_WRITE_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Restaurant } from 'src/types';
 import './style.css';
@@ -173,7 +173,7 @@ export default function RestaurantMain() {
             <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_STAY_PATH)}>숙박</div>
           </div>
         </div>
-        <div className='write-button' onClick={() => onItemClickHandler(WRITE_PATH)}>글쓰기</div>
+        <div className='write-button' onClick={() => onItemClickHandler(TRAVEL_RESTAURANT_WRITE_PATH)}>글쓰기</div>
       </div>
       <div className='board-middle'>
         {viewList.map((item) => (

@@ -60,8 +60,10 @@ export default function FashionWrite() {
   const fashionHashtagContentChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const maxLength = 10;
     const { value } = event.target;
+    const filteredValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣\s]/g, '');
+    
     if (value.length <= maxLength) {
-      setFashionHashtagContent(value);
+      setFashionHashtagContent(filteredValue);
     } else {
       alert("최대 글자수는 10자입니다.");
     };
@@ -76,8 +78,15 @@ export default function FashionWrite() {
     }
     if (event.key === 'Backspace' && fashionHashtagContent === '' && fashionHashtagContentList.length > 0)
       setFashionHashtagContentList(fashionHashtagContentList.slice(0, -1));
-    console.log(fashionHashtagContentList)
   };
+
+    // event handler: 커서 이동시 해시태그 추가 이벤트 처리 //
+    const fashionHashtagContentBlurHandler = () => {
+      if (fashionHashtagContentList.length >= 3) return;
+      if (fashionHashtagContent == '') return;
+      setFashionHashtagContentList([...fashionHashtagContentList, fashionHashtagContent.trim()])
+      setFashionHashtagContent('');
+    };
 
   // event handler: 해시태그 제거 이벤트 처리 //
   const fashionHashtagContentDeleteHandler = (index: number) => {
@@ -186,7 +195,7 @@ export default function FashionWrite() {
                 {'#' + tag}
               </div>
             ))}
-            <input className='middle-hashtag-write' type='text' value={fashionHashtagContent} placeholder='태그 (최대 3개)' onChange={fashionHashtagContentChangeHandler} onKeyDown={fashionHashtagContentAddHandler} />
+            <input className='middle-hashtag-write' type='text' value={fashionHashtagContent} placeholder='태그 (최대 3개)' onChange={fashionHashtagContentChangeHandler} onKeyDown={fashionHashtagContentAddHandler}  onBlur={fashionHashtagContentBlurHandler}/>
           </div>
           <input className='middle-location' value={fashionTotalPrice} placeholder='총 가격' onChange={fashionTotalPriceChangeHandler} />
           <div className='middle-attached-file' onClick={attachedFileButtonClickHandler}>

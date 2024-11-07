@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { getCafeListRequest } from 'src/apis/cafe';
 import { GetCafeListResponseDto } from 'src/apis/cafe/dto/response';
 import { ResponseDto } from 'src/apis/dto/response';
-import { TRAVEL_CAFE_DETAIL_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
+import { TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_WRITE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Cafe } from 'src/types';
 
@@ -174,7 +174,7 @@ useEffect(() => {
             <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_STAY_PATH)}>숙박</div>
           </div>
         </div>
-        <div className='write-button' onClick={() => onItemClickHandler(WRITE_PATH)}>글쓰기</div>
+        <div className='write-button' onClick={() => onItemClickHandler(TRAVEL_CAFE_WRITE_PATH)}>글쓰기</div>
       </div>
       <div className='board-middle'>
         {viewList.map((item) => (

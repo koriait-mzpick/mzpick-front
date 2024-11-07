@@ -7,7 +7,7 @@ import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import { getTravelListRequest } from 'src/apis/travel';
 import { GetTravelListResponseDto } from 'src/apis/travel/dto/response';
 import Pagination from 'src/components/Pagination';
-import { TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, TRAVEL_WRITE_PATH, WRITE_PATH } from 'src/constants';
+import { TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, TRAVEL_WRITE_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Travel } from 'src/types';
 import './style.css';
