@@ -1,13 +1,12 @@
-import React, { ChangeEvent, useEffect, useRef, useState, Component, KeyboardEvent } from 'react'
-import './style.css';
+import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { ResponseDto } from 'src/apis/dto/response';
-import { ACCESS_TOKEN, FASHION_PATH, TRAVEL_PATH } from 'src/constants';
-import { fileUploadRequest } from 'src/apis';
 import { useNavigate } from 'react-router-dom';
-import path from 'path';
+import { fileUploadRequest } from 'src/apis';
+import { ResponseDto } from 'src/apis/dto/response';
 import { postFashionRequest } from 'src/apis/fashion';
 import { PostFashionRequestDto } from 'src/apis/fashion/dto/request';
+import { ACCESS_TOKEN, FASHION_PATH } from 'src/constants';
+import './style.css';
 
 // component: 글쓰기 페이지 컴포넌트 //
 export default function FashionWrite() {
@@ -19,7 +18,7 @@ export default function FashionWrite() {
   const [fashionTitle, setFashionTitle] = useState<string>('');
   const [fashionHashtagContent, setFashionHashtagContent] = useState<string>('');
   const [fashionHashtagContentList, setFashionHashtagContentList] = useState<string[]>([]);
-  const [fashionTotalPrice, setFashionTotalPrice] = useState<number>();
+  const [fashionTotalPrice, setFashionTotalPrice] = useState<string>('');
   const [fashionContent, setFashionContent] = useState<string>('');
   const [fashionPhotoList, setFashionPhotoList] = useState<File[]>([]);
 
@@ -96,8 +95,7 @@ export default function FashionWrite() {
   // event handler: 가격 변경 이벤트 처리 //
   const fashionTotalPriceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    const numberValue = Number(value);
-    setFashionTotalPrice(isNaN(numberValue) ? 0 : numberValue);
+    setFashionTotalPrice(value);
   };
 
   // event handler: 내용 변경 이벤트 처리 //
@@ -146,7 +144,7 @@ export default function FashionWrite() {
   const registerButtonClickHandler = async (path: string) => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-    if (!fashionTitle || !fashionHashtagContentList || !fashionTotalPrice || !fashionContent || fashionPhotoList.length === 0) {
+    if (!fashionTitle || !fashionHashtagContentList || fashionTotalPrice === null || !fashionContent || fashionPhotoList.length === 0) {
       alert('모두 입력해주세요.');
       return;
     };
@@ -170,8 +168,8 @@ export default function FashionWrite() {
     const requestBody: PostFashionRequestDto = {
       fashionPhoto: fashionPhotoListUrl,
       fashionTitle,
-      fashionHashtagContentList,
-      fashionTotalPrice,
+      fashionHashtagContent: fashionHashtagContentList,
+      fashionTotalPrice: Number(fashionTotalPrice),
       fashionContent
     }
     postFashionRequest(requestBody, accessToken).then(postFashionResponse);
@@ -197,7 +195,7 @@ export default function FashionWrite() {
             ))}
             <input className='middle-hashtag-write' type='text' value={fashionHashtagContent} placeholder='태그 (최대 3개)' onChange={fashionHashtagContentChangeHandler} onKeyDown={fashionHashtagContentAddHandler}  onBlur={fashionHashtagContentBlurHandler}/>
           </div>
-          <input className='middle-location' value={fashionTotalPrice} placeholder='총 가격' onChange={fashionTotalPriceChangeHandler} />
+          <input className='middle-location' type='number' value={fashionTotalPrice} placeholder='총 가격' onChange={fashionTotalPriceChangeHandler} />
           <div className='middle-attached-file' onClick={attachedFileButtonClickHandler}>
             <input ref={photoInputRef} style={{ display: 'none' }} type='file' accept='image/*' onChange={photoInputChangeHandler} />
           </div>
