@@ -7,7 +7,7 @@ import { GetStayTotalCountResponseDto } from 'src/apis/pagination/response';
 import { getStayListRequest } from 'src/apis/stay';
 import { GetStayListResponseDto } from 'src/apis/stay/dto/response';
 import Pagination from 'src/components/Pagination';
-import { TRAVEL__STAY_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, WRITE_PATH } from 'src/constants';
+import { TRAVEL_STAY_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, WRITE_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Stay } from 'src/types';
 import './style.css';
@@ -176,7 +176,7 @@ useEffect(() => {
       <div className='board-middle'>
         {viewList.map((item) => (
           <div key={item.traveStayNumber} className='board-box'>
-            <div className='board-image' onClick={() => navigate(`${TRAVEL__STAY_DETAIL_PATH}/${item.traveStayNumber}`)}>
+            <div className='board-image' onClick={() => navigate(`${TRAVEL_STAY_DETAIL_PATH}/${item.traveStayNumber}`)}>
               <img src={item.travelStayPhoto} alt={`Travel ${item.traveStayNumber}`} className='board-image-content' />
             </div>
             <div className='board-information'>

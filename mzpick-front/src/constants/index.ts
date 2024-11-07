@@ -9,24 +9,27 @@ export const ID_CHECK_PATH = '/id-check'
 export const TEL_AUTH_PATH = '/tel-auth'
 export const TEL_AUTH_CHECK_PATH = '/tel-auth-check'
 export const SIGN_UP_PATH = '/sign-up'
+
+export const TRAVEL_MAP_PATH='/travel/map'
 export const TRAVEL_PATH='/travel'
 export const TRAVEL_DETAIL_PATH='/travel/detail'
 export const TRAVEL_WRITE_PATH='/travel/write'
-export const TRAVEL_CAFE_DETAIL_PATH='/travel/cafe/detail'
-export const TRAVEL__STAY_DETAIL_PATH='/travel/stay/detail'
-export const TRAVEL_RESTAURANT_DETAIL_PATH='/travel/restaurant/detail'
 
-export const TRAVEL_MAP_PATH='/travel/map'
-export const TRAVEL_RESTAURANT_PATH='/travel/restaurant'
 export const TRAVEL_CAFE_PATH='/travel/cafe'
-export const TRAVEL_STAY_PATH='/travel/stay'
+export const TRAVEL_CAFE_DETAIL_PATH='/travel/cafe/detail'
+export const TRAVEL_CAFE_WRITE_PATH='/travel/cafe/write'
 
-export const FOOD_PATH='/food'
+export const TRAVEL_STAY_DETAIL_PATH='/travel/stay/detail'
+export const TRAVEL_STAY_PATH='/travel/stay'
+export const TRAVEL_STAY_WRITE_PATH='/travel/stay/write'
+
+export const TRAVEL_RESTAURANT_PATH='/travel/restaurant'
+export const TRAVEL_RESTAURANT_DETAIL_PATH='/travel/restaurant/detail'
+export const TRAVEL_RESTAURANT_WRITE_PATH='/travel/restaurant/write'
 
 export const FASHION_PATH='/fashion'
 export const FASHION_DETAIL_PATH = '/fashion/detail'
 export const FASHION_WRITE_PATH = '/fashion/write'
-
 
 export const KEYWORD_PATH='/keyword'
 
