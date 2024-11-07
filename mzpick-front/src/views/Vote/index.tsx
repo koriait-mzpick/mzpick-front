@@ -1,8 +1,31 @@
 import React, { ChangeEvent, MouseEvent, useState } from 'react'
 import './style.css';
 import VoteDetail from './VoteDetail';
+import { MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from 'src/apis';
+import { GetTravelVoteDetailResponseDto } from 'src/apis/vote/travel_vote/dto/response';
+import axios from 'axios';
+import { ResponseDto } from 'src/apis/dto/response';
+import { ACCESS_TOKEN, VOTE_WRITEPATH } from 'src/constants';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { postTravelVoteRequest } from 'src/apis/vote';
+
+
+
 
 export default function Vote() {
+  const navigator = useNavigate();
+
+  const onWritePostPath = () => {
+    navigator(VOTE_WRITEPATH);
+  }
+
+  const [cookies] = useCookies();
+
+  const [qeuryParam] = useSearchParams();
+  const accessToken = qeuryParam.get('accessToken');
+  
+  
   const [modal, setModal] = useState<boolean>(false);
   const [singlePhotomodal, setSinglePhotomodal] = useState<boolean>(false);
   const [nonePhotomodal, setNonePhotomodal] = useState<boolean>(false);
@@ -283,7 +306,7 @@ export default function Vote() {
 
 
       <div className='vote-button'>
-        <div className='vote-post'>투표 게시하기</div>
+        <div className='vote-post' onClick={onWritePostPath}>투표 게시하기</div>
       </div>
 
     </div>

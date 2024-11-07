@@ -1,8 +1,8 @@
-import { bearerAuthorization, MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from "src/apis";
-import { GetTravelCommentResponseDto, GetTravelDetailResponseDto, GetTravelListResponseDto } from "./dto/response";
 import axios from "axios";
-import { PatchTravelRequestDto, PostTravelCommentRequestDto, PostTravelRequestDto } from "./dto/request";
+import { bearerAuthorization, MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from "src/apis";
 import { ResponseDto } from "../dto/response";
+import { PatchTravelRequestDto, PostTravelCommentRequestDto, PostTravelRequestDto } from "./dto/request";
+import { GetTravelCommentResponseDto, GetTravelDetailResponseDto, GetTravelListResponseDto } from "./dto/response";
 
 
 // variable: TRAVEL API URL 상수 //
@@ -23,8 +23,8 @@ const PUT_TRAVEL_SAVE_API_URL = (travelNumber: number | string) => `${TRAVEL_MOD
 // ! TRAVEL 요청 
 
 // function: 여행 리스트 요청 함수 //
-export const getTravelListRequest = async (page: number | string) => {
-    const responseBody = await axios.get(GET_TRAVEL_LIST_API_URL, { params: { page } })
+export const getTravelListRequest = async (page: number | string, searchLocation: string,hashtag: string) => {
+    const responseBody = await axios.get(GET_TRAVEL_LIST_API_URL, { params: { page, searchLocation,hashtag } })
         .then(responseDataHandler<GetTravelListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;

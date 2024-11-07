@@ -8,8 +8,8 @@ import { TRAVEL_CAFE_DETAIL_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_ST
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Cafe } from 'src/types';
 
-import { getTotalCountRequest } from 'src/apis/pagination';
-import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
+import { getCafeTotalCountRequest } from 'src/apis/pagination';
+import { GetCafeTotalCountResponseDto } from 'src/apis/pagination/response';
 import Pagination from 'src/components/Pagination';
 import './style.css';
 
@@ -38,17 +38,20 @@ export default function CafeMain() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalSection, setTotalSection] = useState<number>(0);
   const [currentSection, setCurrentSection] = useState<number>(1);
+  const [selectedHashtag, setSelectedHashtag] = useState<string>('');
+  const [filteredPostList, setFilteredPostList] = useState<Cafe[]>([]);
+
 
   const [viewList, setViewList] = useState<Cafe[]>([]);
 
 
   // function: get Travel Cafe List 함수 //
-  const getTravelCafelList = (page: number) => {
-    getCafeListRequest(page).then(getCafeResponseDto);
+  const getTravelCafelList = (page: number,hashtag: string) => {
+    getCafeListRequest(page,searchLocation,hashtag).then(getCafeResponseDto);
   }
     // function: get total count response //
-    const getTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
-      const { count } = dto as GetTotalCountResponseDto;
+    const getCafeTotalCountResponse = (dto: GetCafeTotalCountResponseDto | ResponseDto | null) => {
+      const { count } = dto as GetCafeTotalCountResponseDto;
       const totalPage = Math.ceil(count / 8);
       setTotalPage(totalPage);
       const totalSection = Math.ceil(totalPage / SECTION_PER_PAGE);
@@ -114,6 +117,17 @@ const onItemClickHandler = (path: string) => {
 const onPageClickHandler = (page: number) => {
   setCurrentPage(page);
 } 
+
+const onHashtagClickHandler = (hashtag: string) => {
+  setFilteredPostList(viewList);
+  if (selectedHashtag === hashtag) {
+    setSelectedHashtag('');
+    setFilteredPostList([]);
+    return;
+  }
+  setSelectedHashtag(hashtag);
+}
+
 const onPreSectionClickHandler = () => {
   if (currentSection === 1) return;
   setCurrentSection(currentSection - 1);
@@ -126,7 +140,7 @@ const onNextSectionClickHandler = () => {
 } 
 
 useEffect(() => {
-  getTotalCountRequest().then(getTotalCountResponse);
+  getCafeTotalCountRequest().then(getCafeTotalCountResponse);
 }, []);
 
 useEffect(() => {
@@ -142,8 +156,8 @@ useEffect(() => {
 }, [currentSection, totalPage]);
 
 useEffect(() => {
-  getTravelCafelList(currentPage);
-}, [currentPage])
+  getTravelCafelList(currentPage,selectedHashtag);
+}, [currentPage,selectedHashtag])
 
   // render: 여행 게시판 리스트 컴포넌트 렌더링//  
   return (
@@ -182,7 +196,11 @@ useEffect(() => {
                 <div className={`board-information-bookmark ${signInUser && item.travelCafeSaveUserList.includes(signInUser.userId) ? 'active' : ''}`} ></div>
               </div>
             </div>
-            <div className='board-tag'>{item.travelCafeHashtagList}</div>
+            <div className='board-tag'>
+              {item.travelCafeHashtagList.map((hashtag, index) => (
+                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>{hashtag}</div>
+              ))}
+            </div>
           </div>
         ))}
       </div>

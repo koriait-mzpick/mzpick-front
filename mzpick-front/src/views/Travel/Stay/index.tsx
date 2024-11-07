@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useLocation, useNavigate } from 'react-router';
 import { ResponseDto } from 'src/apis/dto/response';
-import { getTotalCountRequest } from 'src/apis/pagination';
-import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
+import { getStayTotalCountRequest } from 'src/apis/pagination';
+import { GetStayTotalCountResponseDto } from 'src/apis/pagination/response';
 import { getStayListRequest } from 'src/apis/stay';
 import { GetStayListResponseDto } from 'src/apis/stay/dto/response';
 import Pagination from 'src/components/Pagination';
@@ -37,16 +37,18 @@ export default function StayMain() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalSection, setTotalSection] = useState<number>(0);
   const [currentSection, setCurrentSection] = useState<number>(1);
+  const [selectedHashtag, setSelectedHashtag] = useState<string>('');
+  const [filteredPostList, setFilteredPostList] = useState<Stay[]>([]);
 
   const [viewList, setViewList] = useState<Stay[]>([]);
 
   // function: get Travel List 함수 //
-  const getStayList = (page:number) => {
-    getStayListRequest(page).then(getStayResponseDto);
+  const getStayList = (page:number, hashtag: string) => {
+    getStayListRequest(page,searchLocation,hashtag).then(getStayResponseDto);
   }
     // function: get total count response //
-    const getTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
-      const { count } = dto as GetTotalCountResponseDto;
+    const getStayTotalCountResponse = (dto: GetStayTotalCountResponseDto | ResponseDto | null) => {
+      const { count } = dto as GetStayTotalCountResponseDto;
       const totalPage = Math.ceil(count / 8);
       setTotalPage(totalPage);
       const totalSection = Math.ceil(totalPage / SECTION_PER_PAGE);
@@ -112,6 +114,17 @@ const onItemClickHandler = (path: string) => {
 const onPageClickHandler = (page: number) => {
   setCurrentPage(page);
 } 
+
+const onHashtagClickHandler = (hashtag: string) => {
+  setFilteredPostList(viewList);
+  if (selectedHashtag === hashtag) {
+    setSelectedHashtag('');
+    setFilteredPostList([]);
+    return;
+  }
+  setSelectedHashtag(hashtag);
+}
+
 const onPreSectionClickHandler = () => {
   if (currentSection === 1) return;
   setCurrentSection(currentSection - 1);
@@ -124,7 +137,7 @@ const onNextSectionClickHandler = () => {
 } 
 
 useEffect(() => {
-  getTotalCountRequest().then(getTotalCountResponse);
+  getStayTotalCountRequest().then(getStayTotalCountResponse);
 }, []);
 
 useEffect(() => {
@@ -140,8 +153,8 @@ useEffect(() => {
 }, [currentSection, totalPage]);
 
 useEffect(() => {
-  getStayList(currentPage);
-}, [currentPage])
+  getStayList(currentPage,selectedHashtag);
+}, [currentPage,selectedHashtag])
 
   // render: 여행 게시판 리스트 컴포넌트 렌더링//  
   return (
@@ -180,7 +193,11 @@ useEffect(() => {
                 <div className={`board-information-bookmark ${signInUser && item.travelStaySaveUserList.includes(signInUser.userId) ? 'active' : ''}`} ></div>
               </div>
             </div>
-            <div className='board-tag'>{item.travelStayHashtag}</div>
+            <div className='board-tag'>
+              {item.travelStayHashtag.map((hashtag, index) => (
+                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>{hashtag}</div>
+              ))}
+            </div>
           </div>
         ))}
       </div>

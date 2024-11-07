@@ -1,8 +1,8 @@
 import axios from "axios";
-import { MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler, bearerAuthorization } from "..";
+import { bearerAuthorization, MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from "..";
 import { ResponseDto } from "../dto/response";
-import { PostTravelFoodRequestDto, PatchTravelFoodRequestDto, PostTravelFoodCommentRequestDto } from "./dto/request";
-import { GetRestaurantListResponseDto, GetRestaurantDetailResponseDto, GetRestaurantCommentResponseDto } from "./dto/response";
+import { PatchTravelFoodRequestDto, PostTravelFoodCommentRequestDto, PostTravelFoodRequestDto } from "./dto/request";
+import { GetRestaurantCommentResponseDto, GetRestaurantDetailResponseDto, GetRestaurantListResponseDto } from "./dto/response";
 
 // variable: RESTAURANT API URL 상수 //
 const RESTAURANT_MODULE_URL = `${MZPICK_API_DOMAIN}/api/v1/food`;
@@ -22,8 +22,8 @@ const PUT_RESTAURANT_SAVE_API_URL = (travelFoodNumber: number | string) => `${RE
 // ! restaurant
 
 // function: 맛집 리스트 요청 함수 //
-export const getRestaurantListRequest = async (page: number | string) => {
-    const responseBody = await axios.get(GET_RESTAURANT_LIST_API_URL, { params: { page } })
+export const getRestaurantListRequest = async (page: number | string, searchLocation: string, hashtag:string) => {
+    const responseBody = await axios.get(GET_RESTAURANT_LIST_API_URL, { params: { page, searchLocation,hashtag } })
         .then(responseDataHandler<GetRestaurantListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;

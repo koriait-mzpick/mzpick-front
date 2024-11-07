@@ -1,8 +1,8 @@
 import axios from "axios";
-import { MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler, bearerAuthorization } from "..";
+import { bearerAuthorization, MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from "..";
 import { ResponseDto } from "../dto/response";
-import { PostTravelCafeRequestDto, PatchTravelCafeRequestDto, PostTravelCafeCommentRequestDto } from "./dto/request";
-import { GetCafeListResponseDto, GetCafeDetailResponseDto, GetCafeCommentResponseDto } from "./dto/response";
+import { PatchTravelCafeRequestDto, PostTravelCafeCommentRequestDto, PostTravelCafeRequestDto } from "./dto/request";
+import { GetCafeCommentResponseDto, GetCafeDetailResponseDto, GetCafeListResponseDto } from "./dto/response";
 
 // variable: CAFE API URL 상수 //
 const CAFE_MODULE_URL = `${MZPICK_API_DOMAIN}/api/v1/cafe`;
@@ -22,8 +22,8 @@ const PUT_CAFE_SAVE_API_URL = (travelCafeNumber: number | string) => `${CAFE_MOD
 // ! cafe API 요청
 
 // function: 카페 리스트 요청 함수 //
-export const getCafeListRequest = async (page: number | string) => {
-    const responseBody = await axios.get(GET_CAFE_LIST_API_URL, { params: { page } })
+export const getCafeListRequest = async (page: number | string, searchLocation: string, hashtag: string) => {
+    const responseBody = await axios.get(GET_CAFE_LIST_API_URL, { params: { page,searchLocation,hashtag} })
         .then(responseDataHandler<GetCafeListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;

@@ -1,14 +1,20 @@
 
-import Cafe from "./cafe.interface"
-import FashionVote from "./fashion-vote.interface"
-import Fashion from "./fashion.interface"
-import Keyword from "./keyword.interface"
-import Restaurant from "./restaurant.interface"
-import SignInUser from "./sign-in-user.interface"
-import Stay from "./stay.interface"
-import TravelVote from "./travel-vote.interface"
-import Travel from "./travel.interface"
-import TravelPhoto from "./travelPhoto.interface"
+import SignInUser from "./auth/sign-in-user.interface";
+import Cafe from "./cafe/cafe.interface";
+import CafeDetail from "./cafe/cafeDetail.interface";
+import Fashion from "./fashion/fashion.interface";
+import FashionDetail from "./fashion/fashionDetail.interface";
+import TravelPhoto from "./hof/travelPhoto.interface";
+import Keyword from "./keyword/keyword.interface";
+import Restaurant from "./restaurant/restaurant.interface";
+import RestaurantDetail from "./restaurant/restaurantDetail.interface";
+import Stay from "./stay/stay.interface";
+import StayDetail from "./stay/stayDetail.interface";
+import Travel from "./travel/travel.interface";
+import TravelDetail from "./travel/travelDetail.interface";
+import FashionVote from "./vote/fashion-vote.interface";
+import TravelVote from "./vote/travel-vote.interface";
+
 
 export type { 
     Keyword, 
@@ -20,7 +26,11 @@ export type {
     Restaurant,
     Fashion,
     FashionVote,
-    TravelVote
-
+    TravelVote,
+    TravelDetail,
+    FashionDetail,
+    RestaurantDetail,
+    StayDetail,
+    CafeDetail,
 }
 

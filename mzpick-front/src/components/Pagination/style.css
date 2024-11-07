@@ -4,9 +4,10 @@
     height: 30px;
     position: relative;
     justify-content: center;
-    top: 1000px;
+    top: 1000px; 
     font-family: 'Pretendard-Bold.otf';
     font-size: 14px;
+    align-items: center;
 }
 
 .left-button {
@@ -16,6 +17,7 @@
     height: 25px;
 
     background-image: url(/public/image/page-arrow-left.png);
+    background-size: 100% 100%;
 
     cursor: pointer;
 }
@@ -29,19 +31,22 @@
     justify-content: center;
 
     background-image: url(/public/image/page-arrow-right.png);
+    background-size: 100% 100%;
 
     cursor: pointer;
 }
 
 .page-list {
     display: flex;
-    width: 25px;
+    /* width: 25px;
     height: 25px;
 
     justify-content: center;
     align-items: center;
 
     cursor: pointer;
+    gap: 3px; */
+    gap: 16px;
 }
 
 .page {
