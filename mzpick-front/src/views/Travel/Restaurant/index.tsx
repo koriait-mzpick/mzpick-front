@@ -197,7 +197,7 @@ export default function RestaurantMain() {
             </div>
             <div className='board-tag'>
               {item.travelFoodHashtagList.map((hashtag, index) => (
-                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>{hashtag}</div>
+                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>#{hashtag}</div>
               ))}
             </div>
           </div>

@@ -3,14 +3,13 @@ import { useCookies } from 'react-cookie';
 import { Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
 import './MzPick.css';
 
-import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, FASHION_PATH, FASHION_WRITE_PATH, FOOD_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, ROOT_PATH, SIGN_IN_PATH, SIGN_UP_PATH, SNS_SUCCESS_PATH, TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH, WRITE_PATH } from './constants';
+import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, FASHION_PATH, FASHION_WRITE_PATH, FOOD_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_ABSOLUTE_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, ROOT_PATH, SIGN_IN_PATH, SIGN_UP_PATH, SNS_SUCCESS_PATH, TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH, WRITE_PATH } from './constants';
 
 import { ResponseDto } from './apis/dto/response';
 import { getMyPageUserDetailRequest } from './apis/mypage';
 import { GetMyPageUserDetailResponseDto } from './apis/mypage/dto/response/user';
 import MainLayout from './layouts/MainLayout';
 import Detail from './layouts/TotalLayout/Detail';
-import Write from './layouts/TotalLayout/Write';
 import { useAuthStore } from './stores';
 import SignIn from './views/Auth/SignIn';
 import SignUp from './views/Auth/SignUp';
@@ -33,6 +32,7 @@ import VoteDetail from './views/Vote/VoteDetail';
 import VoteDetailPhoto from './views/Vote/VoteDetailPhoto';
 import VoteDoublePhoto from './views/Vote/VoteDoublePhoto';
 import VoteWrite from './views/Vote/VoteWrite';
+import TravelWrite from './views/Travel/MainTravel/Write';
 
 
 // component: root path 컴포넌트 //
@@ -142,6 +142,7 @@ export default function MzPick() {
         < Route path={TRAVEL_MAP_PATH} element={< TraveMap/>} />
         < Route path={TRAVEL_PATH} element={< MainTravel />} />
         < Route path={`${TRAVEL_DETAIL_PATH}/:travelNumber`} element={< Detail />} />
+        < Route path={TRAVEL_WRITE_PATH} element={< TravelWrite />} />
         < Route path={TRAVEL_RESTAURANT_PATH} element={< RestaurantMain />} />
         < Route path={TRAVEL_CAFE_PATH} element={< CafeMain />} />
         < Route path={TRAVEL_STAY_PATH} element={< StayMain />} />
@@ -170,10 +171,6 @@ export default function MzPick() {
 
       <Route path={MY_PAGE_PATH} element={<MainLayout />}>
         < Route path={MY_PAGE_PATH} element={< MyPage />} />
-      </Route>
-
-      <Route path={WRITE_PATH} element={<MainLayout />}>
-        <Route path={WRITE_PATH} element={<Write />} />
       </Route>
 
       {/* <Route path={OTHERS_PATH} element={<Index />} /> */}
