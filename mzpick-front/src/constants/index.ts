@@ -14,6 +14,7 @@ export const TRAVEL_MAP_PATH='/travel/map'
 export const TRAVEL_PATH='/travel'
 export const TRAVEL_DETAIL_PATH='/travel/detail'
 export const TRAVEL_WRITE_PATH='/travel/write'
+export const TRAVEL_UPDATE_PATH='/travel/update'
 
 export const TRAVEL_CAFE_PATH='/travel/cafe'
 export const TRAVEL_CAFE_DETAIL_PATH='/travel/cafe/detail'
