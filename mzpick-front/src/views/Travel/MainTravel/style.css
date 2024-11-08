@@ -126,7 +126,12 @@
     height: 34vh;
     border-radius: 10px;
     border: 1px solid rgba(0, 0, 0, .25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+#list-main .board-middle .board-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);}
 
 #list-main .board-middle .board-box .board-image {
     width: 21vw;

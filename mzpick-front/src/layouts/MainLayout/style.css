@@ -49,6 +49,8 @@
     height: 42px;
     margin-left: 21px;
     background-image: url('/public/Logo.png');
+    background-position: 50% 50%;
+    background-size: cover;
 }
 
 #main-layout .layout-logo .navi-box{
@@ -67,6 +69,8 @@
     margin: 12px 15px;
     cursor: pointer;
     background-image: url('/public/image/NaviIcon.png');
+    background-position: 50% 50%;
+    background-size: cover;
 }
 
 #main-layout .side-bar{
@@ -93,12 +97,13 @@
 }
 
 #main-layout .side-bar .close-icon {
-    margin: 10px 24px 40px 246px;
+    margin: 13px 24px 40px 246px;
     width: 30px;
     height: 30px;
     min-height: 30px;
     background-image: url('/public/image/Close-Icon3.png');
-    background-size: contain;
+    background-position: 50% 50%;
+    background-size: cover;
     cursor: pointer;
 }
 
@@ -140,7 +145,8 @@
     width: 4px;
     height: 5px;
     background-image: url('/public/image/ArrowRight2.png');
-    background-size: contain;
+    background-position: 50% 50%;
+    background-size: cover;
 }
 
 #main-layout .side-bar .category-detail .category-detail-text-box .category-detail-text{

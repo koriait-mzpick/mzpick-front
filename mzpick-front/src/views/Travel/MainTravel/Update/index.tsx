@@ -52,7 +52,7 @@ export default function TravelUpdate() {
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
-      navigator(WRITE_PATH);
+      navigator(`${TRAVEL_DETAIL_PATH}/${travelNumber}`);
       return;
     }
 
@@ -63,6 +63,7 @@ export default function TravelUpdate() {
     setTravelPhotoList(travelPhotoList);
     setTravelHashtagContentList(travelDetail.travelHashtagList);
     setTravelContent(travelDetail.travelContent);
+
   };
 
   // function: patch travel detail response 처리 함수 //
@@ -76,11 +77,12 @@ export default function TravelUpdate() {
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
+      navigator(`${TRAVEL_DETAIL_PATH}/${travelNumber}`);
       return;
     }
 
     if (!travelNumber) return;
-    navigator(TRAVEL_ABSOLUTE_DETAIL_PATH(travelNumber));
+    navigator(`${TRAVEL_DETAIL_PATH}/${travelNumber}`);
   }
 
   // event handler: 제목 변경 이벤트 처리 //
@@ -176,11 +178,11 @@ export default function TravelUpdate() {
   };
 
   // event handler: 수정 버튼 클릭 이벤트 처리 함수 //
-  const updeteButtonClickHandler = async (path: string) => {
+  const updateButtonClickHandler = async (path: string) => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
     if (!travelNumber) return;
-    if (!travelTitle || !travelHashtagContentList || !travelLocation || !travelContent || travelPhotoList.length === 0) {
+    if (!travelTitle || travelHashtagContentList.length === 0 || !travelLocation || !travelContent || travelPhotoList.length === 0) {
       alert('모두 입력해주세요.');
       return;
     }
@@ -220,13 +222,14 @@ export default function TravelUpdate() {
   // effect: 첫 로드시 게시글 정보 불러오기 함수 //
   useEffect(() => {
     if (!travelNumber) {
-      navigator(TRAVEL_PATH);
+      navigator(`${TRAVEL_DETAIL_PATH}/${travelNumber}`);
       return;
     }
+
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
 
-    getTravelDetailRequest(accessToken).then(getTravelDetailtResponse);
+    getTravelDetailRequest(travelNumber).then(getTravelDetailtResponse);
   }, [travelNumber]);
 
   // render: 글쓰기 페이지 컴포넌트 렌더링//
@@ -241,7 +244,7 @@ export default function TravelUpdate() {
                 {'#' + tag}
               </div>
             ))}
-            <input className='middle-hashtag-write' type='text' value={travelHashtagContent} placeholder='태그 (최대 3개)' onChange={travelHashtagContentChangeHandler} onKeyDown={travelHashtagContentAddHandler} />
+            <input className='middle-hashtag-write' type='text' value={travelHashtagContent} placeholder='태그 (최대 3개)' onChange={travelHashtagContentChangeHandler} onKeyDown={travelHashtagContentAddHandler} onBlur={travelHashtagContentBlurHandler} />
           </div>
           <input className='middle-location' value={travelLocation} placeholder='지역을 입력하세요.' onChange={travelLocationhangeHandler} />
           <div className='middle-attached-file' onClick={attachedFileButtonClickHandler}>
@@ -258,8 +261,8 @@ export default function TravelUpdate() {
         </div>
         <div className='write-box-bottom'>
           <div className='bottom-button-box'>
-            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => updeteButtonClickHandler(`${TRAVEL_DETAIL_PATH}/${travelNumber}`)}>수정</div>
-            <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(TRAVEL_PATH)}>취소</div>
+            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => updateButtonClickHandler(`${TRAVEL_DETAIL_PATH}/${travelNumber}`)}>수정</div>
+            <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(`${TRAVEL_DETAIL_PATH}/${travelNumber}`)}>취소</div>
           </div>
         </div>
       </div>

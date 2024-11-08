@@ -3,9 +3,9 @@ import './style.css';
 import { ResponseDto } from 'src/apis/dto/response';
 import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ACCESS_TOKEN, TRAVEL_PATH } from 'src/constants';
+import { ACCESS_TOKEN, TRAVEL_DETAIL_PATH, TRAVEL_PATH, TRAVEL_UPDATE_PATH, TRAVEL_WRITE_PATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
-import { getTravelCommentListRequest, getTravelDetailRequest } from 'src/apis/travel';
+import { deleteTravelRequest, getTravelCommentListRequest, getTravelDetailRequest } from 'src/apis/travel';
 import { TravelDetail } from 'src/types';
 import { SvgIcon } from '@mui/material';
 import { NavigateNext as NavigateNextIcon, NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
@@ -29,7 +29,7 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed p
     waitForAnimate: false,
     nextArrow: <SvgIcon component={NavigateNextIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />,
     prevArrow: <SvgIcon component={NavigateBeforeIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />
-    
+
   };
   const CustomSlider = styled(Slider)`
     margin: 0 auto;
@@ -74,10 +74,9 @@ function Content() {
   // state: 쿠키상태 //
   const [cookies] = useCookies();
 
-  const { travelNumber } = useParams<{ travelNumber: string }>();
+  const { travelNumber } = useParams();
 
   // state: 게시글 정보 상태 //
-  // const [travelNumber, setTravelNumber] = useState<number | string>('');
   const [travelDetail, setTravelDetail] = useState<TravelDetail>();
   const [userId, setUserId] = useState<string>();
   const [travelLocation, setTravelLocation] = useState<string>('');
@@ -113,7 +112,7 @@ function Content() {
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
-      navigator(TRAVEL_PATH);
+      navigator(`${TRAVEL_DETAIL_PATH}/${travelNumber}`);
       return;
     }
 
@@ -153,14 +152,14 @@ function Content() {
     setLikeClick(!likeClick);
   }
 
-  // effect:  게시글 정보 요청 함수 //
-  useEffect(() => {
-    if (!travelNumber) return;
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
-    getTravelDetailRequest(travelNumber).then(getTravelDetailtResponse);
-  }, [travelNumber]);
+    // effect:  게시글 정보 요청 함수 //
+    useEffect(() => {
+      if (!travelNumber) return;
+      const accessToken = cookies[ACCESS_TOKEN];
+      if (!accessToken) return;
+  
+      getTravelDetailRequest(travelNumber).then(getTravelDetailtResponse);
+    }, [travelNumber]);
 
   // render: 내용 컴포넌트 렌더링 //
   return (
@@ -180,10 +179,9 @@ function Content() {
         <div className='contents-information-left'>
           <div className='contents-information-hashtag'>
             {travelHashtagList.map((hashtag: string, index: number) => (
-              <div key={index} className='board-tag-item'>{hashtag}</div>
+              <div key={index} className='board-tag-item'>#{hashtag}</div>
             ))}
           </div>
-
         </div>
         <div className='contents-information-right'>
           <div className='contents-information-like'>
@@ -204,6 +202,11 @@ function Content() {
 // component: 댓글 컴포넌트 //
 function Comment() {
 
+  // state: 쿠키상태 //
+  const [cookies] = useCookies();
+  
+  const { travelNumber } = useParams();
+
   // state: 댓글창 상태 //
   const [commentOpen, setCommentOpen] = useState(false);
 
@@ -211,18 +214,59 @@ function Comment() {
   const commentOpenHandler = () => {
     setCommentOpen(!commentOpen);
   }
+    
+    // function: 네비게이터 함수 //
+    const navigator = useNavigate();
+  
+    // function: delete travel response 처리 함수 //
+    const deleteTravelDetailtResponse = (responseBody: ResponseDto | null) => {
+      const message =
+        !responseBody ? '서버에 문제가 있습니다.' :
+          responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+              responseBody.code === 'NP' ? '권한이 없습니다.' :
+                responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+  
+      const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+      if (!isSuccessed) {
+        alert(message);
+        return;
+      }
+      navigator(TRAVEL_PATH);
+    };
+  
+    // event handler: 삭제 버튼 클릭 이벤트 처리 //
+    const deleteButtonClickHandler = () => {
+      if (window.confirm("정말로 삭제하시겠습니까?")) {
+        alert("삭제가 완료되었습니다.");
+      } else {
+        alert("취소되었습니다.");
+        return;
+      }
+  
+      if (!travelNumber) return;
+  
+      const accessToken = cookies[ACCESS_TOKEN];
+      if (!accessToken) return;
+  
+      deleteTravelRequest(travelNumber, accessToken).then(deleteTravelDetailtResponse);
+    }
+  
+  
+    // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
+    const itemClickHandler = (path: string) => {
+      navigator(path);
+    }
 
   // render: 댓글 컴포넌트 렌더링 //
   return (
     <div id='comment-main'>
       <div className='comment-button-box'>
-        <div className='comment-open-button' onClick={commentOpenHandler}>
-          {commentOpen ? "댓글 닫기" : "댓글 열기"}
-        </div>
+        <div className='comment-open-button' onClick={commentOpenHandler}>{commentOpen ? "댓글 닫기" : "댓글 열기"}</div>
         <div className='comment-button-box-right'>
-          <div className='comment-update-button'>수정</div>
-          <div className='comment-delete-button'>삭제</div>
-        </div>
+            <div className='comment-update-button' onClick={() => itemClickHandler(`${TRAVEL_UPDATE_PATH}/${travelNumber}`)}>수정</div>
+            <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
+          </div>
       </div>
       {commentOpen &&
         <div className='comment-detail'>
@@ -246,8 +290,7 @@ function Comment() {
   )
 }
 
-
-export default function Detail() {
+export default function TravelDetailPage() {
   return (
     <div id='detail-main'>
       <Content />

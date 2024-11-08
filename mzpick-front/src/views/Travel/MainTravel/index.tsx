@@ -7,7 +7,7 @@ import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import { getTravelListRequest } from 'src/apis/travel';
 import { GetTravelListResponseDto } from 'src/apis/travel/dto/response';
 import Pagination from 'src/components/Pagination';
-import { TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, TRAVEL_WRITE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, SIGN_IN_PATH, TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, TRAVEL_WRITE_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Travel } from 'src/types';
 import './style.css';
@@ -113,6 +113,12 @@ export default function MainTravel() {
 
   // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
   const onItemClickHandler = (path: string) => {
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) {
+      alert("글쓰기를 하려면 로그인하시기 바랍니다.");
+      navigate(SIGN_IN_PATH);
+      return;
+    }
     navigate(path);
   };
   
