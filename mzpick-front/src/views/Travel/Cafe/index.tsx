@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { getCafeListRequest } from 'src/apis/cafe';
 import { GetCafeListResponseDto } from 'src/apis/cafe/dto/response';
 import { ResponseDto } from 'src/apis/dto/response';
-import { TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_WRITE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
+import { TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_WRITE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Cafe } from 'src/types';
 
@@ -23,6 +23,8 @@ export default function TravelCafe() {
   const [dropDownOpen, setDropDownOpen] = useState(false);
   // state: 북마크 상태 //
   const [bookMark, setBookMark] = useState(false);
+
+  const [likeIcon, setLikeIcon] = useState(false);
   // state: 원본 리스트 상태 //
   const [originalList, setOriginalList] = useState<Cafe[]>([]);
   // state: 검색어 상태 //
