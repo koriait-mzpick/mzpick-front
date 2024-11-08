@@ -31,7 +31,7 @@ export const TRAVEL_RESTAURANT_WRITE_PATH='/travel/restaurant/write'
 export const FASHION_PATH='/fashion'
 export const FASHION_DETAIL_PATH = '/fashion/detail'
 export const FASHION_WRITE_PATH = '/fashion/write'
-
+export const FASHION_UPDATE_PATH = '/fashion/update'
 export const KEYWORD_PATH='/keyword'
 
 export const HOF_PATH = '/hof'
@@ -60,6 +60,8 @@ export const HOME_ABSOLUTE_PATH = HOME_PATH;
 
 export const TRAVEL_ABSOLUTE_DETAIL_PATH = (travelNumber: number | string) => `/travel/detail/${travelNumber}`;
 export const FASHION_ABSOLUTE_DETAIL_PATH = (fashionNumber:number | string) => `/travel/detail/${fashionNumber}`;
+
+export const FASHION_ABSOLUTE_UPDATE_PATH = (fashionNumber:number | string) => `/fashion/update/${fashionNumber}`;
 
 // variable: HTTP BEARER TOKEN COOKIE NAME //
 export const ACCESS_TOKEN = 'accessToken';

@@ -38,6 +38,7 @@ import TravelCafe from './views/Travel/Cafe';
 import TravelRestaurant from './views/Travel/Restaurant';
 import TravelDetailPage from './views/Travel/MainTravel/Detail';
 import TravelUpdate from './views/Travel/MainTravel/Update';
+import FashionUpdate from './views/Fashion/update';
 
 
 // component: root path 컴포넌트 //
@@ -162,8 +163,7 @@ export default function MzPick() {
         < Route path={FASHION_PATH} element={< Fashion />} />
         < Route path={FASHION_WRITE_PATH} element={< FashionWrite />} />
         < Route path={`${FASHION_DETAIL_PATH}/:fashionNumber`} element={<FashionDetailPage />} />
-
-
+        < Route path={`${FASHION_PATH}/:fashionNumber/update`} element={<FashionUpdate />} />
       </Route>
 
       <Route path={KEYWORD_PATH} element={<MainLayout />}>

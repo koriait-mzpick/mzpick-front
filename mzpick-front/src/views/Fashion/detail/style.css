@@ -305,3 +305,9 @@
    flex-direction: row;
    gap: 10px;
 }
+
+.price{
+    font-size: 18px;
+    font-weight: 700;
+    margin-right: 12px;
+}

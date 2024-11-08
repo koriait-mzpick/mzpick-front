@@ -1,9 +1,9 @@
-import React, { useEffect, useState ,MouseEvent} from 'react'
+import React, { useEffect, useState, MouseEvent, ChangeEvent, KeyboardEvent } from 'react'
 import './style.css';
 import { ResponseDto } from 'src/apis/dto/response';
 import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ACCESS_TOKEN, FASHION_PATH, TRAVEL_PATH } from 'src/constants';
+import { ACCESS_TOKEN, FASHION_ABSOLUTE_UPDATE_PATH, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_UPDATE_PATH, TRAVEL_PATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
 import { getTravelCommentListRequest, getTravelDetailRequest } from 'src/apis/travel';
 import { SvgIcon } from '@mui/material';
@@ -12,26 +12,32 @@ import { NavigateNext as NavigateNextIcon, NavigateBefore as NavigateBeforeIcon 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { GetFashionDetailResponseDto, GetFashionLikeListResponseDto, GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
-import { getFashionDetailRequest, getFashionLikeListRequest, getFashionSaveListRequest, postUpViewFashionRequest, putFashionLikeRequest, putFashionSaveRequest } from 'src/apis/fashion';
-import { FashionDetail } from 'src/types';
+import { GetFashionCommentResponseDto, GetFashionDetailResponseDto, GetFashionLikeListResponseDto, GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
+import { deleteFashionCommentRequest, deleteFashionRequest, getFashionCommentListRequest, getFashionDetailRequest, getFashionLikeListRequest, getFashionSaveListRequest, postFashionCommentRequest, postUpViewFashionRequest, putFashionLikeRequest, putFashionSaveRequest } from 'src/apis/fashion';
+import { FashionComment, FashionDetail } from 'src/types';
 import styled from "styled-components";
 import { useAuthStore } from 'src/stores';
+import { PostFashionCommentRequestDto } from 'src/apis/fashion/dto/request';
 
-function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed props typing
+//function 이미지 슬라이드 컴포넌트 //
+function CarouselComponent({ photoList }: { photoList: string[] }) { 
+
+  // state: 이미지 슬라이드 설정 상태 //
   const settings = {
     dots: true,
-    infinite: true,  // Changed to true for continuous sliding
+    infinite: photoList.length > 1,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows: true,
+    arrows: photoList.length > 1,
     adaptiveHeight: true,
     waitForAnimate: false,
+    loop: photoList.length > 1, 
     nextArrow: <SvgIcon component={NavigateNextIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />,
     prevArrow: <SvgIcon component={NavigateBeforeIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />
-    
   };
+
+  // styled-component: 이미지 슬라이드 스타일링 //
   const CustomSlider = styled(Slider)`
     margin: 0 auto;
     .slick-slide {
@@ -46,16 +52,15 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed p
       display: flex;
       align-items: center;
     }
-    
-    // 이미지 컨테이너 스타일링 추가
     .contents-image-item {
       margin: 0 auto;
       max-width: 100%;
-      max-height: 500px; // 필요에 따라 조정
+      max-height: 500px; 
       object-fit: contain;
     }
   `;
 
+  // render: 이미지 슬라이드 렌더링 //
   return (
     <CustomSlider {...settings} className='contents-image'>
       {photoList.map((photo, index) => (
@@ -75,6 +80,7 @@ function Content() {
   // state: 쿠키상태 //
   const [cookies] = useCookies();
 
+  // state: 패션 게시물 번호 상태 //
   const { fashionNumber } = useParams<{ fashionNumber: string }>();
 
   // state: 게시글 정보 상태 //
@@ -90,9 +96,8 @@ function Content() {
   const [fashionSaveCount, setFashionSaveCount] = useState<number>(0);
   const [fashionContent, setFashionContent] = useState<string>('');
   const [fashionDate, setFashionDate] = useState<string>('');
+  const [fashionTotalPrice, setFashionTotalPrice] = useState<number | null>(null);
   const [detail, setDetail] = useState<FashionDetail>();
-
-  // state: 북마크 상태 //
 
 
   // function: 네비게이터 함수 //
@@ -102,11 +107,12 @@ function Content() {
   const getFashionDetailtResponse = (responseBody: GetTravelDetailResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-            responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
 
+    // 성공 여부 확인 //
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
@@ -114,6 +120,7 @@ function Content() {
       return;
     }
 
+    // 패션 게시물 상세 정보 설정 //
     const { fashionDetail } = responseBody as GetFashionDetailResponseDto;
     setFashionDetail(fashionDetail);
     setUserId(fashionDetail.userId);
@@ -126,8 +133,10 @@ function Content() {
     setFashionLikeCount(fashionDetail.fashionLikeCount);
     setFashionSaveCount(fashionDetail.fashionSaveCount);
     setFashionDate(fashionDetail.fashionDate);
+    setFashionTotalPrice(fashionDetail.totalPrice);
     setFashionContent(fashionDetail.fashionContent);
   };
+
 
   // function: 날짜 포맷 변경 함수 //
   const changeDateFormat = (date: string) => {
@@ -141,9 +150,12 @@ function Content() {
   // effect:  게시글 정보 요청 함수 //
   useEffect(() => {
     if (!fashionNumber) return;
+
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
+
     postUpViewFashionRequest(fashionNumber).then();
+
     getFashionDetailRequest(fashionNumber).then(getFashionDetailtResponse);
   }, [fashionNumber]);
 
@@ -167,38 +179,49 @@ function Content() {
             {fashionHashtagList.map((hashtag: string, index: number) => (
               <div key={index} className='board-tag-item'>{hashtag}</div>
             ))}
+
           </div>
         </div>
         <div className='contents-information-right'>
+          <div className='price'>{"가격 " + fashionTotalPrice + "원"}</div>
           <Like />
           <div className='contents-information-view'>
             <div className='contents-information-view-icon'></div>
             <div className='contents-information-data'>{fashionViewCount}</div>
           </div>
-          <Save/>
+          <Save />
         </div>
       </div>
+      
     </div>
   )
 }
 
 //function 저장 //
-function Save(){
+function Save() {
+
+  // state: 쿠키상태 //
   const [cookies] = useCookies();
 
+  // state: 패션 게시물 번호 상태 //
   const { fashionNumber } = useParams<{ fashionNumber: string }>();
+
+  // state: 로그인 유저 상태 //
   const { signInUser } = useAuthStore();
 
+  // state: 저장 리스트 상태 //
   const [fashionSaveList, setFashionSaveList] = useState<string[]>([]);
 
+  // state:유저가 저장을 눌렀는지 상태 //
   const isSaved = signInUser !== null && fashionSaveList.includes(signInUser.userId);
 
-  const putFashionSaveResponse = (responseBody : ResponseDto | null) => {
-    const message = 
-    !responseBody ? '서버에 문제가 있습니다.' :
-    responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-    responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-    responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+  // function: 저장 요청 응답 함수 //
+  const putFashionSaveResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -210,18 +233,20 @@ function Save(){
     getFashionSaveListRequest(fashionNumber).then(getFashionSaveListResponse);
   }
 
+  // function: 저장 요청 함수 //
   const putFashionSave = () => {
     const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken ) return;
+    if (!accessToken) return;
     if (!fashionNumber) return;
     putFashionSaveRequest(fashionNumber, accessToken).then(putFashionSaveResponse);
   }
 
+  // event handler: 저장 클릭 이벤트 처리 //
   const saveClcikHandler = () => {
-    // 좋아요 누르는 API 요청
     putFashionSave();
   }
 
+  // function: 저장 리스트 요청 응답 함수 //
   const getFashionSaveListResponse = (responseBody: GetFashionSaveListResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
@@ -230,50 +255,54 @@ function Save(){
       responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
       responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
 
-      const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-      if (!isSuccessed) {
-        alert(message);
-        return;
-      }
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
 
-      const { userIdList } = responseBody as GetFashionSaveListResponseDto;
-      setFashionSaveList(userIdList);
+    const { userIdList } = responseBody as GetFashionSaveListResponseDto;
+    setFashionSaveList(userIdList);
   }
 
+  // effect: 저장 리스트 요청 함수 //
   useEffect(() => {
     // fashionNumber를 이용하여 좋아요 리스트 가져오기
     if (!fashionNumber) return;
     getFashionSaveListRequest(fashionNumber).then(getFashionSaveListResponse);
   }, []);
 
-  return(
+  // render: 저장 컴포넌트 렌더링 //
+  return (
     <div className={`contents-information-bookmark ${isSaved ? 'active' : ''}`} onClick={saveClcikHandler}></div>
   )
-
 }
-//function 좋아요 //
 
+//function 좋아요 //
 function Like() {
 
   // state: 쿠키상태 //
   const [cookies] = useCookies();
 
+  // state: 패션 게시물 번호 상태 //
   const { fashionNumber } = useParams<{ fashionNumber: string }>();
+
+  // state: 로그인 유저 상태 //
   const { signInUser } = useAuthStore();
 
   // state: 좋아요 상태 //
   const [fashionLikeList, setFashionLikeList] = useState<string[]>([]);
 
+  // state: 유저가 좋아요를 눌렀는지 상태 //
   const isLiked = signInUser !== null && fashionLikeList.includes(signInUser.userId);
 
-  // response -> 성공했다면 fashionNumber를 이용하여 좋아요 리스트 가져오기
-
-  const putFashionLikeResponse =  (responseBody: ResponseDto | null) => {
-    const message = 
-    !responseBody ? '서버에 문제가 있습니다.' :
-    responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-    responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-    responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+  // function: 좋아요 요청 응답 함수 //
+  const putFashionLikeResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -285,9 +314,10 @@ function Like() {
     getFashionLikeListRequest(fashionNumber).then(getFashionLikeListResponse);
   }
 
+  // function: 좋아요 요청 함수 //
   const putFashionLike = () => {
     const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken ) return;
+    if (!accessToken) return;
     if (!fashionNumber) return;
     putFashionLikeRequest(fashionNumber, accessToken).then(putFashionLikeResponse);
   }
@@ -299,7 +329,8 @@ function Like() {
     // 좋아요 누르는 API 요청
     putFashionLike();
   }
-  
+
+  // function: 좋아요 리스트 요청 응답 함수 //
   const getFashionLikeListResponse = (responseBody: GetFashionLikeListResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
@@ -308,22 +339,24 @@ function Like() {
       responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
       responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
 
-      const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-      if (!isSuccessed) {
-        alert(message);
-        return;
-      }
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
 
-      const { userIdList } = responseBody as GetFashionLikeListResponseDto;
-      setFashionLikeList(userIdList);
+    const { userIdList } = responseBody as GetFashionLikeListResponseDto;
+    setFashionLikeList(userIdList);
   }
 
+  // effect: 좋아요 리스트 요청 함수 //
   useEffect(() => {
     // fashionNumber를 이용하여 좋아요 리스트 가져오기
     if (!fashionNumber) return;
     getFashionLikeListRequest(fashionNumber).then(getFashionLikeListResponse);
   }, []);
 
+  // render: 좋아요 컴포넌트 렌더링 //
   return (
     <div className='contents-information-like'>
       <div className={`contents-information-like-icon ${isLiked ? 'active' : ''}`} onClick={likeClcikHandler}></div>
@@ -335,13 +368,160 @@ function Like() {
 // component: 댓글 컴포넌트 //
 function Comment() {
 
-  // state: 댓글창 상태 //
+  // state: 쿠키상태 //
+  const [cookies] = useCookies();
+
+  // state: 네비게이션 상태 //
+  const navigate = useNavigate();
+
+  // state: 패션 게시물 번호 상태 //
+  const { fashionNumber } = useParams<{ fashionNumber: string }>();
+
+  // state: 댓글창 모달 상태 //
   const [commentOpen, setCommentOpen] = useState(false);
+
+  // state: 댓글 리스트 상태 //
+  const [commentList, setCommentList] = useState<FashionComment[]>([]);
+
+  // state: 댓글 입력 상태 //
+  const [commentWrite, setCommentWrite] = useState<string>('');
+
+  // function: 댓글 리스트 요청 함수 //
+  const getFashionCommentResponse = (responseBody: GetFashionCommentResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    const { fashionComments } = responseBody as GetFashionCommentResponseDto;
+
+    const sortedComments = [...fashionComments].sort((a, b) => b.fashionCommentNumber - a.fashionCommentNumber);
+    setCommentList(sortedComments);
+  }
+
+  // function: 댓글 추가 요청 함수 //
+  const postFashionCommentResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+    if(!fashionNumber) return;
+    getFashionCommentListRequest(fashionNumber).then(getFashionCommentResponse);
+  }
+
+  // function: 댓글 삭제 요청 응답 함수 //
+  const deleteFashionCommentResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'NC' ? '존재하지 않는 코드 입니다.' :
+      responseBody.code === 'NP' ? '권한이 없습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+    if(!fashionNumber) return;
+    getFashionCommentListRequest(fashionNumber).then(getFashionCommentResponse);
+  }
+
+  // function: 패션 삭제 요청 응답 함수 //
+  const fashionDeleteResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : 
+      responseBody.code === 'NP' ? '권한이 없습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+    if(!fashionNumber) return;
+    navigate(FASHION_PATH);
+  }
+
+  // function: 댓글 수정 이벤트 처리 함수 //
+  const fashionUpdateHandler = () => {
+    // navigate();
+  }
+
+  // function: 댓글 삭제 이벤트 처리 함수 //
+  const fashionDeleteHandler = () => {
+    const accessToken = cookies[ACCESS_TOKEN];
+    if(!fashionNumber) return;
+    if(!accessToken) return;
+    deleteFashionRequest(fashionNumber, accessToken).then(fashionDeleteResponse);
+  }
+
+  // event handler: 댓글 입력 이벤트 처리 //
+  const onClickcommentWriteChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = event.target;
+    if (value.length > 100) {
+      alert('댓글은 최대 100자입니다.');
+      return;
+    }
+    setCommentWrite(value);
+  }
+
+  // event handler: 댓글 추가 이벤트 처리 //
+  const onclickcommentAddHandler = () => {
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+    if (!fashionNumber) return;
+    const requestBody: PostFashionCommentRequestDto = {
+      fashionComment: commentWrite
+    }
+
+    postFashionCommentRequest(requestBody, fashionNumber, accessToken).then(postFashionCommentResponse);
+    setCommentWrite('');
+  }
+
+  // event handler: 댓글 삭제 이벤트 처리 //
+  const onclickcommentDeleteHandler = (commentNumber: number) => (event: MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+
+    const isSuccessed = window.confirm('정말 삭제하시겠습니까?');
+    if(!isSuccessed) return;
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if(!fashionNumber) return;
+    if(!accessToken) return;
+
+    deleteFashionCommentRequest(commentNumber, accessToken).then(deleteFashionCommentResponse);
+  }
 
   // event handler: 댓글창 오픈 이벤트 처리 //
   const commentOpenHandler = () => {
     setCommentOpen(!commentOpen);
   }
+
+  // effect: 댓글 리스트 요청 함수 //
+  useEffect(() => {
+    if (!fashionNumber) return;
+    console.log(fashionNumber);
+    console.log(commentList);
+    getFashionCommentListRequest(fashionNumber).then(getFashionCommentResponse);
+  }, []);
 
   // render: 댓글 컴포넌트 렌더링 //
   return (
@@ -351,26 +531,28 @@ function Comment() {
           {commentOpen ? "댓글 닫기" : "댓글 열기"}
         </div>
         <div className='comment-button-box-right'>
-          <div className='comment-update-button'>수정</div>
-          <div className='comment-delete-button'>삭제</div>
+          <div className='comment-update-button' onClick={fashionUpdateHandler}>수정</div>
+          <div className='comment-delete-button' onClick={fashionDeleteHandler}>삭제</div>
         </div>
       </div>
       {commentOpen &&
         <div className='comment-detail'>
           <div className='comment-detail-top'>
-            <textarea className='comment-detail-write' placeholder='댓글을 작성하세요.'></textarea>
+            <textarea className='comment-detail-write' placeholder='댓글을 작성하세요. (100글자 이내)' value={commentWrite} onChange={onClickcommentWriteChangeHandler}></textarea>
             <div className='comment-detail-add-button-box'>
-              <div className='comment-detail-add-button'>댓글 추가</div>
+              <div className='comment-detail-add-button' onClick={onclickcommentAddHandler}>댓글 추가</div>
             </div>
           </div>
 
-          <div className='comment-detail-bottom'>
-            <div className='comment-detail-writer'>
-              <div className='comment-detail-name'>DAN</div>
-              <div className='comment-detail-delete-button'>삭제</div>
+          {commentList.map((comment: FashionComment, index: number) => (
+            <div className='comment-detail-bottom' key={index}>
+              <div className='comment-detail-writer'>
+                <div className='comment-detail-name'>{comment.userId}</div>
+                <div className='comment-detail-delete-button' onClick={onclickcommentDeleteHandler(comment.fashionCommentNumber)}>삭제</div>
+              </div>
+              <div className='comment-detail-text' style={{ wordBreak: 'break-word' }}>{comment.fashionComment}</div>
             </div>
-            <div className='comment-detail-text'>It is a long established fact that</div>
-          </div>
+          ))}
         </div>
       }
     </div>
@@ -378,6 +560,7 @@ function Comment() {
 }
 
 
+// component: 패션 상세 페이지 //
 export default function FashionDetailPage() {
   return (
     <div id='detail-main'>
