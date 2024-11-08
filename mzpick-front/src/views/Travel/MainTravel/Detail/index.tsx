@@ -30,9 +30,9 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed p
     arrows: photoList.length > 1,
     adaptiveHeight: true,
     waitForAnimate: false,
-    loop: photoList.length > 1, 
+    loop: photoList.length > 1,
     nextArrow: <SvgIcon component={NavigateNextIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />,
-    prevArrow: <SvgIcon component={NavigateBeforeIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />    
+    prevArrow: <SvgIcon component={NavigateBeforeIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />
   };
 
   // styled-component: 이미지 슬라이드 스타일링 //
@@ -62,7 +62,7 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed p
     <CustomSlider {...settings} className='contents-image'>
       {photoList.map((photo, index) => (
         <div key={index} style={{ display: 'flex', justifyContent: 'center' }}>
-          <img className='contents-image-item' src={photo} alt={`fashion-photo-${index + 1}`} />
+          <img className='contents-image-item' src={photo} alt={`travel-photo-${index + 1}`} />
         </div>
       ))}
     </CustomSlider>
@@ -102,8 +102,8 @@ function Content() {
       !responseBody ? '서버에 문제가 있습니다.' :
         responseBody.code === 'VF' ? '잘못된 접근입니다.' :
           responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-          responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-          responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+              responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -138,17 +138,17 @@ function Content() {
     return `${yy}.${mm}.${dd}`;
   };
 
-    // effect:  게시글 정보 요청 함수 //
-    useEffect(() => {
-      if (!travelNumber) return;
+  // effect:  게시글 정보 요청 함수 //
+  useEffect(() => {
+    if (!travelNumber) return;
 
-      const accessToken = cookies[ACCESS_TOKEN];
-      if (!accessToken) return;
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
 
-      postUpViewTravelRequest(travelNumber).then();
-  
-      getTravelDetailRequest(travelNumber).then(getTravelDetailtResponse);
-    }, [travelNumber]);
+    postUpViewTravelRequest(travelNumber).then();
+
+    getTravelDetailRequest(travelNumber).then(getTravelDetailtResponse);
+  }, [travelNumber]);
 
   // render: 내용 컴포넌트 렌더링 //
   return (
@@ -178,7 +178,7 @@ function Content() {
             <div className='contents-information-view-icon'></div>
             <div className='contents-information-data'></div>
           </div>
-            <Save />
+          <Save />
         </div>
       </div>
     </div>
@@ -208,9 +208,9 @@ function Save() {
   const putTravelSaveResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -239,10 +239,10 @@ function Save() {
   const getTravelSaveListResponse = (responseBody: GetTravelSaveListResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+              responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -289,9 +289,9 @@ function Like() {
   const putTravelLikeResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -321,10 +321,10 @@ function Like() {
   const getTravelLikeListResponse = (responseBody: GetTravelLikeListResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+              responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -358,29 +358,29 @@ function Comment() {
   // state: 쿠키상태 //
   const [cookies] = useCookies();
 
-    // state: 네비게이션 상태 //
-    const navigator = useNavigate();
-  
-    // state: 여행 게시물 번호 상태 //
+  // state: 네비게이션 상태 //
+  const navigator = useNavigate();
+
+  // state: 여행 게시물 번호 상태 //
   const { travelNumber } = useParams<{ travelNumber: string }>();
 
   // state: 댓글창 모달 상태 //
   const [commentOpen, setCommentOpen] = useState(false);
 
-    // state: 댓글 리스트 상태 //
-    const [commentList, setCommentList] = useState<TravelComment[]>([]);
+  // state: 댓글 리스트 상태 //
+  const [commentList, setCommentList] = useState<TravelComment[]>([]);
 
-    // state: 댓글 입력 상태 //
-    const [commentWrite, setCommentWrite] = useState<string>('');
+  // state: 댓글 입력 상태 //
+  const [commentWrite, setCommentWrite] = useState<string>('');
 
 
-      // function: 댓글 리스트 요청 함수 //
+  // function: 댓글 리스트 요청 함수 //
   const getTravelCommentResponse = (responseBody: GetTravelCommentResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -398,16 +398,16 @@ function Comment() {
   const postTravelCommentResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
       return;
     }
-    if(!travelNumber) return;
+    if (!travelNumber) return;
     getTravelCommentListRequest(travelNumber).then(getTravelCommentResponse);
   }
 
@@ -415,55 +415,55 @@ function Comment() {
   const deleteTravelCommentResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'NC' ? '존재하지 않는 코드 입니다.' :
-      responseBody.code === 'NP' ? '권한이 없습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+              responseBody.code === 'NC' ? '존재하지 않는 코드 입니다.' :
+                responseBody.code === 'NP' ? '권한이 없습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
       return;
     }
-    if(!travelNumber) return;
+    if (!travelNumber) return;
     getTravelCommentListRequest(travelNumber).then(getTravelCommentResponse);
   }
-  
-    // function: 여행 삭제 요청 응답 함수 //
-    const deleteTravelDetailtResponse = (responseBody: ResponseDto | null) => {
-      const message =
-        !responseBody ? '서버에 문제가 있습니다.' :
-          responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-              responseBody.code === 'NP' ? '권한이 없습니다.' :
-                responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-  
-      const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-      if (!isSuccessed) {
-        alert(message);
-        return;
-      }
-      if (!travelNumber) return;
-      navigator(TRAVEL_PATH);
-    };
 
-      // function: 댓글 수정 이벤트 처리 함수 //
+  // function: 여행 삭제 요청 응답 함수 //
+  const deleteTravelDetailtResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'NP' ? '권한이 없습니다.' :
+              responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+    if (!travelNumber) return;
+    navigator(TRAVEL_PATH);
+  };
+
+  // function: 댓글 수정 이벤트 처리 함수 //
   const travelUpdateHandler = () => {
     // navigate();
   }
-  
-    // event handler: 댓글 입력 이벤트 처리 //
-    const onClickcommentWriteChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-      const { value } = event.target;
-      if (value.length > 100) {
-        alert('댓글은 최대 100자입니다.');
-        return;
-      }
-      setCommentWrite(value);
-    }
 
-      // event handler: 댓글 추가 이벤트 처리 //
+  // event handler: 댓글 입력 이벤트 처리 //
+  const onClickcommentWriteChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = event.target;
+    if (value.length > 100) {
+      alert('댓글은 최대 100자입니다.');
+      return;
+    }
+    setCommentWrite(value);
+  }
+
+  // event handler: 댓글 추가 이벤트 처리 //
   const onclickcommentAddHandler = () => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
@@ -476,48 +476,48 @@ function Comment() {
     setCommentWrite('');
   }
 
-    // event handler: 댓글 삭제 이벤트 처리 //
+  // event handler: 댓글 삭제 이벤트 처리 //
   const onclickcommentDeleteHandler = (commentNumber: number) => (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
 
     const isSuccessed = window.confirm('정말 삭제하시겠습니까?');
-    if(!isSuccessed) return;
+    if (!isSuccessed) return;
 
     const accessToken = cookies[ACCESS_TOKEN];
-    if(!travelNumber) return;
-    if(!accessToken) return;
+    if (!travelNumber) return;
+    if (!accessToken) return;
 
     deleteTravelCommentRequest(commentNumber, accessToken).then(deleteTravelCommentResponse);
   }
 
-        // event handler: 댓글창 오픈 이벤트 처리 //
-        const commentOpenHandler = () => {
-          setCommentOpen(!commentOpen);
-        }
+  // event handler: 댓글창 오픈 이벤트 처리 //
+  const commentOpenHandler = () => {
+    setCommentOpen(!commentOpen);
+  }
 
-    // event handler: 삭제 버튼 클릭 이벤트 처리 //
-    const deleteButtonClickHandler = () => {
-      if (window.confirm("정말로 삭제하시겠습니까?")) {
-        alert("삭제가 완료되었습니다.");
-      } else {
-        alert("취소되었습니다.");
-        return;
-      }
-  
-      if (!travelNumber) return;
-  
-      const accessToken = cookies[ACCESS_TOKEN];
-      if (!accessToken) return;
-  
-      deleteTravelRequest(travelNumber, accessToken).then(deleteTravelDetailtResponse);
+  // event handler: 삭제 버튼 클릭 이벤트 처리 //
+  const deleteButtonClickHandler = () => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      alert("삭제가 완료되었습니다.");
+    } else {
+      alert("취소되었습니다.");
+      return;
     }
 
-    // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
-    const itemClickHandler = (path: string) => {
-      navigator(path);
-    }
+    if (!travelNumber) return;
 
-      // effect: 댓글 리스트 요청 함수 //
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    deleteTravelRequest(travelNumber, accessToken).then(deleteTravelDetailtResponse);
+  }
+
+  // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
+  const itemClickHandler = (path: string) => {
+    navigator(path);
+  }
+
+  // effect: 댓글 리스트 요청 함수 //
   useEffect(() => {
     if (!travelNumber) return;
     console.log(travelNumber);
@@ -531,14 +531,14 @@ function Comment() {
       <div className='comment-button-box'>
         <div className='comment-open-button' onClick={commentOpenHandler}>{commentOpen ? "댓글 닫기" : "댓글 열기"}</div>
         <div className='comment-button-box-right'>
-            <div className='comment-update-button' onClick={() => itemClickHandler(`${TRAVEL_UPDATE_PATH}/${travelNumber}`)}>수정</div>
-            <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
-          </div>
+          <div className='comment-update-button' onClick={() => itemClickHandler(`${TRAVEL_UPDATE_PATH}/${travelNumber}`)}>수정</div>
+          <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
+        </div>
       </div>
       {commentOpen &&
         <div className='comment-detail'>
           <div className='comment-detail-top'>
-          <textarea className='comment-detail-write' placeholder='댓글을 작성하세요. (100글자 이내)' value={commentWrite} onChange={onClickcommentWriteChangeHandler}></textarea>
+            <textarea className='comment-detail-write' placeholder='댓글을 작성하세요. (100글자 이내)' value={commentWrite} onChange={onClickcommentWriteChangeHandler}></textarea>
             <div className='comment-detail-add-button-box'>
               <div className='comment-detail-add-button' onClick={onclickcommentAddHandler}>댓글 추가</div>
             </div>

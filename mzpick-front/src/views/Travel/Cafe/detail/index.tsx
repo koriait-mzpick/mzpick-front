@@ -1,28 +1,30 @@
-import React, { useEffect, useState, MouseEvent, ChangeEvent, KeyboardEvent } from 'react'
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import './style.css';
 import { ResponseDto } from 'src/apis/dto/response';
-import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
+import { GetTravelCommentResponseDto, GetTravelDetailResponseDto, GetTravelLikeListResponseDto, GetTravelSaveListResponseDto } from 'src/apis/travel/dto/response';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ACCESS_TOKEN, FASHION_ABSOLUTE_UPDATE_PATH, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_UPDATE_PATH, TRAVEL_PATH } from 'src/constants';
+import { ACCESS_TOKEN, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_PATH, TRAVEL_UPDATE_PATH, TRAVEL_WRITE_PATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
-import { getTravelCommentListRequest, getTravelDetailRequest } from 'src/apis/travel';
+import { deleteTravelCommentRequest, deleteTravelRequest, getTravelCommentListRequest, getTravelDetailRequest, getTravelLikeListRequest, getTravelSaveListRequest, postTravelCommentRequest, postUpViewTravelRequest, putTravelLikeRequest, putTravelSaveRequest } from 'src/apis/travel';
+import { CafeDetail, TravelDetail } from 'src/types';
 import { SvgIcon } from '@mui/material';
 import { NavigateNext as NavigateNextIcon, NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
 // slider
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { GetFashionCommentResponseDto, GetFashionDetailResponseDto, GetFashionLikeListResponseDto, GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
-import { deleteFashionCommentRequest, deleteFashionRequest, getFashionCommentListRequest, getFashionDetailRequest, getFashionLikeListRequest, getFashionSaveListRequest, postFashionCommentRequest, postUpViewFashionRequest, putFashionLikeRequest, putFashionSaveRequest } from 'src/apis/fashion';
-import { FashionComment, FashionDetail } from 'src/types';
-import styled from "styled-components";
+import styled from 'styled-components';
 import { useAuthStore } from 'src/stores';
-import { PostFashionCommentRequestDto } from 'src/apis/fashion/dto/request';
+import { PostTravelCommentRequestDto } from 'src/apis/travel/dto/request';
+import { TravelComment } from 'src/types/travel/travelComment.interface';
+import { GetCafeCommentResponseDto, GetCafeDetailResponseDto, GetCafeLikeListResponseDto, GetCafeSaveListResponseDto } from 'src/apis/cafe/dto/response';
+import { deleteCafeCommentRequest, deleteCafeRequest, getCafeCommentListRequest, getCafeDetailRequest, getCafeLikeListRequest, getCafeSaveListRequest, postCafeCommentRequest, postUpViewCafeRequest, putCafeLikeRequest, putCafeSaveRequest } from 'src/apis/cafe';
+import { CafeComment } from 'src/types/cafe/cafeComment.interface';
+import { PostTravelCafeCommentRequestDto } from 'src/apis/cafe/dto/request';
 
-//function 이미지 슬라이드 컴포넌트 //
-function CarouselComponent({ photoList }: { photoList: string[] }) { 
+// const [travelPhotoList, setTravelPhotoList] = useState<string[]>([]);
 
-  // state: 이미지 슬라이드 설정 상태 //
+function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed props typing
   const settings = {
     dots: true,
     infinite: photoList.length > 1,
@@ -32,7 +34,7 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {
     arrows: photoList.length > 1,
     adaptiveHeight: true,
     waitForAnimate: false,
-    loop: photoList.length > 1, 
+    loop: photoList.length > 1,
     nextArrow: <SvgIcon component={NavigateNextIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />,
     prevArrow: <SvgIcon component={NavigateBeforeIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />
   };
@@ -60,19 +62,16 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {
     }
   `;
 
-  // render: 이미지 슬라이드 렌더링 //
   return (
     <CustomSlider {...settings} className='contents-image'>
       {photoList.map((photo, index) => (
         <div key={index} style={{ display: 'flex', justifyContent: 'center' }}>
-          <img className='contents-image-item' src={photo} alt={`fashion-photo-${index + 1}`} />
+          <img className='contents-image-item' src={photo} alt={`travelCafe-photo-${index + 1}`} />
         </div>
       ))}
     </CustomSlider>
   );
 }
-
-
 
 // component: 내용 컴포넌트 //
 function Content() {
@@ -80,63 +79,58 @@ function Content() {
   // state: 쿠키상태 //
   const [cookies] = useCookies();
 
-  // state: 패션 게시물 번호 상태 //
-  const { fashionNumber } = useParams<{ fashionNumber: string }>();
+  const { travelCafeNumber } = useParams<{ travelCafeNumber: string }>();
 
   // state: 게시글 정보 상태 //
-  const [fashionDetail, setFashionDetail] = useState<FashionDetail>();
+  const [travelCafeDetail, setTravelCafeDetail] = useState<CafeDetail>();
   const [userId, setUserId] = useState<string>();
-  const [fashionTitle, setFashionTitle] = useState<string>('');
-  const [fashionPhotoList, setFashionPhotoList] = useState<string[]>([]);
-  const [fashionHashtagList, setFashionHashtagList] = useState<string[]>([]);
-  const [fashionLikeUserList, setFashionLikeUserList] = useState<string[]>([]);
-  const [fashionSaveUserList, setFashionSaveUserList] = useState<string[]>([]);
-  const [fashionViewCount, setFashionViewCount] = useState<number>(0);
-  const [fashionLikeCount, setFashionLikeCount] = useState<number>(0);
-  const [fashionSaveCount, setFashionSaveCount] = useState<number>(0);
-  const [fashionContent, setFashionContent] = useState<string>('');
-  const [fashionDate, setFashionDate] = useState<string>('');
-  const [fashionTotalPrice, setFashionTotalPrice] = useState<number | null>(null);
-  const [detail, setDetail] = useState<FashionDetail>();
-
+  const [travelLocation, setTravelLocation] = useState<string>('');
+  const [travelCafeTitle, setTravelCafeTitle] = useState<string>('');
+  const [travelCafePhotoList, setTravelCafePhotoList] = useState<string[]>([]);
+  const [travelCafeHashtagList, setTravelCafeHashtagList] = useState<string[]>([]);
+  const [travelCafeLikeUserList, setTravelCafeLikeUserList] = useState<string[]>([]);
+  const [travelCafeSaveUserList, setTravelCafeSaveUserList] = useState<string[]>([]);
+  const [travelCafeViewCount, setTravelCafeViewCount] = useState<number>(0);
+  const [travelCafeLikeCount, setTravelCafeLikeCount] = useState<number>(0);
+  const [travelCafeSaveCount, setTravelCafeSaveCount] = useState<number>(0);
+  const [travelCafeContent, setTravelCafeContent] = useState<string>('');
+  const [travelCafeDate, setTravelCafeDate] = useState<string>('');
+  const [detail, setDetail] = useState<CafeDetail>();
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
 
-  // function: get Fashion detail response 처리 함수 //
-  const getFashionDetailtResponse = (responseBody: GetTravelDetailResponseDto | ResponseDto | null) => {
+  // function: get travelCafe detail response 처리 함수 //
+  const getTravelCafeDetailtResponse = (responseBody: GetCafeDetailResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+              responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
 
-    // 성공 여부 확인 //
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
-      navigator(FASHION_PATH);
+      navigator(`${TRAVEL_CAFE_DETAIL_PATH}/${travelCafeNumber}`);
       return;
     }
 
-    // 패션 게시물 상세 정보 설정 //
-    const { fashionDetail } = responseBody as GetFashionDetailResponseDto;
-    setFashionDetail(fashionDetail);
-    setUserId(fashionDetail.userId);
-    setFashionTitle(fashionDetail.fashionTitle);
-    setFashionPhotoList(fashionDetail.fashionPhotoList);
-    setFashionHashtagList(fashionDetail.fashionHashtagList);
-    setFashionLikeUserList(fashionDetail.fashionLikeUserList);
-    setFashionSaveUserList(fashionDetail.fashionSaveUserList);
-    setFashionViewCount(fashionDetail.fashionViewCount);
-    setFashionLikeCount(fashionDetail.fashionLikeCount);
-    setFashionSaveCount(fashionDetail.fashionSaveCount);
-    setFashionDate(fashionDetail.fashionDate);
-    setFashionTotalPrice(fashionDetail.totalPrice);
-    setFashionContent(fashionDetail.fashionContent);
+    const { travelCafeDetail } = responseBody as GetCafeDetailResponseDto;
+    setTravelCafeDetail(travelCafeDetail);
+    setUserId(travelCafeDetail.userId);
+    setTravelCafeTitle(travelCafeDetail.travelCafeTitle);
+    setTravelLocation(travelCafeDetail.travelLocathion);
+    setTravelCafePhotoList(travelCafeDetail.travelCafePhotoList);
+    setTravelCafeHashtagList(travelCafeDetail.travelCafeHashtagList);
+    setTravelCafeLikeUserList(travelCafeDetail.travelCafeLikeUserList);
+    setTravelCafeSaveUserList(travelCafeDetail.travelCafeSaveUSerList);
+    setTravelCafeViewCount(travelCafeDetail.travelCafeView);
+    setTravelCafeLikeCount(travelCafeDetail.travelCafeLikeCount);
+    setTravelCafeSaveCount(travelCafeDetail.travelCafeSaveCount);
+    setTravelCafeDate(travelCafeDetail.travelCafeDate);
+    setTravelCafeContent(travelCafeDetail.travelCafeContent);
   };
-
 
   // function: 날짜 포맷 변경 함수 //
   const changeDateFormat = (date: string) => {
@@ -146,82 +140,79 @@ function Content() {
     return `${yy}.${mm}.${dd}`;
   };
 
-
   // effect:  게시글 정보 요청 함수 //
   useEffect(() => {
-    if (!fashionNumber) return;
+    if (!travelCafeNumber) return;
 
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
 
-    postUpViewFashionRequest(fashionNumber).then();
+    postUpViewCafeRequest(travelCafeNumber).then();
 
-    getFashionDetailRequest(fashionNumber).then(getFashionDetailtResponse);
-  }, [fashionNumber]);
+    getCafeDetailRequest(travelCafeNumber).then(getTravelCafeDetailtResponse);
+  }, [travelCafeNumber]);
 
   // render: 내용 컴포넌트 렌더링 //
   return (
     <div id='contents-main'>
       <div className='contents-top'>
         <div className='contents-top-left'>
-          <div className='contents-top-title'>{fashionTitle}</div>
-          <div className='contents-top-date'>{changeDateFormat(fashionDate)}</div>
+          <div className='contents-top-title'>{travelCafeTitle}</div>
+          <div className='contents-top-date'>{changeDateFormat(travelCafeDate)}</div>
         </div>
         <div className='contents-top-vote-button-box'>
           <div className='contents-top-vote-button'>투표</div>
         </div>
       </div>
-      <CarouselComponent photoList={fashionPhotoList} />
-      <div className='contents-text'>{fashionContent}</div>
+      <CarouselComponent photoList={travelCafePhotoList} />
+      <div className='contents-text'>{travelCafeContent}</div>
       <div className='contents-information'>
         <div className='contents-information-left'>
           <div className='contents-information-hashtag'>
-            {fashionHashtagList.map((hashtag: string, index: number) => (
-              <div key={index} className='board-tag-item'>{hashtag}</div>
+            {travelCafeHashtagList.map((hashtag: string, index: number) => (
+              <div key={index} className='board-tag-item'>#{hashtag}</div>
             ))}
-
           </div>
         </div>
         <div className='contents-information-right'>
-          <div className='price'>{"가격 " + fashionTotalPrice + "원"}</div>
           <Like />
           <div className='contents-information-view'>
             <div className='contents-information-view-icon'></div>
-            <div className='contents-information-data'>{fashionViewCount}</div>
+            <div className='contents-information-data'></div>
           </div>
           <Save />
         </div>
       </div>
-      
     </div>
   )
 }
 
-//function 저장 //
+
+// function: 저장 //
 function Save() {
 
   // state: 쿠키상태 //
   const [cookies] = useCookies();
 
-  // state: 패션 게시물 번호 상태 //
-  const { fashionNumber } = useParams<{ fashionNumber: string }>();
+  // state: 여행 게시물 번호 상태 //
+  const { travelCafeNumber } = useParams<{ travelCafeNumber: string }>();
 
   // state: 로그인 유저 상태 //
   const { signInUser } = useAuthStore();
 
   // state: 저장 리스트 상태 //
-  const [fashionSaveList, setFashionSaveList] = useState<string[]>([]);
+  const [travelCafeSaveList, setTravelCafeSaveList] = useState<string[]>([]);
 
   // state:유저가 저장을 눌렀는지 상태 //
-  const isSaved = signInUser !== null && fashionSaveList.includes(signInUser.userId);
+  const isSaved = signInUser !== null && travelCafeSaveList.includes(signInUser.userId);
 
   // function: 저장 요청 응답 함수 //
-  const putFashionSaveResponse = (responseBody: ResponseDto | null) => {
+  const putTravelCafeSaveResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -229,31 +220,31 @@ function Save() {
       return;
     }
 
-    if (!fashionNumber) return;
-    getFashionSaveListRequest(fashionNumber).then(getFashionSaveListResponse);
+    if (!travelCafeNumber) return;
+    getCafeSaveListRequest(travelCafeNumber).then(getTravelCafeSaveListResponse);
   }
 
   // function: 저장 요청 함수 //
-  const putFashionSave = () => {
+  const putTravelCafeSave = () => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-    if (!fashionNumber) return;
-    putFashionSaveRequest(fashionNumber, accessToken).then(putFashionSaveResponse);
+    if (!travelCafeNumber) return;
+    putCafeSaveRequest(travelCafeNumber, accessToken).then(putTravelCafeSaveResponse);
   }
 
   // event handler: 저장 클릭 이벤트 처리 //
   const saveClcikHandler = () => {
-    putFashionSave();
+    putTravelCafeSave();
   }
 
   // function: 저장 리스트 요청 응답 함수 //
-  const getFashionSaveListResponse = (responseBody: GetFashionSaveListResponseDto | ResponseDto | null) => {
+  const getTravelCafeSaveListResponse = (responseBody: GetCafeSaveListResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+              responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -261,15 +252,15 @@ function Save() {
       return;
     }
 
-    const { userIdList } = responseBody as GetFashionSaveListResponseDto;
-    setFashionSaveList(userIdList);
+    const { userIdList } = responseBody as GetCafeSaveListResponseDto;
+    setTravelCafeSaveList(userIdList);
   }
 
   // effect: 저장 리스트 요청 함수 //
   useEffect(() => {
-    // fashionNumber를 이용하여 좋아요 리스트 가져오기
-    if (!fashionNumber) return;
-    getFashionSaveListRequest(fashionNumber).then(getFashionSaveListResponse);
+    // travelCafeNumber를 이용하여 좋아요 리스트 가져오기
+    if (!travelCafeNumber) return;
+    getCafeSaveListRequest(travelCafeNumber).then(getTravelCafeSaveListResponse);
   }, []);
 
   // render: 저장 컴포넌트 렌더링 //
@@ -278,31 +269,31 @@ function Save() {
   )
 }
 
-//function 좋아요 //
+// function: 좋아요 //
 function Like() {
 
   // state: 쿠키상태 //
   const [cookies] = useCookies();
 
-  // state: 패션 게시물 번호 상태 //
-  const { fashionNumber } = useParams<{ fashionNumber: string }>();
+  // state: 여행 게시물 번호 상태 //
+  const { travelCafeNumber } = useParams<{ travelCafeNumber: string }>();
 
   // state: 로그인 유저 상태 //
   const { signInUser } = useAuthStore();
 
   // state: 좋아요 상태 //
-  const [fashionLikeList, setFashionLikeList] = useState<string[]>([]);
+  const [travelCafeLikeList, setTravelCafeLikeList] = useState<string[]>([]);
 
   // state: 유저가 좋아요를 눌렀는지 상태 //
-  const isLiked = signInUser !== null && fashionLikeList.includes(signInUser.userId);
+  const isLiked = signInUser !== null && travelCafeLikeList.includes(signInUser.userId);
 
   // function: 좋아요 요청 응답 함수 //
-  const putFashionLikeResponse = (responseBody: ResponseDto | null) => {
+  const putTravelCafeLikeResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -310,34 +301,32 @@ function Like() {
       return;
     }
 
-    if (!fashionNumber) return;
-    getFashionLikeListRequest(fashionNumber).then(getFashionLikeListResponse);
+    if (!travelCafeNumber) return;
+    getCafeLikeListRequest(travelCafeNumber).then(getTravelCafeLikeListResponse);
   }
 
   // function: 좋아요 요청 함수 //
-  const putFashionLike = () => {
+  const putTravelCafeLike = () => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-    if (!fashionNumber) return;
-    putFashionLikeRequest(fashionNumber, accessToken).then(putFashionLikeResponse);
+    if (!travelCafeNumber) return;
+    putCafeLikeRequest(travelCafeNumber, accessToken).then(putTravelCafeLikeResponse);
   }
-
-
 
   // event handler: 좋아요 클릭 이벤트 처리 //
   const likeClcikHandler = () => {
     // 좋아요 누르는 API 요청
-    putFashionLike();
+    putTravelCafeLike();
   }
 
   // function: 좋아요 리스트 요청 응답 함수 //
-  const getFashionLikeListResponse = (responseBody: GetFashionLikeListResponseDto | ResponseDto | null) => {
+  const getTravelCafeLikeListResponse = (responseBody: GetCafeLikeListResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+              responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -345,22 +334,22 @@ function Like() {
       return;
     }
 
-    const { userIdList } = responseBody as GetFashionLikeListResponseDto;
-    setFashionLikeList(userIdList);
+    const { userIdList } = responseBody as GetCafeLikeListResponseDto;
+    setTravelCafeLikeList(userIdList);
   }
 
   // effect: 좋아요 리스트 요청 함수 //
   useEffect(() => {
-    // fashionNumber를 이용하여 좋아요 리스트 가져오기
-    if (!fashionNumber) return;
-    getFashionLikeListRequest(fashionNumber).then(getFashionLikeListResponse);
+    // travelCafeNumber를 이용하여 좋아요 리스트 가져오기
+    if (!travelCafeNumber) return;
+    getCafeLikeListRequest(travelCafeNumber).then(getTravelCafeLikeListResponse);
   }, []);
 
   // render: 좋아요 컴포넌트 렌더링 //
   return (
     <div className='contents-information-like'>
       <div className={`contents-information-like-icon ${isLiked ? 'active' : ''}`} onClick={likeClcikHandler}></div>
-      <div className='contents-information-data'>{fashionLikeList.length}</div>
+      <div className='contents-information-data'>{travelCafeLikeList.length}</div>
     </div>
   )
 }
@@ -372,27 +361,28 @@ function Comment() {
   const [cookies] = useCookies();
 
   // state: 네비게이션 상태 //
-  const navigate = useNavigate();
+  const navigator = useNavigate();
 
-  // state: 패션 게시물 번호 상태 //
-  const { fashionNumber } = useParams<{ fashionNumber: string }>();
+  // state: 여행 게시물 번호 상태 //
+  const { travelCafeNumber } = useParams<{ travelCafeNumber: string }>();
 
   // state: 댓글창 모달 상태 //
   const [commentOpen, setCommentOpen] = useState(false);
 
   // state: 댓글 리스트 상태 //
-  const [commentList, setCommentList] = useState<FashionComment[]>([]);
+  const [commentList, setCommentList] = useState<CafeComment[]>([]);
 
   // state: 댓글 입력 상태 //
   const [commentWrite, setCommentWrite] = useState<string>('');
 
+
   // function: 댓글 리스트 요청 함수 //
-  const getFashionCommentResponse = (responseBody: GetFashionCommentResponseDto | ResponseDto | null) => {
+  const getTravelCafeCommentResponse = (responseBody: GetCafeCommentResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
@@ -400,77 +390,69 @@ function Comment() {
       return;
     }
 
-    const { fashionComments } = responseBody as GetFashionCommentResponseDto;
+    const { cafeComments } = responseBody as GetCafeCommentResponseDto;
 
-    const sortedComments = [...fashionComments].sort((a, b) => b.fashionCommentNumber - a.fashionCommentNumber);
+    const sortedComments = [...cafeComments].sort((a, b) => b.travelCafeCommentNumber - a.travelCafeCommentNumber);
     setCommentList(sortedComments);
   }
 
   // function: 댓글 추가 요청 함수 //
-  const postFashionCommentResponse = (responseBody: ResponseDto | null) => {
+  const postTravelCafeCommentResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
       return;
     }
-    if(!fashionNumber) return;
-    getFashionCommentListRequest(fashionNumber).then(getFashionCommentResponse);
+    if (!travelCafeNumber) return;
+    getCafeCommentListRequest(travelCafeNumber).then(getTravelCafeCommentResponse);
   }
 
   // function: 댓글 삭제 요청 응답 함수 //
-  const deleteFashionCommentResponse = (responseBody: ResponseDto | null) => {
+  const deleteTravelCafeCommentResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'NC' ? '존재하지 않는 코드 입니다.' :
-      responseBody.code === 'NP' ? '권한이 없습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+              responseBody.code === 'NC' ? '존재하지 않는 코드 입니다.' :
+                responseBody.code === 'NP' ? '권한이 없습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
       return;
     }
-    if(!fashionNumber) return;
-    getFashionCommentListRequest(fashionNumber).then(getFashionCommentResponse);
+    if (!travelCafeNumber) return;
+    getCafeCommentListRequest(travelCafeNumber).then(getTravelCafeCommentResponse);
   }
 
-  // function: 패션 삭제 요청 응답 함수 //
-  const fashionDeleteResponse = (responseBody: ResponseDto | null) => {
+  // function: 여행 삭제 요청 응답 함수 //
+  const deleteTravelCafeDetailtResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : 
-      responseBody.code === 'NP' ? '권한이 없습니다.' : '';
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'NP' ? '권한이 없습니다.' :
+              responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
       return;
     }
-    if(!fashionNumber) return;
-    navigate(FASHION_PATH);
-  }
+    if (!travelCafeNumber) return;
+    navigator(TRAVEL_CAFE_PATH);
+  };
 
   // function: 댓글 수정 이벤트 처리 함수 //
-  const fashionUpdateHandler = () => {
+  const travelCafeUpdateHandler = () => {
     // navigate();
-  }
-
-  // function: 댓글 삭제 이벤트 처리 함수 //
-  const fashionDeleteHandler = () => {
-    const accessToken = cookies[ACCESS_TOKEN];
-    if(!fashionNumber) return;
-    if(!accessToken) return;
-    deleteFashionRequest(fashionNumber, accessToken).then(fashionDeleteResponse);
   }
 
   // event handler: 댓글 입력 이벤트 처리 //
@@ -487,12 +469,12 @@ function Comment() {
   const onclickcommentAddHandler = () => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-    if (!fashionNumber) return;
-    const requestBody: PostFashionCommentRequestDto = {
-      fashionComment: commentWrite
+    if (!travelCafeNumber) return;
+    const requestBody: PostTravelCafeCommentRequestDto = {
+      travelCafeComment: commentWrite
     }
 
-    postFashionCommentRequest(requestBody, fashionNumber, accessToken).then(postFashionCommentResponse);
+    postCafeCommentRequest(requestBody, travelCafeNumber, accessToken).then(postTravelCafeCommentResponse);
     setCommentWrite('');
   }
 
@@ -501,13 +483,13 @@ function Comment() {
     event.stopPropagation();
 
     const isSuccessed = window.confirm('정말 삭제하시겠습니까?');
-    if(!isSuccessed) return;
+    if (!isSuccessed) return;
 
     const accessToken = cookies[ACCESS_TOKEN];
-    if(!fashionNumber) return;
-    if(!accessToken) return;
+    if (!travelCafeNumber) return;
+    if (!accessToken) return;
 
-    deleteFashionCommentRequest(commentNumber, accessToken).then(deleteFashionCommentResponse);
+    deleteCafeCommentRequest(commentNumber, accessToken).then(deleteTravelCafeCommentResponse);
   }
 
   // event handler: 댓글창 오픈 이벤트 처리 //
@@ -515,24 +497,44 @@ function Comment() {
     setCommentOpen(!commentOpen);
   }
 
+  // event handler: 삭제 버튼 클릭 이벤트 처리 //
+  const deleteButtonClickHandler = () => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      alert("삭제가 완료되었습니다.");
+    } else {
+      alert("취소되었습니다.");
+      return;
+    }
+
+    if (!travelCafeNumber) return;
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    deleteCafeRequest(travelCafeNumber, accessToken).then(deleteTravelCafeDetailtResponse);
+  }
+
+  // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
+  const itemClickHandler = (path: string) => {
+    navigator(path);
+  }
+
   // effect: 댓글 리스트 요청 함수 //
   useEffect(() => {
-    if (!fashionNumber) return;
-    console.log(fashionNumber);
+    if (!travelCafeNumber) return;
+    console.log(travelCafeNumber);
     console.log(commentList);
-    getFashionCommentListRequest(fashionNumber).then(getFashionCommentResponse);
+    getCafeCommentListRequest(travelCafeNumber).then(getTravelCafeCommentResponse);
   }, []);
 
   // render: 댓글 컴포넌트 렌더링 //
   return (
     <div id='comment-main'>
       <div className='comment-button-box'>
-        <div className='comment-open-button' onClick={commentOpenHandler}>
-          {commentOpen ? "댓글 닫기" : "댓글 열기"}
-        </div>
+        <div className='comment-open-button' onClick={commentOpenHandler}>{commentOpen ? "댓글 닫기" : "댓글 열기"}</div>
         <div className='comment-button-box-right'>
-          <div className='comment-update-button' onClick={fashionUpdateHandler}>수정</div>
-          <div className='comment-delete-button' onClick={fashionDeleteHandler}>삭제</div>
+          <div className='comment-update-button' onClick={() => itemClickHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${travelCafeNumber}`)}>수정</div>
+          <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
         </div>
       </div>
       {commentOpen &&
@@ -544,13 +546,13 @@ function Comment() {
             </div>
           </div>
 
-          {commentList.map((comment: FashionComment, index: number) => (
+          {commentList.map((comment: CafeComment, index: number) => (
             <div className='comment-detail-bottom' key={index}>
               <div className='comment-detail-writer'>
                 <div className='comment-detail-name'>{comment.userId}</div>
-                <div className='comment-detail-delete-button' onClick={onclickcommentDeleteHandler(comment.fashionCommentNumber)}>삭제</div>
+                <div className='comment-detail-delete-button' onClick={onclickcommentDeleteHandler(comment.travelCafeCommentNumber)}>삭제</div>
               </div>
-              <div className='comment-detail-text' style={{ wordBreak: 'break-word' }}>{comment.fashionComment}</div>
+              <div className='comment-detail-text' style={{ wordBreak: 'break-word' }}>{comment.travelCafeComment}</div>
             </div>
           ))}
         </div>
@@ -559,8 +561,6 @@ function Comment() {
   )
 }
 
-
-// component: 패션 상세 페이지 //
 export default function TravelCafeDetailPage() {
   return (
     <div id='detail-main'>

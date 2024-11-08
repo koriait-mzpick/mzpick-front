@@ -19,6 +19,7 @@ export const TRAVEL_UPDATE_PATH='/travel/update'
 export const TRAVEL_CAFE_PATH='/travel/cafe'
 export const TRAVEL_CAFE_DETAIL_PATH='/travel/cafe/detail'
 export const TRAVEL_CAFE_WRITE_PATH='/travel/cafe/write'
+export const TRAVEL_CAFE_UPDATE_PATH='/travel/cafe/update'
 
 export const TRAVEL_STAY_DETAIL_PATH='/travel/stay/detail'
 export const TRAVEL_STAY_PATH='/travel/stay'
