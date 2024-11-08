@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from 'src/apis';
 import { GetTravelVoteDetailResponseDto } from 'src/apis/vote/travel_vote/dto/response';
-import { postTravelVoteRequest } from 'src/apis/vote';
+import { getTravelVoteListRequest, postTravelVoteRequest } from 'src/apis/vote';
 import { PostTravelRequestDto } from 'src/apis/travel/dto/request';
 import { ResponseDto } from 'src/apis/dto/response';
 import { PostTravelVoteRequestDto } from 'src/apis/vote/travel_vote/dto/request';

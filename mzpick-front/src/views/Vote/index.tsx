@@ -1,15 +1,18 @@
-import React, { ChangeEvent, MouseEvent, useState } from 'react'
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import './style.css';
 import VoteDetail from './VoteDetail';
 import { MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from 'src/apis';
-import { GetTravelVoteDetailResponseDto } from 'src/apis/vote/travel_vote/dto/response';
+import { GetTravelVoteDetailResponseDto, GetTravelVoteListResponseDto } from 'src/apis/vote/travel_vote/dto/response';
 import axios from 'axios';
 import { ResponseDto } from 'src/apis/dto/response';
 import { ACCESS_TOKEN, VOTE_WRITEPATH } from 'src/constants';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { postTravelVoteRequest } from 'src/apis/vote';
-
+import { deleteTravelVoteRequest, getTravelVoteListRequest, postTravelVoteRequest } from 'src/apis/vote';
+import { getTravelListRequest } from 'src/apis/travel';
+import { TravelVote } from 'src/types';
+import { GetTravelListResponseDto } from 'src/apis/travel/dto/response';
+import DefaultImage from './resources/vote-default-image.png';
 
 
 
@@ -20,21 +23,55 @@ export default function Vote() {
     navigator(VOTE_WRITEPATH);
   }
 
+  // state: 파람값 상태 //
+  const { travelVoteNumber } = useParams();
+
+  // state: get travel vote 상태 //
+  const [travelVoteList, setTravelVoteList] = useState<TravelVote[]>([]);
+  const [travelVoteNum, setTravelVoteNum] = useState<number>(0);
+  const [userId, setUserId] = useState<string>('');
+  const [voteTitle, setVoteTitle] = useState<string>('');
+  const [votePhotoFirst, setVotePhotoFirst] = useState<string>('');
+  const [votePhotoSecond, setVotePhotoSecond] = useState<string>('');
+  const [voteChoiceFirst, setVoteChoiceFirst] = useState<string>('');
+  const [voteChoiceSecond, setVoteChoiceSecond] = useState<string>('');
+  const [voteChoiceUser, setVoteChoiceUser] = useState<string[]>([]);
+  const [voteChoiceContent, setVoteChoiceContent] = useState<string[]>([]);
+  const [voteDate, setVoteDate] = useState<string>('');
+
+
+  // state: 제목 입력 상태 //
+  const [title, setTitle] = useState<string>('');
+  // state: 내용 입력 상태 //
+  const [content, setContent] = useState<string>('');
+  const [contentSeoncd, setContentSecond] = useState<string>('');
+
   const [cookies] = useCookies();
 
   const [qeuryParam] = useSearchParams();
   const accessToken = qeuryParam.get('accessToken');
   
-  
+  // state: 모달창 상태 //
   const [modal, setModal] = useState<boolean>(false);
   const [singlePhotomodal, setSinglePhotomodal] = useState<boolean>(false);
   const [nonePhotomodal, setNonePhotomodal] = useState<boolean>(false);
+  // state: 체크 표시 상태 //
   const [check, setCheck] = useState<boolean>(false);
   const [secondCheck, setSecondCheck] = useState<boolean>(false);
 
 
-  const onClickModalHandler = () => {
-    setModal(!modal);
+  const onClickModalHandler = (travelVote: TravelVote) => {
+    if (!travelVote.travelVotePhoto1 && !travelVote.travelVotePhoto2) {
+      setNonePhotomodal(!nonePhotomodal);
+    };
+    if (travelVote.travelVotePhoto1 && !travelVote.travelVotePhoto2) {
+      setSinglePhotomodal(!singlePhotomodal);
+      
+    };
+    if (travelVote.travelVotePhoto1 && travelVote.travelVotePhoto2) {
+      setModal(!modal)
+      
+    };
   }
 
   const onClickSingleModalHandler = () => {
@@ -61,6 +98,69 @@ export default function Vote() {
       setSecondCheck(!secondCheck);
     }
   }
+
+  const getTravelVoteList= () => {
+    getTravelVoteListRequest().then(getVoteWriteResponse);
+  }
+
+  // function: get vote write response 처리 함수 //
+  const getVoteWriteResponse = (responseBody: ResponseDto | null) => {
+    const message = 
+        !responseBody ? '서버에 문제가 있습니다.' : 
+        responseBody.code === 'VF' ? '유효하지 않은 데이터입니다.' : 
+        responseBody.code === 'AF' ? '잘못된 접근입니다.' : 
+        responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+    
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+        alert(message);
+        return;
+    }
+
+    const { travelVotes } = responseBody as GetTravelVoteListResponseDto;
+    setTravelVoteList(travelVotes);
+
+    // setTravelVoteList(travelVote);
+    // setTravelVoteNum(travelVote.);
+    // setUserId(userId);
+    // setVoteTitle(voteTitle);
+    // setVotePhotoFirst(votePhotoFirst);
+    // setVotePhotoSecond(votePhotoSecond);
+    // setVoteChoiceFirst(voteChoiceFirst);
+    // setVoteChoiceSecond(voteChoiceSecond);
+    // setVoteChoiceUser(voteChoiceUser);
+    // setVoteChoiceContent(voteChoiceContent);
+    // setVoteDate(voteDate);
+
+    // getTravelVoteListRequest().then(deleteVoteWriteResponse);
+};
+
+  // function: delete vote write response 처리 함수 //
+  const deleteVoteWriteResponse = (responseBody: ResponseDto | null) => {
+    const message = 
+        !responseBody ? '서버에 문제가 있습니다.' : 
+        responseBody.code === 'VF' ? '유효하지 않은 데이터입니다.' : 
+        responseBody.code === 'AF' ? '잘못된 접근입니다.' : 
+        responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+    
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+        alert(message);
+        return;
+    }
+
+    if (!travelVoteNumber) return;
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    deleteTravelVoteRequest(accessToken, travelVoteNumber).then(deleteVoteWriteResponse);
+};
+
+useEffect(()=>{
+  getTravelVoteList();
+},[])
+
   return (
     <div id='vote-main'>
         
@@ -69,15 +169,6 @@ export default function Vote() {
        
       <div className='vote-top'>
 
-      {/* <div className='vote-dropdown' onClick={onChangeDropdownHandler}>
-        <select  className='vote-dropdown-button'>
-          <option value="1">여행</option>
-          <option value="2">외식</option>
-          <option value="3">카페</option>
-          <option value="4">숙박</option>
-          <option value="5">패션</option>
-        </select>
-      </div> */}
         {nonePhotomodal &&
         <div className='vote-nonephoto-modal'>
           <div className='close-main'>
@@ -117,19 +208,7 @@ export default function Vote() {
         </div>
         }
         
-         <div className='vote-list' onClick={onClickNoneModalHandler}>
-         <div className='vote-name'>jenny</div>
-        <div className='vote-text'>여행지 추천 부탁드립니다!!</div>
-
-         <div className='vote-photo'>
-         <div className='none-photo'></div>
-         </div>
         
-         <div className='vote-bottom'>
-         <div className='first-text'>제주도</div>
-         <div className='second-text'>우도</div>
-         </div>
-         </div>
 
         { singlePhotomodal &&
         
@@ -167,27 +246,14 @@ export default function Vote() {
       </div>
       
       }
-        <div className='vote-list' onClick={onClickSingleModalHandler}>
-          <div className='vote-name'>jenny</div>
-          <div className='vote-text'>여행지 추천 부탁드립니다!!</div>
 
-          <div className='vote-photo'>
-            <div className='single-photo'></div>
-          </div>
-
-          <div className='vote-bottom'>
-            <div className='first-text'>제주도</div>
-            <div className='second-text'>우도</div>
-          </div>
-        </div>
-        
-        
+       
 
         {modal &&
           <div className='vote-nonephoto-modal' >
           <div className='double-close-main'>
             <div className='double-modal-title'>제목</div>
-            <div className='double-modal-close' onClick={onClickModalHandler} style={{cursor:"pointer"}}>x</div>
+            <div className='double-modal-close' onClick={() => setModal(false)} style={{cursor:"pointer"}}>x</div>
           </div>
               <div className='double-main'>
                 <div className='double-main-box'>
@@ -240,25 +306,12 @@ export default function Vote() {
 
          </div>
         }
-        <div className='vote-list' onClick={onClickModalHandler}>
-          <div className='vote-name'>jenny</div>
-          <div className='vote-text'>여행지 추천 부탁드립니다!!</div>
 
-         
-          <div className='vote-photo'>
-            <div className='first-photo'></div>
-            <div className='second-photo'></div>
-          </div>
-
-          <div className='vote-bottom'>
-            <div className='first-text'>제주도</div>
-            <div className='second-text'>우도</div>
-          </div>
-        </div>
+       
         
       </div>
       <div className='vote-top'>
-      <div className='vote-list' onClick={onClickModalHandler}>
+      {/* <div className='vote-list' onClick={onClickModalHandler}>
           <div className='vote-name'>jenny</div>
           <div className='vote-text'>여행지 추천 부탁드립니다!!</div>
 
@@ -286,28 +339,38 @@ export default function Vote() {
             <div className='first-text'>제주도</div>
             <div className='second-text'>우도</div>
           </div>
-        </div>
+        </div> */}
+        
+        {travelVoteList.map((item)=>(
+                  <div className='vote-list' onClick={() => onClickModalHandler(item)}>
+                    <div className='vote-name'>{item.userId}</div>
+                    <div className='vote-text'>{item.travelVoteTitle}</div>
+          
+                    <div className='vote-photo'>
 
-        <div className='vote-list' onClick={onClickModalHandler}>
-          <div className='vote-name'>jenny</div>
-          <div className='vote-text'>여행지 추천 부탁드립니다!!</div>
+                      {!item.travelVotePhoto1 && !item.travelVotePhoto2 ? <div className='first-photo' style={{ backgroundImage: `url(${DefaultImage})`, width:'8vw' ,border:'none'}} ></div> :
+                      item.travelVotePhoto1 && item.travelVotePhoto2 ? <div className='second-photo' style={{ backgroundImage: `url(${item.travelVotePhoto1})`, width:'8vw'}}></div> :
+                      <div className='first-photo' style={{ backgroundImage: `url(${item.travelVotePhoto1})`, width:'16vw'}}></div>}
 
-          <div className='vote-photo'>
-            <div className='first-photo'></div>
-            <div className='second-photo'></div>
-          </div>
+                      {item.travelVotePhoto2 && <div className='first-photo' style={{ backgroundImage: `url(${item.travelVotePhoto2})`, width:'8vw', border:'none'}} ></div>}
+                      
+                      {/* <div className='second-photo' style={{ backgroundImage: `url(${item.travelVotePhoto2})` }}></div> */}
+                    </div>
+          
+                    <div className='vote-bottom'>
+                      <div className='first-text'>{item.travelVoteChoice1}</div>
+                      <div className='second-text'>{item.travelVoteChoice2}</div>
+                    </div>
+                </div>
+        ))}
 
-          <div className='vote-bottom'>
-            <div className='first-text'>제주도</div>
-            <div className='second-text'>우도</div>
-          </div>
-        </div>
+
       </div>
-
-
       <div className='vote-button'>
         <div className='vote-post' onClick={onWritePostPath}>투표 게시하기</div>
       </div>
+
+
 
     </div>
   )
