@@ -9,7 +9,7 @@ const CAFE_MODULE_URL = `${MZPICK_API_DOMAIN}/api/v1/cafe`;
 
 const GET_CAFE_LIST_API_URL = `${CAFE_MODULE_URL}/`;
 const GET_CAFE_DETAIL_API_URL = (travelCafeNumber: number | string) => `${CAFE_MODULE_URL}/${travelCafeNumber}`;
-const POST_CAFE_API_URL = `${CAFE_MODULE_URL}/}`;
+const POST_CAFE_API_URL = `${CAFE_MODULE_URL}/`;
 const PATCH_CAFE_API_URL = (travelCafeNumber: number | string) => `${CAFE_MODULE_URL}/${travelCafeNumber}`;
 const DELETE_CAFE_API_URL = (travelCafeNumber: number | string) => `${CAFE_MODULE_URL}/${travelCafeNumber}`;
 const POST_UP_VIEW_CAFE_API_URL = (travelCafeNumber: number | string) => `${CAFE_MODULE_URL}/view/${travelCafeNumber}`;

@@ -3,20 +3,23 @@ import { useCookies } from 'react-cookie';
 import { Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
 import './MzPick.css';
 
+<<<<<<< HEAD
 import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, FASHION_PATH, FASHION_WRITE_PATH, FOOD_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_ABSOLUTE_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, ROOT_PATH, SIGN_IN_PATH, SIGN_UP_PATH, SNS_SUCCESS_PATH, TRAVEL_CAFE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH, WRITE_PATH } from './constants';
+=======
+import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_WRITE_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_ABSOLUTE_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, ROOT_PATH, SIGN_IN_PATH, SIGN_UP_PATH, SNS_SUCCESS_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_WRITE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_RESTAURANT_WRITE_PATH, TRAVEL_STAY_PATH, TRAVEL_STAY_WRITE_PATH, TRAVEL_UPDATE_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH } from './constants';
+>>>>>>> 06c6e25aaa5555f14e0f7121a60475f086649676
 
 import { ResponseDto } from './apis/dto/response';
 import { getMyPageUserDetailRequest } from './apis/mypage';
 import { GetMyPageUserDetailResponseDto } from './apis/mypage/dto/response/user';
 import MainLayout from './layouts/MainLayout';
-import Detail from './layouts/TotalLayout/Detail';
-import Write from './layouts/TotalLayout/Write';
+
 import { useAuthStore } from './stores';
 import SignIn from './views/Auth/SignIn';
 import SignUp from './views/Auth/SignUp';
 import Fashion from './views/Fashion';
+import FashionDetailPage from './views/Fashion/detail';
 import FashionWrite from './views/Fashion/Write';
-import Food from './views/Food';
 import HOFFashion from './views/HOF/FashionHof';
 import HOFFood from './views/HOF/FoodHof';
 import HOFTravel from './views/HOF/TravelHof';
@@ -24,15 +27,22 @@ import Home from './views/Home';
 import Keyword from './views/Keyword';
 import MyPage from './views/MyPage';
 import TraveMap from './views/Travel';
-import CafeMain from './views/Travel/Cafe';
 import MainTravel from './views/Travel/MainTravel';
-import RestaurantMain from './views/Travel/Restaurant';
-import StayMain from './views/Travel/Stay';
+import TravelWrite from './views/Travel/MainTravel/Write';
 import Vote from './views/Vote';
 import VoteDetail from './views/Vote/VoteDetail';
 import VoteDetailPhoto from './views/Vote/VoteDetailPhoto';
 import VoteDoublePhoto from './views/Vote/VoteDoublePhoto';
 import VoteWrite from './views/Vote/VoteWrite';
+import TravelCafeWrite from './views/Travel/Cafe/Write';
+import TravelRestaurantWrite from './views/Travel/Restaurant/Write';
+import TravelStayWrite from './views/Travel/Stay/Write';
+import TravelStay from './views/Travel/Stay';
+import TravelCafe from './views/Travel/Cafe';
+import TravelRestaurant from './views/Travel/Restaurant';
+import TravelDetailPage from './views/Travel/MainTravel/Detail';
+import TravelUpdate from './views/Travel/MainTravel/Update';
+import FashionUpdate from './views/Fashion/update';
 
 
 // component: root path 컴포넌트 //
@@ -141,20 +151,23 @@ export default function MzPick() {
       <Route path={TRAVEL_PATH} element={<MainLayout />}>
         < Route path={TRAVEL_MAP_PATH} element={< TraveMap/>} />
         < Route path={TRAVEL_PATH} element={< MainTravel />} />
-        < Route path={`${TRAVEL_DETAIL_PATH}/:travelNumber`} element={< Detail />} />
-        < Route path={TRAVEL_RESTAURANT_PATH} element={< RestaurantMain />} />
-        < Route path={TRAVEL_CAFE_PATH} element={< CafeMain />} />
-        < Route path={TRAVEL_STAY_PATH} element={< StayMain />} />
+        < Route path={`${TRAVEL_DETAIL_PATH}/:travelNumber`} element={< TravelDetailPage />} />
+        < Route path={TRAVEL_WRITE_PATH} element={< TravelWrite />} />
+        < Route path={`${TRAVEL_UPDATE_PATH}/:travelNumber`} element={< TravelUpdate />} />
+        < Route path={TRAVEL_RESTAURANT_PATH} element={< TravelRestaurant />} />
+        < Route path={TRAVEL_RESTAURANT_WRITE_PATH} element={< TravelRestaurantWrite />} />
+        < Route path={TRAVEL_CAFE_PATH} element={< TravelCafe />} />
+        < Route path={TRAVEL_CAFE_WRITE_PATH} element={< TravelCafeWrite />} />
+        < Route path={TRAVEL_STAY_PATH} element={< TravelStay />} />
+        < Route path={TRAVEL_STAY_WRITE_PATH} element={< TravelStayWrite />} />
+
       </Route>
 
       <Route path={FASHION_PATH} element={<MainLayout />}>
         < Route path={FASHION_PATH} element={< Fashion />} />
         < Route path={FASHION_WRITE_PATH} element={< FashionWrite />} />
-
-      </Route>
-
-      <Route path={FOOD_PATH} element={<MainLayout />}>
-        < Route path={FOOD_PATH} element={< Food />} />
+        < Route path={`${FASHION_DETAIL_PATH}/:fashionNumber`} element={<FashionDetailPage />} />
+        < Route path={`${FASHION_PATH}/:fashionNumber/update`} element={<FashionUpdate />} />
       </Route>
 
       <Route path={KEYWORD_PATH} element={<MainLayout />}>
@@ -170,10 +183,6 @@ export default function MzPick() {
 
       <Route path={MY_PAGE_PATH} element={<MainLayout />}>
         < Route path={MY_PAGE_PATH} element={< MyPage />} />
-      </Route>
-
-      <Route path={WRITE_PATH} element={<MainLayout />}>
-        <Route path={WRITE_PATH} element={<Write />} />
       </Route>
 
       {/* <Route path={OTHERS_PATH} element={<Index />} /> */}

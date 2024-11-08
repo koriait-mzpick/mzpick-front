@@ -1,9 +1,7 @@
 import { ResponseDto } from "src/apis/dto/response";
+import { FashionComment } from "src/types";
 
 
 export default interface GetFashionCommentResponseDto extends ResponseDto {
-    fashionCommentNumeber: number;
-    fashionNumber: number;
-    userId: string;
-    fashionComment: string;
+    fashionComments: FashionComment[];
 }

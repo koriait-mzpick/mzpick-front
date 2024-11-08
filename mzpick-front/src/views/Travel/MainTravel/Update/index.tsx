@@ -2,20 +2,26 @@ import React, { ChangeEvent, useEffect, useRef, useState, Component, KeyboardEve
 import './style.css';
 import { useCookies } from 'react-cookie';
 import { ResponseDto } from 'src/apis/dto/response';
-import { ACCESS_TOKEN, TRAVEL_PATH } from 'src/constants';
-import { PostTravelRequestDto } from 'src/apis/travel/dto/request';
-import { postcTravelRequest } from 'src/apis/travel';
+import { ACCESS_TOKEN, TRAVEL_ABSOLUTE_DETAIL_PATH, TRAVEL_DETAIL_PATH, TRAVEL_PATH, WRITE_PATH } from 'src/constants';
+import { PatchTravelRequestDto } from 'src/apis/travel/dto/request';
+import { getTravelDetailRequest, pathcTravelRequest } from 'src/apis/travel';
 import { fileUploadRequest } from 'src/apis';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import path from 'path';
+import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
+import { TravelDetail } from 'src/types';
 
 // component: 글쓰기 페이지 컴포넌트 //
-export default function TravelWrite() {
+export default function TravelUpdate() {
+
+  // state: 게시글번호 상태 //
+  const { travelNumber } = useParams();
 
   // state: cookie 상태 //
   const [cookies] = useCookies();
 
   // state: 게시글 인풋 상태 //
+  const [travelDetail, setTravelDetail] = useState<TravelDetail>();
   const [travelTitle, setTravelTitle] = useState<string>('');
   const [travelHashtagContent, setTravelHashtagContent] = useState<string>('');
   const [travelHashtagContentList, setTravelHashtagContentList] = useState<string[]>([]);
@@ -30,13 +36,38 @@ export default function TravelWrite() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   // variable: 등록 가능 여부 //
-  const isWriteComplete = travelTitle && travelHashtagContentList.length > 0 &&  travelLocation && travelContent && travelPhotoList.length !== 0;
+  const isWriteComplete = travelTitle && travelHashtagContentList.length > 0 && travelLocation && travelContent && travelPhotoList.length !== 0;
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
 
-  // function: post travel response 처리 함수 //
-  const postTravelResponse = (responseBody: ResponseDto | null) => {
+  // function: get travel detail response 처리 함수 //
+  const getTravelDetailtResponse = (responseBody: GetTravelDetailResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      navigator(`${TRAVEL_DETAIL_PATH}/${travelNumber}`);
+      return;
+    }
+
+    const { travelDetail } = responseBody as GetTravelDetailResponseDto;
+    setTravelDetail(travelDetail);
+    setTravelTitle(travelDetail.travelTitle);
+    setTravelLocation(travelDetail.travelLocation);
+    setTravelPhotoList(travelPhotoList);
+    setTravelHashtagContentList(travelDetail.travelHashtagList);
+    setTravelContent(travelDetail.travelContent);
+
+  };
+
+  // function: patch travel detail response 처리 함수 //
+  const patchTravelDetailResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
         responseBody.code === 'VF' ? '모두 입력해주세요' :
@@ -46,9 +77,13 @@ export default function TravelWrite() {
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
+      navigator(`${TRAVEL_DETAIL_PATH}/${travelNumber}`);
       return;
-    };
-  };
+    }
+
+    if (!travelNumber) return;
+    navigator(`${TRAVEL_DETAIL_PATH}/${travelNumber}`);
+  }
 
   // event handler: 제목 변경 이벤트 처리 //
   const travelTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +96,7 @@ export default function TravelWrite() {
     const maxLength = 10;
     const { value } = event.target;
     const filteredValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣\s]/g, '');
-    
+
     if (value.length <= maxLength) {
       setTravelHashtagContent(filteredValue);
     } else {
@@ -78,6 +113,7 @@ export default function TravelWrite() {
     }
     if (event.key === 'Backspace' && travelHashtagContent === '' && travelHashtagContentList.length > 0)
       setTravelHashtagContentList(travelHashtagContentList.slice(0, -1));
+    console.log(travelHashtagContentList)
   };
 
   // event handler: 커서 이동시 해시태그 추가 이벤트 처리 //
@@ -124,7 +160,7 @@ export default function TravelWrite() {
         alert("취소 되었습니다.");
       }
       return;
-    };
+    }
     const { files } = event.target;
     if (!files || files.length === 0) return;
     const file = files[0];
@@ -141,22 +177,23 @@ export default function TravelWrite() {
     setTravelPhotoList([]);
   };
 
-  // event handler: 등록 버튼 클릭 이벤트 처리 함수 //
-  const registerButtonClickHandler = async (path: string) => {
+  // event handler: 수정 버튼 클릭 이벤트 처리 함수 //
+  const updateButtonClickHandler = async (path: string) => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
+    if (!travelNumber) return;
     if (!travelTitle || travelHashtagContentList.length === 0 || !travelLocation || !travelContent || travelPhotoList.length === 0) {
       alert('모두 입력해주세요.');
       return;
-    };
+    }
 
-    if (window.confirm("등록하시겠습니까?")) {
-      alert("등록이 완료되었습니다.");
+    if (window.confirm("수정하시겠습니까?")) {
+      alert("수정이 완료되었습니다.");
       navigator(path);
     } else {
       alert("취소되었습니다.");
       return;
-    };
+    }
 
     const travelPhotoListUrl: string[] = [];
     for (const file of travelPhotoList) {
@@ -164,23 +201,36 @@ export default function TravelWrite() {
       formData.append('file', file);
       const url = await fileUploadRequest(formData);
       if (url) travelPhotoListUrl.push(url);
-    };
+    }
 
-    const requestBody: PostTravelRequestDto = {
+    const requestBody: PatchTravelRequestDto = {
       travelPhotoList: travelPhotoListUrl,
       travelTitle,
       travelHashtagContentList,
       travelLocation,
       travelContent
     }
-    postcTravelRequest(requestBody, accessToken).then(postTravelResponse);
-  };
+    pathcTravelRequest(requestBody, travelNumber, accessToken).then(patchTravelDetailResponse);
+  }
 
   // event handler: 취소 버튼 클릭 이벤트 처리 함수 //
   const cancelButtonClickHandler = (path: string) => {
     if (window.confirm("글쓰기를 취소하시겠습니까?"))
       navigator(path);
-  };
+  }
+
+  // effect: 첫 로드시 게시글 정보 불러오기 함수 //
+  useEffect(() => {
+    if (!travelNumber) {
+      navigator(`${TRAVEL_DETAIL_PATH}/${travelNumber}`);
+      return;
+    }
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    getTravelDetailRequest(travelNumber).then(getTravelDetailtResponse);
+  }, [travelNumber]);
 
   // render: 글쓰기 페이지 컴포넌트 렌더링//
   return (
@@ -191,7 +241,7 @@ export default function TravelWrite() {
           <div className='middle-hashtag-box'>
             {travelHashtagContentList.map((tag, index) => (
               <div className='middle-hashtag' key={index} onClick={() => travelHashtagContentDeleteHandler(index)}>
-                #{tag}
+                {'#' + tag}
               </div>
             ))}
             <input className='middle-hashtag-write' type='text' value={travelHashtagContent} placeholder='태그 (최대 3개)' onChange={travelHashtagContentChangeHandler} onKeyDown={travelHashtagContentAddHandler} onBlur={travelHashtagContentBlurHandler} />
@@ -211,12 +261,11 @@ export default function TravelWrite() {
         </div>
         <div className='write-box-bottom'>
           <div className='bottom-button-box'>
-            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => registerButtonClickHandler(TRAVEL_PATH)}>등록</div>
-            <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(TRAVEL_PATH)}>취소</div>
+            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => updateButtonClickHandler(`${TRAVEL_DETAIL_PATH}/${travelNumber}`)}>수정</div>
+            <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(`${TRAVEL_DETAIL_PATH}/${travelNumber}`)}>취소</div>
           </div>
         </div>
       </div>
     </div>
   )
 }
-
