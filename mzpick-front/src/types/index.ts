@@ -3,6 +3,7 @@ import SignInUser from "./auth/sign-in-user.interface";
 import Cafe from "./cafe/cafe.interface";
 import CafeDetail from "./cafe/cafeDetail.interface";
 import Fashion from "./fashion/fashion.interface";
+import { FashionComment } from "./fashion/fashionComment.interface";
 import FashionDetail from "./fashion/fashionDetail.interface";
 import TravelPhoto from "./hof/travelPhoto.interface";
 import Keyword from "./keyword/keyword.interface";
@@ -32,5 +33,6 @@ export type {
     RestaurantDetail,
     StayDetail,
     CafeDetail,
+    FashionComment,
 }
 

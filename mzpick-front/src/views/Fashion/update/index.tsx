@@ -1,18 +1,23 @@
-import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fileUploadRequest } from 'src/apis';
 import { ResponseDto } from 'src/apis/dto/response';
-import { postFashionRequest } from 'src/apis/fashion';
+import { getFashionDetailRequest, pathcFashionRequest, postFashionRequest } from 'src/apis/fashion';
 import { PostFashionRequestDto } from 'src/apis/fashion/dto/request';
 import { ACCESS_TOKEN, FASHION_PATH } from 'src/constants';
 import './style.css';
+import { FashionDetail } from 'src/types';
+import { GetFashionDetailResponseDto } from 'src/apis/fashion/dto/response';
+import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
 
 // component: 글쓰기 페이지 컴포넌트 //
-export default function FashionWrite() {
+export default function FashionUpdate() {
 
   // state: cookie 상태 //
   const [cookies] = useCookies();
+  
+  const { fashionNumber } = useParams<{ fashionNumber: string }>();
 
   // state: 게시글 인풋 상태 //
   const [fashionTitle, setFashionTitle] = useState<string>('');
@@ -21,6 +26,24 @@ export default function FashionWrite() {
   const [fashionTotalPrice, setFashionTotalPrice] = useState<string>('');
   const [fashionContent, setFashionContent] = useState<string>('');
   const [fashionPhotoList, setFashionPhotoList] = useState<File[]>([]);
+
+  const [fashionDetail, setFashionDetail] = useState<FashionDetail>();
+
+  const getFashionDetailesponse = (responseBody: GetTravelDetailResponseDto | ResponseDto | null) => {
+    const message = 
+    !responseBody ? '서버에 문제가 있습니다.' :
+    responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+    responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    if(message) {
+      alert(message);
+      return;
+    }
+    const { fashionDetail } = responseBody as GetFashionDetailResponseDto;
+    setFashionDetail(fashionDetail);
+  }
+
+
 
   // state: 사진 입력 참조 //
   const photoInputRef = useRef<HTMLInputElement | null>(null);
@@ -34,8 +57,8 @@ export default function FashionWrite() {
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
 
-  // function: post fashion response 처리 함수 //
-  const postFashionResponse = (responseBody: ResponseDto | null) => {
+  // function: patch fashion response 처리 함수 //
+  const patchFashionResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
       responseBody.code === 'VF' ? '모두 입력해주세요' :
@@ -141,7 +164,7 @@ export default function FashionWrite() {
   };
 
   // event handler: 등록 버튼 클릭 이벤트 처리 함수 //
-  const registerButtonClickHandler = async (path: string) => {
+  const patchButtonClickHandler = async (path: string) => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
     if (!fashionTitle || !fashionHashtagContentList || fashionTotalPrice === null || !fashionContent || fashionPhotoList.length === 0) {
@@ -172,7 +195,8 @@ export default function FashionWrite() {
       fashionTotalPrice: Number(fashionTotalPrice),
       fashionContent
     }
-    postFashionRequest(requestBody, accessToken).then(postFashionResponse);
+    if(!fashionNumber) return;
+    pathcFashionRequest(requestBody,fashionNumber, accessToken).then(patchFashionResponse);
   };
 
   // event handler: 취소 버튼 클릭 이벤트 처리 함수 //
@@ -181,6 +205,11 @@ export default function FashionWrite() {
       navigator(path);
   };
 
+
+  useEffect(() => {
+    if(!fashionNumber) return;
+    getFashionDetailRequest(fashionNumber).then(getFashionDetailesponse);
+  }, [fashionNumber]);
 
   // render: 글쓰기 페이지 컴포넌트 렌더링//
   return (
@@ -191,7 +220,7 @@ export default function FashionWrite() {
           <div className='middle-hashtag-box'>
             {fashionHashtagContentList.map((tag, index) => (
               <div className='middle-hashtag' key={index} onClick={() => fashionHashtagContentDeleteHandler(index)}>
-                {'#' + tag}
+                {fashionHashtagContentList[index]}
               </div>
             ))}
             <input className='middle-hashtag-write' type='text' value={fashionHashtagContent} placeholder='태그 (최대 3개)' onChange={fashionHashtagContentChangeHandler} onKeyDown={fashionHashtagContentAddHandler}  onBlur={fashionHashtagContentBlurHandler}/>
@@ -211,7 +240,7 @@ export default function FashionWrite() {
         </div>
         <div className='write-box-bottom'>
           <div className='bottom-button-box'>
-            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => registerButtonClickHandler(FASHION_PATH)}>등록</div>
+            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => patchButtonClickHandler(FASHION_PATH)}>등록</div>
             <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(FASHION_PATH)}>취소</div>
           </div>
         </div>
