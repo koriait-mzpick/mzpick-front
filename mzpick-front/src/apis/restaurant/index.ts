@@ -2,7 +2,7 @@ import axios from "axios";
 import { bearerAuthorization, MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from "..";
 import { ResponseDto } from "../dto/response";
 import { PatchTravelFoodRequestDto, PostTravelFoodCommentRequestDto, PostTravelFoodRequestDto } from "./dto/request";
-import { GetRestaurantCommentResponseDto, GetRestaurantDetailResponseDto, GetRestaurantListResponseDto } from "./dto/response";
+import { GetRestaurantCommentResponseDto, GetRestaurantDetailResponseDto, GetRestaurantLikeListResponseDto, GetRestaurantListResponseDto, GetRestaurantSaveListResponseDto } from "./dto/response";
 
 // variable: RESTAURANT API URL 상수 //
 const RESTAURANT_MODULE_URL = `${MZPICK_API_DOMAIN}/api/v1/food`;
@@ -16,7 +16,9 @@ const POST_UP_VIEW_RESTAURANT_API_URL = (travelFoodNumber: number | string) => `
 const GET_RESTAURANT_COMMENT_LIST_API_URL = (travelFoodNumber: number | string) => `${RESTAURANT_MODULE_URL}/comment/${travelFoodNumber}`;
 const POST_RESTAURANT_COMMENT_API_URL = (travelFoodNumber: number | string) => `${RESTAURANT_MODULE_URL}/comment/${travelFoodNumber}`;
 const DELETE_RESTAURANT_COMMENT_API_URL = (travelFoodCommentNumber: number | string) => `${RESTAURANT_MODULE_URL}/comment/${travelFoodCommentNumber}`;
+const GET_RESTAURANT_LIKE_LIST_API_URL = (travelFoodNumber: number | string) => `${RESTAURANT_MODULE_URL}/like/${travelFoodNumber}`;
 const PUT_RESTAURANT_LIKE_API_URL = (travelFoodNumber: number | string) => `${RESTAURANT_MODULE_URL}/like/${travelFoodNumber}`;
+const GET_RESTAURANT_SAVE_LIST_API_URL = (travelFoodNumber: number | string) => `${RESTAURANT_MODULE_URL}/save/${travelFoodNumber}`;
 const PUT_RESTAURANT_SAVE_API_URL = (travelFoodNumber: number | string) => `${RESTAURANT_MODULE_URL}/save/${travelFoodNumber}`;
 
 // ! restaurant
@@ -95,16 +97,31 @@ export const deleteRestaurantCommentRequest = async (travelFoodCommentNumber: nu
 
 // function : 맛집 좋아요 버튼 클릭 요청 함수 //
 export const putRestaurantLikeRequest = async (travelFoodNumber: number | string, accessToken: string) => {
-    const responseBody = await axios.put(PUT_RESTAURANT_LIKE_API_URL(travelFoodNumber), bearerAuthorization(accessToken))
+    const responseBody = await axios.put(PUT_RESTAURANT_LIKE_API_URL(travelFoodNumber), {}, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+export const getRestaurantLikeListRequest = async (travelFoodNumber: number | string) => {
+    const responseBody = await axios.get(GET_RESTAURANT_LIKE_LIST_API_URL(travelFoodNumber))
+        .then(responseDataHandler<GetRestaurantLikeListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
 };
 
 // function : 맛집 저장 버튼 클릭 요청 함수 //
 export const putRestaurantSaveRequest = async (travelFoodNumber: number | string, accessToken: string) => {
-    const responseBody = await axios.put(PUT_RESTAURANT_SAVE_API_URL(travelFoodNumber), bearerAuthorization(accessToken))
+    const responseBody = await axios.put(PUT_RESTAURANT_SAVE_API_URL(travelFoodNumber), {}, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+// function : 맛집 저장 리스트 요청 함수 //
+export const getRestaurantSaveListRequest = async (travelFoodNumber: number | string) => {
+    const responseBody = await axios.get(GET_RESTAURANT_SAVE_LIST_API_URL(travelFoodNumber))
+        .then(responseDataHandler<GetRestaurantSaveListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
 };

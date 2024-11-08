@@ -1,9 +1,8 @@
 import { ResponseDto } from "src/apis/dto/response";
+import { CafeComment } from "src/types/cafe/cafeComment.interface";
 
 
 export default interface GetCafeCommentResponseDto extends ResponseDto {
-    travelCafeCommentNumeber: number;
-    travelCafeNumber: number;
-    userId: string;
-    travelCafeComment: string;
+    cafeComments: CafeComment[];
+
 }
