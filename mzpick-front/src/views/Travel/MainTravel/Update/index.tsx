@@ -8,6 +8,7 @@ import { PatchTravelRequestDto } from 'src/apis/travel/dto/request';
 import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
 import { ACCESS_TOKEN, TRAVEL_DETAIL_PATH } from 'src/constants';
 import { TravelDetail } from 'src/types';
+import { convertUrlsToFiles } from 'src/utils';
 import './style.css';
 
 // component: 글쓰기 페이지 컴포넌트 //
@@ -35,7 +36,7 @@ export default function TravelUpdate() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   // variable: 등록 가능 여부 //
-  const isWriteComplete = travelTitle && travelHashtagContentList.length > 0 && travelLocation && travelContent && travelPhotoList;
+  const isWriteComplete = travelTitle && travelHashtagContentList.length > 0 && travelLocation && travelContent && travelPhotoList.length !== 0;
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -62,6 +63,8 @@ export default function TravelUpdate() {
     setPreviewUrls(travelDetail.travelPhotoList);
     setTravelHashtagContentList(travelDetail.travelHashtagList);
     setTravelContent(travelDetail.travelContent);
+
+    convertUrlsToFiles(travelDetail.travelPhotoList).then(files => setTravelPhotoList(files));
   };
 
   // function: patch travel detail response 처리 함수 //
@@ -179,7 +182,7 @@ export default function TravelUpdate() {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
     if (!travelNumber) return;
-    if (!travelTitle || travelHashtagContentList.length === 0 || !travelLocation || !travelContent ) {
+    if (!travelTitle || travelHashtagContentList.length === 0 || !travelLocation || !travelContent || !travelPhotoList.length ) {
       alert('모두 입력해주세요.');
       return;
     }
@@ -192,7 +195,7 @@ export default function TravelUpdate() {
       return;
     }
 
-    const travelPhotoListUrl: string[] = travelPhotoList.length ? [] : previewUrls;
+    const travelPhotoListUrl: string[] = [];
     for (const file of travelPhotoList) {
       const formData = new FormData();
       formData.append('file', file);
