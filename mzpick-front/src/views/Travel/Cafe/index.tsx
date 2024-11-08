@@ -196,7 +196,7 @@ useEffect(() => {
                 </div>
                 <div className='board-information-view'>
                   <div className='board-information-view-icon'></div>
-                  <div className='board-information-data'>{item.travelCafeViewCount}</div>
+                  <div className='board-information-data'>{item.travelCafeView}</div>
                 </div>
                 <div className={`board-information-bookmark ${signInUser && item.travelCafeSaveUserList.includes(signInUser.userId) ? 'active' : ''}`} ></div>
               </div>
