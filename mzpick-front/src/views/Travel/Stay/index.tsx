@@ -7,7 +7,7 @@ import { GetStayTotalCountResponseDto } from 'src/apis/pagination/response';
 import { getStayListRequest } from 'src/apis/stay';
 import { GetStayListResponseDto } from 'src/apis/stay/dto/response';
 import Pagination from 'src/components/Pagination';
-import { TRAVEL_STAY_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, WRITE_PATH, TRAVEL_STAY_WRITE_PATH } from 'src/constants';
+import { TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_STAY_WRITE_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Stay } from 'src/types';
 import './style.css';
@@ -139,8 +139,8 @@ const onNextSectionClickHandler = () => {
 useEffect(() => {
   getStayTotalCountRequest().then(getStayTotalCountResponse);
 }, []);
-
 useEffect(() => {
+  if(totalPage > 0){
   const pageList: number[] = [];
   const startPage = (currentSection - 1) * SECTION_PER_PAGE + 1;
   const endPage = currentSection * SECTION_PER_PAGE;
@@ -150,7 +150,9 @@ useEffect(() => {
   };
   
   setPageList(pageList);
-}, [currentSection, totalPage]);
+}else{
+  setPageList([]);
+}}, [currentSection, totalPage]);
 
 useEffect(() => {
   getStayList(currentPage,selectedHashtag);
