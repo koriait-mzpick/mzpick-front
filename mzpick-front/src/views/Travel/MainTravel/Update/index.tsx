@@ -1,15 +1,14 @@
-import React, { ChangeEvent, useEffect, useRef, useState, Component, KeyboardEvent } from 'react'
-import './style.css';
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { ResponseDto } from 'src/apis/dto/response';
-import { ACCESS_TOKEN, TRAVEL_DETAIL_PATH } from 'src/constants';
-import { PatchTravelRequestDto } from 'src/apis/travel/dto/request';
-import { getTravelDetailRequest, pathcTravelRequest } from 'src/apis/travel';
-import { fileUploadRequest } from 'src/apis';
 import { useNavigate, useParams } from 'react-router-dom';
-import path from 'path';
+import { fileUploadRequest } from 'src/apis';
+import { ResponseDto } from 'src/apis/dto/response';
+import { getTravelDetailRequest, pathcTravelRequest } from 'src/apis/travel';
+import { PatchTravelRequestDto } from 'src/apis/travel/dto/request';
 import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
+import { ACCESS_TOKEN, TRAVEL_DETAIL_PATH } from 'src/constants';
 import { TravelDetail } from 'src/types';
+import './style.css';
 
 // component: 글쓰기 페이지 컴포넌트 //
 export default function TravelUpdate() {
@@ -36,7 +35,7 @@ export default function TravelUpdate() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   // variable: 등록 가능 여부 //
-  const isWriteComplete = travelTitle && travelHashtagContentList.length > 0 && travelLocation && travelContent && travelPhotoList.length !== 0 && previewUrls.length >= 0;
+  const isWriteComplete = travelTitle && travelHashtagContentList.length > 0 && travelLocation && travelContent && travelPhotoList;
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -180,7 +179,7 @@ export default function TravelUpdate() {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
     if (!travelNumber) return;
-    if (!travelTitle || travelHashtagContentList.length === 0 || !travelLocation || !travelContent || travelPhotoList.length === 0) {
+    if (!travelTitle || travelHashtagContentList.length === 0 || !travelLocation || !travelContent ) {
       alert('모두 입력해주세요.');
       return;
     }
@@ -193,7 +192,7 @@ export default function TravelUpdate() {
       return;
     }
 
-    const travelPhotoListUrl: string[] = [];
+    const travelPhotoListUrl: string[] = travelPhotoList.length ? [] : previewUrls;
     for (const file of travelPhotoList) {
       const formData = new FormData();
       formData.append('file', file);
