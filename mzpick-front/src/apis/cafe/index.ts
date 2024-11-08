@@ -3,6 +3,8 @@ import { bearerAuthorization, MZPICK_API_DOMAIN, responseDataHandler, responseEr
 import { ResponseDto } from "../dto/response";
 import { PatchTravelCafeRequestDto, PostTravelCafeCommentRequestDto, PostTravelCafeRequestDto } from "./dto/request";
 import { GetCafeCommentResponseDto, GetCafeDetailResponseDto, GetCafeListResponseDto } from "./dto/response";
+import GetCafeLikeListResponseDto from "./dto/response/get-cafe-like-list.response.dto";
+import GetCafeSaveListResponseDto from "./dto/response/get-cafe-save-list.response.dto";
 
 // variable: CAFE API URL 상수 //
 const CAFE_MODULE_URL = `${MZPICK_API_DOMAIN}/api/v1/cafe`;
@@ -16,7 +18,9 @@ const POST_UP_VIEW_CAFE_API_URL = (travelCafeNumber: number | string) => `${CAFE
 const GET_CAFE_COMMENT_LIST_API_URL = (travelCafeNumber: number | string) => `${CAFE_MODULE_URL}/comment/${travelCafeNumber}`;
 const POST_CAFE_COMMENT_API_URL = (travelCafeNumber: number | string) => `${CAFE_MODULE_URL}/comment/${travelCafeNumber}`;
 const DELETE_CAFE_COMMENT_API_URL = (travelCafeCommentNumber: number | string) => `${CAFE_MODULE_URL}/comment/${travelCafeCommentNumber}`;
+const GET_CAFE_LIKE_LIST_API_URL = (travelCafeNumber: number | string) => `${CAFE_MODULE_URL}/like/${travelCafeNumber}`;
 const PUT_CAFE_LIKE_API_URL = (travelCafeNumber: number | string) => `${CAFE_MODULE_URL}/like/${travelCafeNumber}`;
+const GET_CAFE_SAVE_LIST_API_URL = (travelCafeNumber: number | string) => `${CAFE_MODULE_URL}/save/${travelCafeNumber}`;
 const PUT_CAFE_SAVE_API_URL = (travelCafeNumber: number | string) => `${CAFE_MODULE_URL}/save/${travelCafeNumber}`;
 
 // ! cafe API 요청
@@ -95,16 +99,31 @@ export const deleteCafeCommentRequest = async (travelCafeCommentNumber: number |
 
 // function : 카페 좋아요 버튼 클릭 요청 함수 //
 export const putCafeLikeRequest = async (travelCafeNumber: number | string, accessToken: string) => {
-    const responseBody = await axios.put(PUT_CAFE_LIKE_API_URL(travelCafeNumber), bearerAuthorization(accessToken))
+    const responseBody = await axios.put(PUT_CAFE_LIKE_API_URL(travelCafeNumber), {}, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+export const getCafeLikeListRequest = async (travelCafeNumber: number | string) => {
+    const responseBody = await axios.get(GET_CAFE_LIKE_LIST_API_URL(travelCafeNumber))
+        .then(responseDataHandler<GetCafeLikeListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
 };
 
 // function : 카페 저장 버튼 클릭 요청 함수 //
 export const putCafeSaveRequest = async (travelCafeNumber: number | string, accessToken: string) => {
-    const responseBody = await axios.put(PUT_CAFE_SAVE_API_URL(travelCafeNumber), bearerAuthorization(accessToken))
+    const responseBody = await axios.put(PUT_CAFE_SAVE_API_URL(travelCafeNumber), {}, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+// function : 카페 저장 리스트 요청 함수 //
+export const getCafeSaveListRequest = async (travelCafeNumber: number | string) => {
+    const responseBody = await axios.get(GET_CAFE_SAVE_LIST_API_URL(travelCafeNumber))
+        .then(responseDataHandler<GetCafeSaveListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
 };

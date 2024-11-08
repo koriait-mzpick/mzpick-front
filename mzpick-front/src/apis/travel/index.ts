@@ -2,7 +2,8 @@ import axios from "axios";
 import { bearerAuthorization, MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from "src/apis";
 import { ResponseDto } from "../dto/response";
 import { PatchTravelRequestDto, PostTravelCommentRequestDto, PostTravelRequestDto } from "./dto/request";
-import { GetTravelCommentResponseDto, GetTravelDetailResponseDto, GetTravelListResponseDto } from "./dto/response";
+import { GetTravelCommentResponseDto, GetTravelDetailResponseDto, GetTravelLikeListResponseDto, GetTravelListResponseDto } from "./dto/response";
+import GetTravelSaveListResponseDto from "./dto/response/get-travel-save-list.response.dto";
 
 
 // variable: TRAVEL API URL 상수 //
@@ -17,7 +18,9 @@ const POST_UP_VIEW_TRAVEL_API_URL = (travelNumber: number | string) => `${TRAVEL
 const GET_TRAVEL_COMMENT_LIST_API_URL = (travelNumber: number | string) => `${TRAVEL_MODULE_URL}/comment/${travelNumber}`;
 const POST_TRAVEL_COMMENT_API_URL = (travelNumber: number | string) => `${TRAVEL_MODULE_URL}/comment/${travelNumber}`;
 const DELETE_TRAVEL_COMMENT_API_URL = (travelCommentNumber: number | string) => `${TRAVEL_MODULE_URL}/comment/${travelCommentNumber}`;
+const GET_TRAVEL_LIKE_LIST_API_URL = (travelNumber: number | string) => `${TRAVEL_MODULE_URL}/like/${travelNumber}`;
 const PUT_TRAVEL_LIKE_API_URL = (travelNumber: number | string) => `${TRAVEL_MODULE_URL}/like/${travelNumber}`;
+const GET_TRAVEL_SAVE_LIST_API_URL = (travelNumber: number | string) => `${TRAVEL_MODULE_URL}/save/${travelNumber}`;
 const PUT_TRAVEL_SAVE_API_URL = (travelNumber: number | string) => `${TRAVEL_MODULE_URL}/save/${travelNumber}`;
 
 // ! TRAVEL 요청 
@@ -96,16 +99,31 @@ export const deleteTravelCommentRequest = async (travelCommentNumber: number | s
 
 // function : 여행 좋아요 버튼 클릭 요청 함수 //
 export const putTravelLikeRequest = async (travelNumebr: number | string, accessToken: string) => {
-    const responseBody = await axios.put(PUT_TRAVEL_LIKE_API_URL(travelNumebr), bearerAuthorization(accessToken))
+    const responseBody = await axios.put(PUT_TRAVEL_LIKE_API_URL(travelNumebr),{}, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+export const getTravelLikeListRequest = async (travelNumber: number | string) => {
+    const responseBody = await axios.get(GET_TRAVEL_LIKE_LIST_API_URL(travelNumber))
+        .then(responseDataHandler<GetTravelLikeListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
 };
 
 // function : 여행 저장 버튼 클릭 요청 함수 //
 export const putTravelSaveRequest = async (travelNumebr: number | string, accessToken: string) => {
-    const responseBody = await axios.put(PUT_TRAVEL_SAVE_API_URL(travelNumebr), bearerAuthorization(accessToken))
+    const responseBody = await axios.put(PUT_TRAVEL_SAVE_API_URL(travelNumebr),{}, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+// function : 여행 저장 리스트 요청 함수 //
+export const getTravelSaveListRequest = async (travelNumber: number | string) => {
+    const responseBody = await axios.get(GET_TRAVEL_SAVE_LIST_API_URL(travelNumber))
+        .then(responseDataHandler<GetTravelSaveListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
 };

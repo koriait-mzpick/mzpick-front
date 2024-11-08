@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useRef, useState, Component, KeyboardEve
 import './style.css';
 import { useCookies } from 'react-cookie';
 import { ResponseDto } from 'src/apis/dto/response';
-import { ACCESS_TOKEN, TRAVEL_ABSOLUTE_DETAIL_PATH, TRAVEL_DETAIL_PATH, TRAVEL_PATH, WRITE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, TRAVEL_DETAIL_PATH } from 'src/constants';
 import { PatchTravelRequestDto } from 'src/apis/travel/dto/request';
 import { getTravelDetailRequest, pathcTravelRequest } from 'src/apis/travel';
 import { fileUploadRequest } from 'src/apis';
@@ -36,7 +36,7 @@ export default function TravelUpdate() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   // variable: 등록 가능 여부 //
-  const isWriteComplete = travelTitle && travelHashtagContentList.length > 0 && travelLocation && travelContent && travelPhotoList.length !== 0;
+  const isWriteComplete = travelTitle && travelHashtagContentList.length > 0 && travelLocation && travelContent && travelPhotoList.length !== 0 && previewUrls.length >= 0;
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -60,10 +60,9 @@ export default function TravelUpdate() {
     setTravelDetail(travelDetail);
     setTravelTitle(travelDetail.travelTitle);
     setTravelLocation(travelDetail.travelLocation);
-    setTravelPhotoList(travelPhotoList);
+    setPreviewUrls(travelDetail.travelPhotoList);
     setTravelHashtagContentList(travelDetail.travelHashtagList);
     setTravelContent(travelDetail.travelContent);
-
   };
 
   // function: patch travel detail response 처리 함수 //
@@ -113,7 +112,6 @@ export default function TravelUpdate() {
     }
     if (event.key === 'Backspace' && travelHashtagContent === '' && travelHashtagContentList.length > 0)
       setTravelHashtagContentList(travelHashtagContentList.slice(0, -1));
-    console.log(travelHashtagContentList)
   };
 
   // event handler: 커서 이동시 해시태그 추가 이벤트 처리 //
@@ -208,7 +206,7 @@ export default function TravelUpdate() {
       travelTitle,
       travelHashtagContentList,
       travelLocation,
-      travelContent
+      travelContent,
     }
     pathcTravelRequest(requestBody, travelNumber, accessToken).then(patchTravelDetailResponse);
   }
