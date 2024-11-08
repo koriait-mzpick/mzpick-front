@@ -150,6 +150,7 @@ const onHashtagClickHandler = (hashtag: string) => {
   }, []);
 
   useEffect(() => {
+    if(totalPage > 0){
     const pageList: number[] = [];
     const startPage = (currentSection - 1) * SECTION_PER_PAGE + 1;
     const endPage = currentSection * SECTION_PER_PAGE;
@@ -159,7 +160,9 @@ const onHashtagClickHandler = (hashtag: string) => {
     };
     
     setPageList(pageList);
-  }, [currentSection, totalPage]);
+  }else{
+    setPageList([]);
+  }}, [currentSection, totalPage]);
 
   useEffect(() => {
     getTravelList(currentPage,selectedHashtag);

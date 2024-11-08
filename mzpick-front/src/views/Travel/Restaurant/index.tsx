@@ -7,7 +7,7 @@ import { GetFoodTotalCountResponseDto, GetTotalCountResponseDto } from 'src/apis
 import { getRestaurantListRequest } from 'src/apis/restaurant';
 import { GetRestaurantListResponseDto } from 'src/apis/restaurant/dto/response';
 import Pagination from 'src/components/Pagination';
-import { TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_RESTAURANT_WRITE_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
+import { TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_RESTAURANT_WRITE_PATH, TRAVEL_STAY_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Restaurant } from 'src/types';
 import './style.css';
@@ -143,6 +143,7 @@ export default function TravelRestaurant() {
   }, []);
 
   useEffect(() => {
+    if(totalPage > 0){
     const pageList: number[] = [];
     const startPage = (currentSection - 1) * SECTION_PER_PAGE + 1;
     const endPage = currentSection * SECTION_PER_PAGE;
@@ -152,7 +153,9 @@ export default function TravelRestaurant() {
     };
     
     setPageList(pageList);
-  }, [currentSection, totalPage]);
+  }else{
+    setPageList([]);
+  }}, [currentSection, totalPage]);
 
   useEffect(() => {
     getTravelRestaurantList(currentPage,selectedHashtag);
