@@ -33,8 +33,6 @@ export default function MyPage() {
   const [savecurrentPage, savesetCurrentPage] = useState<number>(1);
   const [savetotalSection, savesetTotalSection] = useState<number>(0);
   const [savecurrentSection, savesetCurrentSection] = useState<number>(1);
-  const [selectedHashtag, setSelectedHashtag] = useState<string>('');
-
 
   const accessToken = cookies[ACCESS_TOKEN];
 
@@ -54,21 +52,13 @@ export default function MyPage() {
       getMyPageCafeSaveListRequest(accessToken).then(GetMyPageCafeSaveResponseDto);
     }
 
-        // function: 날짜 포맷 변경 함수 //
-      const changeDateFormat = (date: string) => {
-        const yy = date.substring(2, 4);
-        const mm = date.substring(5, 7);
-        const dd = date.substring(8, 10);
-        return `${yy}.${mm}.${dd}`;
-      };
-
-      const onHashtagClickHandler = (hashtag: string) => {
-        if (selectedHashtag === hashtag) {
-          setSelectedHashtag('');
-          return;
-        }
-        setSelectedHashtag(hashtag);
-      }
+     // function: 날짜 포맷 변경 함수 //
+  const changeDateFormat = (date: string) => {
+    const yy = date.substring(2, 4);
+    const mm = date.substring(5, 7);
+    const dd = date.substring(8, 10);
+    return `${yy}.${mm}.${dd}`;
+  };
 
     // function: get Save Response 함수 //
     const GetMyPageCafeSaveResponseDto = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
@@ -334,6 +324,9 @@ export default function MyPage() {
                   <div className='board-information'>
                     <div className='board-information-data'>{changeDateFormat(item.travelCafeDate)}</div>
                   </div>
+                  {item.travelCafeHashtagList.map((hashtag, index) => (
+                <div key={index} className='board-tag' onClick={() => onHashtagClickHandler(hashtag)}>#{hashtag}</div>
+              ))}
                 </div>
               </div>
               ))}
