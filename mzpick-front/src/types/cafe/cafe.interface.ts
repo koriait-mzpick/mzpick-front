@@ -1,5 +1,5 @@
 export default interface Cafe {
-    traveCafeNumber: number;
+    travelCafeNumber: number;
     userId: string;
     travelLocation: string;
     travelCafeCategoryList: string[];

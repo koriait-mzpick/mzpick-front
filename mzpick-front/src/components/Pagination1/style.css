@@ -1,4 +1,4 @@
-/* /* .pagination-box2 {
+/* .pagination-box2 {
     display: flex;
     width: 1385px;
     height: 30px;
@@ -31,20 +31,9 @@
     background-image: url(/public/image/page-arrow-right.png);
 
     cursor: pointer;
-}
+} */
 
-.page-list {
-    display: flex;
-    width: 25px;
-    height: 25px;
-
-    justify-content: center;
-    align-items: center;
-
-    cursor: pointer;
-}
-
-.page {
+.page2 {
     color: rgba(138, 146, 166, 1);
 
     font-size: 14px;
@@ -54,19 +43,17 @@
     cursor: pointer;
 }
 
-.page.active {
+.page2 .page2-active {
     color: rgba(64, 64, 64, 1);
     font-weight: 700;
 
     cursor: default;
 }
 
- */
 
 
 
-
-.layout .subscribe-box .save-box .page-box {
+.layout .subscribe-box .save-box .page-box2 {
     display: flex;
     width: 1385px;
     height: 30px;
@@ -79,17 +66,16 @@
     font-size: 14px;
 }
 
-.layout .subscribe-box .save-box .page-box .pageBox1 {
+.layout .subscribe-box .save-box .page-box2 .pageBox1 {
     display: flex;
     width: 25px;
     height: 25px;
 
     background-image: url(/public/image/page-arrow-left.png);
-
     cursor: pointer;
 }
 
-.layout .subscribe-box .save-box .page-box .pageBox2 {
+.layout .subscribe-box .save-box .page-box2 .pageBox2 {
     display: flex;
     width: 25px;
     height: 25px;
@@ -99,18 +85,19 @@
     cursor: pointer;
 }
 
-.layout .subscribe-box .save-box .page-box .pageBox {
+.layout .subscribe-box .save-box .page-box2 .pageBox {
     display: flex;
     width: 25px;
     height: 25px;
 
     justify-content: center;
     align-items: center;
-    
+
     cursor: pointer;
+    gap: 16px;
 }
 
-.layout .subscribe-box .like-box .page-box {
+.layout .subscribe-box .like-box .page-box2 {
     display: flex;
     width: 1385px;
     height: 30px;
@@ -123,17 +110,16 @@
     font-size: 14px;
 }
 
-.layout .subscribe-box .like-box .page-box .pageBox1 {
+.layout .subscribe-box .like-box .page-box2 .pageBox1 {
     display: flex;
     width: 25px;
     height: 25px;
 
     background-image: url(/public/image/page-arrow-left.png);
-
     cursor: pointer;
 }
 
-.layout .subscribe-box .like-box .page-box .pageBox2 {
+.layout .subscribe-box .like-box .page-box2 .pageBox2 {
     display: flex;
     width: 25px;
     height: 25px;
@@ -143,7 +129,7 @@
     cursor: pointer;
 }
 
-.layout .subscribe-box .like-box .page-box .pageBox {
+.layout .subscribe-box .like-box .page-box2 .pageBox {
     display: flex;
     width: 25px;
     height: 25px;
@@ -152,9 +138,10 @@
     align-items: center;
 
     cursor: pointer;
+    gap: 16px;
 }
 
-.layout .subscribe-box .like-box2 .page-box {
+.layout .subscribe-box .like-box2 .page-box2 {
     display: flex;
     width: 1385px;
     height: 30px;
@@ -169,7 +156,7 @@
     font-size: 14px;
 }
 
-.layout .subscribe-box .like-box2 .page-box .pageBox1 {
+.layout .subscribe-box .like-box2 .page-box2 .pageBox1 {
     display: flex;
     width: 25px;
     height: 25px;
@@ -179,7 +166,7 @@
     cursor: pointer;
 }
 
-.layout .subscribe-box .like-box2 .page-box .pageBox2 {
+.layout .subscribe-box .like-box2 .page-box2 .pageBox2 {
     display: flex;
     width: 25px;
     height: 25px;
@@ -192,7 +179,7 @@
     cursor: pointer;
 }
 
-.layout .subscribe-box .like-box2 .page-box .pageBox {
+.layout .subscribe-box .like-box2 .page-box2 .pageBox {
     display: flex;
     width: 25px;
     height: 25px;
@@ -201,4 +188,5 @@
     align-items: center;
 
     cursor: pointer;
+    gap: 16px;
 }
