@@ -14,7 +14,7 @@ const GET_FASHION_VOTE_LIST_API_URL = `${FASHION_VOTE_MODULE_URL}/`;
 const GET_FASHION_VOTE_DETAIL_API_URL = (fashionVoteNumber:number | string) => `${FASHION_VOTE_MODULE_URL}/${fashionVoteNumber}`;
 const POST_FASHION_VOTE_API_URL = `${FASHION_VOTE_MODULE_URL}/`
 const DELETE_FASHION_VOTE_API_URL = (fashionVoteNumber:number | string) => `${FASHION_VOTE_MODULE_URL}/${fashionVoteNumber}`;
-const PUT_FASHION_VOTE_CLICK_API_URL =(fashionVoteNumber:number | string, selectNumber:number | string) => `${FASHION_VOTE_MODULE_URL}/fashion/vote-click/${fashionVoteNumber}/${selectNumber}`
+const PUT_FASHION_VOTE_CLICK_API_URL =(fashionVoteNumber:number | string, selectNumber:number | string) => `${FASHION_VOTE_MODULE_URL}/vote-click/${fashionVoteNumber}/${selectNumber}`
 const GET_FASHION_VOTE_TOTAL_API_URL = `${FASHION_VOTE_MODULE_URL}/vote-total`
 
 //variable : TRAVEL VOTE API URL 상수
@@ -24,7 +24,7 @@ const GET_TRAVEL_VOTE_LIST_API_URL = `${TRAVEL_VOTE_MODULE_URL}/`;
 const GET_TRAVEL_VOTE_DETAIL_API_URL = (travelVoteNumber:number | string) => `${TRAVEL_VOTE_MODULE_URL}/${travelVoteNumber}`;
 const POST_TRAVEL_VOTE_API_URL = `${TRAVEL_VOTE_MODULE_URL}/`
 const DELETE_TRAVEL_VOTE_API_URL = (travelVoteNumber:number | string) => `${TRAVEL_VOTE_MODULE_URL}/${travelVoteNumber}`;
-const PUT_TRAVEL_VOTE_CLICK_API_URL = (travelVoteNumber:number | string, selectNumber:number | string) => `${TRAVEL_VOTE_MODULE_URL}/travel/vote-click/${travelVoteNumber}/${selectNumber}`
+const PUT_TRAVEL_VOTE_CLICK_API_URL = (travelVoteNumber:number | string, selectNumber:number | string) => `${TRAVEL_VOTE_MODULE_URL}/vote-click/${travelVoteNumber}/${selectNumber}`
 const GET_TRAVEL_VOTE_TOTAL_API_URL = `${TRAVEL_VOTE_MODULE_URL}/vote-total`
 
 // ! fahsion vote
@@ -63,7 +63,7 @@ export const deleteFashionVoteRequest = async (fashionVoteNumber:number | string
 
 //function: fashion vote 투표 요청 함수
 export const putFashionVoteClickRequest = async (fashionVoteNumber:number | string , selectNumber:number | string, accessToken:string) => {
-    const responseBody = await axios.delete (PUT_FASHION_VOTE_CLICK_API_URL(fashionVoteNumber,selectNumber), bearerAuthorization(accessToken))
+    const responseBody = await axios.put (PUT_FASHION_VOTE_CLICK_API_URL(fashionVoteNumber,selectNumber),{}, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
@@ -113,7 +113,7 @@ export const deleteTravelVoteRequest = async (travelVoteNumber:number | string ,
 
 //function: Travel vote 투표 요청 함수
 export const putTravelVoteClickRequest = async (travelVoteNumber:number | string , selectNumber:number | string, accessToken:string) => {
-    const responseBody = await axios.delete (PUT_TRAVEL_VOTE_CLICK_API_URL(travelVoteNumber,selectNumber), bearerAuthorization(accessToken))
+    const responseBody = await axios.put (PUT_TRAVEL_VOTE_CLICK_API_URL(travelVoteNumber,selectNumber),{}, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
