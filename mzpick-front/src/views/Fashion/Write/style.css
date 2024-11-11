@@ -3,238 +3,193 @@
     src: url(/public/font/Pretendard-Bold.ttf);
 }
 
-#list-main {
+#main-write {
     display: flex;
-    position: relative;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
     width: 100%;
+    height: 100%;
+    background-color: rgba(250, 250, 250, 1);
+}
+
+#main-write .write-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1100px;
+    height: 100vh;
+    padding: 45px 45px 0px 45px;
     margin-top: 54px;
+    gap: 30px;
+    background-color: rgba(255, 255, 255, 1);
 }
 
-#list-main .board-top {
-    display: flex;
-    position: absolute;
-    justify-content: space-between;
-    width: 90vw;
-    margin: 45px 0px;
-    z-index: 2;
-}
-
-#list-main .board-top .drop-down-box {
-    display: flex;
-    flex-direction: column;
-    width: 100px;
-}
-
-#list-main .board-top .drop-down-box .drop-down-main {
-    display: flex;
-    height: 40px;
-    border-radius: 5px;
-    border: 1px solid var(--primary-font-gray-color);
-    background-color: var(--primary-font-color);
-    cursor: pointer;
-}
-
-#list-main .board-top .drop-down-box .drop-down-main-text {
-    display: flex;
-    width: 40px;
-    height: 20px;
-    padding: 10px 2.5px 10px 27px;
-    color: var(--primary-font-gray-color);
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-size: 15px;
-}
-
-#list-main .board-top .drop-down-box .drop-down-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
-    height: 20px;
-    margin: 10px 10px;
-    color: var(--primary-font-gray-color);
-    background-image: url(/public/image/Chevron-down.png);
-    background-size: contain;
-}
-
-#list-main .board-top .drop-down-box .drop-down-sub {
-    display: flex;
-    flex-direction: column;
-    border-radius: 5px;
-    /* border: 1px solid var(--primary-font-gray-color); */
-    background-color: var(--primary-font-color);
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.2s ease-out;
-    cursor: pointer;
-}
-
-#list-main .board-top .drop-down-box .drop-down-sub.active {
-    max-height: 200px;
-}
-
-#list-main .board-top .drop-down-box .drop-down-sub-text {
-    display: flex;
-    align-items: center;
-    width: 28px;
-    height: 40px;
-    padding: 0px 45px 0px 27px;
-    color: var(--primary-font-gray-color);
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-size: 15px;
-    cursor: pointer;
-}
-
-#list-main .board-top .drop-down-box .drop-down-sub-text:hover {
-    color: rgba(50, 50, 50, 1);
-    background-color: rgba(220, 220, 220, 1);
-}
-
-#list-main .board-top .write-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100px;
-    height: 40px;
+#main-write .write-box .write-box-title,
+#main-write .write-box .write-box-middle .middle-hashtag-box .middle-hashtag-write,
+#main-write .write-box .write-box-middle .middle-location,
+#main-write .write-box .write-box-contents-box .contents-box-text {
+    width: 940px;
     border-radius: 10px;
-    font-family: 'Pretendard-Bold';
+    padding: 0px 30px;
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
     font-size: 20px;
-    color: var(--primary-font-color);
-    background-color: var(--primary-color);
-    cursor: pointer;
+    color: var(--primary-color);
+    background-color: rgba(250, 250, 250, 1);
+    border: none;
+    outline: none;
 }
 
-#list-main .board-middle {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    position: absolute;
-    justify-content: center;
-    margin: 130px 70px;
-    width: 90vw;
-    gap: 35px;
-    z-index: 1;
+#main-write .write-box .write-box-title {
+    height: 80px;
+    font-family: 'Pretendard-Bold';
+    font-size: 35px;
 }
 
-#list-main .board-middle .board-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 21vw;
-    height: 34vh;
-    border-radius: 10px;
-    border: 1px solid rgba(0, 0, 0, .25);
-}
-
-#list-main .board-middle .board-box .board-image {
-    width: 21vw;
-    height: 26vh;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    cursor: pointer;
-    background-color: black;
-}
-
-.board-image-content {
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-#list-main .board-middle .board-box .board-information {
-    display: flex;
-    overflow: hidden;
-    justify-content: space-between;
-    align-items: center;
-    width: 19.9vw;
-    height: 2vh;
-    padding: 10px 10px 8px 10px;
-}
-
-.board-information-data {
-    display: flex;
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-size: 15px;
+#main-write .write-box .write-box-title::placeholder {
+    font-family: 'Pretendard-Bold';
+    font-size: 35px;
     color: rgba(166, 166, 166, 1);
 }
 
-#list-main .board-middle .board-box .board-information .board-information-right {
+#main-write .write-box .write-box-middle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1000px;
+    height: 50px;
+    gap: 30px;
+}
+
+#main-write .write-box .write-box-middle .middle-hashtag-box {
     display: flex;
     align-items: center;
+    width: 670px;
+    height: 50px;
+    padding: 0px 0px 0px 30px;
+    border-radius: 10px;
     gap: 10px;
+    background-color: rgba(250, 250, 250, 1);
 }
 
-#list-main .board-middle .board-box .board-information .board-information-right .board-information-like {
+.middle-hashtag {
     display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-#list-main .board-middle .board-box .board-information .board-information-right .board-information-like-icon {
-    display: flex;
-    width: 17px;
-    height: 15px;
-    background-image: url(/public/image/heart-Icon.png);
-    background-position: 50% 50%;
-    background-size: cover;
-}
-
-#list-main .board-middle .board-box .board-information .board-information-right .board-information-like-icon.active{
-    display: flex;
-    width: 17px;
-    height: 15px;
-    background-image: url(/public/image/on-heart-Icon.png);
-    background-position: 50% 50%;
-    background-size: cover;
-}
-
-#list-main .board-middle .board-box .board-information .board-information-right .board-information-view {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-#list-main .board-middle .board-box .board-information .board-information-right .board-information-view-icon {
-    display: flex;
-    width: 18px;
-    height: 14px;
-    background-image: url(/public/image/view-Icon.png);
-    background-position: 50% 50%;
-    background-size: cover;
-}
-
-#list-main .board-middle .board-box .board-information .board-information-right .board-information-bookmark {
-    display: flex;
-    width: 11px;
-    height: 15px;
-    background-image: url(/public/image/bookmark.png);
-    background-position: 50% 50%;
-    background-size: cover;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    padding: 5px;
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-size: 15px;
+    color: var(--primary-color);
     cursor: pointer;
 }
 
-#list-main .board-middle .board-box .board-information .board-information-right .board-information-bookmark.active {
-    display: flex;
-    width: 11px;
-    height: 15px;
-    background-image: url(/public/image/bookmark-active.png);
-    background-position: 50% 50%;
-    background-size: cover;
-    cursor: pointer;
+#main-write .write-box .write-box-middle .middle-hashtag-box .middle-hashtag-write {
+    width: 150px;
+    padding: 0px;
 }
 
-#list-main .board-middle .board-box .board-tag {
-    display: flex;
-    overflow: hidden;
-    align-items: center;
-    width: 19.9vw;
-    height: 3vh;
-    padding: 0px 10px 14px 10px;
-    font-family: 'Pretendard-Bold';
-    src: url(/public/font/Pretendard-Bold.ttf);
+#main-write .write-box .write-box-middle .middle-location {
+    width: 150px;
+    height: 50px;
+}
+
+#main-write .write-box .write-box-middle .middle-hashtag-box .middle-hashtag-write::placeholder,
+#main-write .write-box .write-box-middle .middle-location::placeholder,
+#main-write .write-box .write-box-contents-box .contents-box-text::placeholder {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
     font-size: 20px;
+    color: rgba(166, 166, 166, 1);
+}
+
+#main-write .write-box .write-box-middle .middle-attached-file {
+    display: flex;
+    width: 53px;
+    height: 50px;
+    margin-right: 10px;
+    background-image: url(/public/image/attached-file-Icon.png);
+    background-position: 50% 50%;
+    background-size: cover;
+    cursor: pointer;
+}
+
+#main-write .write-box .write-box-middle .middle-attached-file:hover {
+    background-image: url(/public/image/attached-file-hover.png);
+}
+
+#main-write .write-box .write-box-contents-box {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    flex-direction: column;
+    width: 940px;
+    border-radius: 10px;
+    padding: 30px;
+    gap: 30px;
+    background-color: rgba(250, 250, 250, 1);
+}
+
+#main-write .write-box .write-box-contents-box .contents-box-text {
+    height: 100%;
+    resize: none;
+}
+
+#main-write .write-box .write-box-contents-box .contents-box-preview-photo-box {
+    display: flex;
+    width: 880px;
+    height: 300px;
+    padding: 30px;
+    gap: 20px;
+}
+
+#main-write .write-box .write-box-contents-box .contents-box-preview-photo-box .contents-box-preview-photo {
+    width: 280px;
+    height: 230px;
+    border-radius: 10px;
+    background-position: 50% 50%;
+    background-size: cover;
+    cursor: pointer;
+}
+
+#main-write .write-box .write-box-bottom {
+    display: flex;
+    justify-content: flex-end;
+    width: 1000px;
+    height: 40px;
+    margin-bottom: 134px;
+}
+
+#main-write .write-box .write-box-bottom .bottom-button-box {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+#main-write .write-box .write-box-bottom .bottom-button-box-register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    border: 1px solid rgba(166, 166, 166, 1);
+    border-radius: 10px;
+    font-family: 'Pretendard-Bold';
+    font-size: 20px;
+    color: rgba(166, 166, 166, 1);
+    cursor: default;
+}
+
+#main-write .write-box .write-box-bottom .bottom-button-box-register.active,
+#main-write .write-box .write-box-bottom .bottom-button-box-cancel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    font-family: 'Pretendard-Bold';
+    font-size: 20px;
+    color: rgba(255, 255, 255, 1);
+    background-color: var(--primary-color);
+    cursor: pointer;
 }
