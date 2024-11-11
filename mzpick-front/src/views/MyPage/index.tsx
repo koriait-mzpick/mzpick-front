@@ -2,9 +2,8 @@ import React, { useState, useEffect  } from 'react'
 import './style.css';
 import BottomNav from '../../layouts/BottomNav';
 import { MyPageCafeSave } from 'src/types/mypage/cafe';
-import { usePagination } from 'src/hooks';
 import { GetMyPageCafeSaveResponseDto } from 'src/apis/mypage/dto/response/save';
-import { getTotalCountRequest } from 'src/apis/pagination';
+import { getCafeTotalCountRequest, getTotalCountRequest } from 'src/apis/pagination';
 import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import ResponseDto from 'src/apis/dto/response/response.dto';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +11,12 @@ import { ACCESS_TOKEN, WRITE_PATH } from 'src/constants';
 import axios from 'axios';
 import { getMyPageCafeSaveListRequest } from 'src/apis/mypage';
 import { useCookies } from 'react-cookie';
-import Pagination from 'src/components/Pagination2';
+import Pagination1 from 'src/components/Pagination1';
+import { ImportExport } from '@mui/icons-material';
+import { usePagination } from 'src/hooks';
+import { UsePaginationItem } from '@mui/material/usePagination/usePagination';
+import useAuthStore from 'src/stores/sign-in-user.store';
+import { getCafeSaveListRequest } from 'src/apis/cafe';
 
 const SECTION_PER_PAGE = 5;
 
@@ -21,26 +25,25 @@ export default function MyPage() {
 
   const [cookies] = useCookies();
 
-  const [count, setCount] = useState<number>(0);
-  const [pageList, setPageList] = useState<number[]>([]);
-  const [totalPage, setTotalPage] = useState<number>(0);
-  const [totalList, setTotalList] = useState<MyPageCafeSave[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalSection, setTotalSection] = useState<number>(0);
-  const [currentSection, setCurrentSection] = useState<number>(1);
+  const [savecount, savesetCount] = useState<number>(0);
+  const [savepageList, savesetPageList] = useState<number[]>([]);
+  const [savetotalPage, savesetTotalPage] = useState<number>(0);
+  const [savetotalList, savesetTotalList] = useState<MyPageCafeSave[]>([]);
+  const [savecurrentPage, savesetCurrentPage] = useState<number>(1);
+  const [savetotalSection, savesetTotalSection] = useState<number>(0);
+  const [savecurrentSection, savesetCurrentSection] = useState<number>(1);
 
   const accessToken = cookies[ACCESS_TOKEN];
 
-  // const [viewList, setViewList] = useState<MyPageCafeSave[]>([]);
-    
+  const [saveviewList, savesetViewList] = useState<MyPageCafeSave[]>([]);
     
     // function: get total count response //
-    const getTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+    const getsaveTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
       const { count } = dto as GetTotalCountResponseDto;
-      const totalPage = Math.ceil(count / 8);
-      setTotalPage(totalPage);
-      const totalSection = Math.ceil(totalPage / SECTION_PER_PAGE);
-      setTotalSection(totalSection);
+      const savetotalPage = Math.ceil(count / 8);
+      savesetTotalPage(savetotalPage);
+      const savetotalSection = Math.ceil(savetotalPage / SECTION_PER_PAGE);
+      savesetTotalSection(savetotalSection);
     }
 
     // function: getSave List 함수 //
@@ -49,70 +52,219 @@ export default function MyPage() {
     }
 
     // function: get Save Response 함수 //
-    const GetMyPageCafeSaveResponseDto = (resposeBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
+    const GetMyPageCafeSaveResponseDto = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
       const message =
-        !resposeBody ? '서버에 문제가 있습니다.' :
-          resposeBody.code === 'AF' ? '잘못된 접근입니다.' :
-          resposeBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        !responseBody ? '서버에 문제가 있습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
-      const isSuccessed = resposeBody !== null && resposeBody.code === 'SU';
+      const isSuccessed = responseBody !== null && responseBody.code === 'SU';
       if (!isSuccessed) {
         alert(message);
         return;
     }
 
-     // TotalList 상태 업데이트,  originalList 상태 업데이트 
-    const { myPageCafeSaves } = resposeBody as GetMyPageCafeSaveResponseDto;
-    setTotalList(myPageCafeSaves);
-    setOriginalList(myPageCafeSaves);
+     // savesetviewList 상태 업데이트
+    const { myPageCafeSaves } = responseBody as GetMyPageCafeSaveResponseDto;
+    savesetViewList(myPageCafeSaves);
 };
 
   const onButtonClickEventHandler = (path: string) => {
     navigator(path);
-  }
+  };
 
   // interface : Properties //
   interface TableSaveProps {
     save: MyPageCafeSave;
   }
-
-  // state : 원본 리스트 상태 //
-  const [originalList, setOriginalList] = useState<MyPageCafeSave[]>([]);
   
-  const onPageClickHandler = (page: number) => {
-    setCurrentPage(page);
+  const onSavePageClickHandler = (page: number) => {
+    savesetCurrentPage(page);
   } 
-  const onPreSectionClickHandler = () => {
-    if (currentSection === 1) return;
-    setCurrentSection(currentSection - 1);
-    setCurrentPage((currentSection - 1) * SECTION_PER_PAGE);
+  const onSavePreSectionClickHandler = () => {
+    if (savecurrentSection === 1) return;
+    savesetCurrentSection(savecurrentSection - 1);
+    savesetCurrentPage((savecurrentSection - 1) * SECTION_PER_PAGE);
   } 
   
-  const onNextSectionClickHandler = () => {
-    if (currentSection === totalSection) return;
-    setCurrentSection(currentSection + 1);
-    setCurrentPage(currentSection * SECTION_PER_PAGE + 1);
+  const onSaveNextSectionClickHandler = () => {
+    if (savecurrentSection === savetotalSection) return;
+    savesetCurrentSection(savecurrentSection + 1);
+    savesetCurrentPage(savecurrentSection * SECTION_PER_PAGE + 1);
   } 
 
   useEffect(() => {
-    getTotalCountRequest().then(getTotalCountResponse);
+    getCafeTotalCountRequest().then(getsaveTotalCountResponse);
   }, []);
 
   useEffect(() => {
     const pageList: number[] = [];
-    const startPage = (currentSection - 1) * SECTION_PER_PAGE + 1;
-    const endPage = currentSection * SECTION_PER_PAGE;
+    const startPage = (savecurrentSection - 1) * SECTION_PER_PAGE + 1;
+    const endPage = savecurrentSection * SECTION_PER_PAGE;
     for (let page = startPage; page <= endPage; page++) {
       pageList.push(page);
-      if (page === totalPage) break;
+      if (page === savetotalPage) break;
     };
     
-    setPageList(pageList);
-  }, [currentSection, totalPage]);
+    savesetPageList(pageList);
+  }, [savecurrentSection, savetotalPage]);
+
+  const [writecount, writesetCount] = useState<number>(0);
+  const [writepageList, writesetPageList] = useState<number[]>([]);
+  const [writetotalPage, writesetTotalPage] = useState<number>(0);
+  const [writetotalList, writesetTotalList] = useState<MyPageCafeSave[]>([]);
+  const [writecurrentPage, writesetCurrentPage] = useState<number>(1);
+  const [writetotalSection, writesetTotalSection] = useState<number>(0);
+  const [writecurrentSection, writesetCurrentSection] = useState<number>(1);
+    
+    // function: get total count response //
+    const getwriteTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+      const { count } = dto as GetTotalCountResponseDto;
+      const writetotalPage = Math.ceil(count / 8);
+      writesetTotalPage(writetotalPage);
+      const writetotalSection = Math.ceil(writetotalPage / SECTION_PER_PAGE);
+      writesetTotalSection(writetotalSection);
+    }
+
+  // state : 원본 리스트 상태 //
+  const [writeoriginalList, writesetOriginalList] = useState<MyPageCafeSave[]>([]);
+  
+  const onwritePageClickHandler = (page: number) => {
+    writesetCurrentPage(page);
+  } 
+  const onwritePreSectionClickHandler = () => {
+    if (writecurrentSection === 1) return;
+    writesetCurrentSection(writecurrentSection - 1);
+    writesetCurrentPage((writecurrentSection - 1) * SECTION_PER_PAGE);
+  } 
+  
+  const onwriteNextSectionClickHandler = () => {
+    if (writecurrentSection === writetotalSection) return;
+    writesetCurrentSection(writecurrentSection + 1);
+    writesetCurrentPage(writecurrentSection * SECTION_PER_PAGE + 1);
+  } 
+
+  useEffect(() => {
+    getCafeTotalCountRequest().then(getwriteTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    const pageList: number[] = [];
+    const startPage = (writecurrentSection - 1) * SECTION_PER_PAGE + 1;
+    const endPage = writecurrentSection * SECTION_PER_PAGE;
+    for (let page = startPage; page <= endPage; page++) {
+      pageList.push(page);
+      if (page === writetotalPage) break;
+    };
+    
+    writesetPageList(pageList);
+  }, [writecurrentSection, writetotalPage]);
+
+  const [likecount, likesetCount] = useState<number>(0);
+  const [likepageList, likesetPageList] = useState<number[]>([]);
+  const [liketotalPage, likesetTotalPage] = useState<number>(0);
+  const [liketotalList, likesetTotalList] = useState<MyPageCafeSave[]>([]);
+  const [likecurrentPage, likesetCurrentPage] = useState<number>(1);
+  const [liketotalSection, likesetTotalSection] = useState<number>(0);
+  const [likecurrentSection, likesetCurrentSection] = useState<number>(1);
+    
+    // function: get total count response //
+    const getlikeTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+      const { count } = dto as GetTotalCountResponseDto;
+      const liketotalPage = Math.ceil(count / 8);
+      likesetTotalPage(liketotalPage);
+      const liketotalSection = Math.ceil(liketotalPage / SECTION_PER_PAGE);
+      likesetTotalSection(liketotalSection);
+    }
+
+  // state : 원본 리스트 상태 //
+  const [likeoriginalList, likesetOriginalList] = useState<MyPageCafeSave[]>([]);
+  
+  const onlikePageClickHandler = (page: number) => {
+    likesetCurrentPage(page);
+  } 
+  const onlikePreSectionClickHandler = () => {
+    if (likecurrentSection === 1) return;
+    likesetCurrentSection(likecurrentSection - 1);
+    likesetCurrentPage((likecurrentSection - 1) * SECTION_PER_PAGE);
+  } 
+  
+  const onlikeNextSectionClickHandler = () => {
+    if (likecurrentSection === liketotalSection) return;
+    likesetCurrentSection(likecurrentSection + 1);
+    likesetCurrentPage(likecurrentSection * SECTION_PER_PAGE + 1);
+  } 
+
+  useEffect(() => {
+    getCafeTotalCountRequest().then(getlikeTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    const pageList: number[] = [];
+    const startPage = (likecurrentSection - 1) * SECTION_PER_PAGE + 1;
+    const endPage = likecurrentSection * SECTION_PER_PAGE;
+    for (let page = startPage; page <= endPage; page++) {
+      pageList.push(page);
+      if (page === liketotalPage) break;
+    };
+    
+    likesetPageList(pageList);
+  }, [likecurrentSection, liketotalPage]);
+
+  const [votecount, votesetCount] = useState<number>(0);
+  const [votepageList, votesetPageList] = useState<number[]>([]);
+  const [votetotalPage, votesetTotalPage] = useState<number>(0);
+  const [votetotalList, votesetTotalList] = useState<MyPageCafeSave[]>([]);
+  const [votecurrentPage, votesetCurrentPage] = useState<number>(1);
+  const [votetotalSection, votesetTotalSection] = useState<number>(0);
+  const [votecurrentSection, votesetCurrentSection] = useState<number>(1);
+    
+    // function: get total count response //
+    const getvoteTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+      const { count } = dto as GetTotalCountResponseDto;
+      const votetotalPage = Math.ceil(count / 8);
+      votesetTotalPage(votetotalPage);
+      const votetotalSection = Math.ceil(votetotalPage / SECTION_PER_PAGE);
+      votesetTotalSection(votetotalSection);
+    }
+
+  // state : 원본 리스트 상태 //
+  const [voteoriginalList, votesetOriginalList] = useState<MyPageCafeSave[]>([]);
+  
+  const onvotePageClickHandler = (page: number) => {
+    votesetCurrentPage(page);
+  } 
+  const onvotePreSectionClickHandler = () => {
+    if (votecurrentSection === 1) return;
+    votesetCurrentSection(votecurrentSection - 1);
+    votesetCurrentPage((votecurrentSection - 1) * SECTION_PER_PAGE);
+  } 
+  
+  const onvoteNextSectionClickHandler = () => {
+    if (votecurrentSection === votetotalSection) return;
+    votesetCurrentSection(votecurrentSection + 1);
+    votesetCurrentPage(votecurrentSection * SECTION_PER_PAGE + 1);
+  } 
+
+  useEffect(() => {
+    getCafeTotalCountRequest().then(getvoteTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    const pageList: number[] = [];
+    const startPage = (votecurrentSection - 1) * SECTION_PER_PAGE + 1;
+    const endPage = votecurrentSection * SECTION_PER_PAGE;
+    for (let page = startPage; page <= endPage; page++) {
+      pageList.push(page);
+      if (page === votetotalPage) break;
+    };
+    
+    votesetPageList(pageList);
+  }, [votecurrentSection, votetotalPage]);
 
   useEffect(() => {
     getCafeSaveList();
-  }, [])
+  }, [accessToken])
 
 
   return (
@@ -149,9 +301,11 @@ export default function MyPage() {
             </div>
           </div>
 
+
           <div className='save-box'>
         <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >SAVE</div>
         <div className='imageBox'>
+        
           <div className='WritePostBox'>
             <div className='board-box'>
           <div className='board-image'></div>
@@ -183,10 +337,9 @@ export default function MyPage() {
         </div>
           </div>
         </div>
-        <Pagination currentPage={currentPage} pageList={pageList} onPageClickHandler={onPageClickHandler} onNextSectionClickHandler={onNextSectionClickHandler} onPreSectionClickHandler={onPreSectionClickHandler} />
-
-
+        <Pagination1 currentPage={savecurrentPage} pageList={savepageList} onPageClickHandler={onSavePageClickHandler} onNextSectionClickHandler={onSaveNextSectionClickHandler} onPreSectionClickHandler={onSavePreSectionClickHandler} />
       </div>
+
       <div className='like-box'>
         <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>LIKE</div>
         <div className='imageBox'>
@@ -204,7 +357,7 @@ export default function MyPage() {
           </div>
           
         </div>
-        <Pagination currentPage={currentPage} pageList={pageList} onPageClickHandler={onPageClickHandler} onNextSectionClickHandler={onNextSectionClickHandler} onPreSectionClickHandler={onPreSectionClickHandler} />
+        <Pagination1 currentPage={likecurrentPage} pageList={likepageList} onPageClickHandler={onlikePageClickHandler} onNextSectionClickHandler={onlikeNextSectionClickHandler} onPreSectionClickHandler={onlikePreSectionClickHandler} />
 
       </div>
 
@@ -255,7 +408,7 @@ export default function MyPage() {
           </div>
 
         </div>
-        <Pagination currentPage={currentPage} pageList={pageList} onPageClickHandler={onPageClickHandler} onNextSectionClickHandler={onNextSectionClickHandler} onPreSectionClickHandler={onPreSectionClickHandler} />
+        <Pagination1 currentPage={writecurrentPage} pageList={writepageList} onPageClickHandler={onwritePageClickHandler} onNextSectionClickHandler={onwriteNextSectionClickHandler} onPreSectionClickHandler={onwritePreSectionClickHandler} />
 
       </div>
 
@@ -303,7 +456,7 @@ export default function MyPage() {
           </div>
 
         </div>
-        <Pagination currentPage={currentPage} pageList={pageList} onPageClickHandler={onPageClickHandler} onNextSectionClickHandler={onNextSectionClickHandler} onPreSectionClickHandler={onPreSectionClickHandler} />
+        <Pagination1 currentPage={votecurrentPage} pageList={votepageList} onPageClickHandler={onvotePageClickHandler} onNextSectionClickHandler={onvoteNextSectionClickHandler} onPreSectionClickHandler={onvotePreSectionClickHandler} />
 
       </div>
       </div>
