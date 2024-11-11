@@ -1,5 +1,5 @@
 export default interface Cafe {
-    traveCafeNumber: number;
+    travelCafeNumber: number;
     userId: string;
     travelLocation: string;
     travelCafeCategoryList: string[];
@@ -8,7 +8,7 @@ export default interface Cafe {
     travelCafeCategory: string[];
     travelCafeLikeUserList: string[];
     travelCafeSaveUserList: string[];
-    travelCafeViewCount: number;
+    travelCafeView: number;
     travelCafeLikeCount: number;
     travelCafeSaveCount: number;
     travelCafeDate: string;

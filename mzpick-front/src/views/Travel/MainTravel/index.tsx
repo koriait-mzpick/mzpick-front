@@ -24,6 +24,7 @@ export default function MainTravel() {
   const [dropDownOpen, setDropDownOpen] = useState(false);
   // state: 북마크 상태 //
   const [bookMarkClick, setBookMarkClick] = useState(false);
+  const [likeIcon, setLikeIcon] = useState(false);
   // state: 원본 리스트 상태 //
   const [originalList, setOriginalList] = useState<Travel[]>([]);
   // state: 검색어 상태 //
@@ -149,6 +150,7 @@ const onHashtagClickHandler = (hashtag: string) => {
   }, []);
 
   useEffect(() => {
+    if(totalPage > 0){
     const pageList: number[] = [];
     const startPage = (currentSection - 1) * SECTION_PER_PAGE + 1;
     const endPage = currentSection * SECTION_PER_PAGE;
@@ -158,7 +160,9 @@ const onHashtagClickHandler = (hashtag: string) => {
     };
     
     setPageList(pageList);
-  }, [currentSection, totalPage]);
+  }else{
+    setPageList([]);
+  }}, [currentSection, totalPage]);
 
   useEffect(() => {
     getTravelList(currentPage,selectedHashtag);
@@ -191,7 +195,7 @@ const onHashtagClickHandler = (hashtag: string) => {
               <div className='board-information-data'>{changeDateFormat(item.travelDate)}</div>
               <div className='board-information-right'>
                 <div className='board-information-like'>
-                  <div className={`board-information-like-icon ${signInUser && item.travelLikeUserList.includes(signInUser.userId)}`}></div>
+                  <div className={`board-information-like-icon ${signInUser && item.travelLikeUserList.includes(signInUser.userId)?'active':''}`}></div>
                   <div className='board-information-data'>{item.travelLikeCount}</div>
                 </div>
                 <div className='board-information-view'>

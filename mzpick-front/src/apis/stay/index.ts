@@ -4,7 +4,7 @@ import axios from "axios";
 import { bearerAuthorization, MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from "..";
 import { ResponseDto } from "../dto/response";
 import { PatchTravelStayRequestDto, PostTravelStayCommentRequestDto, PostTravelStayRequestDto } from "./dto/request";
-import { GetStayCommentResponseDto, GetStayDetailResponseDto, GetStayListResponseDto } from "./dto/response";
+import { GetStayCommentResponseDto, GetStayDetailResponseDto, GetStayLikeListResponseDto, GetStayListResponseDto, GetStaySaveListResponseDto } from "./dto/response";
 
 const STAY_MODULE_URL = `${MZPICK_API_DOMAIN}/api/v1/stay`;
 
@@ -17,7 +17,9 @@ const POST_UP_VIEW_STAY_API_URL = (travelStayNumber: number | string) => `${STAY
 const GET_STAY_COMMENT_LIST_API_URL = (travelStayNumber: number | string) => `${STAY_MODULE_URL}/comment/${travelStayNumber}`;
 const POST_STAY_COMMENT_API_URL = (travelStayNumber: number | string) => `${STAY_MODULE_URL}/comment/${travelStayNumber}`;
 const DELETE_STAY_COMMENT_API_URL = (travelStayCommentNumber: number | string) => `${STAY_MODULE_URL}/comment/${travelStayCommentNumber}`;
+const GET_STAY_LIKE_LIST_API_URL = (travelStayNumber: number | string) => `${STAY_MODULE_URL}/like/${travelStayNumber}`;
 const PUT_STAY_LIKE_API_URL = (travelStayNumber: number | string) => `${STAY_MODULE_URL}/like/${travelStayNumber}`;
+const GET_STAY_SAVE_LIST_API_URL = (travelStayNumber: number | string) => `${STAY_MODULE_URL}/save/${travelStayNumber}`;
 const PUT_STAY_SAVE_API_URL = (travelStayNumber: number | string) => `${STAY_MODULE_URL}/save/${travelStayNumber}`;
 
 // ! STAY 숙박 요청 
@@ -96,16 +98,31 @@ export const deleteStayCommentRequest = async (travelStayCommentNumber: number |
 
 // function : 숙박 좋아요 버튼 클릭 요청 함수 //
 export const putStayLikeRequest = async (travelStayNumber: number | string, accessToken: string) => {
-    const responseBody = await axios.put(PUT_STAY_LIKE_API_URL(travelStayNumber), bearerAuthorization(accessToken))
+    const responseBody = await axios.put(PUT_STAY_LIKE_API_URL(travelStayNumber), {}, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+export const getStayLikeListRequest = async (travelStayNumber: number | string) => {
+    const responseBody = await axios.get(GET_STAY_LIKE_LIST_API_URL(travelStayNumber))
+        .then(responseDataHandler<GetStayLikeListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
 };
 
 // function : 숙박 저장 버튼 클릭 요청 함수 //
 export const putStaySaveRequest = async (travelStayNumber: number | string, accessToken: string) => {
-    const responseBody = await axios.put(PUT_STAY_SAVE_API_URL(travelStayNumber), bearerAuthorization(accessToken))
+    const responseBody = await axios.put(PUT_STAY_SAVE_API_URL(travelStayNumber), {}, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+// function : 숙박 저장 리스트 요청 함수 //
+export const getStaySaveListRequest = async (travelStayNumber: number | string) => {
+    const responseBody = await axios.get(GET_STAY_SAVE_LIST_API_URL(travelStayNumber))
+        .then(responseDataHandler<GetStaySaveListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
 };

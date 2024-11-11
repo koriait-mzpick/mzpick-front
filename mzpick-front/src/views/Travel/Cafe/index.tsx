@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { getCafeListRequest } from 'src/apis/cafe';
 import { GetCafeListResponseDto } from 'src/apis/cafe/dto/response';
 import { ResponseDto } from 'src/apis/dto/response';
-import { TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_WRITE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, WRITE_PATH } from 'src/constants';
+import { TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_WRITE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Cafe } from 'src/types';
 
@@ -23,6 +23,8 @@ export default function TravelCafe() {
   const [dropDownOpen, setDropDownOpen] = useState(false);
   // state: 북마크 상태 //
   const [bookMark, setBookMark] = useState(false);
+
+  const [likeIcon, setLikeIcon] = useState(false);
   // state: 원본 리스트 상태 //
   const [originalList, setOriginalList] = useState<Cafe[]>([]);
   // state: 검색어 상태 //
@@ -144,6 +146,7 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
+  if(totalPage > 0){
   const pageList: number[] = [];
   const startPage = (currentSection - 1) * SECTION_PER_PAGE + 1;
   const endPage = currentSection * SECTION_PER_PAGE;
@@ -153,7 +156,9 @@ useEffect(() => {
   };
   
   setPageList(pageList);
-}, [currentSection, totalPage]);
+}else{
+  setPageList([]);
+}}, [currentSection, totalPage]);
 
 useEffect(() => {
   getTravelCafelList(currentPage,selectedHashtag);
@@ -178,9 +183,9 @@ useEffect(() => {
       </div>
       <div className='board-middle'>
         {viewList.map((item) => (
-          <div key={item.traveCafeNumber} className='board-box'>
-            <div className='board-image' onClick={() => navigate(`${TRAVEL_CAFE_DETAIL_PATH}/${item.traveCafeNumber}`)}>
-            <img src={item.travelCafePhoto} alt={`Travel ${item.traveCafeNumber}`} className='board-image-content' />
+          <div key={item.travelCafeNumber} className='board-box'>
+            <div className='board-image' onClick={() => navigate(`${TRAVEL_CAFE_DETAIL_PATH}/${item.travelCafeNumber}`)}>
+            <img src={item.travelCafePhoto} alt={`Travel ${item.travelCafeNumber}`} className='board-image-content' />
             </div>            
             <div className='board-information'>
               <div className='board-information-data'>{changeDateFormat(item.travelCafeDate)}</div>
@@ -191,7 +196,7 @@ useEffect(() => {
                 </div>
                 <div className='board-information-view'>
                   <div className='board-information-view-icon'></div>
-                  <div className='board-information-data'>{item.travelCafeViewCount}</div>
+                  <div className='board-information-data'>{item.travelCafeView}</div>
                 </div>
                 <div className={`board-information-bookmark ${signInUser && item.travelCafeSaveUserList.includes(signInUser.userId) ? 'active' : ''}`} ></div>
               </div>

@@ -80,7 +80,7 @@
 }
 
 #contents-main .contents-top .contents-top-vote-button:hover,
-#comment-main .comment-button-box .comment-open-button:hover,
+#comment-main .comment-button-box .comment-open-button:hover, 
 #comment-main .comment-button-box .comment-button-box-right .comment-update-button:hover,
 #comment-main .comment-button-box .comment-button-box-right .comment-delete-button:hover,
 #comment-main .comment-detail .comment-detail-top .comment-detail-add-button:hover,
@@ -177,7 +177,6 @@
     align-items: center;
     gap: 5px;
 }
-
 #contents-main .contents-information .contents-information-right .contents-information-view-icon {
     display: flex;
     width: 18px;
@@ -301,13 +300,13 @@
     padding-bottom: 10px;
 }
 
-.contents-information-hashtag {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
+.contents-information-hashtag{
+   display: flex;
+   flex-direction: row;
+   gap: 10px;
 }
 
-.price {
+.price{
     font-size: 18px;
     font-weight: 700;
     margin-right: 12px;

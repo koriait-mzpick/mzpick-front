@@ -142,7 +142,7 @@ export const getMyPageCafeLikeListRequest = async (accessToken: string) => {
 
 // function: 마이페이지 카페 저장 리스트 요청 함수 //
 export const getMyPageCafeSaveListRequest = async (accessToken: string) => {
-    const responseBody = await axios.get(GET_MYPAGE_SAVE_RESTAURANT_LIST_API_URL, bearerAuthorization(accessToken))
+    const responseBody = await axios.get(GET_MYPAGE_SAVE_CAFE_LIST_API_URL, bearerAuthorization(accessToken))
         .then(responseDataHandler<GetMyPageCafeSaveResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;

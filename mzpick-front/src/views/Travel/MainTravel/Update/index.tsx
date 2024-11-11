@@ -1,15 +1,15 @@
-import React, { ChangeEvent, useEffect, useRef, useState, Component, KeyboardEvent } from 'react'
-import './style.css';
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { ResponseDto } from 'src/apis/dto/response';
-import { ACCESS_TOKEN, TRAVEL_ABSOLUTE_DETAIL_PATH, TRAVEL_DETAIL_PATH, TRAVEL_PATH, WRITE_PATH } from 'src/constants';
-import { PatchTravelRequestDto } from 'src/apis/travel/dto/request';
-import { getTravelDetailRequest, pathcTravelRequest } from 'src/apis/travel';
-import { fileUploadRequest } from 'src/apis';
 import { useNavigate, useParams } from 'react-router-dom';
-import path from 'path';
+import { fileUploadRequest } from 'src/apis';
+import { ResponseDto } from 'src/apis/dto/response';
+import { getTravelDetailRequest, pathcTravelRequest } from 'src/apis/travel';
+import { PatchTravelRequestDto } from 'src/apis/travel/dto/request';
 import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
+import { ACCESS_TOKEN, TRAVEL_DETAIL_PATH } from 'src/constants';
 import { TravelDetail } from 'src/types';
+import { convertUrlsToFiles } from 'src/utils';
+import './style.css';
 
 // component: 글쓰기 페이지 컴포넌트 //
 export default function TravelUpdate() {
@@ -60,10 +60,11 @@ export default function TravelUpdate() {
     setTravelDetail(travelDetail);
     setTravelTitle(travelDetail.travelTitle);
     setTravelLocation(travelDetail.travelLocation);
-    setTravelPhotoList(travelPhotoList);
+    setPreviewUrls(travelDetail.travelPhotoList);
     setTravelHashtagContentList(travelDetail.travelHashtagList);
     setTravelContent(travelDetail.travelContent);
 
+    convertUrlsToFiles(travelDetail.travelPhotoList).then(files => setTravelPhotoList(files));
   };
 
   // function: patch travel detail response 처리 함수 //
@@ -113,7 +114,6 @@ export default function TravelUpdate() {
     }
     if (event.key === 'Backspace' && travelHashtagContent === '' && travelHashtagContentList.length > 0)
       setTravelHashtagContentList(travelHashtagContentList.slice(0, -1));
-    console.log(travelHashtagContentList)
   };
 
   // event handler: 커서 이동시 해시태그 추가 이벤트 처리 //
@@ -182,7 +182,7 @@ export default function TravelUpdate() {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
     if (!travelNumber) return;
-    if (!travelTitle || travelHashtagContentList.length === 0 || !travelLocation || !travelContent || travelPhotoList.length === 0) {
+    if (!travelTitle || travelHashtagContentList.length === 0 || !travelLocation || !travelContent || !travelPhotoList.length ) {
       alert('모두 입력해주세요.');
       return;
     }
@@ -208,7 +208,7 @@ export default function TravelUpdate() {
       travelTitle,
       travelHashtagContentList,
       travelLocation,
-      travelContent
+      travelContent,
     }
     pathcTravelRequest(requestBody, travelNumber, accessToken).then(patchTravelDetailResponse);
   }
