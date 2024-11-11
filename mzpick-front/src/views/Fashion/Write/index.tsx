@@ -6,7 +6,7 @@ import { ResponseDto } from 'src/apis/dto/response';
 import { postFashionRequest } from 'src/apis/fashion';
 import { PostFashionRequestDto } from 'src/apis/fashion/dto/request';
 import { ACCESS_TOKEN, FASHION_PATH } from 'src/constants';
-import './style.css';
+// import './style.css';
 
 // component: 글쓰기 페이지 컴포넌트 //
 export default function FashionWrite() {

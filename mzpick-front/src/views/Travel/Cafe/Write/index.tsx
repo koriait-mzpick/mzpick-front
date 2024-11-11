@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useRef, useState, Component, KeyboardEvent } from 'react'
-import './style.css';
+// import './style.css';
 import { useCookies } from 'react-cookie';
 import { ResponseDto } from 'src/apis/dto/response';
 import { ACCESS_TOKEN, TRAVEL_CAFE_PATH, } from 'src/constants';
