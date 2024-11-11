@@ -1,23 +1,17 @@
-import React, { useState, useEffect  } from 'react'
-import './style.css';
-import BottomNav from '../../layouts/BottomNav';
-import { MyPageCafeSave } from 'src/types/mypage/cafe';
-import { GetMyPageCafeSaveResponseDto } from 'src/apis/mypage/dto/response/save';
-import { getCafeTotalCountRequest, getTotalCountRequest } from 'src/apis/pagination';
-import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
-import ResponseDto from 'src/apis/dto/response/response.dto';
-import { useNavigate } from 'react-router-dom';
-import { ACCESS_TOKEN, WRITE_PATH } from 'src/constants';
-import axios from 'axios';
-import { getMyPageCafeSaveListRequest } from 'src/apis/mypage';
+import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+import ResponseDto from 'src/apis/dto/response/response.dto';
+import { getMyPageCafeSaveListRequest } from 'src/apis/mypage';
+import { GetMyPageCafeSaveResponseDto } from 'src/apis/mypage/dto/response/save';
+import { getCafeTotalCountRequest } from 'src/apis/pagination';
+import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import Pagination1 from 'src/components/Pagination1';
-import { ImportExport } from '@mui/icons-material';
-import { usePagination } from 'src/hooks';
-import { UsePaginationItem } from '@mui/material/usePagination/usePagination';
-import useAuthStore from 'src/stores/sign-in-user.store';
-import { getCafeSaveListRequest } from 'src/apis/cafe';
+import { ACCESS_TOKEN, WRITE_PATH } from 'src/constants';
+import { MyPageCafeSave } from 'src/types/mypage/cafe';
 import myPageSaveCafes from 'src/types/mypage/cafe/cafe-save.interface';
+import BottomNav from '../../layouts/BottomNav';
+import './style.css';
 
 const SECTION_PER_PAGE = 5;
 
@@ -334,9 +328,9 @@ export default function MyPage() {
                   <div className='board-information'>
                     <div className='board-information-data'>{changeDateFormat(item.travelCafeDate)}</div>
                   </div>
-                  {item.map((hashtag) => (
-                <div className='board-tag' onClick={() => onHashtagClickHandler(item.travelCafeHashTagList)}>#{hashtag}</div>
-              ))}
+                  {/* {item.map((hashtag) => ( */}
+                {/* // <div className='board-tag' onClick={() => onHashtagClickHandler(item.travelCafeHashTagList)}>#{hashtag}</div> */}
+              {/* ))} */}
                 </div>
               </div>
               ))}
