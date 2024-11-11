@@ -7,7 +7,7 @@ import { GetFashionListResponseDto } from 'src/apis/fashion/dto/response';
 import { getFashionTotalCountRequest } from 'src/apis/pagination';
 import { GetFashionTotalCountResponseDto } from 'src/apis/pagination/response';
 import Pagination from 'src/components/Pagination';
-import { FASHION_DETAIL_PATH, FASHION_WRITE_PATH, WRITE_PATH } from 'src/constants';
+import { FASHION_DETAIL_PATH, FASHION_WRITE_PATH } from 'src/constants';
 import { useAuthStore } from 'src/stores';
 import { Fashion } from 'src/types';
 import './style.css';
@@ -114,9 +114,10 @@ export default function FashionMain() {
   }
 
   useEffect(() => {
-
     getFashionTotalCountRequest().then(getFashionTotalCountResponse);
-
+  },[]);
+  useEffect(() => {
+    if(totalPage > 0){
     const pageList: number[] = [];
     const startPage = (currentSection - 1) * SECTION_PER_PAGE + 1;
     const endPage = currentSection * SECTION_PER_PAGE;
@@ -126,7 +127,11 @@ export default function FashionMain() {
     };
     
     setPageList(pageList);
+  }else{
+    setPageList([]);
+  }}, [currentSection, totalPage]);
 
+  useEffect(()=>{
     getFashionList(currentPage, selectedHashtag);
     console.log(selectedHashtag)
   }, [currentPage, currentSection,selectedHashtag, totalPage])
