@@ -3,6 +3,6 @@ import { CafeComment } from "src/types/cafe/cafeComment.interface";
 
 
 export default interface GetCafeCommentResponseDto extends ResponseDto {
-    cafeComments: CafeComment[];
+    travelCafeComments: CafeComment[];
 
 }

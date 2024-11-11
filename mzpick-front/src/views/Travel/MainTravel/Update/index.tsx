@@ -15,7 +15,7 @@ import './style.css';
 export default function TravelUpdate() {
 
   // state: 게시글번호 상태 //
-  const { travelNumber } = useParams();
+  const { travelNumber } = useParams<{ travelNumber: string }>();
 
   // state: cookie 상태 //
   const [cookies] = useCookies();
@@ -174,7 +174,7 @@ export default function TravelUpdate() {
   // event handler: 사진 제거 이벤트 처리 //
   const travelPhotoListDeleteHandler = (index: number) => {
     setPreviewUrls(previewUrls.filter((_, i) => i !== index));
-    setTravelPhotoList([]);
+    setTravelPhotoList(travelPhotoList.filter((_, i) => i !== index));
   };
 
   // event handler: 수정 버튼 클릭 이벤트 처리 함수 //

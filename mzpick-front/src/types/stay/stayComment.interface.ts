@@ -1,5 +1,5 @@
 export interface StayComment {
-    travelStayCommentNumeber: number;
+    travelStayCommentNumber: number;
     travelStayNumber: number;
     userId: string;
     travelStayComment: string;

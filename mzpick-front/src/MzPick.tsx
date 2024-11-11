@@ -3,7 +3,7 @@ import { useCookies } from 'react-cookie';
 import { Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
 import './MzPick.css';
 
-import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_WRITE_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_ABSOLUTE_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, ROOT_PATH, SIGN_IN_PATH, SIGN_UP_PATH, SNS_SUCCESS_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_WRITE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_RESTAURANT_WRITE_PATH, TRAVEL_STAY_PATH, TRAVEL_STAY_WRITE_PATH, TRAVEL_UPDATE_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH } from './constants';
+import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_WRITE_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_ABSOLUTE_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, ROOT_PATH, SIGN_IN_PATH, SIGN_UP_PATH, SNS_SUCCESS_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_CAFE_WRITE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_RESTAURANT_UPDATE_PATH, TRAVEL_RESTAURANT_WRITE_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_STAY_PATH, TRAVEL_STAY_UPDATE_PATH, TRAVEL_STAY_WRITE_PATH, TRAVEL_UPDATE_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH } from './constants';
 
 import { ResponseDto } from './apis/dto/response';
 import { getMyPageUserDetailRequest } from './apis/mypage';
@@ -40,6 +40,8 @@ import TravelDetailPage from './views/Travel/MainTravel/Detail';
 import TravelUpdate from './views/Travel/MainTravel/Update';
 import FashionUpdate from './views/Fashion/update';
 import TravelCafeDetailPage from './views/Travel/Cafe/detail';
+import TravelRestaurantDetailPage from './views/Travel/Restaurant/detail';
+import TravelStayDetailPage from './views/Travel/Stay/detail';
 
 
 // component: root path 컴포넌트 //
@@ -151,13 +153,24 @@ export default function MzPick() {
         < Route path={`${TRAVEL_DETAIL_PATH}/:travelNumber`} element={< TravelDetailPage />} />
         < Route path={TRAVEL_WRITE_PATH} element={< TravelWrite />} />
         < Route path={`${TRAVEL_UPDATE_PATH}/:travelNumber`} element={< TravelUpdate />} />
+
         < Route path={TRAVEL_RESTAURANT_PATH} element={< TravelRestaurant />} />
+        < Route path={`${TRAVEL_RESTAURANT_DETAIL_PATH}/:travelRestaurantNumber`}element={< TravelRestaurantDetailPage />} />
         < Route path={TRAVEL_RESTAURANT_WRITE_PATH} element={< TravelRestaurantWrite />} />
+        {/* < Route path={`${TRAVEL_RESTAURANT_UPDATE_PATH}/:travelRestaurantNumber`} element={< TravelRestaurantUpdate />} /> */}
+
         < Route path={TRAVEL_CAFE_PATH} element={< TravelCafe />} />
         < Route path={`${TRAVEL_CAFE_DETAIL_PATH}/:travelCafeNumber`}element={< TravelCafeDetailPage />} />
         < Route path={TRAVEL_CAFE_WRITE_PATH} element={< TravelCafeWrite />} />
+        {/* < Route path={`${TRAVEL_CAFE_UPDATE_PATH}/:travelCafeNumber`} element={< TravelCafeUpdate />} /> */}
+
+
         < Route path={TRAVEL_STAY_PATH} element={< TravelStay />} />
+        < Route path={`${TRAVEL_STAY_DETAIL_PATH}/:travelStayNumber`}element={< TravelStayDetailPage />} />
         < Route path={TRAVEL_STAY_WRITE_PATH} element={< TravelStayWrite />} />
+        {/* < Route path={`${TRAVEL_STAY_UPDATE_PATH}/:travelStayNumber`} element={< TravelStayUpdate />} /> */}
+
+
 
       </Route>
 

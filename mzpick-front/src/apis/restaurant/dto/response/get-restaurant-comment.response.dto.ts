@@ -3,5 +3,5 @@ import { RestaurantComment } from "src/types/restaurant/restaurantComment.interf
 
 
 export default interface GetRestaurantCommentResponseDto extends ResponseDto {
-    restaurantComments: RestaurantComment[];
+    travelFoodComments: RestaurantComment[];
 }
