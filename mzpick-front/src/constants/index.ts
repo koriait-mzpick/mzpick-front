@@ -16,23 +16,26 @@ export const TRAVEL_DETAIL_PATH='/travel/detail'
 export const TRAVEL_WRITE_PATH='/travel/write'
 export const TRAVEL_UPDATE_PATH='/travel/update'
 
+export const TRAVEL_RESTAURANT_PATH='/travel/restaurant'
+export const TRAVEL_RESTAURANT_DETAIL_PATH='/travel/restaurant/detail'
+export const TRAVEL_RESTAURANT_WRITE_PATH='/travel/restaurant/write'
+export const TRAVEL_RESTAURANT_UPDATE_PATH='/travel/restaurant/update'
+
 export const TRAVEL_CAFE_PATH='/travel/cafe'
 export const TRAVEL_CAFE_DETAIL_PATH='/travel/cafe/detail'
 export const TRAVEL_CAFE_WRITE_PATH='/travel/cafe/write'
 export const TRAVEL_CAFE_UPDATE_PATH='/travel/cafe/update'
 
-export const TRAVEL_STAY_DETAIL_PATH='/travel/stay/detail'
 export const TRAVEL_STAY_PATH='/travel/stay'
+export const TRAVEL_STAY_DETAIL_PATH='/travel/stay/detail'
 export const TRAVEL_STAY_WRITE_PATH='/travel/stay/write'
-
-export const TRAVEL_RESTAURANT_PATH='/travel/restaurant'
-export const TRAVEL_RESTAURANT_DETAIL_PATH='/travel/restaurant/detail'
-export const TRAVEL_RESTAURANT_WRITE_PATH='/travel/restaurant/write'
+export const TRAVEL_STAY_UPDATE_PATH='/travel/stay/update'
 
 export const FASHION_PATH='/fashion'
 export const FASHION_DETAIL_PATH = '/fashion/detail'
 export const FASHION_WRITE_PATH = '/fashion/write'
 export const FASHION_UPDATE_PATH = '/fashion/update'
+
 export const KEYWORD_PATH='/keyword'
 
 export const HOF_PATH = '/hof'

@@ -1,3 +1,11 @@
+
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
+import './style.css';
+import { ResponseDto } from 'src/apis/dto/response';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ACCESS_TOKEN, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH } from 'src/constants';
+import { useCookies } from 'react-cookie';
+import { CafeDetail } from 'src/types';
 import { NavigateBefore as NavigateBeforeIcon, NavigateNext as NavigateNextIcon } from '@mui/icons-material';
 import { SvgIcon } from '@mui/material';
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
@@ -10,6 +18,9 @@ import './style.css';
 // slider
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
+import styled from 'styled-components';
+import { useAuthStore } from 'src/stores';
+import { GetCafeCommentResponseDto, GetCafeDetailResponseDto, GetCafeLikeListResponseDto, GetCafeSaveListResponseDto } from 'src/apis/cafe/dto/response';
 import "slick-carousel/slick/slick.css";
 import { deleteCafeCommentRequest, deleteCafeRequest, getCafeCommentListRequest, getCafeDetailRequest, getCafeLikeListRequest, getCafeSaveListRequest, postCafeCommentRequest, postUpViewCafeRequest, putCafeLikeRequest, putCafeSaveRequest } from 'src/apis/cafe';
 import { PostTravelCafeCommentRequestDto } from 'src/apis/cafe/dto/request';
@@ -174,7 +185,7 @@ function Content() {
           <Like />
           <div className='contents-information-view'>
             <div className='contents-information-view-icon'></div>
-            <div className='contents-information-data'></div>
+            <div className='contents-information-data'>{travelCafeViewCount}</div>
           </div>
           <Save />
         </div>
@@ -190,7 +201,7 @@ function Save() {
   // state: 쿠키상태 //
   const [cookies] = useCookies();
 
-  // state: 여행 게시물 번호 상태 //
+  // state: 카페 게시물 번호 상태 //
   const { travelCafeNumber } = useParams<{ travelCafeNumber: string }>();
 
   // state: 로그인 유저 상태 //
@@ -271,7 +282,7 @@ function Like() {
   // state: 쿠키상태 //
   const [cookies] = useCookies();
 
-  // state: 여행 게시물 번호 상태 //
+  // state: 카페 게시물 번호 상태 //
   const { travelCafeNumber } = useParams<{ travelCafeNumber: string }>();
 
   // state: 로그인 유저 상태 //
@@ -386,9 +397,9 @@ function Comment() {
       return;
     }
 
-    const { cafeComments } = responseBody as GetCafeCommentResponseDto;
+    const { travelCafeComments } = responseBody as GetCafeCommentResponseDto;
 
-    const sortedComments = [...cafeComments].sort((a, b) => b.travelCafeCommentNumber - a.travelCafeCommentNumber);
+    const sortedComments = [...travelCafeComments].sort((a, b) => b.travelCafeCommentNumber - a.travelCafeCommentNumber);
     setCommentList(sortedComments);
   }
 
@@ -428,7 +439,7 @@ function Comment() {
     getCafeCommentListRequest(traveCafeNumber).then(getTravelCafeCommentResponse);
   }
 
-  // function: 여행 삭제 요청 응답 함수 //
+  // function: 카페 삭제 요청 응답 함수 //
   const deleteTravelCafeDetailtResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :

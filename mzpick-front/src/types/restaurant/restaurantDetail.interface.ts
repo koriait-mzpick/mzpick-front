@@ -10,7 +10,7 @@ export default interface RestaurantDetail {
     travelFoodSaveUSerList: string[];
     travelFoodLikeCount: number;
     travelFoodSaveCount: number;
-    travelFoodView: number;
+    travelFoodViewCount: number;
     travelFoodContent: string;
     travelFoodDate: string;
 }
