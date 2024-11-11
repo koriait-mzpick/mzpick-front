@@ -73,6 +73,8 @@ export default function MainTravel() {
 
     setViewList(travelList);
 
+    console.log(travelList);
+
     if (searchLocation) {
       const filteredList = travelList.filter(item => item.travelLocation.includes(searchLocation));
       setViewList(filteredList);
