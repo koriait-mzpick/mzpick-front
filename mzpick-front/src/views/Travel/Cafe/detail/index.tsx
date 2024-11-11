@@ -1,3 +1,4 @@
+
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import './style.css';
 import { ResponseDto } from 'src/apis/dto/response';
@@ -5,18 +6,28 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ACCESS_TOKEN, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
 import { CafeDetail } from 'src/types';
+import { NavigateBefore as NavigateBeforeIcon, NavigateNext as NavigateNextIcon } from '@mui/icons-material';
 import { SvgIcon } from '@mui/material';
-import { NavigateNext as NavigateNextIcon, NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ResponseDto } from 'src/apis/dto/response';
+import { ACCESS_TOKEN, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH } from 'src/constants';
+import { CafeDetail } from 'src/types';
+import './style.css';
 // slider
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from 'styled-components';
 import { useAuthStore } from 'src/stores';
 import { GetCafeCommentResponseDto, GetCafeDetailResponseDto, GetCafeLikeListResponseDto, GetCafeSaveListResponseDto } from 'src/apis/cafe/dto/response';
+import "slick-carousel/slick/slick.css";
 import { deleteCafeCommentRequest, deleteCafeRequest, getCafeCommentListRequest, getCafeDetailRequest, getCafeLikeListRequest, getCafeSaveListRequest, postCafeCommentRequest, postUpViewCafeRequest, putCafeLikeRequest, putCafeSaveRequest } from 'src/apis/cafe';
-import { CafeComment } from 'src/types/cafe/cafeComment.interface';
 import { PostTravelCafeCommentRequestDto } from 'src/apis/cafe/dto/request';
+import { GetCafeCommentResponseDto, GetCafeDetailResponseDto, GetCafeLikeListResponseDto, GetCafeSaveListResponseDto } from 'src/apis/cafe/dto/response';
+import { useAuthStore } from 'src/stores';
+import { CafeComment } from 'src/types/cafe/cafeComment.interface';
+import styled from 'styled-components';
 
 // const [travelPhotoList, setTravelPhotoList] = useState<string[]>([]);
 
@@ -359,8 +370,8 @@ function Comment() {
   // state: 네비게이션 상태 //
   const navigator = useNavigate();
 
-  // state: 카페 게시물 번호 상태 //
-  const { travelCafeNumber } = useParams<{ travelCafeNumber: string }>();
+  // state: 여행 게시물 번호 상태 //
+  const { traveCafeNumber } = useParams<{ traveCafeNumber: string }>();
 
   // state: 댓글창 모달 상태 //
   const [commentOpen, setCommentOpen] = useState(false);
@@ -405,8 +416,8 @@ function Comment() {
       alert(message);
       return;
     }
-    if (!travelCafeNumber) return;
-    getCafeCommentListRequest(travelCafeNumber).then(getTravelCafeCommentResponse);
+    if (!traveCafeNumber) return;
+    getCafeCommentListRequest(traveCafeNumber).then(getTravelCafeCommentResponse);
   }
 
   // function: 댓글 삭제 요청 응답 함수 //
@@ -424,8 +435,8 @@ function Comment() {
       alert(message);
       return;
     }
-    if (!travelCafeNumber) return;
-    getCafeCommentListRequest(travelCafeNumber).then(getTravelCafeCommentResponse);
+    if (!traveCafeNumber) return;
+    getCafeCommentListRequest(traveCafeNumber).then(getTravelCafeCommentResponse);
   }
 
   // function: 카페 삭제 요청 응답 함수 //
@@ -442,7 +453,7 @@ function Comment() {
       alert(message);
       return;
     }
-    if (!travelCafeNumber) return;
+    if (!traveCafeNumber) return;
     navigator(TRAVEL_CAFE_PATH);
   };
 
@@ -465,12 +476,12 @@ function Comment() {
   const onclickcommentAddHandler = () => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-    if (!travelCafeNumber) return;
+    if (!traveCafeNumber) return;
     const requestBody: PostTravelCafeCommentRequestDto = {
       travelCafeComment: commentWrite
     }
 
-    postCafeCommentRequest(requestBody, travelCafeNumber, accessToken).then(postTravelCafeCommentResponse);
+    postCafeCommentRequest(requestBody, traveCafeNumber, accessToken).then(postTravelCafeCommentResponse);
     setCommentWrite('');
   }
 
@@ -482,7 +493,7 @@ function Comment() {
     if (!isSuccessed) return;
 
     const accessToken = cookies[ACCESS_TOKEN];
-    if (!travelCafeNumber) return;
+    if (!traveCafeNumber) return;
     if (!accessToken) return;
 
     deleteCafeCommentRequest(commentNumber, accessToken).then(deleteTravelCafeCommentResponse);
@@ -502,12 +513,12 @@ function Comment() {
       return;
     }
 
-    if (!travelCafeNumber) return;
+    if (!traveCafeNumber) return;
 
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
 
-    deleteCafeRequest(travelCafeNumber, accessToken).then(deleteTravelCafeDetailtResponse);
+    deleteCafeRequest(traveCafeNumber, accessToken).then(deleteTravelCafeDetailtResponse);
   }
 
   // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
@@ -517,10 +528,10 @@ function Comment() {
 
   // effect: 댓글 리스트 요청 함수 //
   useEffect(() => {
-    if (!travelCafeNumber) return;
-    console.log(travelCafeNumber);
+    if (!traveCafeNumber) return;
+    console.log(traveCafeNumber);
     console.log(commentList);
-    getCafeCommentListRequest(travelCafeNumber).then(getTravelCafeCommentResponse);
+    getCafeCommentListRequest(traveCafeNumber).then(getTravelCafeCommentResponse);
   }, []);
 
   // render: 댓글 컴포넌트 렌더링 //
@@ -529,7 +540,7 @@ function Comment() {
       <div className='comment-button-box'>
         <div className='comment-open-button' onClick={commentOpenHandler}>{commentOpen ? "댓글 닫기" : "댓글 열기"}</div>
         <div className='comment-button-box-right'>
-          <div className='comment-update-button' onClick={() => itemClickHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${travelCafeNumber}`)}>수정</div>
+          <div className='comment-update-button' onClick={() => itemClickHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${traveCafeNumber}`)}>수정</div>
           <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
         </div>
       </div>

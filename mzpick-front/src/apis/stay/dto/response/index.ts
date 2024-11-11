@@ -1,13 +1,10 @@
 import GetStayCommentResponseDto from "./get-stay-comment.response.dto";
 import GetStayDetailResponseDto from "./get-stay-detail.response.dto";
-import GetStayListResponseDto from "./get-stay-list.response.dto";
 import GetStayLikeListResponseDto from "./get-stay-like-list.response.dto";
+import GetStayListResponseDto from "./get-stay-list.response.dto";
 import GetStaySaveListResponseDto from "./get-stay-save-list.response.dto";
 
-export type{
+export type {
     GetStayCommentResponseDto,
-    GetStayDetailResponseDto,
-    GetStayListResponseDto,
-    GetStayLikeListResponseDto,
-    GetStaySaveListResponseDto
-}
+    GetStayDetailResponseDto, GetStayLikeListResponseDto, GetStayListResponseDto, GetStaySaveListResponseDto
+};
