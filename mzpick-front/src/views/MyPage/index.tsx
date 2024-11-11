@@ -334,9 +334,6 @@ export default function MyPage() {
                   <div className='board-information'>
                     <div className='board-information-data'>{changeDateFormat(item.travelCafeDate)}</div>
                   </div>
-                  {item.map((hashtag) => (
-                <div className='board-tag' onClick={() => onHashtagClickHandler(item.travelCafeHashTagList)}>#{hashtag}</div>
-              ))}
                 </div>
               </div>
               ))}
