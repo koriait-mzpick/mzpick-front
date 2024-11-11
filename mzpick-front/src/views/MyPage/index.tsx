@@ -17,6 +17,7 @@ import { usePagination } from 'src/hooks';
 import { UsePaginationItem } from '@mui/material/usePagination/usePagination';
 import useAuthStore from 'src/stores/sign-in-user.store';
 import { getCafeSaveListRequest } from 'src/apis/cafe';
+import myPageSaveCafes from 'src/types/mypage/cafe/cafe-save.interface';
 
 const SECTION_PER_PAGE = 5;
 
@@ -28,14 +29,16 @@ export default function MyPage() {
   const [savecount, savesetCount] = useState<number>(0);
   const [savepageList, savesetPageList] = useState<number[]>([]);
   const [savetotalPage, savesetTotalPage] = useState<number>(0);
-  const [savetotalList, savesetTotalList] = useState<MyPageCafeSave[]>([]);
+  const [savetotalList, savesetTotalList] = useState<myPageSaveCafes[]>([]);
   const [savecurrentPage, savesetCurrentPage] = useState<number>(1);
   const [savetotalSection, savesetTotalSection] = useState<number>(0);
   const [savecurrentSection, savesetCurrentSection] = useState<number>(1);
+  const [selectedHashtag, setSelectedHashtag] = useState<string>('');
+
 
   const accessToken = cookies[ACCESS_TOKEN];
 
-  const [saveviewList, savesetViewList] = useState<MyPageCafeSave[]>([]);
+  const [saveviewList, savesetViewList] = useState<myPageSaveCafes[]>([]);
     
     // function: get total count response //
     const getsaveTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
@@ -51,12 +54,29 @@ export default function MyPage() {
       getMyPageCafeSaveListRequest(accessToken).then(GetMyPageCafeSaveResponseDto);
     }
 
+        // function: 날짜 포맷 변경 함수 //
+      const changeDateFormat = (date: string) => {
+        const yy = date.substring(2, 4);
+        const mm = date.substring(5, 7);
+        const dd = date.substring(8, 10);
+        return `${yy}.${mm}.${dd}`;
+      };
+
+      const onHashtagClickHandler = (hashtag: string) => {
+        if (selectedHashtag === hashtag) {
+          setSelectedHashtag('');
+          return;
+        }
+        setSelectedHashtag(hashtag);
+      }
+
     // function: get Save Response 함수 //
     const GetMyPageCafeSaveResponseDto = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
       const message =
-        !responseBody ? '서버에 문제가 있습니다.' :
-          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-          responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.':
+      responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.':
+      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+      responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.': '';
 
       const isSuccessed = responseBody !== null && responseBody.code === 'SU';
       if (!isSuccessed) {
@@ -65,8 +85,9 @@ export default function MyPage() {
     }
 
      // savesetviewList 상태 업데이트
-    const { myPageCafeSaves } = responseBody as GetMyPageCafeSaveResponseDto;
-    savesetViewList(myPageCafeSaves);
+    const { myPageSaveCafes } = responseBody as GetMyPageCafeSaveResponseDto;
+    savesetViewList(myPageSaveCafes);
+    console.log(myPageSaveCafes);
 };
 
   const onButtonClickEventHandler = (path: string) => {
@@ -77,10 +98,11 @@ export default function MyPage() {
   interface TableSaveProps {
     save: MyPageCafeSave;
   }
-  
+
   const onSavePageClickHandler = (page: number) => {
     savesetCurrentPage(page);
   } 
+
   const onSavePreSectionClickHandler = () => {
     if (savecurrentSection === 1) return;
     savesetCurrentSection(savecurrentSection - 1);
@@ -301,20 +323,37 @@ export default function MyPage() {
             </div>
           </div>
 
-
-          <div className='save-box'>
+          {/* {savesetViewList.map((item) => ( */}
+          <div className='save-box'>  
+            <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >SAVE</div>
+            <div className='imageBox'>
+            {saveviewList.map((item) => (
+              <div key={item.travelCafeNumber} className='WritePostBox'>
+                <div className='board-box'>
+                <img src={item.travelCafePhoto} alt={`Travel ${item.travelCafeNumber}`} className='board-image' />
+                  <div className='board-information'>
+                    <div className='board-information-data'>{changeDateFormat(item.travelCafeDate)}</div>
+                  </div>
+                  {item.map((hashtag) => (
+                <div className='board-tag' onClick={() => onHashtagClickHandler(item.travelCafeHashTagList)}>#{hashtag}</div>
+              ))}
+                </div>
+              </div>
+              ))}
+            </div>
+          </div>
+          {/* <div className='save-box'>  
         <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >SAVE</div>
         <div className='imageBox'>
         
           <div className='WritePostBox'>
             <div className='board-box'>
-          <div className='board-image'></div>
-          <div className='board-information'>
-            <div className='board-information-data'>24.12.12</div>
-          
-          </div>
-          <div className='board-tag'>#</div>
-        </div>
+              <div className='board-image'></div>
+              <div className='board-information'>
+                <div className='board-information-data'>24.12.12</div>
+              </div>
+              <div className='board-tag'>#</div>
+            </div>
           </div>
           <div className='WritePostBox'>
           <div className='board-box'>
@@ -338,8 +377,8 @@ export default function MyPage() {
           </div>
         </div>
         <Pagination1 currentPage={savecurrentPage} pageList={savepageList} onPageClickHandler={onSavePageClickHandler} onNextSectionClickHandler={onSaveNextSectionClickHandler} onPreSectionClickHandler={onSavePreSectionClickHandler} />
-      </div>
-
+      </div> */}
+          
       <div className='like-box'>
         <div className='textBox'  style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>LIKE</div>
         <div className='imageBox'>
