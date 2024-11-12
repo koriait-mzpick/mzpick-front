@@ -43,6 +43,7 @@ import TravelCafeDetailPage from './views/Travel/Cafe/detail';
 import TravelRestaurantDetailPage from './views/Travel/Restaurant/detail';
 import TravelStayDetailPage from './views/Travel/Stay/detail';
 import TravelCafeUpdate from './views/Travel/Cafe/Update';
+import MyPageMain from './views/MyPage';
 
 
 // component: root path 컴포넌트 //
@@ -194,7 +195,7 @@ export default function MzPick() {
       </Route>
 
       <Route path={MY_PAGE_PATH} element={<MainLayout />}>
-        < Route path={MY_PAGE_PATH} element={< MyPage />} />
+        < Route path={MY_PAGE_PATH} element={< MyPageMain />} />
       </Route>
 
       {/* <Route path={OTHERS_PATH} element={<Index />} /> */}

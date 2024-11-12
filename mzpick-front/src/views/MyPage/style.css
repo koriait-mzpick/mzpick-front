@@ -587,6 +587,7 @@
 
 .layout .WritePostBox .board-box .board-tag {
     display: flex;
+    flex-direction: row;
     overflow: hidden;
     align-items: center;
     width: 300px;
