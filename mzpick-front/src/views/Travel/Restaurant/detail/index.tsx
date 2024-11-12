@@ -233,7 +233,7 @@ function Save() {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
         responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '못된 접근입니다.' :
             responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
               responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
 
