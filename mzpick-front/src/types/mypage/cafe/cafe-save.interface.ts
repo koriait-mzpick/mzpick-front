@@ -1,6 +1,6 @@
 export default interface myPageSaveCafes {
     travelCafeNumber: number;
     travelCafePhoto: string;
-    travelCafeHashTagList: string[];
+    travelCafeHashtagList: string[];
     travelCafeDate: string;
 }
