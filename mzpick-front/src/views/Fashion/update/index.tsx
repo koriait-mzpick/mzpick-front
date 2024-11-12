@@ -10,6 +10,7 @@ import './style.css';
 import { FashionDetail } from 'src/types';
 import { GetFashionDetailResponseDto } from 'src/apis/fashion/dto/response';
 import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
+import { convertUrlsToFiles } from 'src/utils';
 
 // component: 글쓰기 페이지 컴포넌트 //
 export default function FashionUpdate() {
@@ -37,7 +38,7 @@ export default function FashionUpdate() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   // variable: 등록 가능 여부 //
-  const isWriteComplete = fashionTitle && fashionHashtagContentList && fashionTotalPrice && fashionContent && fashionPhotoList.length !== 0;
+  const isWriteComplete = fashionTitle && fashionHashtagContentList.length > 0 && fashionTotalPrice && fashionContent && fashionPhotoList.length !== 0;
 
   // function: get fashion detail response 처리 함수 //
   const getFashionDetailResponse = (responseBody: GetTravelDetailResponseDto | ResponseDto | null) => {
@@ -62,6 +63,8 @@ export default function FashionUpdate() {
     setPreviewUrls(fashionDetail.fashionPhotoList);
     setFashionHashtagContentList(fashionDetail.fashionHashtagList);
     setFashionContent(fashionDetail.fashionContent);
+
+    convertUrlsToFiles(fashionDetail.fashionPhotoList).then(files => setFashionPhotoList(files));
   }
 
 
@@ -81,6 +84,10 @@ export default function FashionUpdate() {
       alert(message);
       return;
     };
+
+    if (!fashionNumber) return;
+    alert("등록이 완료되었습니다.");
+    navigator(`${FASHION_DETAIL_PATH}/${fashionNumber}`);
   };
 
   // event handler: 제목 변경 이벤트 처리 //
@@ -91,7 +98,7 @@ export default function FashionUpdate() {
 
   // event handler: 해시태그 변경 이벤트 처리 //
   const fashionHashtagContentChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const maxLength = 10;
+    const maxLength = 6;
     const { value } = event.target;
     const filteredValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣\s]/g, '');
     
@@ -172,22 +179,19 @@ export default function FashionUpdate() {
   // event handler: 사진 제거 이벤트 처리 //
   const fashionPhotoListDeleteHandler = (index: number) => {
     setPreviewUrls(previewUrls.filter((_, i) => i !== index));
-    setFashionPhotoList([]);
+    setFashionPhotoList(fashionPhotoList.filter((_, i) => i !== index));
   };
 
   // event handler: 등록 버튼 클릭 이벤트 처리 함수 //
   const patchButtonClickHandler = async (path: string) => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-    if (!fashionTitle || !fashionHashtagContentList || fashionTotalPrice === null || !fashionContent || fashionPhotoList.length === 0) {
+    if (!fashionTitle || fashionHashtagContentList.length === 0 || !fashionTotalPrice || !fashionContent || !fashionPhotoList.length) {
       alert('모두 입력해주세요.');
       return;
     };
 
-    if (window.confirm("등록하시겠습니까?")) {
-      alert("등록이 완료되었습니다.");
-      navigator(path);
-    } else {
+    if (!window.confirm("등록하시겠습니까?")) {
       alert("취소되었습니다.");
       return;
     };

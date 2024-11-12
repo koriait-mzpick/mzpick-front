@@ -3,7 +3,7 @@ import './style.css';
 import { ResponseDto } from 'src/apis/dto/response';
 import { GetTravelCommentResponseDto, GetTravelDetailResponseDto, GetTravelLikeListResponseDto, GetTravelSaveListResponseDto } from 'src/apis/travel/dto/response';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ACCESS_TOKEN, TRAVEL_DETAIL_PATH, TRAVEL_PATH, TRAVEL_UPDATE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, TRAVEL_DETAIL_PATH, TRAVEL_PATH, TRAVEL_UPDATE_PATH, VOTE_PATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
 import { deleteTravelCommentRequest, deleteTravelRequest, getTravelCommentListRequest, getTravelDetailRequest, getTravelLikeListRequest, getTravelSaveListRequest, postTravelCommentRequest, postUpViewTravelRequest, putTravelLikeRequest, putTravelSaveRequest } from 'src/apis/travel';
 import { TravelDetail } from 'src/types';
@@ -135,6 +135,16 @@ function Content() {
     return `${yy}.${mm}.${dd}`;
   };
 
+  // event handler: 투표 버튼 클릭 이벤트 처리 //
+  const voteButtonClickHandler = (path: string) => {
+    if (!travelNumber) return;
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    navigator(path);
+  }
+
   // effect:  게시글 정보 요청 함수 //
   useEffect(() => {
     if (!travelNumber) return;
@@ -152,7 +162,7 @@ function Content() {
           <div className='contents-top-date'>{changeDateFormat(travelDate)}</div>
         </div>
         <div className='contents-top-vote-button-box'>
-          <div className='contents-top-vote-button'>투표</div>
+          <div className='contents-top-vote-button' onClick={() => voteButtonClickHandler(VOTE_PATH)}>투표</div>
         </div>
       </div>
       <CarouselComponent photoList={travelPhotoList} />

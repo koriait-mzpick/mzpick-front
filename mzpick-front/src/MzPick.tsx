@@ -45,6 +45,7 @@ import TravelStayDetailPage from './views/Travel/Stay/detail';
 import TravelCafeUpdate from './views/Travel/Cafe/Update';
 import MyPageMain from './views/MyPage';
 import TravelRestaurantUpdate from './views/Travel/Restaurant/Update';
+import TravelStayUpdate from './views/Travel/Stay/Update';
 
 
 // component: root path 컴포넌트 //
@@ -171,7 +172,7 @@ export default function MzPick() {
         < Route path={TRAVEL_STAY_PATH} element={< TravelStay />} />
         < Route path={`${TRAVEL_STAY_DETAIL_PATH}/:travelStayNumber`}element={< TravelStayDetailPage />} />
         < Route path={TRAVEL_STAY_WRITE_PATH} element={< TravelStayWrite />} />
-        {/* < Route path={`${TRAVEL_STAY_UPDATE_PATH}/:travelStayNumber`} element={< TravelStayUpdate />} /> */}
+        < Route path={`${TRAVEL_STAY_UPDATE_PATH}/:travelStayNumber`} element={< TravelStayUpdate />} />
 
 
 

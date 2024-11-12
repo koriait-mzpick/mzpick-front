@@ -61,7 +61,7 @@ export default function TravelRestaurantUpdate() {
     const { travelFoodDetail } = responseBody as GetRestaurantDetailResponseDto;
     setTravelFoodDetail(travelFoodDetail);
     setTravelFoodTitle(travelFoodDetail.travelFoodTitle);
-    setTravelLocation(travelFoodDetail.travelLocathion);
+    setTravelLocation(travelFoodDetail.travelLocation);
     setPreviewUrls(travelFoodDetail.travelFoodPhotoList);
     setTravelFoodHashtagContentList(travelFoodDetail.travelFoodHashtagList);
     setTravelFoodContent(travelFoodDetail.travelFoodContent);

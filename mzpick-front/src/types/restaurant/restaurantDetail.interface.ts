@@ -1,6 +1,6 @@
 export default interface RestaurantDetail {
     travelFoodNumber: number;
-    travelLocathion: string;
+    travelLocation: string;
     userId: string;
     travelFoodTitle: string;
     travelFoodCategoryList: string[];
