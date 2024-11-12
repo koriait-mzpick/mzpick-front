@@ -38,15 +38,18 @@ export default function FashionWrite() {
   const postFashionResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
-      responseBody.code === 'VF' ? '모두 입력해주세요' :
-      responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        responseBody.code === 'VF' ? '모두 입력해주세요' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
       return;
     };
+
+    alert("등록이 완료되었습니다.");
+    navigator(FASHION_PATH);
   };
 
   // event handler: 제목 변경 이벤트 처리 //
@@ -60,7 +63,7 @@ export default function FashionWrite() {
     const maxLength = 10;
     const { value } = event.target;
     const filteredValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣\s]/g, '');
-    
+
     if (value.length <= maxLength) {
       setFashionHashtagContent(filteredValue);
     } else {
@@ -79,13 +82,13 @@ export default function FashionWrite() {
       setFashionHashtagContentList(fashionHashtagContentList.slice(0, -1));
   };
 
-    // event handler: 커서 이동시 해시태그 추가 이벤트 처리 //
-    const fashionHashtagContentBlurHandler = () => {
-      if (fashionHashtagContentList.length >= 3) return;
-      if (fashionHashtagContent == '') return;
-      setFashionHashtagContentList([...fashionHashtagContentList, fashionHashtagContent.trim()])
-      setFashionHashtagContent('');
-    };
+  // event handler: 커서 이동시 해시태그 추가 이벤트 처리 //
+  const fashionHashtagContentBlurHandler = () => {
+    if (fashionHashtagContentList.length >= 3) return;
+    if (fashionHashtagContent == '') return;
+    setFashionHashtagContentList([...fashionHashtagContentList, fashionHashtagContent.trim()])
+    setFashionHashtagContent('');
+  };
 
   // event handler: 해시태그 제거 이벤트 처리 //
   const fashionHashtagContentDeleteHandler = (index: number) => {
@@ -149,10 +152,15 @@ export default function FashionWrite() {
       return;
     };
 
-    if (window.confirm("등록하시겠습니까?")) {
-      alert("등록이 완료되었습니다.");
-      navigator(path);
-    } else {
+    // if (window.confirm("등록하시겠습니까?")) {
+    //   alert("등록이 완료되었습니다.");
+    //   navigator(path);
+    // } else {
+    //   alert("취소되었습니다.");
+    //   return;
+    // };
+
+    if (!window.confirm("등록하시겠습니까?")) {
       alert("취소되었습니다.");
       return;
     };
@@ -194,7 +202,7 @@ export default function FashionWrite() {
                 {'#' + tag}
               </div>
             ))}
-            <input className='middle-hashtag-write' type='text' value={fashionHashtagContent} placeholder='태그 (최대 3개)' onChange={fashionHashtagContentChangeHandler} onKeyDown={fashionHashtagContentAddHandler}  onBlur={fashionHashtagContentBlurHandler}/>
+            <input className='middle-hashtag-write' type='text' value={fashionHashtagContent} placeholder='태그 (최대 3개)' onChange={fashionHashtagContentChangeHandler} onKeyDown={fashionHashtagContentAddHandler} onBlur={fashionHashtagContentBlurHandler} />
           </div>
           <input className='middle-location' type='number' value={fashionTotalPrice} placeholder='총 가격' onChange={fashionTotalPriceChangeHandler} />
           <div className='middle-attached-file' onClick={attachedFileButtonClickHandler}>
@@ -205,7 +213,7 @@ export default function FashionWrite() {
           <textarea className='contents-box-text' value={fashionContent} placeholder='내용을 입력하세요. (* 사진은 최대 3장 첨부할 수 있습니다.)' onChange={fashionContentChangeHandler} />
           <div className='contents-box-preview-photo-box'>
             {previewUrls.map((url, index) => (
-              <img className='contents-box-preview-photo' key={index} src={url} alt={`preview ${index}`} onClick={() => fashionPhotoListDeleteHandler(index)}/>
+              <img className='contents-box-preview-photo' key={index} src={url} alt={`preview ${index}`} onClick={() => fashionPhotoListDeleteHandler(index)} />
             ))}
           </div>
         </div>
