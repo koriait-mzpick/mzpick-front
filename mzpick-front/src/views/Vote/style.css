@@ -318,10 +318,11 @@
 
 
 .single-check {
+    position: relative;
     display: flex;
     justify-content: space-between;
     
-    width: calc(35vw - 30px);
+    width: calc(25vw - 30px);
 }
 .single-secondcheck {
     display: flex;
@@ -459,6 +460,7 @@
     background-size: 100% 100%;
     
     width: 50px;
+    height: 35px;
 
     box-sizing: border-box;
 }
@@ -522,10 +524,8 @@
     border-radius: 12px;
 }
 .single-vote-all {
-    position: absolute;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 12px;
+    display: flex;
+    gap: 10px;
 }
 
 .process-bar {
@@ -537,7 +537,7 @@
 
 .single-process-bar {
     position: absolute;
-    height: 10%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 12px;
 
@@ -649,7 +649,6 @@
 .singlemodal-text {
     position: relative;
     display: flex;
-    align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: 30px;
@@ -863,7 +862,8 @@
 
 
 .singlemodal-button {
-    
+    display: flex;
+    align-self: center;
     width: 100px;
     height: 40px;
     border: none;
