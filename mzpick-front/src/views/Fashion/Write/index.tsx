@@ -152,13 +152,6 @@ export default function FashionWrite() {
       return;
     };
 
-    // if (window.confirm("등록하시겠습니까?")) {
-    //   alert("등록이 완료되었습니다.");
-    //   navigator(path);
-    // } else {
-    //   alert("취소되었습니다.");
-    //   return;
-    // };
 
     if (!window.confirm("등록하시겠습니까?")) {
       alert("취소되었습니다.");
