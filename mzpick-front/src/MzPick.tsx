@@ -44,6 +44,7 @@ import VoteDetail from './views/Vote/VoteDetail';
 import VoteDetailPhoto from './views/Vote/VoteDetailPhoto';
 import VoteDoublePhoto from './views/Vote/VoteDoublePhoto';
 import VoteWrite from './views/Vote/VoteWrite';
+import TravelStayUpdate from './views/Travel/Stay/Update';
 
 
 // component: root path 컴포넌트 //
@@ -179,7 +180,7 @@ export default function MzPick() {
         < Route path={TRAVEL_STAY_PATH} element={< TravelStay />} />
         < Route path={`${TRAVEL_STAY_DETAIL_PATH}/:travelStayNumber`}element={< TravelStayDetailPage />} />
         < Route path={TRAVEL_STAY_WRITE_PATH} element={< TravelStayWrite />} />
-        {/* < Route path={`${TRAVEL_STAY_UPDATE_PATH}/:travelStayNumber`} element={< TravelStayUpdate />} /> */}
+        < Route path={`${TRAVEL_STAY_UPDATE_PATH}/:travelStayNumber`} element={< TravelStayUpdate />} />
 
 
 

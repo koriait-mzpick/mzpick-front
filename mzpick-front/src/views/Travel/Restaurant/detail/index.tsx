@@ -117,7 +117,7 @@ function Content() {
     setTravelRestaurantDetail(travelFoodDetail);
     setUserId(travelFoodDetail.userId);
     setTravelRestaurantTitle(travelFoodDetail.travelFoodTitle);
-    setTravelLocation(travelFoodDetail.travelLocathion);
+    setTravelLocation(travelFoodDetail.travelLocation);
     setTravelRestaurantPhotoList(travelFoodDetail.travelFoodPhotoList);
     setTravelRestaurantHashtagList(travelFoodDetail.travelFoodHashtagList);
     setTravelRestaurantLikeUserList(travelFoodDetail.travelFoodLikeUserList);
