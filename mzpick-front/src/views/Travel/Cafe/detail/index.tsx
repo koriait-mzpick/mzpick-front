@@ -121,7 +121,7 @@ function Content() {
     setTravelCafePhotoList(travelCafeDetail.travelCafePhotoList);
     setTravelCafeHashtagList(travelCafeDetail.travelCafeHashtagList);
     setTravelCafeLikeUserList(travelCafeDetail.travelCafeLikeUserList);
-    setTravelCafeSaveUserList(travelCafeDetail.travelCafeSaveUSerList);
+    setTravelCafeSaveUserList(travelCafeDetail.travelCafeSaveUserList);
     setTravelCafeViewCount(travelCafeDetail.travelCafeView);
     setTravelCafeLikeCount(travelCafeDetail.travelCafeLikeCount);
     setTravelCafeSaveCount(travelCafeDetail.travelCafeSaveCount);

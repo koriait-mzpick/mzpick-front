@@ -44,6 +44,7 @@ import TravelRestaurantDetailPage from './views/Travel/Restaurant/detail';
 import TravelStayDetailPage from './views/Travel/Stay/detail';
 import TravelCafeUpdate from './views/Travel/Cafe/Update';
 import MyPageMain from './views/MyPage';
+import TravelRestaurantUpdate from './views/Travel/Restaurant/Update';
 
 
 // component: root path 컴포넌트 //
@@ -159,7 +160,7 @@ export default function MzPick() {
         < Route path={TRAVEL_RESTAURANT_PATH} element={< TravelRestaurant />} />
         < Route path={`${TRAVEL_RESTAURANT_DETAIL_PATH}/:travelRestaurantNumber`}element={< TravelRestaurantDetailPage />} />
         < Route path={TRAVEL_RESTAURANT_WRITE_PATH} element={< TravelRestaurantWrite />} />
-        {/* < Route path={`${TRAVEL_RESTAURANT_UPDATE_PATH}/:travelRestaurantNumber`} element={< TravelRestaurantUpdate />} /> */}
+        < Route path={`${TRAVEL_RESTAURANT_UPDATE_PATH}/:travelRestaurantNumber`} element={< TravelRestaurantUpdate />} />
 
         < Route path={TRAVEL_CAFE_PATH} element={< TravelCafe />} />
         < Route path={`${TRAVEL_CAFE_DETAIL_PATH}/:travelCafeNumber`}element={< TravelCafeDetailPage />} />

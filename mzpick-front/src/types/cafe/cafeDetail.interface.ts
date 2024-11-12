@@ -7,7 +7,7 @@ export default interface CafeDetail {
     travelCafePhotoList: string[];
     travelCafeHashtagList: string[];
     travelCafeLikeUserList: string[];
-    travelCafeSaveUSerList: string[];
+    travelCafeSaveUserList: string[];
     travelCafeLikeCount: number;
     travelCafeSaveCount: number;
     travelCafeView: number;
