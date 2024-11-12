@@ -91,7 +91,6 @@ function Content() {
   const [travelRestaurantSaveCount, setTravelRestaurantSaveCount] = useState<number>(0);
   const [travelRestaurantContent, setTravelRestaurantContent] = useState<string>('');
   const [travelRestaurantDate, setTravelRestaurantDate] = useState<string>('');
-  const [detail, setDetail] = useState<RestaurantDetail>();
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -140,11 +139,7 @@ function Content() {
   useEffect(() => {
     if (!travelRestaurantNumber) return;
 
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
     postUpViewRestaurantRequest(travelRestaurantNumber).then();
-
     getRestaurantDetailRequest(travelRestaurantNumber).then(getTravelRestaurantDetailtResponse);
   }, [travelRestaurantNumber]);
 
@@ -371,6 +366,32 @@ function Comment() {
   // state: 댓글 입력 상태 //
   const [commentWrite, setCommentWrite] = useState<string>('');
 
+    // state: 게시글 디테일 상태 //
+    const [travelRestaurantDetail, setTravelRestaurantDetail] = useState<RestaurantDetail>();
+
+    // state: 현재 로그인한 유저 아이디 //
+    const { signInUser } = useAuthStore();
+
+  // function: get travelRestaurant detail response 처리 함수 //
+  const getTravelRestaurantDetailtResponse = (responseBody: GetRestaurantDetailResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+              responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelRestaurantNumber}`);
+      return;
+    }
+
+    const { travelFoodDetail } = responseBody as GetRestaurantDetailResponseDto;
+    setTravelRestaurantDetail(travelFoodDetail);
+  };
+
 
   // function: 댓글 리스트 요청 함수 //
   const getTravelRestaurantCommentResponse = (responseBody: GetRestaurantCommentResponseDto | ResponseDto | null) => {
@@ -446,10 +467,32 @@ function Comment() {
     navigator(TRAVEL_RESTAURANT_PATH);
   };
 
-  // function: 댓글 수정 이벤트 처리 함수 //
-  const travelRestaurantUpdateHandler = () => {
-    // navigate();
+  // event handler: 게시글 수정 버튼 클릭 이벤트 처리 //
+  const updateButtonClickHandler = (path: string) => {
+    if (!travelRestaurantNumber) return;
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    navigator(path);
   }
+
+    // event handler: 게시글 삭제 버튼 클릭 이벤트 처리 //
+    const deleteButtonClickHandler = () => {
+      if (window.confirm("정말로 삭제하시겠습니까?")) {
+        alert("삭제가 완료되었습니다.");
+      } else {
+        alert("취소되었습니다.");
+        return;
+      }
+  
+      if (!travelRestaurantNumber) return;
+  
+      const accessToken = cookies[ACCESS_TOKEN];
+      if (!accessToken) return;
+  
+      deleteRestaurantRequest(travelRestaurantNumber, accessToken).then(deleteTravelRestaurantDetailtResponse);
+    }
 
   // event handler: 댓글 입력 이벤트 처리 //
   const onClickcommentWriteChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -493,33 +536,13 @@ function Comment() {
     setCommentOpen(!commentOpen);
   }
 
-  // event handler: 삭제 버튼 클릭 이벤트 처리 //
-  const deleteButtonClickHandler = () => {
-    if (window.confirm("정말로 삭제하시겠습니까?")) {
-      alert("삭제가 완료되었습니다.");
-    } else {
-      alert("취소되었습니다.");
-      return;
-    }
-
-    if (!travelRestaurantNumber) return;
-
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
-    deleteRestaurantRequest(travelRestaurantNumber, accessToken).then(deleteTravelRestaurantDetailtResponse);
-  }
-
-  // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
-  const itemClickHandler = (path: string) => {
-    navigator(path);
-  }
-
   // effect: 댓글 리스트 요청 함수 //
   useEffect(() => {
     if (!travelRestaurantNumber) return;
     console.log(travelRestaurantNumber);
     console.log(commentList);
+
+    getRestaurantDetailRequest(travelRestaurantNumber).then(getTravelRestaurantDetailtResponse)
     getRestaurantCommentListRequest(travelRestaurantNumber).then(getTravelRestaurantCommentResponse);
   }, []);
 
@@ -528,10 +551,12 @@ function Comment() {
     <div id='comment-main'>
       <div className='comment-button-box'>
         <div className='comment-open-button' onClick={commentOpenHandler}>{commentOpen ? "댓글 닫기" : "댓글 열기"}</div>
+        {signInUser && travelRestaurantDetail?.userId === signInUser.userId ? (
         <div className='comment-button-box-right'>
-          <div className='comment-update-button' onClick={() => itemClickHandler(`${TRAVEL_RESTAURANT_UPDATE_PATH}/${travelRestaurantNumber}`)}>수정</div>
+          <div className='comment-update-button' onClick={() => updateButtonClickHandler(`${TRAVEL_RESTAURANT_UPDATE_PATH}/${travelRestaurantNumber}`)}>수정</div>
           <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
         </div>
+        ) : null}
       </div>
       {commentOpen &&
         <div className='comment-detail'>
@@ -546,7 +571,9 @@ function Comment() {
             <div className='comment-detail-bottom' key={index}>
               <div className='comment-detail-writer'>
                 <div className='comment-detail-name'>{comment.userId}</div>
+                {signInUser && comment.userId === signInUser.userId ? (
                 <div className='comment-detail-delete-button' onClick={onclickcommentDeleteHandler(comment.travelFoodCommentNumber)}>삭제</div>
+              ) : null}
               </div>
               <div className='comment-detail-text' style={{ wordBreak: 'break-word' }}>{comment.travelFoodComment}</div>
             </div>

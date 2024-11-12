@@ -150,11 +150,7 @@ function Content() {
   useEffect(() => {
     if (!fashionNumber) return;
 
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
     postUpViewFashionRequest(fashionNumber).then();
-
     getFashionDetailRequest(fashionNumber).then(getFashionDetailtResponse);
   }, [fashionNumber]);
 

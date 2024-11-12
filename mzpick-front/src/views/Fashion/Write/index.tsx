@@ -147,7 +147,7 @@ export default function FashionWrite() {
   const registerButtonClickHandler = async (path: string) => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-    if (!fashionTitle || !fashionHashtagContentList || fashionTotalPrice === null || !fashionContent || fashionPhotoList.length === 0) {
+    if (!fashionTitle || !fashionHashtagContentList || !fashionTotalPrice || !fashionContent || fashionPhotoList.length === 0) {
       alert('모두 입력해주세요.');
       return;
     };

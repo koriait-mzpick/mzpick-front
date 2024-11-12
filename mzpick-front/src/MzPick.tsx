@@ -42,6 +42,7 @@ import FashionUpdate from './views/Fashion/update';
 import TravelCafeDetailPage from './views/Travel/Cafe/detail';
 import TravelRestaurantDetailPage from './views/Travel/Restaurant/detail';
 import TravelStayDetailPage from './views/Travel/Stay/detail';
+import TravelCafeUpdate from './views/Travel/Cafe/Update';
 import MyPageMain from './views/MyPage';
 
 
@@ -163,7 +164,7 @@ export default function MzPick() {
         < Route path={TRAVEL_CAFE_PATH} element={< TravelCafe />} />
         < Route path={`${TRAVEL_CAFE_DETAIL_PATH}/:travelCafeNumber`}element={< TravelCafeDetailPage />} />
         < Route path={TRAVEL_CAFE_WRITE_PATH} element={< TravelCafeWrite />} />
-        {/* < Route path={`${TRAVEL_CAFE_UPDATE_PATH}/:travelCafeNumber`} element={< TravelCafeUpdate />} /> */}
+        < Route path={`${TRAVEL_CAFE_UPDATE_PATH}/:travelCafeNumber`} element={< TravelCafeUpdate />} />
 
 
         < Route path={TRAVEL_STAY_PATH} element={< TravelStay />} />
