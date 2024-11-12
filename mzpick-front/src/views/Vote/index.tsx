@@ -231,6 +231,7 @@ function SecondCheckVote ({voteNumber, onModalClose}: {voteNumber: number; onMod
     if (!isSuccessed) {
       alert(message);
       return;
+      
     };
 
     const { voteResults } = responseBody as GetTravelVoteTotalResponseDto;
