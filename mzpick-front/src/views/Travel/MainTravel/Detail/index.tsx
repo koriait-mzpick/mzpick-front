@@ -1,22 +1,22 @@
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
-import './style.css';
-import { ResponseDto } from 'src/apis/dto/response';
-import { GetTravelCommentResponseDto, GetTravelDetailResponseDto, GetTravelLikeListResponseDto, GetTravelSaveListResponseDto } from 'src/apis/travel/dto/response';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ACCESS_TOKEN, TRAVEL_DETAIL_PATH, TRAVEL_PATH, TRAVEL_UPDATE_PATH } from 'src/constants';
-import { useCookies } from 'react-cookie';
-import { deleteTravelCommentRequest, deleteTravelRequest, getTravelCommentListRequest, getTravelDetailRequest, getTravelLikeListRequest, getTravelSaveListRequest, postTravelCommentRequest, postUpViewTravelRequest, putTravelLikeRequest, putTravelSaveRequest } from 'src/apis/travel';
-import { TravelDetail } from 'src/types';
+import { NavigateBefore as NavigateBeforeIcon, NavigateNext as NavigateNextIcon } from '@mui/icons-material';
 import { SvgIcon } from '@mui/material';
-import { NavigateNext as NavigateNextIcon, NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ResponseDto } from 'src/apis/dto/response';
+import { deleteTravelCommentRequest, deleteTravelRequest, getTravelCommentListRequest, getTravelDetailRequest, getTravelLikeListRequest, getTravelSaveListRequest, postTravelCommentRequest, postUpViewTravelRequest, putTravelLikeRequest, putTravelSaveRequest } from 'src/apis/travel';
+import { GetTravelCommentResponseDto, GetTravelDetailResponseDto, GetTravelLikeListResponseDto, GetTravelSaveListResponseDto } from 'src/apis/travel/dto/response';
+import { ACCESS_TOKEN, TRAVEL_DETAIL_PATH, TRAVEL_PATH, TRAVEL_UPDATE_PATH } from 'src/constants';
+import { TravelDetail } from 'src/types';
+import './style.css';
 // slider
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import styled from 'styled-components';
-import { useAuthStore } from 'src/stores';
+import "slick-carousel/slick/slick.css";
 import { PostTravelCommentRequestDto } from 'src/apis/travel/dto/request';
+import { useAuthStore } from 'src/stores';
 import { TravelComment } from 'src/types/travel/travelComment.interface';
+import styled from 'styled-components';
 
 // const [travelPhotoList, setTravelPhotoList] = useState<string[]>([]);
 
@@ -52,8 +52,10 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed p
     }
     .contents-image-item {
       margin: 0 auto;
-      max-width: 100%;
-      max-height: 500px; 
+      width: 100%
+      height: 1000px
+      max-width: 100%
+      max-height: 1500px; 
       object-fit: contain;
     }
   `;
