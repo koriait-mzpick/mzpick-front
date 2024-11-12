@@ -1,16 +1,21 @@
-import React, { ChangeEvent, useEffect, useRef, useState, Component, KeyboardEvent } from 'react'
-import './style.css';
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { ResponseDto } from 'src/apis/dto/response';
-import { ACCESS_TOKEN, TRAVEL_CAFE_PATH, } from 'src/constants';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fileUploadRequest } from 'src/apis';
-import { useNavigate } from 'react-router-dom';
-import path from 'path';
-import { postCafeRequest } from 'src/apis/cafe';
-import { PostTravelCafeRequestDto } from 'src/apis/cafe/dto/request';
+import { ResponseDto } from 'src/apis/dto/response';
+import { getCafeDetailRequest, pathcCafeRequest } from 'src/apis/cafe';
+import { PatchTravelCafeRequestDto } from 'src/apis/cafe/dto/request';
+import { GetCafeDetailResponseDto } from 'src/apis/cafe/dto/response';
+import { ACCESS_TOKEN, TRAVEL_CAFE_DETAIL_PATH } from 'src/constants';
+import { CafeDetail } from 'src/types';
+import { convertUrlsToFiles } from 'src/utils';
+import './style.css';
 
-// component: 카페 글쓰기 페이지 컴포넌트 //
-export default function TravelCafeWrite() {
+// component: 글쓰기 페이지 컴포넌트 //
+export default function TravelCafeUpdate() {
+
+  // state: 게시글번호 상태 //
+  const { travelCafeNumber } = useParams<{ travelCafeNumber: string }>();
 
   // state: cookie 상태 //
   const [cookies] = useCookies();
@@ -22,7 +27,9 @@ export default function TravelCafeWrite() {
   const [travelLocation, setTravelLocation] = useState<string>('');
   const [travelCafeContent, setTravelCafeContent] = useState<string>('');
   const [travelCafePhotoList, setTravelCafePhotoList] = useState<File[]>([]);
-  const [travelCafeCategoryList, setTravelCafeCategoryList] = useState<string[]>([]);
+
+  // state: 게시글 디테일 상태 //
+  const [travelCafeDetail, setTravelCafeDetail] = useState<CafeDetail>();
 
   // state: 사진 입력 참조 //
   const photoInputRef = useRef<HTMLInputElement | null>(null);
@@ -31,13 +38,39 @@ export default function TravelCafeWrite() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   // variable: 등록 가능 여부 //
-  const isWriteComplete = travelCafeTitle && travelCafeHashtagContentList.length > 0 &&  travelLocation && travelCafeContent && travelCafePhotoList.length !== 0;
+  const isWriteComplete = travelCafeTitle && travelCafeHashtagContentList.length > 0 && travelLocation && travelCafeContent && travelCafePhotoList.length !== 0;
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
 
-  // function: post travelCafe response 처리 함수 //
-  const postTravelCafeResponse = (responseBody: ResponseDto | null) => {
+  // function: get travelCafe detail response 처리 함수 //
+  const getTravelCafeDetailtResponse = (responseBody: GetCafeDetailResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      navigator(`${TRAVEL_CAFE_DETAIL_PATH}/${travelCafeNumber}`);
+      return;
+    }
+
+    const { travelCafeDetail } = responseBody as GetCafeDetailResponseDto;
+    setTravelCafeDetail(travelCafeDetail);
+    setTravelCafeTitle(travelCafeDetail.travelCafeTitle);
+    setTravelLocation(travelCafeDetail.travelLocation);
+    setPreviewUrls(travelCafeDetail.travelCafePhotoList);
+    setTravelCafeHashtagContentList(travelCafeDetail.travelCafeHashtagList);
+    setTravelCafeContent(travelCafeDetail.travelCafeContent);
+
+    convertUrlsToFiles(travelCafeDetail.travelCafePhotoList).then(files => setTravelCafePhotoList(files));
+  };
+
+  // function: patch travelCafe detail response 처리 함수 //
+  const patchTravelCafeDetailResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
         responseBody.code === 'VF' ? '모두 입력해주세요' :
@@ -47,12 +80,14 @@ export default function TravelCafeWrite() {
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
+      navigator(`${TRAVEL_CAFE_DETAIL_PATH}/${travelCafeNumber}`);
       return;
-    };
+    }
 
-    alert("등록이 완료되었습니다.")
-    navigator(TRAVEL_CAFE_PATH);
-  };
+    if (!travelCafeNumber) return;
+    alert("등록이 완료되었습니다.");
+    navigator(`${TRAVEL_CAFE_DETAIL_PATH}/${travelCafeNumber}`);
+  }
 
   // event handler: 제목 변경 이벤트 처리 //
   const travelCafeTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +100,7 @@ export default function TravelCafeWrite() {
     const maxLength = 10;
     const { value } = event.target;
     const filteredValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣\s]/g, '');
-    
+
     if (value.length <= maxLength) {
       setTravelCafeHashtagContent(filteredValue);
     } else {
@@ -128,7 +163,7 @@ export default function TravelCafeWrite() {
         alert("취소 되었습니다.");
       }
       return;
-    };
+    }
     const { files } = event.target;
     if (!files || files.length === 0) return;
     const file = files[0];
@@ -142,18 +177,19 @@ export default function TravelCafeWrite() {
   // event handler: 사진 제거 이벤트 처리 //
   const travelCafePhotoListDeleteHandler = (index: number) => {
     setPreviewUrls(previewUrls.filter((_, i) => i !== index));
-    setTravelCafePhotoList([]);
+    setTravelCafePhotoList(travelCafePhotoList.filter((_, i) => i !== index));
   };
 
-  // event handler: 등록 버튼 클릭 이벤트 처리 함수 //
-  const registerButtonClickHandler = async (path: string) => {
+  // event handler: 수정 버튼 클릭 이벤트 처리 함수 //
+  const updateButtonClickHandler = async (path: string) => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-    if (!travelCafeTitle || travelCafeHashtagContentList.length === 0 || !travelLocation || !travelCafeContent || travelCafePhotoList.length === 0) {
+    if (!travelCafeNumber) return;
+    if (!travelCafeTitle || travelCafeHashtagContentList.length === 0 || !travelLocation || !travelCafeContent || !travelCafePhotoList.length ) {
       alert('모두 입력해주세요.');
       return;
-    };
-    
+    }
+
     if (!window.confirm("등록하시겠습니까?")) {
       alert("취소되었습니다.");
       return;
@@ -165,26 +201,38 @@ export default function TravelCafeWrite() {
       formData.append('file', file);
       const url = await fileUploadRequest(formData);
       if (url) travelCafePhotoListUrl.push(url);
-    };
+    }
 
-    const requestBody: PostTravelCafeRequestDto = {
+    const requestBody: PatchTravelCafeRequestDto = {
       travelCafePhotoList: travelCafePhotoListUrl,
       travelCafeTitle,
       travelCafeHashtagContentList,
       travelLocation,
-      travelCafeCategoryList,
       travelCafeContent
     }
-    postCafeRequest(requestBody, accessToken).then(postTravelCafeResponse);
-  };
+    pathcCafeRequest(requestBody, travelCafeNumber, accessToken).then(patchTravelCafeDetailResponse);
+  }
 
   // event handler: 취소 버튼 클릭 이벤트 처리 함수 //
   const cancelButtonClickHandler = (path: string) => {
     if (window.confirm("글쓰기를 취소하시겠습니까?"))
       navigator(path);
-  };
+  }
 
-  // render: 카페 글쓰기 페이지 컴포넌트 렌더링//
+  // effect: 첫 로드시 게시글 정보 불러오기 함수 //
+  useEffect(() => {
+    if (!travelCafeNumber) {
+      navigator(`${TRAVEL_CAFE_DETAIL_PATH}/${travelCafeNumber}`);
+      return;
+    }
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    getCafeDetailRequest(travelCafeNumber).then(getTravelCafeDetailtResponse);
+  }, [travelCafeNumber]);
+
+  // render: 글쓰기 페이지 컴포넌트 렌더링//
   return (
     <div id='main-write'>
       <div className='write-box'>
@@ -193,7 +241,7 @@ export default function TravelCafeWrite() {
           <div className='middle-hashtag-box'>
             {travelCafeHashtagContentList.map((tag, index) => (
               <div className='middle-hashtag' key={index} onClick={() => travelCafeHashtagContentDeleteHandler(index)}>
-                #{tag}
+                {'#' + tag}
               </div>
             ))}
             <input className='middle-hashtag-write' type='text' value={travelCafeHashtagContent} placeholder='태그 (최대 3개)' onChange={travelCafeHashtagContentChangeHandler} onKeyDown={travelCafeHashtagContentAddHandler} onBlur={travelCafeHashtagContentBlurHandler} />
@@ -213,12 +261,11 @@ export default function TravelCafeWrite() {
         </div>
         <div className='write-box-bottom'>
           <div className='bottom-button-box'>
-            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => registerButtonClickHandler(TRAVEL_CAFE_PATH)}>등록</div>
-            <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(TRAVEL_CAFE_PATH)}>취소</div>
+            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => updateButtonClickHandler(`${TRAVEL_CAFE_DETAIL_PATH}/${travelCafeNumber}`)}>수정</div>
+            <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(`${TRAVEL_CAFE_DETAIL_PATH}/${travelCafeNumber}`)}>취소</div>
           </div>
         </div>
       </div>
     </div>
   )
 }
-
