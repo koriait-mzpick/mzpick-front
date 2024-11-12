@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ResponseDto } from 'src/apis/dto/response';
 import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
-import { ACCESS_TOKEN, FASHION_PATH } from 'src/constants';
+import { ACCESS_TOKEN, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_UPDATE_PATH } from 'src/constants';
 import './style.css';
 // slider
 import Slider from "react-slick";
@@ -196,7 +196,7 @@ function Content() {
   )
 }
 
-//function 저장 //
+//function: 저장 //
 function Save() {
 
   // state: 쿠키상태 //
