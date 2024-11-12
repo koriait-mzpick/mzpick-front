@@ -351,7 +351,7 @@ function Save() {
     return `${yy}.${mm}.${dd}`;
   };
 
-  // function: get Save Response 함수 //
+  // function: get Save Response 함수 //   
   const GetMyPageCafeSaveResponseDto = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
@@ -373,6 +373,7 @@ function Save() {
 
   const onButtonClickEventHandler = (path: string) => {
     navigator(path);
+    console.log();
   };
 
   // interface : Properties //
