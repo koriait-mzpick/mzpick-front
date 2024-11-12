@@ -2,17 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
 import { ResponseDto } from 'src/apis/dto/response';
-import { getMyPageCafeSaveListRequest, getMyPageUserDetailRequest } from 'src/apis/mypage';
+import { getMyPageCafeBoardRequest, getMyPageCafeLikeListRequest, getMyPageCafeSaveListRequest, getMyPageTravelLikeListRequest, getMyPageUserDetailRequest } from 'src/apis/mypage';
 import { GetMyPageCafeSaveResponseDto } from 'src/apis/mypage/dto/response/save';
 import { GetMyPageUserDetailResponseDto } from 'src/apis/mypage/dto/response/user';
 import { getCafeTotalCountRequest } from 'src/apis/pagination';
 import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import Pagination1 from 'src/components/Pagination1';
-import { ACCESS_TOKEN, WRITE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_WRITE_PATH, WRITE_PATH } from 'src/constants';
 import BottomNav from 'src/layouts/BottomNav';
-import { MyPageCafeSave } from 'src/types/mypage/cafe';
+import { MyPageCafeBoard, MyPageCafeLike, MyPageCafeSave } from 'src/types/mypage/cafe';
 import myPageSaveCafes from 'src/types/mypage/cafe/cafe-save.interface';
 import './style.css';
+import { GetMyPageCafeLikeResponseDto } from 'src/apis/mypage/dto/response/like';
+import myPageLikeCafes from 'src/types/mypage/cafe/cafe-like.interface';
+import { GetMyPageCafeBoardResponseDto } from 'src/apis/mypage/dto/response/board';
+import myPageBoardCafes from 'src/types/mypage/cafe/cafe-board.interface';
 
 
 const SECTION_PER_PAGE = 5;
@@ -414,7 +418,7 @@ function Save() {
       <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >SAVE</div>
       <div className='imageBox'>
         {saveviewList.map((item) => (
-          <div key={item.travelCafeNumber} className='WritePostBox'>
+          <div key={item.travelCafeNumber} className='WritePostBox'  onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_DETAIL_PATH}/${item.travelCafeNumber}`)}>
             <div className='board-box'>
               <img src={item.travelCafePhoto} alt={`Travel ${item.travelCafeNumber}`} className='board-image' />
               <div className='board-information'>
@@ -433,35 +437,35 @@ function Save() {
   )
 }
 
-function LIKE() {
+function Like() {
   const navigator = useNavigate();
   const [cookies] = useCookies();
 
   const accessToken = cookies[ACCESS_TOKEN];
 
-  const [likeviewList, likesetViewList] = useState<myPageSaveCafes[]>([]);
+  const [likeviewList, likesetViewList] = useState<myPageLikeCafes[]>([]);
 
   const [likecount, likesetCount] = useState<number>(0);
   const [likepageList, likesetPageList] = useState<number[]>([]);
   const [liketotalPage, likesetTotalPage] = useState<number>(0);
-  const [liketotalList, likesetTotalList] = useState<MyPageCafeSave[]>([]);
+  const [liketotalList, likesetTotalList] = useState<myPageLikeCafes[]>([]);
   const [likecurrentPage, likesetCurrentPage] = useState<number>(1);
   const [liketotalSection, likesetTotalSection] = useState<number>(0);
   const [likecurrentSection, likesetCurrentSection] = useState<number>(1);
 
 
   // function: get total count response //
-  const getsaveTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+  const getlikeTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
     const { count } = dto as GetTotalCountResponseDto;
-    const savetotalPage = Math.ceil(count / 8);
+    const liketotalPage = Math.ceil(count / 8);
     likesetTotalPage(liketotalPage);
-    const savetotalSection = Math.ceil(liketotalPage / SECTION_PER_PAGE);
-    likesetTotalSection(savetotalSection);
+    const liketotalSection = Math.ceil(liketotalPage / SECTION_PER_PAGE);
+    likesetTotalSection(liketotalSection);
   }
 
-  // function: getSave List 함수 //
-  const getCafeSaveList = () => {
-    getMyPageCafeSaveListRequest(accessToken).then(GetMyPageCafeSaveResponseDto);
+  // function: getLike List 함수 //
+  const getCafeLikeList = () => {
+    getMyPageCafeLikeListRequest(accessToken).then(GetMyPageCafeLikeResponseDto);
   }
 
   // function: 날짜 포맷 변경 함수 //
@@ -473,7 +477,7 @@ function LIKE() {
   };
 
   // function: get Save Response 함수 //
-  const GetMyPageCafeSaveResponseDto = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
+  const GetMyPageCafeLikeResponseDto = (responseBody: GetMyPageCafeLikeResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
         responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
@@ -487,9 +491,9 @@ function LIKE() {
     }
 
     // savesetviewList 상태 업데이트
-    const { myPageSaveCafes } = responseBody as GetMyPageCafeSaveResponseDto;
-    savesetViewList(myPageSaveCafes);
-    console.log(myPageSaveCafes);
+    const { myPageLikeCafes } = responseBody as GetMyPageCafeLikeResponseDto;
+    likesetViewList(myPageLikeCafes);
+    console.log(myPageLikeCafes);
   };
 
   const onButtonClickEventHandler = (path: string) => {
@@ -498,55 +502,55 @@ function LIKE() {
 
   // interface : Properties //
   interface TableSaveProps {
-    save: MyPageCafeSave;
+    save: MyPageCafeLike;
   }
 
-  const onSavePageClickHandler = (page: number) => {
-    savesetCurrentPage(page);
+  const onlikePageClickHandler = (page: number) => {
+    likesetCurrentPage(page);
   }
 
-  const onSavePreSectionClickHandler = () => {
-    if (savecurrentSection === 1) return;
-    savesetCurrentSection(savecurrentSection - 1);
-    savesetCurrentPage((savecurrentSection - 1) * SECTION_PER_PAGE);
+  const onlikePreSectionClickHandler = () => {
+    if (likecurrentSection === 1) return;
+    likesetCurrentSection(likecurrentSection - 1);
+    likesetCurrentPage((likecurrentSection - 1) * SECTION_PER_PAGE);
   }
 
-  const onSaveNextSectionClickHandler = () => {
-    if (savecurrentSection === savetotalSection) return;
-    savesetCurrentSection(savecurrentSection + 1);
-    savesetCurrentPage(savecurrentSection * SECTION_PER_PAGE + 1);
+  const onlikeNextSectionClickHandler = () => {
+    if (likecount === liketotalSection) return;
+    // likecurrentSection(likecurrentSection + 1);
+    likesetCurrentPage(likecurrentSection * SECTION_PER_PAGE + 1);
   }
 
   useEffect(() => {
-    getCafeTotalCountRequest().then(getsaveTotalCountResponse);
+    getCafeTotalCountRequest().then(getlikeTotalCountResponse);
   }, []);
 
   useEffect(() => {
     const pageList: number[] = [];
-    const startPage = (savecurrentSection - 1) * SECTION_PER_PAGE + 1;
-    const endPage = savecurrentSection * SECTION_PER_PAGE;
+    const startPage = (likecurrentSection - 1) * SECTION_PER_PAGE + 1;
+    const endPage = likecurrentSection * SECTION_PER_PAGE;
     for (let page = startPage; page <= endPage; page++) {
       pageList.push(page);
-      if (page === savetotalPage) break;
+      if (page === liketotalPage) break;
     };
-    getCafeSaveList();
-    savesetPageList(pageList);
+    getCafeLikeList();
+    likesetPageList(pageList);
 
-  }, [savecurrentSection, savetotalPage]);
+  }, [likecurrentSection, liketotalPage]);
 
   return (
-    <div className='save-box'>
-      <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >SAVE</div>
+    <div className='like-box'>
+      <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >LIKE</div>
       <div className='imageBox'>
-        {saveviewList.map((item) => (
-          <div key={item.travelCafeNumber} className='WritePostBox'>
+        {likeviewList.map((item) => (
+          <div key={item.mypageBoardNumber} className='WritePostBox'>
             <div className='board-box'>
-              <img src={item.travelCafePhoto} alt={`Travel ${item.travelCafeNumber}`} className='board-image' />
+              <img src={item.mypagePhotoList} alt={`Travel ${item.mypageBoardNumber}`} className='board-image' />
               <div className='board-information'>
-                <div className='board-information-data'>{changeDateFormat(item.travelCafeDate)}</div>
+                <div className='board-information-data'>{changeDateFormat(item.mypageBoardDate)}</div>
               </div>
               <div className='board-tag'>
-                {item.travelCafeHashtagList.map((hashtag, index) => (
+                {item.mypageHashTagList.map((hashtag, index) => (
                   <div key={index} className='board-tag-item'>#{hashtag}</div>
                 ))}
               </div>
@@ -556,6 +560,139 @@ function LIKE() {
       </div>
     </div>
   )
+}
+
+function Write() {
+  const navigator = useNavigate();
+  const [cookies] = useCookies();
+
+  const accessToken = cookies[ACCESS_TOKEN];
+
+  const [writeviewList, writesetviewList] = useState<myPageBoardCafes[]>([]);
+
+  const [writecount, writesetCount] = useState<number>(0);
+  const [writepageList, writesetPageList] = useState<number[]>([]);
+  const [writetotalPage, writesetTotalPage] = useState<number>(0);
+  const [writetotalList, writesetTotalList] = useState<myPageBoardCafes[]>([]);
+  const [writecurrentPage, writesetCurrentPage] = useState<number>(1);
+  const [writetotalSection, writesetTotalSection] = useState<number>(0);
+  const [writecurrentSection, writesetCurrentSection] = useState<number>(1);
+
+
+
+  // function: get total count response //
+  const getwriteTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+    const { count } = dto as GetTotalCountResponseDto;
+    const writetotalPage = Math.ceil(count / 8);
+    writesetTotalPage(writetotalPage);
+    const writetotalSection = Math.ceil(writetotalPage / SECTION_PER_PAGE);
+    writesetTotalSection(writetotalSection);
+  }
+
+  // function: getLike List 함수 //
+  const getCafeWriteList = () => {
+    getMyPageCafeBoardRequest(accessToken).then(GetMyPageCafeBoardResponseDto);
+  }
+
+  // function: 날짜 포맷 변경 함수 //
+  const changeDateFormat = (date: string) => {
+    const yy = date.substring(0, 4);
+    const mm = date.substring(5, 7);
+    const dd = date.substring(8, 10);
+    return `${yy}.${mm}.${dd}`;
+  };
+
+  // function: get Save Response 함수 //
+  const GetMyPageCafeBoardResponseDto = (responseBody: GetMyPageCafeBoardResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    // savesetviewList 상태 업데이트
+    const { myPageBoardCafes } = responseBody as GetMyPageCafeBoardResponseDto;
+    writesetviewList(myPageBoardCafes);
+    console.log(myPageBoardCafes);
+  };
+
+  const onButtonClickEventHandler = (path: string) => {
+    navigator(path);
+  };
+
+  // interface : Properties //
+  interface TableSaveProps {
+    save: MyPageCafeBoard;
+  }
+
+  const onlikePageClickHandler = (page: number) => {
+    writesetCurrentPage(page);
+  }
+
+  const onlikePreSectionClickHandler = () => {
+    if (writecurrentSection === 1) return;
+    writesetCurrentSection(writecurrentSection - 1);
+    writesetCurrentPage((writecurrentSection - 1) * SECTION_PER_PAGE);
+  }
+
+  const onlikeNextSectionClickHandler = () => {
+    if (writecount === writetotalSection) return;
+    // likecurrentSection(likecurrentSection + 1);
+    writesetCurrentPage(writecurrentSection * SECTION_PER_PAGE + 1);
+  }
+
+  useEffect(() => {
+    getCafeTotalCountRequest().then(getwriteTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    const pageList: number[] = [];
+    const startPage = (writecurrentSection - 1) * SECTION_PER_PAGE + 1;
+    const endPage = writecurrentSection * SECTION_PER_PAGE;
+    for (let page = startPage; page <= endPage; page++) {
+      pageList.push(page);
+      if (page === writetotalPage) break;
+    };
+    getCafeWriteList();
+    writesetPageList(pageList);
+
+  }, [writecurrentSection, writetotalPage]);
+
+  return (
+
+        <div className='like-box2'>
+        <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>WRITE</div>
+        <div className='write-totalBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
+          <div className='write-titleBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
+            <div className='title'>작성일</div>
+            <div className='title2'>제목</div>
+            <div className='title'>수정</div>
+            <div className='title'>삭제</div>
+          </div>
+
+          {writeviewList.map((item) => (
+          <div  key={item.mypageBoardNumber} className='contentBox'>
+            <div className='directed-writeBox'>{changeDateFormat(item.mypageBoardDate)}</div>
+            <div className='directed-writeBox2'>{item.mypageBoardTitle}</div>
+            <div className='directed-writeBox3'>
+              <div className='icon-box'></div>
+            </div>
+            <div className='directed-writeBox4'>
+              <div className='icon-box2'></div>
+            </div>
+          </div>
+          ))}
+
+        </div>
+
+      </div>
+  );
 }
 
 export default function MyPageMain() {
@@ -629,6 +766,8 @@ export default function MyPageMain() {
         </div>
 
         <Save />
+        <Like />
+        <Write />
 
       </div>
 

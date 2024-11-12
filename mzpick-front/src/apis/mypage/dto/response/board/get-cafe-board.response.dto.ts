@@ -1,5 +1,5 @@
-import { MyPageCafeBoard } from "src/types/mypage/cafe";
-
-export default interface GetMyPageCafeBoardResponseDto{
-    myPageCafeBoard : MyPageCafeBoard[];
+import { ResponseDto } from "src/apis/dto/response";
+import myPageBoardCafes from "src/types/mypage/cafe/cafe-board.interface";
+export default interface GetMyPageCafeBoardResponseDto extends ResponseDto{
+    myPageBoardCafes : myPageBoardCafes[];
 }
