@@ -48,6 +48,8 @@ export default function TravelWrite() {
       alert(message);
       return;
     };
+    alert("등록이 완료되었습니다.")
+    navigator(TRAVEL_PATH);
   };
 
   // event handler: 제목 변경 이벤트 처리 //
@@ -149,11 +151,8 @@ export default function TravelWrite() {
       alert('모두 입력해주세요.');
       return;
     };
-
-    if (window.confirm("등록하시겠습니까?")) {
-      alert("등록이 완료되었습니다.");
-      navigator(path);
-    } else {
+    
+    if (!window.confirm("등록하시겠습니까?")) {
       alert("취소되었습니다.");
       return;
     };

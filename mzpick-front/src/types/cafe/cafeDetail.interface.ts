@@ -1,6 +1,6 @@
 export default interface CafeDetail {
     travelCafeNumber: number;
-    travelLocathion: string;
+    travelLocation: string;
     userId: string;
     travelCafeTitle: string;
     travelCafeCategoryList: string[];
