@@ -293,6 +293,14 @@ function SecondCheckVote ({voteNumber, onModalClose}: {voteNumber: number; onMod
 }
 
 function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModalClose : () => void}) {
+  // state: 로그인유저 상태 //
+  const { signInUser } = useAuthStore();
+  // state: 투표 총합 상태 //
+  const [voteTotal, setVoteTotal] = useState<TravelVoteTotal[]>([]);
+
+  const firstPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === '간다').length / voteTotal.length) * 100 : 0;
+  const secondPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === '안간다').length / voteTotal.length) * 100 : 0;
+  const totalCount = voteTotal.length ? (voteTotal.filter(item => item.selected === '간다').length + voteTotal.filter(item => item.selected === '안간다').length) : 0;
 
   const [cookies] = useCookies();
   const accessToken = cookies[ACCESS_TOKEN];
@@ -311,15 +319,8 @@ function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModal
     console.log(userSelectNumber);
   }
 
-   const onClickCheckHandler = () => {
-    if(secondCheck == false){
-      setCheck(!check);
-    } else if(secondCheck == true){
-      setSecondCheck(!secondCheck)
-      setCheck(!check)
-
-    }
-    console.log(setSecondCheck);
+  const onClickCheckHandler = (selectNumber: string | number) => {
+    putTravelVoteClickRequest(voteNumber, selectNumber, accessToken).then(putTravelVoteClickResponse)
   }
   
    const onClickSecondCheckHandler = () => {
@@ -330,6 +331,56 @@ function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModal
       setSecondCheck(!secondCheck);
     }
   }
+
+   // function: 투표 선택 불러오기 함수 //
+   const getTravelVoteTotalList= () => {
+    if (!voteNumber) return;
+    getTravelVoteTotalRequest(voteNumber).then(getTravelVotetotalResponse);
+  };
+
+  // function:  투표 클릭 response 함수//
+  const putTravelVoteClickResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '모두 입력해주세요' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    };
+
+    getTravelVoteTotalList();
+  }
+
+
+  // function: get travelVote total response 처리 함수 //
+  const getTravelVotetotalResponse = (responseBody: GetTravelVoteTotalResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '모두 입력해주세요' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    };
+
+    const { voteResults } = responseBody as GetTravelVoteTotalResponseDto;
+    setVoteTotal(voteResults);
+  };
+  
+  useEffect(()=>{
+    getTravelVoteTotalList();
+  },[])
+
+  useEffect(() => {
+  }, [voteTotal])
+
 
   return (
     <div>
@@ -347,12 +398,14 @@ function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModal
                       <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
                     </div>
 
-                    <div className='double-contents' onClick={onClickCheckHandler}>
-                      <div className='double-first-textall' onClick={() => onSelectHandler(1)}>
+                    <div className='double-contents' onClick={() => onClickCheckHandler(1)}>
+                      <div className='double-first-textall' >
                         <div className='doublemodal-first-text' style={{cursor:'pointer'}} >간다</div>
-                        <div className='doublemodal-first-text-second' style={{cursor:'pointer'}}>0%</div>
+                        <div className='doublemodal-first-text-second' style={{cursor:'pointer'}}>{firstPercent}%</div>
+                         <div className='double-process-bar' style={{ width: `${firstPercent}%` }}></div>
+
                       </div>
-                      {check &&
+                      {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === '간다') &&
                       <div className='modal-doublefirst-check' style={{cursor:'pointer'}}></div>
                     } 
                     </div>
@@ -364,12 +417,14 @@ function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModal
                       <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
                     </div>
 
-                    <div className='double-contents' onClick={onClickSecondCheckHandler} >
-                      <div className='double-second-textall' onClick={() => onSelectHandler(2)}>
+                    <div className='double-contents' onClick={() => onClickCheckHandler(2)} >
+                      <div className='double-second-textall'>
                       <div className='doublemodal-second-text' style={{cursor:'pointer'}} >안 간다</div>
-                      <div className='doublemodal-second-text-second' style={{cursor:'pointer'}}>50%</div>
+                      <div className='doublemodal-second-text-second' style={{cursor:'pointer'}}>{secondPercent}%</div>
+                       <div className='double-process-bar-second' style={{ width: `${secondPercent}%` }}></div>
+
                       </div>
-                      {secondCheck &&
+                      {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === '안간다') &&
                       <div className='modal-doublesecond-check' style={{cursor:'pointer'}}></div>
                       }
                     </div>
@@ -474,15 +529,7 @@ export default function Vote() {
     setNonePhotomodal(!nonePhotomodal);
   }
 
-  const onClickCheckHandler = () => {
-    if(secondCheck == false){
-      setCheck(!check);
-    } else if(secondCheck == true){
-      setSecondCheck(!secondCheck)
-      setCheck(!check)
-    }
-   
-  }
+  
 
   const onClickSecondCheckHandler = () => {
     if(check == false){
@@ -505,6 +552,27 @@ export default function Vote() {
     if (!travelVoteNumber) return;
     getTravelVoteTotalRequest(travelVoteNumber).then(getTravelVotetotalResponse);
   }
+
+  // function: post vote total response 처리 함수 //
+  const postVoteTotalResponse = (responseBody: ResponseDto | null) => {
+    const message = 
+        !responseBody ? '서버에 문제가 있습니다.' : 
+        responseBody.code === 'VF' ? '유효하지 않은 데이터입니다.' : 
+        responseBody.code === 'AF' ? '잘못된 접근입니다.' : 
+        responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+    
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+        alert(message);
+        return;
+    }
+
+    if (!travelVoteNumber) return
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    getTravelVoteTotalRequest(travelVoteNumber)
+  };
 
   
   // function: get travelVote total response 처리 함수 //
