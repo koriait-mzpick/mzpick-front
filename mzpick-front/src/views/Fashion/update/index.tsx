@@ -5,7 +5,7 @@ import { fileUploadRequest } from 'src/apis';
 import { ResponseDto } from 'src/apis/dto/response';
 import { getFashionDetailRequest, pathcFashionRequest, postFashionRequest } from 'src/apis/fashion';
 import { PostFashionRequestDto } from 'src/apis/fashion/dto/request';
-import { ACCESS_TOKEN, FASHION_PATH } from 'src/constants';
+import { ACCESS_TOKEN, FASHION_DETAIL_PATH, FASHION_PATH } from 'src/constants';
 import './style.css';
 import { FashionDetail } from 'src/types';
 import { GetFashionDetailResponseDto } from 'src/apis/fashion/dto/response';
@@ -23,27 +23,12 @@ export default function FashionUpdate() {
   const [fashionTitle, setFashionTitle] = useState<string>('');
   const [fashionHashtagContent, setFashionHashtagContent] = useState<string>('');
   const [fashionHashtagContentList, setFashionHashtagContentList] = useState<string[]>([]);
-  const [fashionTotalPrice, setFashionTotalPrice] = useState<string>('');
+  const [fashionTotalPrice, setFashionTotalPrice] = useState<number>();
   const [fashionContent, setFashionContent] = useState<string>('');
   const [fashionPhotoList, setFashionPhotoList] = useState<File[]>([]);
 
+  // state: 게시글 디테일 상태 //
   const [fashionDetail, setFashionDetail] = useState<FashionDetail>();
-
-  const getFashionDetailesponse = (responseBody: GetTravelDetailResponseDto | ResponseDto | null) => {
-    const message = 
-    !responseBody ? '서버에 문제가 있습니다.' :
-    responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-    responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-
-    if(message) {
-      alert(message);
-      return;
-    }
-    const { fashionDetail } = responseBody as GetFashionDetailResponseDto;
-    setFashionDetail(fashionDetail);
-  }
-
-
 
   // state: 사진 입력 참조 //
   const photoInputRef = useRef<HTMLInputElement | null>(null);
@@ -53,6 +38,32 @@ export default function FashionUpdate() {
 
   // variable: 등록 가능 여부 //
   const isWriteComplete = fashionTitle && fashionHashtagContentList && fashionTotalPrice && fashionContent && fashionPhotoList.length !== 0;
+
+  // function: get fashion detail response 처리 함수 //
+  const getFashionDetailResponse = (responseBody: GetTravelDetailResponseDto | ResponseDto | null) => {
+    const message = 
+    !responseBody ? '서버에 문제가 있습니다.' :
+    responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+    responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+    responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      navigator(`${FASHION_DETAIL_PATH}/${fashionNumber}`);
+      return;
+    }
+
+    const { fashionDetail } = responseBody as GetFashionDetailResponseDto;
+    setFashionDetail(fashionDetail);
+    setFashionTitle(fashionDetail.fashionTitle);
+    setFashionTotalPrice(fashionDetail.totalPrice);
+    setPreviewUrls(fashionDetail.fashionPhotoList);
+    setFashionHashtagContentList(fashionDetail.fashionHashtagList);
+    setFashionContent(fashionDetail.fashionContent);
+  }
+
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -118,7 +129,8 @@ export default function FashionUpdate() {
   // event handler: 가격 변경 이벤트 처리 //
   const fashionTotalPriceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setFashionTotalPrice(value);
+    const numericValue = value === '' ? 0 : Number(value);
+    setFashionTotalPrice(numericValue);
   };
 
   // event handler: 내용 변경 이벤트 처리 //
@@ -208,7 +220,7 @@ export default function FashionUpdate() {
 
   useEffect(() => {
     if(!fashionNumber) return;
-    getFashionDetailRequest(fashionNumber).then(getFashionDetailesponse);
+    getFashionDetailRequest(fashionNumber).then(getFashionDetailResponse);
   }, [fashionNumber]);
 
   // render: 글쓰기 페이지 컴포넌트 렌더링//

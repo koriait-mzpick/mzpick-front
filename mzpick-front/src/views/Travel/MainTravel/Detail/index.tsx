@@ -367,19 +367,17 @@ function Comment() {
   // state: 댓글창 모달 상태 //
   const [commentOpen, setCommentOpen] = useState(false);
 
+  // state: 댓글 리스트 상태 //
+  const [commentList, setCommentList] = useState<TravelComment[]>([]);
+  
+  // state: 댓글 입력 상태 //
+  const [commentWrite, setCommentWrite] = useState<string>('');
+  
   // state: 게시글 디테일 상태 //
   const [travelDetail, setTravelDetail] = useState<TravelDetail>();
 
-  // state: 댓글 리스트 상태 //
-  const [commentList, setCommentList] = useState<TravelComment[]>([]);
-
-  // state: 댓글 입력 상태 //
-  const [commentWrite, setCommentWrite] = useState<string>('');
-
   // state: 현재 로그인한 유저 아이디 //
   const { signInUser } = useAuthStore();
-
-
 
   // function: get travel detail response 처리 함수 //
   const getTravelDetailtResponse = (responseBody: GetTravelDetailResponseDto | ResponseDto | null) => {
@@ -475,9 +473,31 @@ function Comment() {
     navigator(TRAVEL_PATH);
   };
 
-  // function: 댓글 수정 이벤트 처리 함수 //
-  const travelUpdateHandler = () => {
-    // navigate();
+  // event handler: 게시글 수정 버튼 클릭 이벤트 처리 //
+  const updateButtonClickHandler = (path: string) => {
+    if (!travelNumber) return;
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    navigator(path);
+  }
+
+  // event handler: 게시글 삭제 버튼 클릭 이벤트 처리 //
+  const deleteButtonClickHandler = () => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      alert("삭제가 완료되었습니다.");
+    } else {
+      alert("취소되었습니다.");
+      return;
+    }
+
+    if (!travelNumber) return;
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    deleteTravelRequest(travelNumber, accessToken).then(deleteTravelDetailtResponse);
   }
 
   // event handler: 댓글 입력 이벤트 처리 //
@@ -522,33 +542,6 @@ function Comment() {
     setCommentOpen(!commentOpen);
   }
 
-  // event handler: 삭제 버튼 클릭 이벤트 처리 //
-  const deleteButtonClickHandler = () => {
-    if (window.confirm("정말로 삭제하시겠습니까?")) {
-      alert("삭제가 완료되었습니다.");
-    } else {
-      alert("취소되었습니다.");
-      return;
-    }
-
-    if (!travelNumber) return;
-
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
-    deleteTravelRequest(travelNumber, accessToken).then(deleteTravelDetailtResponse);
-  }
-
-  // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
-  const itemClickHandler = (path: string) => {
-    if (!travelNumber) return;
-
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
-    navigator(path);
-  }
-
   // effect: 댓글 리스트 요청 함수 //
   useEffect(() => {
     if (!travelNumber) return;
@@ -566,7 +559,7 @@ function Comment() {
         <div className='comment-open-button' onClick={commentOpenHandler}>{commentOpen ? "댓글 닫기" : "댓글 열기"}</div>
           {signInUser && travelDetail?.userId === signInUser.userId ? (
         <div className='comment-button-box-right'>
-          <div className='comment-update-button' onClick={() => itemClickHandler(`${TRAVEL_UPDATE_PATH}/${travelNumber}`)}>수정</div>
+          <div className='comment-update-button' onClick={() => updateButtonClickHandler(`${TRAVEL_UPDATE_PATH}/${travelNumber}`)}>수정</div>
           <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
         </div>
           ) : null }

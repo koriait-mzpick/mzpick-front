@@ -58,14 +58,14 @@ export default function TravelWrite() {
 
   // event handler: 해시태그 변경 이벤트 처리 //
   const travelHashtagContentChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const maxLength = 10;
+    const maxLength = 6;
     const { value } = event.target;
     const filteredValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣\s]/g, '');
     
     if (value.length <= maxLength) {
       setTravelHashtagContent(filteredValue);
     } else {
-      alert("최대 글자수는 10자입니다.");
+      alert("최대 글자수는 6자입니다.");
     };
   };
 
@@ -194,7 +194,7 @@ export default function TravelWrite() {
                 #{tag}
               </div>
             ))}
-            <input className='middle-hashtag-write' type='text' value={travelHashtagContent} placeholder='태그 (최대 3개)' onChange={travelHashtagContentChangeHandler} onKeyDown={travelHashtagContentAddHandler} onBlur={travelHashtagContentBlurHandler} />
+            <input className='middle-hashtag-write' type='text' value={travelHashtagContent} placeholder='태그를 입력하세요 (최대 3개)' onChange={travelHashtagContentChangeHandler} onKeyDown={travelHashtagContentAddHandler} onBlur={travelHashtagContentBlurHandler} />
           </div>
           <input className='middle-location' value={travelLocation} placeholder='지역을 입력하세요.' onChange={travelLocationhangeHandler} />
           <div className='middle-attached-file' onClick={attachedFileButtonClickHandler}>
