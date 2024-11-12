@@ -27,6 +27,7 @@ export default function TravelCafeUpdate() {
   const [travelLocation, setTravelLocation] = useState<string>('');
   const [travelCafeContent, setTravelCafeContent] = useState<string>('');
   const [travelCafePhotoList, setTravelCafePhotoList] = useState<File[]>([]);
+  const [travelCafeCategoryList, setTravelCafeCategoryList] = useState<string[]>([]);
 
   // state: 게시글 디테일 상태 //
   const [travelCafeDetail, setTravelCafeDetail] = useState<CafeDetail>();
@@ -208,7 +209,8 @@ export default function TravelCafeUpdate() {
       travelCafeTitle,
       travelCafeHashtagContentList,
       travelLocation,
-      travelCafeContent
+      travelCafeContent,
+      travelCafeCategoryList
     }
     pathcCafeRequest(requestBody, travelCafeNumber, accessToken).then(patchTravelCafeDetailResponse);
   }
