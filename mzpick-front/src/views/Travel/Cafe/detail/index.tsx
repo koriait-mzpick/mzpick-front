@@ -448,10 +448,27 @@ function Comment() {
     navigator(TRAVEL_CAFE_PATH);
   };
 
-  // function: 댓글 수정 이벤트 처리 함수 //
-  const travelCafeUpdateHandler = () => {
-    // navigate();
+  // event handler: 댓글 수정 이벤트 처리 함수 //
+  const travelCafeUpdateHandler = (path: string) => {
+    navigator(path);
   }
+
+    // event handler: 삭제 버튼 클릭 이벤트 처리 //
+    const deleteButtonClickHandler = () => {
+      if (window.confirm("정말로 삭제하시겠습니까?")) {
+        alert("삭제가 완료되었습니다.");
+      } else {
+        alert("취소되었습니다.");
+        return;
+      }
+  
+      if (!travelCafeNumber) return;
+  
+      const accessToken = cookies[ACCESS_TOKEN];
+      if (!accessToken) return;
+  
+      deleteCafeRequest(travelCafeNumber, accessToken).then(deleteTravelCafeDetailtResponse);
+    }
 
   // event handler: 댓글 입력 이벤트 처리 //
   const onClickcommentWriteChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -495,28 +512,6 @@ function Comment() {
     setCommentOpen(!commentOpen);
   }
 
-  // event handler: 삭제 버튼 클릭 이벤트 처리 //
-  const deleteButtonClickHandler = () => {
-    if (window.confirm("정말로 삭제하시겠습니까?")) {
-      alert("삭제가 완료되었습니다.");
-    } else {
-      alert("취소되었습니다.");
-      return;
-    }
-
-    if (!travelCafeNumber) return;
-
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
-    deleteCafeRequest(travelCafeNumber, accessToken).then(deleteTravelCafeDetailtResponse);
-  }
-
-  // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
-  const itemClickHandler = (path: string) => {
-    navigator(path);
-  }
-
   // effect: 댓글 리스트 요청 함수 //
   useEffect(() => {
     if (!travelCafeNumber) return;
@@ -531,7 +526,7 @@ function Comment() {
       <div className='comment-button-box'>
         <div className='comment-open-button' onClick={commentOpenHandler}>{commentOpen ? "댓글 닫기" : "댓글 열기"}</div>
         <div className='comment-button-box-right'>
-          <div className='comment-update-button' onClick={() => itemClickHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${travelCafeNumber}`)}>수정</div>
+          <div className='comment-update-button' onClick={() => travelCafeUpdateHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${travelCafeNumber}`)}>수정</div>
           <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
         </div>
       </div>
