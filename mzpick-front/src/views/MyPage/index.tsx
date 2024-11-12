@@ -1,19 +1,32 @@
+
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import ResponseDto from 'src/apis/dto/response/response.dto';
 import { getMyPageCafeSaveListRequest, getMyPageUserDetailRequest } from 'src/apis/mypage';
+
 import { GetMyPageCafeSaveResponseDto } from 'src/apis/mypage/dto/response/save';
-import { getCafeTotalCountRequest } from 'src/apis/pagination';
+import { getCafeTotalCountRequest, getTotalCountRequest } from 'src/apis/pagination';
 import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
-import Pagination1 from 'src/components/Pagination1';
+import ResponseDto from 'src/apis/dto/response/response.dto';
+import { useNavigate } from 'react-router-dom';
 import { ACCESS_TOKEN, WRITE_PATH } from 'src/constants';
-import { MyPageCafeSave } from 'src/types/mypage/cafe';
+import axios from 'axios';
+import { getMyPageCafeSaveListRequest } from 'src/apis/mypage';
+import { useCookies } from 'react-cookie';
+import Pagination1 from 'src/components/Pagination1';
+import { ImportExport } from '@mui/icons-material';
+import { usePagination } from 'src/hooks';
+import { UsePaginationItem } from '@mui/material/usePagination/usePagination';
+import useAuthStore from 'src/stores/sign-in-user.store';
+import { getCafeSaveListRequest } from 'src/apis/cafe';
 import myPageSaveCafes from 'src/types/mypage/cafe/cafe-save.interface';
+
 import BottomNav from '../../layouts/BottomNav';
 import './style.css';
 import { useAuthStore } from 'src/stores';
 import { GetMyPageUserDetailResponseDto } from 'src/apis/mypage/dto/response/user';
+
 
 const SECTION_PER_PAGE = 5;
 function MyPage() {
@@ -29,7 +42,7 @@ function MyPage() {
   const [savetotalSection, savesetTotalSection] = useState<number>(0);
   const [savecurrentSection, savesetCurrentSection] = useState<number>(1);
   const [selectedHashtag, setSelectedHashtag] = useState<string>('');
-
+  const [filteredPostList, setFilteredPostList] = useState<myPageSaveCafes[]>([]);
 
   const accessToken = cookies[ACCESS_TOKEN];
 
@@ -62,8 +75,7 @@ function MyPage() {
       setSelectedHashtag('');
       return;
     }
-    setSelectedHashtag(hashtag);
-  }
+
 
   // function: get Save Response 함수 //
   const GetMyPageCafeSaveResponseDto = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
@@ -108,7 +120,8 @@ function MyPage() {
     if (savecurrentSection === savetotalSection) return;
     savesetCurrentSection(savecurrentSection + 1);
     savesetCurrentPage(savecurrentSection * SECTION_PER_PAGE + 1);
-  }
+  } 
+
 
   useEffect(() => {
     getCafeTotalCountRequest().then(getsaveTotalCountResponse);
