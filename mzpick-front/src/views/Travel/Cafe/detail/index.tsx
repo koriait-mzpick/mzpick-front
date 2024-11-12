@@ -1,24 +1,23 @@
 
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
-import './style.css';
-import { ResponseDto } from 'src/apis/dto/response';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ACCESS_TOKEN, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH } from 'src/constants';
-import { useCookies } from 'react-cookie';
-import { CafeDetail } from 'src/types';
 import { NavigateBefore as NavigateBeforeIcon, NavigateNext as NavigateNextIcon } from '@mui/icons-material';
 import { SvgIcon } from '@mui/material';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ResponseDto } from 'src/apis/dto/response';
+import { ACCESS_TOKEN, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH } from 'src/constants';
+import { CafeDetail } from 'src/types';
 import './style.css';
 // slider
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
-import styled from 'styled-components';
-import { useAuthStore } from 'src/stores';
-import { GetCafeCommentResponseDto, GetCafeDetailResponseDto, GetCafeLikeListResponseDto, GetCafeSaveListResponseDto } from 'src/apis/cafe/dto/response';
 import "slick-carousel/slick/slick.css";
 import { deleteCafeCommentRequest, deleteCafeRequest, getCafeCommentListRequest, getCafeDetailRequest, getCafeLikeListRequest, getCafeSaveListRequest, postCafeCommentRequest, postUpViewCafeRequest, putCafeLikeRequest, putCafeSaveRequest } from 'src/apis/cafe';
 import { PostTravelCafeCommentRequestDto } from 'src/apis/cafe/dto/request';
+import { GetCafeCommentResponseDto, GetCafeDetailResponseDto, GetCafeLikeListResponseDto, GetCafeSaveListResponseDto } from 'src/apis/cafe/dto/response';
+import { useAuthStore } from 'src/stores';
 import { CafeComment } from 'src/types/cafe/cafeComment.interface';
+import styled from 'styled-components';
 
 // const [travelPhotoList, setTravelPhotoList] = useState<string[]>([]);
 
@@ -54,8 +53,10 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed p
     }
     .contents-image-item {
       margin: 0 auto;
-      max-width: 100%;
-      max-height: 500px; 
+      width: 100%
+      height: 1000px
+      max-width: 100%
+      max-height: 1500px; 
       object-fit: contain;
     }
   `;

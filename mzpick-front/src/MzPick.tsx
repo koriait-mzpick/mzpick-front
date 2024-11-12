@@ -1,50 +1,49 @@
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
-import { Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import './MzPick.css';
 
-import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_UPDATE_PATH, FASHION_WRITE_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_ABSOLUTE_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, ROOT_PATH, SIGN_IN_PATH, SIGN_UP_PATH, SNS_SUCCESS_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_CAFE_WRITE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_RESTAURANT_UPDATE_PATH, TRAVEL_RESTAURANT_WRITE_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_STAY_PATH, TRAVEL_STAY_UPDATE_PATH, TRAVEL_STAY_WRITE_PATH, TRAVEL_UPDATE_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH } from './constants';
+import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_UPDATE_PATH, FASHION_WRITE_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_ABSOLUTE_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, ROOT_PATH, SIGN_IN_PATH, SIGN_UP_PATH, SNS_SUCCESS_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_CAFE_WRITE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_RESTAURANT_UPDATE_PATH, TRAVEL_RESTAURANT_WRITE_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_STAY_PATH, TRAVEL_STAY_WRITE_PATH, TRAVEL_UPDATE_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH } from './constants';
 
 import { ResponseDto } from './apis/dto/response';
 import { getMyPageUserDetailRequest } from './apis/mypage';
 import { GetMyPageUserDetailResponseDto } from './apis/mypage/dto/response/user';
 import MainLayout from './layouts/MainLayout';
 
-import { useAuthStore } from './stores';
+import { useAuthStore, useSearchLocationStore } from './stores';
 import SignIn from './views/Auth/SignIn';
 import SignUp from './views/Auth/SignUp';
 import Fashion from './views/Fashion';
 import FashionDetailPage from './views/Fashion/detail';
+import FashionUpdate from './views/Fashion/update';
 import FashionWrite from './views/Fashion/Write';
 import HOFFashion from './views/HOF/FashionHof';
 import HOFFood from './views/HOF/FoodHof';
 import HOFTravel from './views/HOF/TravelHof';
 import Home from './views/Home';
 import Keyword from './views/Keyword';
-import MyPage from './views/MyPage';
+import MyPageMain from './views/MyPage';
 import TraveMap from './views/Travel';
+import TravelCafe from './views/Travel/Cafe';
+import TravelCafeDetailPage from './views/Travel/Cafe/detail';
+import TravelCafeUpdate from './views/Travel/Cafe/Update';
+import TravelCafeWrite from './views/Travel/Cafe/Write';
 import MainTravel from './views/Travel/MainTravel';
+import TravelDetailPage from './views/Travel/MainTravel/Detail';
+import TravelUpdate from './views/Travel/MainTravel/Update';
 import TravelWrite from './views/Travel/MainTravel/Write';
+import TravelRestaurant from './views/Travel/Restaurant';
+import TravelRestaurantDetailPage from './views/Travel/Restaurant/detail';
+import TravelRestaurantUpdate from './views/Travel/Restaurant/Update';
+import TravelRestaurantWrite from './views/Travel/Restaurant/Write';
+import TravelStay from './views/Travel/Stay';
+import TravelStayDetailPage from './views/Travel/Stay/detail';
+import TravelStayWrite from './views/Travel/Stay/Write';
 import Vote from './views/Vote';
 import VoteDetail from './views/Vote/VoteDetail';
 import VoteDetailPhoto from './views/Vote/VoteDetailPhoto';
 import VoteDoublePhoto from './views/Vote/VoteDoublePhoto';
 import VoteWrite from './views/Vote/VoteWrite';
-import TravelCafeWrite from './views/Travel/Cafe/Write';
-import TravelRestaurantWrite from './views/Travel/Restaurant/Write';
-import TravelStayWrite from './views/Travel/Stay/Write';
-import TravelStay from './views/Travel/Stay';
-import TravelCafe from './views/Travel/Cafe';
-import TravelRestaurant from './views/Travel/Restaurant';
-import TravelDetailPage from './views/Travel/MainTravel/Detail';
-import TravelUpdate from './views/Travel/MainTravel/Update';
-import FashionUpdate from './views/Fashion/update';
-import TravelCafeDetailPage from './views/Travel/Cafe/detail';
-import TravelRestaurantDetailPage from './views/Travel/Restaurant/detail';
-import TravelStayDetailPage from './views/Travel/Stay/detail';
-import TravelCafeUpdate from './views/Travel/Cafe/Update';
-import MyPageMain from './views/MyPage';
-import TravelRestaurantUpdate from './views/Travel/Restaurant/Update';
 import TravelStayUpdate from './views/Travel/Stay/Update';
 
 
@@ -104,8 +103,13 @@ export default function MzPick() {
   // state: 로그인 유저 정보 상태 //
   const { signInUser, setSignInUser } = useAuthStore();
 
+  // state: 지역 검색어 상태 //
+  const { setSearchLocation } = useSearchLocationStore();
+
   // state: cookie 상태 //
   const [cookies, setCookie, removeCookie] = useCookies();
+  // state:경로 상태//
+  const { pathname } = useLocation();
 
   // variable: access token //
   const accessToken = cookies[ACCESS_TOKEN];
@@ -134,6 +138,10 @@ export default function MzPick() {
       getMyPageUserDetailRequest(accessToken).then(getMyPageUserDetailResponse);
     }
   }, [accessToken]);
+
+  useEffect(() => {
+    if (!pathname.includes(TRAVEL_PATH)) setSearchLocation('');
+  }, [pathname]);
 
    // render: MzPick 컴포넌트 렌더링 //
   return (

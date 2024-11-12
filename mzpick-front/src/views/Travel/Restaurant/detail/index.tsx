@@ -1,22 +1,22 @@
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
-import './style.css';
-import { ResponseDto } from 'src/apis/dto/response';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ACCESS_TOKEN, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_RESTAURANT_UPDATE_PATH } from 'src/constants';
-import { useCookies } from 'react-cookie';
-import { RestaurantDetail } from 'src/types';
+import { NavigateBefore as NavigateBeforeIcon, NavigateNext as NavigateNextIcon } from '@mui/icons-material';
 import { SvgIcon } from '@mui/material';
-import { NavigateNext as NavigateNextIcon, NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ResponseDto } from 'src/apis/dto/response';
+import { ACCESS_TOKEN, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_RESTAURANT_UPDATE_PATH } from 'src/constants';
+import { RestaurantDetail } from 'src/types';
+import './style.css';
 // slider
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import styled from 'styled-components';
-import { useAuthStore } from 'src/stores';
-import { GetRestaurantCommentResponseDto, GetRestaurantDetailResponseDto, GetRestaurantLikeListResponseDto, GetRestaurantSaveListResponseDto } from 'src/apis/restaurant/dto/response';
+import "slick-carousel/slick/slick.css";
 import { deleteRestaurantCommentRequest, deleteRestaurantRequest, getRestaurantCommentListRequest, getRestaurantDetailRequest, getRestaurantLikeListRequest, getRestaurantSaveListRequest, postRestaurantCommentRequest, postUpViewRestaurantRequest, putRestaurantLikeRequest, putRestaurantSaveRequest } from 'src/apis/restaurant';
-import { RestaurantComment } from 'src/types/restaurant/restaurantComment.interface';
 import { PostTravelFoodCommentRequestDto } from 'src/apis/restaurant/dto/request';
+import { GetRestaurantCommentResponseDto, GetRestaurantDetailResponseDto, GetRestaurantLikeListResponseDto, GetRestaurantSaveListResponseDto } from 'src/apis/restaurant/dto/response';
+import { useAuthStore } from 'src/stores';
+import { RestaurantComment } from 'src/types/restaurant/restaurantComment.interface';
+import styled from 'styled-components';
 
 // const [travelPhotoList, setTravelPhotoList] = useState<string[]>([]);
 
@@ -52,8 +52,10 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed p
     }
     .contents-image-item {
       margin: 0 auto;
-      max-width: 100%;
-      max-height: 500px; 
+      width: 100%
+      height: 1000px
+      max-width: 100%
+      max-height: 1500px; 
       object-fit: contain;
     }
   `;
