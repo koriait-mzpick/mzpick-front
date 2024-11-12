@@ -3,19 +3,19 @@ import { useCookies } from 'react-cookie';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fileUploadRequest } from 'src/apis';
 import { ResponseDto } from 'src/apis/dto/response';
-import { ACCESS_TOKEN, TRAVEL_RESTAURANT_DETAIL_PATH } from 'src/constants';
-import { convertUrlsToFiles } from 'src/utils';
-import './style.css';
+import { getRestaurantDetailRequest, pathcRestaurantRequest } from 'src/apis/restaurant';
 import { PatchTravelFoodRequestDto } from 'src/apis/restaurant/dto/request';
 import { GetRestaurantDetailResponseDto } from 'src/apis/restaurant/dto/response';
+import { ACCESS_TOKEN, TRAVEL_RESTAURANT_DETAIL_PATH } from 'src/constants';
 import { RestaurantDetail } from 'src/types';
-import { getRestaurantDetailRequest, pathcRestaurantRequest } from 'src/apis/restaurant';
+import { convertUrlsToFiles } from 'src/utils';
+import './style.css';
 
 // component: 글쓰기 페이지 컴포넌트 //
 export default function TravelRestaurantUpdate() {
 
   // state: 게시글번호 상태 //
-  const { travelFoodNumber } = useParams<{ travelFoodNumber: string }>();
+  const { travelRestaurantNumber } = useParams<{ travelRestaurantNumber: string }>();
 
   // state: cookie 상태 //
   const [cookies] = useCookies();
@@ -54,7 +54,7 @@ export default function TravelRestaurantUpdate() {
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
-      navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelFoodNumber}`);
+      navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelRestaurantNumber}`);
       return;
     }
 
@@ -80,13 +80,13 @@ export default function TravelRestaurantUpdate() {
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
-      navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelFoodNumber}`);
+      navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelRestaurantNumber}`);
       return;
     }
 
-    if (!travelFoodNumber) return;
+    if (!travelRestaurantNumber) return;
     alert("등록이 완료되었습니다.");
-    navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelFoodNumber}`);
+    navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelRestaurantNumber}`);
   }
 
   // event handler: 제목 변경 이벤트 처리 //
@@ -184,7 +184,7 @@ export default function TravelRestaurantUpdate() {
   const updateButtonClickHandler = async (path: string) => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-    if (!travelFoodNumber) return;
+    if (!travelRestaurantNumber) return;
     if (!travelFoodTitle || travelFoodHashtagContentList.length === 0 || !travelLocation || !travelFoodContent || !travelFoodPhotoList.length ) {
       alert('모두 입력해주세요.');
       return;
@@ -210,7 +210,7 @@ export default function TravelRestaurantUpdate() {
       travelLocation,
       travelFoodContent
     }
-    pathcRestaurantRequest(requestBody, travelFoodNumber, accessToken).then(patchTravelFoodDetailResponse);
+    pathcRestaurantRequest(requestBody, travelRestaurantNumber, accessToken).then(patchTravelFoodDetailResponse);
   }
 
   // event handler: 취소 버튼 클릭 이벤트 처리 함수 //
@@ -221,16 +221,16 @@ export default function TravelRestaurantUpdate() {
 
   // effect: 첫 로드시 게시글 정보 불러오기 함수 //
   useEffect(() => {
-    if (!travelFoodNumber) {
-      navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelFoodNumber}`);
+    if (!travelRestaurantNumber) {
+      navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelRestaurantNumber}`);
       return;
     }
 
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
 
-    getRestaurantDetailRequest(travelFoodNumber).then(getTravelFoodDetailtResponse);
-  }, [travelFoodNumber]);
+    getRestaurantDetailRequest(travelRestaurantNumber).then(getTravelFoodDetailtResponse);
+  }, [travelRestaurantNumber]);
 
   // render: 글쓰기 페이지 컴포넌트 렌더링//
   return (
@@ -261,8 +261,8 @@ export default function TravelRestaurantUpdate() {
         </div>
         <div className='write-box-bottom'>
           <div className='bottom-button-box'>
-            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => updateButtonClickHandler(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelFoodNumber}`)}>수정</div>
-            <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelFoodNumber}`)}>취소</div>
+            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => updateButtonClickHandler(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelRestaurantNumber}`)}>수정</div>
+            <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelRestaurantNumber}`)}>취소</div>
           </div>
         </div>
       </div>
