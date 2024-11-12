@@ -93,7 +93,6 @@ function Content() {
   const [travelCafeSaveCount, setTravelCafeSaveCount] = useState<number>(0);
   const [travelCafeContent, setTravelCafeContent] = useState<string>('');
   const [travelCafeDate, setTravelCafeDate] = useState<string>('');
-  const [detail, setDetail] = useState<CafeDetail>();
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -118,11 +117,11 @@ function Content() {
     setTravelCafeDetail(travelCafeDetail);
     setUserId(travelCafeDetail.userId);
     setTravelCafeTitle(travelCafeDetail.travelCafeTitle);
-    setTravelLocation(travelCafeDetail.travelLocathion);
+    setTravelLocation(travelCafeDetail.travelLocation);
     setTravelCafePhotoList(travelCafeDetail.travelCafePhotoList);
     setTravelCafeHashtagList(travelCafeDetail.travelCafeHashtagList);
     setTravelCafeLikeUserList(travelCafeDetail.travelCafeLikeUserList);
-    setTravelCafeSaveUserList(travelCafeDetail.travelCafeSaveUSerList);
+    setTravelCafeSaveUserList(travelCafeDetail.travelCafeSaveUserList);
     setTravelCafeViewCount(travelCafeDetail.travelCafeView);
     setTravelCafeLikeCount(travelCafeDetail.travelCafeLikeCount);
     setTravelCafeSaveCount(travelCafeDetail.travelCafeSaveCount);
@@ -142,11 +141,7 @@ function Content() {
   useEffect(() => {
     if (!travelCafeNumber) return;
 
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
     postUpViewCafeRequest(travelCafeNumber).then();
-
     getCafeDetailRequest(travelCafeNumber).then(getTravelCafeDetailtResponse);
   }, [travelCafeNumber]);
 
@@ -373,6 +368,32 @@ function Comment() {
   // state: 댓글 입력 상태 //
   const [commentWrite, setCommentWrite] = useState<string>('');
 
+  // state: 게시글 디테일 상태 //
+  const [travelCafeDetail, setTravelCafeDetail] = useState<CafeDetail>();
+
+  // state: 현재 로그인한 유저 아이디 //
+  const { signInUser } = useAuthStore();
+
+
+  // function: get travelCafe detail response 처리 함수 //
+  const getTravelCafeDetailtResponse = (responseBody: GetCafeDetailResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+              responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      navigator(`${TRAVEL_CAFE_DETAIL_PATH}/${travelCafeNumber}`);
+      return;
+    }
+
+    const { travelCafeDetail } = responseBody as GetCafeDetailResponseDto;
+    setTravelCafeDetail(travelCafeDetail);
+  };
 
   // function: 댓글 리스트 요청 함수 //
   const getTravelCafeCommentResponse = (responseBody: GetCafeCommentResponseDto | ResponseDto | null) => {
@@ -448,27 +469,32 @@ function Comment() {
     navigator(TRAVEL_CAFE_PATH);
   };
 
-  // event handler: 댓글 수정 이벤트 처리 함수 //
-  const travelCafeUpdateHandler = (path: string) => {
+  // event handler: 게시글 수정 버튼 클릭 이벤트 처리 //
+  const updateButtonClickHandler = (path: string) => {
+    if (!travelCafeNumber) return;
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
     navigator(path);
   }
 
-    // event handler: 삭제 버튼 클릭 이벤트 처리 //
-    const deleteButtonClickHandler = () => {
-      if (window.confirm("정말로 삭제하시겠습니까?")) {
-        alert("삭제가 완료되었습니다.");
-      } else {
-        alert("취소되었습니다.");
-        return;
-      }
-  
-      if (!travelCafeNumber) return;
-  
-      const accessToken = cookies[ACCESS_TOKEN];
-      if (!accessToken) return;
-  
-      deleteCafeRequest(travelCafeNumber, accessToken).then(deleteTravelCafeDetailtResponse);
+  // event handler: 게시글 삭제 버튼 클릭 이벤트 처리 //
+  const deleteButtonClickHandler = () => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      alert("삭제가 완료되었습니다.");
+    } else {
+      alert("취소되었습니다.");
+      return;
     }
+
+    if (!travelCafeNumber) return;
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    deleteCafeRequest(travelCafeNumber, accessToken).then(deleteTravelCafeDetailtResponse);
+  }
 
   // event handler: 댓글 입력 이벤트 처리 //
   const onClickcommentWriteChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -517,6 +543,8 @@ function Comment() {
     if (!travelCafeNumber) return;
     console.log(travelCafeNumber);
     console.log(commentList);
+
+    getCafeDetailRequest(travelCafeNumber).then(getTravelCafeDetailtResponse);
     getCafeCommentListRequest(travelCafeNumber).then(getTravelCafeCommentResponse);
   }, []);
 
@@ -525,10 +553,12 @@ function Comment() {
     <div id='comment-main'>
       <div className='comment-button-box'>
         <div className='comment-open-button' onClick={commentOpenHandler}>{commentOpen ? "댓글 닫기" : "댓글 열기"}</div>
-        <div className='comment-button-box-right'>
-          <div className='comment-update-button' onClick={() => travelCafeUpdateHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${travelCafeNumber}`)}>수정</div>
-          <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
-        </div>
+        {signInUser && travelCafeDetail?.userId === signInUser.userId ? (
+          <div className='comment-button-box-right'>
+            <div className='comment-update-button' onClick={() => updateButtonClickHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${travelCafeNumber}`)}>수정</div>
+            <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
+          </div>
+        ) : null}
       </div>
       {commentOpen &&
         <div className='comment-detail'>
@@ -543,7 +573,9 @@ function Comment() {
             <div className='comment-detail-bottom' key={index}>
               <div className='comment-detail-writer'>
                 <div className='comment-detail-name'>{comment.userId}</div>
-                <div className='comment-detail-delete-button' onClick={onclickcommentDeleteHandler(comment.travelCafeCommentNumber)}>삭제</div>
+                {signInUser && comment.userId === signInUser.userId ? (
+                  <div className='comment-detail-delete-button' onClick={onclickcommentDeleteHandler(comment.travelCafeCommentNumber)}>삭제</div>
+                ) : null}
               </div>
               <div className='comment-detail-text' style={{ wordBreak: 'break-word' }}>{comment.travelCafeComment}</div>
             </div>

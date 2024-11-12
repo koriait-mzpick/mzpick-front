@@ -1,4 +1,4 @@
-export default interface MyPageCafeLike {
+export default interface myPageLikeCafes {
     mypageBoardNumber: number;
     mypagePhotoList: string;
     mypageHashTagList: string[];

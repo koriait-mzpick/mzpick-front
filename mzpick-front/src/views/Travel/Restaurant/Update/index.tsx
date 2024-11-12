@@ -1,16 +1,21 @@
-import React, { ChangeEvent, useEffect, useRef, useState, Component, KeyboardEvent } from 'react'
-// import './style.css';
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { ResponseDto } from 'src/apis/dto/response';
-import { ACCESS_TOKEN, TRAVEL_RESTAURANT_PATH } from 'src/constants';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fileUploadRequest } from 'src/apis';
-import { useNavigate } from 'react-router-dom';
-import path from 'path';
-import { postRestaurantRequest } from 'src/apis/restaurant';
-import { PostTravelFoodRequestDto } from 'src/apis/restaurant/dto/request';
+import { ResponseDto } from 'src/apis/dto/response';
+import { ACCESS_TOKEN, TRAVEL_RESTAURANT_DETAIL_PATH } from 'src/constants';
+import { convertUrlsToFiles } from 'src/utils';
+import './style.css';
+import { PatchTravelFoodRequestDto } from 'src/apis/restaurant/dto/request';
+import { GetRestaurantDetailResponseDto } from 'src/apis/restaurant/dto/response';
+import { RestaurantDetail } from 'src/types';
+import { getRestaurantDetailRequest, pathcRestaurantRequest } from 'src/apis/restaurant';
 
-// component: 맛집 글쓰기 페이지 컴포넌트 //
-export default function TravelRestaurantWrite() {
+// component: 글쓰기 페이지 컴포넌트 //
+export default function TravelRestaurantUpdate() {
+
+  // state: 게시글번호 상태 //
+  const { travelFoodNumber } = useParams<{ travelFoodNumber: string }>();
 
   // state: cookie 상태 //
   const [cookies] = useCookies();
@@ -23,6 +28,9 @@ export default function TravelRestaurantWrite() {
   const [travelFoodContent, setTravelFoodContent] = useState<string>('');
   const [travelFoodPhotoList, setTravelFoodPhotoList] = useState<File[]>([]);
 
+  // state: 게시글 디테일 상태 //
+  const [travelFoodDetail, setTravelFoodDetail] = useState<RestaurantDetail>();
+
   // state: 사진 입력 참조 //
   const photoInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -30,13 +38,39 @@ export default function TravelRestaurantWrite() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   // variable: 등록 가능 여부 //
-  const isWriteComplete = travelFoodTitle && travelFoodHashtagContentList.length > 0 &&  travelLocation && travelFoodContent && travelFoodPhotoList.length !== 0;
+  const isWriteComplete = travelFoodTitle && travelFoodHashtagContentList.length > 0 && travelLocation && travelFoodContent && travelFoodPhotoList.length !== 0;
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
 
-  // function: post travelRestaurant response 처리 함수 //
-  const postTravelRestaurantResponse = (responseBody: ResponseDto | null) => {
+  // function: get travelFood detail response 처리 함수 //
+  const getTravelFoodDetailtResponse = (responseBody: GetRestaurantDetailResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelFoodNumber}`);
+      return;
+    }
+
+    const { travelFoodDetail } = responseBody as GetRestaurantDetailResponseDto;
+    setTravelFoodDetail(travelFoodDetail);
+    setTravelFoodTitle(travelFoodDetail.travelFoodTitle);
+    setTravelLocation(travelFoodDetail.travelLocathion);
+    setPreviewUrls(travelFoodDetail.travelFoodPhotoList);
+    setTravelFoodHashtagContentList(travelFoodDetail.travelFoodHashtagList);
+    setTravelFoodContent(travelFoodDetail.travelFoodContent);
+
+    convertUrlsToFiles(travelFoodDetail.travelFoodPhotoList).then(files => setTravelFoodPhotoList(files));
+  };
+
+  // function: patch travelFood detail response 처리 함수 //
+  const patchTravelFoodDetailResponse = (responseBody: ResponseDto | null) => {
     const message =
       !responseBody ? '서버에 문제가 있습니다.' :
         responseBody.code === 'VF' ? '모두 입력해주세요' :
@@ -46,11 +80,14 @@ export default function TravelRestaurantWrite() {
     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccessed) {
       alert(message);
+      navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelFoodNumber}`);
       return;
-    };
-    alert("등록이 완료되었습니다.")
-    navigator(TRAVEL_RESTAURANT_PATH);
-  };
+    }
+
+    if (!travelFoodNumber) return;
+    alert("등록이 완료되었습니다.");
+    navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelFoodNumber}`);
+  }
 
   // event handler: 제목 변경 이벤트 처리 //
   const travelFoodTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +100,7 @@ export default function TravelRestaurantWrite() {
     const maxLength = 10;
     const { value } = event.target;
     const filteredValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣\s]/g, '');
-    
+
     if (value.length <= maxLength) {
       setTravelFoodHashtagContent(filteredValue);
     } else {
@@ -126,7 +163,7 @@ export default function TravelRestaurantWrite() {
         alert("취소 되었습니다.");
       }
       return;
-    };
+    }
     const { files } = event.target;
     if (!files || files.length === 0) return;
     const file = files[0];
@@ -140,17 +177,18 @@ export default function TravelRestaurantWrite() {
   // event handler: 사진 제거 이벤트 처리 //
   const travelFoodPhotoListDeleteHandler = (index: number) => {
     setPreviewUrls(previewUrls.filter((_, i) => i !== index));
-    setTravelFoodPhotoList([]);
+    setTravelFoodPhotoList(travelFoodPhotoList.filter((_, i) => i !== index));
   };
 
-  // event handler: 등록 버튼 클릭 이벤트 처리 함수 //
-  const registerButtonClickHandler = async (path: string) => {
+  // event handler: 수정 버튼 클릭 이벤트 처리 함수 //
+  const updateButtonClickHandler = async (path: string) => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (!accessToken) return;
-    if (!travelFoodTitle || travelFoodHashtagContentList.length === 0 || !travelLocation || !travelFoodContent || travelFoodPhotoList.length === 0) {
+    if (!travelFoodNumber) return;
+    if (!travelFoodTitle || travelFoodHashtagContentList.length === 0 || !travelLocation || !travelFoodContent || !travelFoodPhotoList.length ) {
       alert('모두 입력해주세요.');
       return;
-    };
+    }
 
     if (!window.confirm("등록하시겠습니까?")) {
       alert("취소되었습니다.");
@@ -163,25 +201,38 @@ export default function TravelRestaurantWrite() {
       formData.append('file', file);
       const url = await fileUploadRequest(formData);
       if (url) travelFoodPhotoListUrl.push(url);
-    };
+    }
 
-    const requestBody: PostTravelFoodRequestDto = {
+    const requestBody: PatchTravelFoodRequestDto = {
       travelFoodPhotoList: travelFoodPhotoListUrl,
       travelFoodTitle,
       travelFoodHashtagContentList,
       travelLocation,
       travelFoodContent
     }
-    postRestaurantRequest(requestBody, accessToken).then(postTravelRestaurantResponse);
-  };
+    pathcRestaurantRequest(requestBody, travelFoodNumber, accessToken).then(patchTravelFoodDetailResponse);
+  }
 
   // event handler: 취소 버튼 클릭 이벤트 처리 함수 //
   const cancelButtonClickHandler = (path: string) => {
     if (window.confirm("글쓰기를 취소하시겠습니까?"))
       navigator(path);
-  };
+  }
 
-  // render: 맛집 글쓰기 페이지 컴포넌트 렌더링//
+  // effect: 첫 로드시 게시글 정보 불러오기 함수 //
+  useEffect(() => {
+    if (!travelFoodNumber) {
+      navigator(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelFoodNumber}`);
+      return;
+    }
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    getRestaurantDetailRequest(travelFoodNumber).then(getTravelFoodDetailtResponse);
+  }, [travelFoodNumber]);
+
+  // render: 글쓰기 페이지 컴포넌트 렌더링//
   return (
     <div id='main-write'>
       <div className='write-box'>
@@ -190,7 +241,7 @@ export default function TravelRestaurantWrite() {
           <div className='middle-hashtag-box'>
             {travelFoodHashtagContentList.map((tag, index) => (
               <div className='middle-hashtag' key={index} onClick={() => travelFoodHashtagContentDeleteHandler(index)}>
-                #{tag}
+                {'#' + tag}
               </div>
             ))}
             <input className='middle-hashtag-write' type='text' value={travelFoodHashtagContent} placeholder='태그 (최대 3개)' onChange={travelFoodHashtagContentChangeHandler} onKeyDown={travelFoodHashtagContentAddHandler} onBlur={travelFoodHashtagContentBlurHandler} />
@@ -210,12 +261,11 @@ export default function TravelRestaurantWrite() {
         </div>
         <div className='write-box-bottom'>
           <div className='bottom-button-box'>
-            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => registerButtonClickHandler(TRAVEL_RESTAURANT_PATH)}>등록</div>
-            <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(TRAVEL_RESTAURANT_PATH)}>취소</div>
+            <div className={`bottom-button-box-register ${isWriteComplete ? 'active' : ''}`} onClick={() => updateButtonClickHandler(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelFoodNumber}`)}>수정</div>
+            <div className='bottom-button-box-cancel' onClick={() => cancelButtonClickHandler(`${TRAVEL_RESTAURANT_DETAIL_PATH}/${travelFoodNumber}`)}>취소</div>
           </div>
         </div>
       </div>
     </div>
   )
 }
-

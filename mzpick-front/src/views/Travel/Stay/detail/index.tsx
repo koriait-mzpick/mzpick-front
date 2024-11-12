@@ -91,7 +91,6 @@ function Content() {
   const [travelStaySaveCount, setTravelStaySaveCount] = useState<number>(0);
   const [travelStayContent, setTravelStayContent] = useState<string>('');
   const [travelStayDate, setTravelStayDate] = useState<string>('');
-  const [detail, setDetail] = useState<StayDetail>();
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -140,11 +139,7 @@ function Content() {
   useEffect(() => {
     if (!travelStayNumber) return;
 
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
     postUpViewStayRequest(travelStayNumber).then();
-
     getStayDetailRequest(travelStayNumber).then(getTravelStayDetailtResponse);
   }, [travelStayNumber]);
 
@@ -371,6 +366,31 @@ function Comment() {
   // state: 댓글 입력 상태 //
   const [commentWrite, setCommentWrite] = useState<string>('');
 
+  // state: 게시글 디테일 상태 //
+  const [travelStayDetail, setTravelStayDetail] = useState<StayDetail>();
+
+  // state: 현재 로그인한 유저 아이디 //
+  const { signInUser } = useAuthStore();
+
+  // function: get travel detail response 처리 함수 //
+  const getTravelStayDetailtResponse = (responseBody: GetStayDetailResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+              responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      navigator(`${TRAVEL_STAY_DETAIL_PATH}/${travelStayNumber}`);
+      return;
+    }
+
+    const { travelStayDetail } = responseBody as GetStayDetailResponseDto;
+    setTravelStayDetail(travelStayDetail);
+  };
 
   // function: 댓글 리스트 요청 함수 //
   const getTravelStayCommentResponse = (responseBody: GetStayCommentResponseDto | ResponseDto | null) => {
@@ -446,10 +466,32 @@ function Comment() {
     navigator(TRAVEL_STAY_PATH);
   };
 
-  // function: 댓글 수정 이벤트 처리 함수 //
-  const travelStayUpdateHandler = () => {
-    // navigate();
+  // event handler: 게시글 수정 버튼 클릭 이벤트 처리 //
+  const updateButtonClickHandler = (path: string) => {
+    if (!travelStayNumber) return;
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    navigator(path);
   }
+
+    // event handler: 게시글 삭제 버튼 클릭 이벤트 처리 //
+    const deleteButtonClickHandler = () => {
+      if (window.confirm("정말로 삭제하시겠습니까?")) {
+        alert("삭제가 완료되었습니다.");
+      } else {
+        alert("취소되었습니다.");
+        return;
+      }
+  
+      if (!travelStayNumber) return;
+  
+      const accessToken = cookies[ACCESS_TOKEN];
+      if (!accessToken) return;
+  
+      deleteStayRequest(travelStayNumber, accessToken).then(deleteTravelStayDetailtResponse);
+    }
 
   // event handler: 댓글 입력 이벤트 처리 //
   const onClickcommentWriteChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -493,33 +535,13 @@ function Comment() {
     setCommentOpen(!commentOpen);
   }
 
-  // event handler: 삭제 버튼 클릭 이벤트 처리 //
-  const deleteButtonClickHandler = () => {
-    if (window.confirm("정말로 삭제하시겠습니까?")) {
-      alert("삭제가 완료되었습니다.");
-    } else {
-      alert("취소되었습니다.");
-      return;
-    }
-
-    if (!travelStayNumber) return;
-
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
-    deleteStayRequest(travelStayNumber, accessToken).then(deleteTravelStayDetailtResponse);
-  }
-
-  // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
-  const itemClickHandler = (path: string) => {
-    navigator(path);
-  }
-
   // effect: 댓글 리스트 요청 함수 //
   useEffect(() => {
     if (!travelStayNumber) return;
     console.log(travelStayNumber);
     console.log(commentList);
+
+    getStayDetailRequest(travelStayNumber).then(getTravelStayDetailtResponse);
     getStayCommentListRequest(travelStayNumber).then(getTravelStayCommentResponse);
   }, []);
 
@@ -528,10 +550,12 @@ function Comment() {
     <div id='comment-main'>
       <div className='comment-button-box'>
         <div className='comment-open-button' onClick={commentOpenHandler}>{commentOpen ? "댓글 닫기" : "댓글 열기"}</div>
+        {signInUser && travelStayDetail?.userId === signInUser.userId ? (
         <div className='comment-button-box-right'>
-          <div className='comment-update-button' onClick={() => itemClickHandler(`${TRAVEL_STAY_UPDATE_PATH}/${travelStayNumber}`)}>수정</div>
+          <div className='comment-update-button' onClick={() => updateButtonClickHandler(`${TRAVEL_STAY_UPDATE_PATH}/${travelStayNumber}`)}>수정</div>
           <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
         </div>
+        ) : null}
       </div>
       {commentOpen &&
         <div className='comment-detail'>
@@ -546,7 +570,9 @@ function Comment() {
             <div className='comment-detail-bottom' key={index}>
               <div className='comment-detail-writer'>
                 <div className='comment-detail-name'>{comment.userId}</div>
+                {signInUser && comment.userId === signInUser.userId ? (
                 <div className='comment-detail-delete-button' onClick={onclickcommentDeleteHandler(comment.travelStayCommentNumber)}>삭제</div>
+              ) : null}
               </div>
               <div className='comment-detail-text' style={{ wordBreak: 'break-word' }}>{comment.travelStayComment}</div>
             </div>

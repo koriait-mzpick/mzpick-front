@@ -105,7 +105,7 @@
 
 #main .photo-detail-contents{
     display: grid;
-    grid-template-columns: 20vw;
+    grid-template-columns: 20vw 20vw;
     grid-template-rows: repeat(2 1fr);
     align-items: center;
 
@@ -152,51 +152,52 @@
     border: 1px solid rgb(203, 193, 193);
     border-radius: 6px;
     
+    
     color: rgb(203, 193, 193);
    cursor: pointer;
 
 }
 
-#main .photo-detail-contents .photo-photo-box{
-    cursor: pointer;
-    display: grid;
-    grid-template-columns: 5vw 5vw;
-    grid-template-rows: repeat(2 1fr);
-    justify-content: center;  
-    
-    height: 15vw;
-    color: black;
-    background-color: rgb(232, 226, 226);
-    background-image: url(/public/image/add.png);
-    background-repeat: no-repeat;
-    background-size: 10%;
-    background-position: 50% 50%;
 
-    border-radius: 12px;
-}
 
-#main .photo-detail-contents .photo-photo-box .photo-photo{
+
+
+#main .photo-detail-contents .photo-photo{
     display: grid;
-    grid-template-columns: 5vw 5vw;
+    grid-template-columns: 5vw;
     grid-template-rows: repeat(2 1fr);
     justify-content: center;    
+    align-items: center;
     
-    height: 5vw;
-    color: black;
+
+    color: rgb(179, 172, 172);
+    font-size: 4rem;
+    padding-left: 42px;
+    
+    height: 15vw;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: 50% 50%;
+    background-color: rgb(235, 228, 228);
+    border: 1px solid rgb(235, 228, 228);
+    border-radius: 6px;
+
+    cursor: pointer;
 }
-#main .photo-detail-contents .photo-photo-box .photo-content-box{
+
+#main .photo-detail-contents .photo-content-box{
     display: grid;
     grid-template-columns: 20vw;
     grid-template-rows: repeat(2 1fr);
     justify-content: center;    
     align-items: center;
 
-    padding-left: 400px;
+    padding-left: 100px;
     padding-top: 40px;
     height: 10vw;
     color: black;
 }
-#main .photo-detail-contents .photo-photo-box .photo-content-box .photo-content{
+#main .photo-detail-contents .photo-content-box .photo-content{
     display: grid;
     grid-template-columns: 20vw;
     grid-template-rows: 1fr;

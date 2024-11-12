@@ -85,6 +85,7 @@ export default function TravelUpdate() {
     }
 
     if (!travelNumber) return;
+    alert("등록이 완료되었습니다.");
     navigator(`${TRAVEL_DETAIL_PATH}/${travelNumber}`);
   }
 
@@ -189,13 +190,10 @@ export default function TravelUpdate() {
       return;
     }
 
-    if (window.confirm("수정하시겠습니까?")) {
-      alert("수정이 완료되었습니다.");
-      navigator(path);
-    } else {
+    if (!window.confirm("등록하시겠습니까?")) {
       alert("취소되었습니다.");
       return;
-    }
+    };
 
     const travelPhotoListUrl: string[] = [];
     for (const file of travelPhotoList) {

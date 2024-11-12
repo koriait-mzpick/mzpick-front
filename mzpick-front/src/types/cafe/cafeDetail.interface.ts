@@ -1,13 +1,13 @@
 export default interface CafeDetail {
     travelCafeNumber: number;
-    travelLocathion: string;
+    travelLocation: string;
     userId: string;
     travelCafeTitle: string;
     travelCafeCategoryList: string[];
     travelCafePhotoList: string[];
     travelCafeHashtagList: string[];
     travelCafeLikeUserList: string[];
-    travelCafeSaveUSerList: string[];
+    travelCafeSaveUserList: string[];
     travelCafeLikeCount: number;
     travelCafeSaveCount: number;
     travelCafeView: number;

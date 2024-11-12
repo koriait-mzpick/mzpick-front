@@ -1,19 +1,36 @@
-import React, { ChangeEvent, MouseEvent, useState } from 'react'
+import React, { ChangeEvent, MouseEvent, useRef, useState } from 'react'
 import './style.css';
 import { useNavigate, useParams } from 'react-router';
-import { ACCESS_TOKEN, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
 import { useSearchParams } from 'react-router-dom';
 import { ResponseDto } from 'src/apis/dto/response';
 import { postTravelVoteRequest } from 'src/apis/vote';
 import { PostTravelVoteRequestDto } from 'src/apis/vote/travel_vote/dto/request';
+import axios from 'axios';
+import { MZPICK_API_DOMAIN, responseDataHandler } from 'src/apis';
 
+// function: file upload 요청 함수 //
+const FILE_UPLOAD_URL = `${MZPICK_API_DOMAIN}/file/upload`;
+
+const multipart = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+export const fileUploadRequest =  async (requestBody: FormData) => {
+  const url = await axios.post(FILE_UPLOAD_URL, requestBody, multipart)
+  .then(responseDataHandler<string>)
+  .catch(error => null);
+  return url;
+};
 
 export default function VoteDoublePhoto() {
 
+    // state: 경로 이동 핸들러 //
+    const onClickPathChangeHandler = () => {
+        navigator(VOTE_DETAILPHOTOPATH);
+    }
 
     const onClickSecondNavigator = () => {
-        navigator(VOTE_DETAILPATH)
+        navigator(VOTE_WRITEPATH)
     }
 
     const onClicVoteCancelNavigator = () => {
@@ -24,6 +41,13 @@ export default function VoteDoublePhoto() {
     // state: 파람값 상태 //
    const { travelTitle } = useParams();
 
+   // state: 이미지 입력 참조 //
+   const imageInputRef = useRef<HTMLInputElement|null>(null);
+   const imageSecondInputRef = useRef<HTMLInputElement|null>(null);
+
+   // state: 프로필 미리보기 url 상태 //
+   const [previewUrl, setPreviewUrl] = useState<string>('');
+   const [previewUrlTwo, setPreviewUrlTwo] = useState<string>('');
 
    // state: 제목 입력 상태 //
    const [title, setTitle] = useState<string>('');
@@ -43,7 +67,67 @@ export default function VoteDoublePhoto() {
    // state: 네비게이터 경로 이동 상태 //
    const navigator = useNavigate();
 
-   
+   // state: 사진 업로드 상태 //
+   const [votePhoto, setVotePhoto] = useState<string>('');
+   const [voteSecondPhoto, setVoteSecondPhoto] = useState<string>('');
+   // state: 프로필 이미지 상태 //
+   const [voteProfileImageFile, setVoteProfileImageFile] = useState<File|null>(null);
+   const [voteSecondProfileImageFile, setVoteSecondProfileImageFile] = useState<File|null>(null);
+
+
+
+   // event handler: 프로필 이미지 클릭 이벤트 처리 //
+   const onProfileImageClickHandler = () => {
+    const { current } = imageInputRef;
+    if (!current) return;
+    current.click();
+    console.log(imageInputRef);
+};
+   // event handler: 프로필 두 번째 이미지 클릭 이벤트 처리 //
+   const onSecondProfileImageClickHandler = () => {
+    const { current } = imageSecondInputRef;
+    if (!current) return;
+    current.click();
+    console.log(imageSecondInputRef);
+};
+
+// event handler: 이미지 변경 이벤트 처리 함수 //
+const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    if (!files || !files?.length) return;
+
+    const file = files[0];
+    setVoteProfileImageFile(file);
+
+    
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    const newFiles = URL.createObjectURL(file);
+    fileReader.onloadend = () => {
+        setPreviewUrl(fileReader.result as string);
+        setPreviewUrl(newFiles);
+    };
+};
+// event handler: 이미지 두 번째 변경 이벤트 처리 함수 //
+const onSecondImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    if (!files || !files?.length) return;
+
+    const file = files[0];
+    setVoteSecondProfileImageFile(file);
+
+    
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    const newFiles = URL.createObjectURL(file);
+    fileReader.onloadend = () => {
+        setPreviewUrlTwo(fileReader.result as string)
+        setPreviewUrlTwo(newFiles);
+    };
+};
+
+
+
    // function: post vote write response 처리 함수 //
  const postVoteWriteResponse = (responseBody: ResponseDto | null) => {
    const message = 
@@ -88,7 +172,7 @@ export default function VoteDoublePhoto() {
        setContentSecond(value);
    }
 
-   const onClickPostHandler = (event:MouseEvent<HTMLDivElement>) => {
+   const onClickPostHandler = async (event:MouseEvent<HTMLDivElement>) => {
        const accessToken = cookies[ACCESS_TOKEN];
        if (accessToken) {
       
@@ -97,11 +181,25 @@ export default function VoteDoublePhoto() {
 
        }    
 
+       let url: string | null = null;
+      if (voteProfileImageFile) {
+          const formData = new FormData();
+          formData.append('file', voteProfileImageFile);
+          url = await fileUploadRequest(formData);
+      }
+
+       let urlSecond: string | null = null;
+      if (voteSecondProfileImageFile) {
+          const formData = new FormData();
+          formData.append('file', voteSecondProfileImageFile);
+          urlSecond = await fileUploadRequest(formData);
+      }
+
 
        const requestBody: PostTravelVoteRequestDto = {
            travelVoteTitle: title,
-           travelVotePhoto1: null,
-           travelVotePhoto2: null,
+           travelVotePhoto1: url,
+           travelVotePhoto2: urlSecond,
            travelVoteChoice1: content,
            travelVoteChoice2: contentSeoncd
        };
@@ -124,19 +222,21 @@ export default function VoteDoublePhoto() {
         </div>
       </div>
         <div className='double-photochoice'>
-            <div className='photo-choice-one' onClick={onClickNavigator}>1</div>
+            <div className='photo-choice-one' onClick={onClickPathChangeHandler}>1</div>
             <div className='photo-choice-two'>2</div>
         </div>
 
         <div className='doubledetail-contents'>
-            <div className='photos-one'>
-                <div className='photo-one'></div>
+            <div className='photos-one' >
+                <div className='photo-one' style={{backgroundImage:`url(${previewUrl})`}}  onClick={onProfileImageClickHandler}>+</div>
+                <input className='photo-input' ref={imageInputRef} style={{display:'none'}} type='file' accept='image/*' onChange={onImageInputChangeHandler}/>
                 <div className='double-input'>
                     <input className='double-content' placeholder='내용을 입력하세요.' value={content} onChange={onContentHandler}></input>
                 </div>
             </div>
             <div className='photos-two'>
-                <div className='photo-two'></div>
+                <div className='photo-two' style={{backgroundImage:`url(${previewUrlTwo})`}} onClick={onSecondProfileImageClickHandler}>+</div>
+                <input className='photo-input' ref={imageSecondInputRef} style={{display:'none'}} type='file' accept='image/*' onChange={onSecondImageInputChangeHandler}/>
                 <div className='double-input'>
                     <input className='double-content' placeholder='내용을 입력하세요.' value={contentSeoncd} onChange={onContentSecondHandler}></input>
                 </div>

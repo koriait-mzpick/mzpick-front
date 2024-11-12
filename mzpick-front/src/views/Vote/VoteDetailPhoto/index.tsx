@@ -1,25 +1,43 @@
 
-import React, { ChangeEvent, MouseEvent, useState } from 'react'
+import React, { ChangeEvent, MouseEvent, useRef, useState } from 'react'
 import './style.css';
 import { useNavigate, useParams } from 'react-router';
 import VoteDetail from '../VoteDetail';
-import { ACCESS_TOKEN, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
 import { useSearchParams } from 'react-router-dom';
 import { ResponseDto } from 'src/apis/dto/response';
 import { postTravelVoteRequest } from 'src/apis/vote';
 import { PostTravelVoteRequestDto } from 'src/apis/vote/travel_vote/dto/request';
+import { MZPICK_API_DOMAIN, responseDataHandler } from 'src/apis';
+import axios from 'axios';
 
+
+// function: file upload 요청 함수 //
+const FILE_UPLOAD_URL = `${MZPICK_API_DOMAIN}/file/upload`;
+
+const multipart = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+export const fileUploadRequest =  async (requestBody: FormData) => {
+  const url = await axios.post(FILE_UPLOAD_URL, requestBody, multipart)
+  .then(responseDataHandler<string>)
+  .catch(error => null);
+  return url;
+};
 
 export default function VoteDetailPhoto() {
-  
+
+
+  // variable: 기본 프로필 이미지 URL //
+  const defaultProfileImageUrl = 'https://blog.kakaocdn.net/dn/4CElL/btrQw18lZMc/Q0oOxqQNdL6kZp0iSKLbV1/img.png'
+
  
   const onClickSecondNavigator = () => {
     navigator(VOTE_DOUBLEPHOTOPATH);
   }
 
   const onClicVoteNavigator = () => {
-    navigator(VOTE_DETAILPATH)
+    navigator(VOTE_WRITEPATH)
   }
   const onClicVoteCancelNavigator = () => {
     const isConfirm = window.confirm('나가시겠습니까?')
@@ -30,9 +48,16 @@ export default function VoteDetailPhoto() {
    // state: 파람값 상태 //
    const { travelTitle } = useParams();
 
+   // state: 이미지 입력 참조 //
+   const imageInputRef = useRef<HTMLInputElement|null>(null);
+
+   // state: 프로필 미리보기 url 상태 //
+   const [previewUrl, setPreviewUrl] = useState<string>('');
 
    // state: 제목 입력 상태 //
    const [title, setTitle] = useState<string>('');
+   // state: 사진 업로드 상태 //
+   const [votePhoto, setVotePhoto] = useState<string>('');
    // state: 내용 입력 상태 //
    const [content, setContent] = useState<string>('');
    const [contentSeoncd, setContentSecond] = useState<string>('');
@@ -48,6 +73,48 @@ export default function VoteDetailPhoto() {
 
    // state: 네비게이터 경로 이동 상태 //
    const navigator = useNavigate();
+
+   // state: 프로필 이미지 상태 //
+   const [profileImageFile, setProfileImageFile] = useState<File|null>(null);
+   // state: 게시글 상태 //
+  const [travelVotePhotoList, setTravelVotePhotoList] = useState<File[]>([]);
+
+  // state: 사진 미리보기 URL 상태 //
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
+   
+
+
+   // event handler: 프로필 이미지 클릭 이벤트 처리 //
+   const onProfileImageClickHandler = () => {
+    const { current } = imageInputRef;
+    if (!current) return;
+    current.click();
+    console.log(imageInputRef);
+};
+
+// event handler: 이미지 변경 이벤트 처리 함수 //
+const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    if (!files || !files?.length) return;
+
+    const file = files[0];
+    setProfileImageFile(file);
+
+    // const newFiles = { ...travelVotePhotoList, file}
+    // const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file));
+    // setTravelVotePhotoList(newFiles);
+    // setPreviewUrls(newPreviewUrls);
+    // console.log('file' + newFiles, 'preview' + newPreviewUrls);
+
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    const newFiles = URL.createObjectURL(file);
+    fileReader.onloadend = () => {
+        setPreviewUrl(fileReader.result as string);
+        setPreviewUrl(newFiles);
+    };
+};
 
    
    // function: post vote write response 처리 함수 //
@@ -94,7 +161,7 @@ export default function VoteDetailPhoto() {
        setContentSecond(value);
    }
 
-   const onClickPostHandler = (event:MouseEvent<HTMLDivElement>) => {
+   const onClickPostHandler = async () => {
        const accessToken = cookies[ACCESS_TOKEN];
        if (accessToken) {
       
@@ -103,10 +170,17 @@ export default function VoteDetailPhoto() {
 
        }    
 
+      let url: string | null = null;
+      if (profileImageFile) {
+          const formData = new FormData();
+          formData.append('file', profileImageFile);
+          url = await fileUploadRequest(formData);
+      }
+
 
        const requestBody: PostTravelVoteRequestDto = {
            travelVoteTitle: title,
-           travelVotePhoto1: null,
+           travelVotePhoto1: url,
            travelVotePhoto2: null,
            travelVoteChoice1: content,
            travelVoteChoice2: contentSeoncd
@@ -137,13 +211,13 @@ export default function VoteDetailPhoto() {
           </div>
           </div>
         <div className='photo-detail-contents'>
-          <div className='photo-photo-box'>
-            <div className='photo-photo'></div>
+
+            <div className='photo-photo' style={{ backgroundImage: `url(${previewUrl})` }} onClick={onProfileImageClickHandler}>+</div>
+              <input className='photo-input' ref={imageInputRef} style={{display:'none'}} type='file' accept='image/*' onChange={onImageInputChangeHandler}/>
             <div className='photo-content-box'>
               <input className='photo-content' placeholder='내용을 입력하세요.' value={content} onChange={onContentHandler}></input>
               <input className='photo-content' placeholder='내용을 입력하세요.' value={contentSeoncd} onChange={onContentSecondHandler}></input>
             </div>
-          </div>
         </div>
 
         <div className='photo-detail-buttons'>

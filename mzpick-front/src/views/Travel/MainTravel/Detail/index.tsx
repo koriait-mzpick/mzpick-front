@@ -91,7 +91,6 @@ function Content() {
   const [travelSaveCount, setTravelSaveCount] = useState<number>(0);
   const [travelContent, setTravelContent] = useState<string>('');
   const [travelDate, setTravelDate] = useState<string>('');
-  const [detail, setDetail] = useState<TravelDetail>();
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -113,8 +112,6 @@ function Content() {
     }
 
     const { travelDetail } = responseBody as GetTravelDetailResponseDto;
-    console.log(travelDetail.userId);
-    console.log(detail);
     setTravelDetail(travelDetail);
     setUserId(travelDetail.userId);
     setTravelTitle(travelDetail.travelTitle);
@@ -142,11 +139,7 @@ function Content() {
   useEffect(() => {
     if (!travelNumber) return;
 
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
     postUpViewTravelRequest(travelNumber).then();
-
     getTravelDetailRequest(travelNumber).then(getTravelDetailtResponse);
   }, [travelNumber]);
 
@@ -369,10 +362,10 @@ function Comment() {
 
   // state: 댓글 리스트 상태 //
   const [commentList, setCommentList] = useState<TravelComment[]>([]);
-  
+
   // state: 댓글 입력 상태 //
   const [commentWrite, setCommentWrite] = useState<string>('');
-  
+
   // state: 게시글 디테일 상태 //
   const [travelDetail, setTravelDetail] = useState<TravelDetail>();
 
@@ -557,12 +550,12 @@ function Comment() {
     <div id='comment-main'>
       <div className='comment-button-box'>
         <div className='comment-open-button' onClick={commentOpenHandler}>{commentOpen ? "댓글 닫기" : "댓글 열기"}</div>
-          {signInUser && travelDetail?.userId === signInUser.userId ? (
-        <div className='comment-button-box-right'>
-          <div className='comment-update-button' onClick={() => updateButtonClickHandler(`${TRAVEL_UPDATE_PATH}/${travelNumber}`)}>수정</div>
-          <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
-        </div>
-          ) : null }
+        {signInUser && travelDetail?.userId === signInUser.userId ? (
+          <div className='comment-button-box-right'>
+            <div className='comment-update-button' onClick={() => updateButtonClickHandler(`${TRAVEL_UPDATE_PATH}/${travelNumber}`)}>수정</div>
+            <div className='comment-delete-button' onClick={deleteButtonClickHandler}>삭제</div>
+          </div>
+        ) : null}
       </div>
       {commentOpen &&
         <div className='comment-detail'>
@@ -578,8 +571,8 @@ function Comment() {
               <div className='comment-detail-writer'>
                 <div className='comment-detail-name'>{comment.userId}</div>
                 {signInUser && comment.userId === signInUser.userId ? (
-                <div className='comment-detail-delete-button' onClick={onclickcommentDeleteHandler(comment.travelCommentNumber)}>삭제</div>
-              ) : null }
+                  <div className='comment-detail-delete-button' onClick={onclickcommentDeleteHandler(comment.travelCommentNumber)}>삭제</div>
+                ) : null}
               </div>
               <div className='comment-detail-text' style={{ wordBreak: 'break-word' }}>{comment.travelComment}</div>
             </div>
