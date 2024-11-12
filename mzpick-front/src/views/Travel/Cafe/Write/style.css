@@ -65,7 +65,7 @@
     align-items: center;
     width: 670px;
     height: 50px;
-    padding: 0px 0px 0px 30px;
+    padding-left: 30px;
     border-radius: 10px;
     gap: 10px;
     background-color: rgba(250, 250, 250, 1);
@@ -84,7 +84,7 @@
 }
 
 #main-write .write-box .write-box-middle .middle-hashtag-box .middle-hashtag-write {
-    width: 150px;
+    width: 300px;
     padding: 0px;
 }
 

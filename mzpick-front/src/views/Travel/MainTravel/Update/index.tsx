@@ -21,13 +21,15 @@ export default function TravelUpdate() {
   const [cookies] = useCookies();
 
   // state: 게시글 인풋 상태 //
-  const [travelDetail, setTravelDetail] = useState<TravelDetail>();
   const [travelTitle, setTravelTitle] = useState<string>('');
   const [travelHashtagContent, setTravelHashtagContent] = useState<string>('');
   const [travelHashtagContentList, setTravelHashtagContentList] = useState<string[]>([]);
   const [travelLocation, setTravelLocation] = useState<string>('');
   const [travelContent, setTravelContent] = useState<string>('');
   const [travelPhotoList, setTravelPhotoList] = useState<File[]>([]);
+
+  // state: 게시글 디테일 상태 //
+  const [travelDetail, setTravelDetail] = useState<TravelDetail>();
 
   // state: 사진 입력 참조 //
   const photoInputRef = useRef<HTMLInputElement | null>(null);

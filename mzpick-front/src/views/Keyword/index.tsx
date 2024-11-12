@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { GetKeyWordResponseDto } from 'src/apis/keyword/dto/response';
 import { useAuthStore } from 'src/stores';
 import { API_URL } from '../../constants';
 import type { Keyword } from '../../types';
 import './style.css';
-import { GetKeyWordResponseDto } from 'src/apis/keyword/dto/response';
 
 export default function Keyword() {
 
@@ -14,9 +14,7 @@ export default function Keyword() {
   const [inputValue, setInputValue] = useState('');
   const { signInUser } = useAuthStore();
 
-  useEffect(() => {
-    console.log('쿠키에서 가져온 accessToken:', cookies.accessToken);
-  }, [cookies]);
+  // useEffect(() => {}, [cookies]);
 
   // function: 키워드 패치 함수 //
   const fetchAllKeywords = async () => {

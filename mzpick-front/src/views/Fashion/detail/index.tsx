@@ -1,23 +1,22 @@
-import React, { useEffect, useState, MouseEvent, ChangeEvent, KeyboardEvent } from 'react'
-import './style.css';
+import { NavigateBefore as NavigateBeforeIcon, NavigateNext as NavigateNextIcon } from '@mui/icons-material';
+import { SvgIcon } from '@mui/material';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ResponseDto } from 'src/apis/dto/response';
 import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ACCESS_TOKEN, FASHION_ABSOLUTE_UPDATE_PATH, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_UPDATE_PATH, TRAVEL_PATH } from 'src/constants';
-import { useCookies } from 'react-cookie';
-import { getTravelCommentListRequest, getTravelDetailRequest } from 'src/apis/travel';
-import { SvgIcon } from '@mui/material';
-import { NavigateNext as NavigateNextIcon, NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
+import { ACCESS_TOKEN, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_UPDATE_PATH } from 'src/constants';
+import './style.css';
 // slider
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { GetFashionCommentResponseDto, GetFashionDetailResponseDto, GetFashionLikeListResponseDto, GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
+import "slick-carousel/slick/slick.css";
 import { deleteFashionCommentRequest, deleteFashionRequest, getFashionCommentListRequest, getFashionDetailRequest, getFashionLikeListRequest, getFashionSaveListRequest, postFashionCommentRequest, postUpViewFashionRequest, putFashionLikeRequest, putFashionSaveRequest } from 'src/apis/fashion';
+import { PostFashionCommentRequestDto } from 'src/apis/fashion/dto/request';
+import { GetFashionCommentResponseDto, GetFashionDetailResponseDto, GetFashionLikeListResponseDto, GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
+import { useAuthStore } from 'src/stores';
 import { FashionComment, FashionDetail } from 'src/types';
 import styled from "styled-components";
-import { useAuthStore } from 'src/stores';
-import { PostFashionCommentRequestDto } from 'src/apis/fashion/dto/request';
 
 //function 이미지 슬라이드 컴포넌트 //
 function CarouselComponent({ photoList }: { photoList: string[] }) { 
@@ -177,7 +176,7 @@ function Content() {
         <div className='contents-information-left'>
           <div className='contents-information-hashtag'>
             {fashionHashtagList.map((hashtag: string, index: number) => (
-              <div key={index} className='board-tag-item'>{hashtag}</div>
+              <div key={index} className='board-tag-item'>#{hashtag}</div>
             ))}
 
           </div>
@@ -197,7 +196,7 @@ function Content() {
   )
 }
 
-//function 저장 //
+//function: 저장 //
 function Save() {
 
   // state: 쿠키상태 //
@@ -386,6 +385,33 @@ function Comment() {
   // state: 댓글 입력 상태 //
   const [commentWrite, setCommentWrite] = useState<string>('');
 
+  // state: 게시글 디테일 상태 //
+  const [fashionDetail, setFashionDetail] = useState<FashionDetail>();
+
+    // state: 현재 로그인한 유저 아이디 //
+    const { signInUser } = useAuthStore();
+
+      // function: get travel detail response 처리 함수 //
+  const getFashionDetailtResponse = (responseBody: GetTravelDetailResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+              responseBody.code === 'NB' ? '해당 게시물이 존재하지 않습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      navigate(`${FASHION_DETAIL_PATH}/${fashionNumber}`);
+      return;
+    }
+
+    const { fashionDetail } = responseBody as GetFashionDetailResponseDto;
+    setFashionDetail(fashionDetail);
+  };
+
+
   // function: 댓글 리스트 요청 함수 //
   const getFashionCommentResponse = (responseBody: GetFashionCommentResponseDto | ResponseDto | null) => {
     const message =
@@ -460,13 +486,24 @@ function Comment() {
     navigate(FASHION_PATH);
   }
 
-  // function: 댓글 수정 이벤트 처리 함수 //
-  const fashionUpdateHandler = () => {
-    // navigate();
+  // event handler: 게시글 수정 이벤트 처리 함수 //
+  const fashionUpdateHandler = (path: string) => {
+    if (!fashionNumber) return;
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    navigate(path);
   }
 
-  // function: 댓글 삭제 이벤트 처리 함수 //
+  // event handler: 게시글 삭제 이벤트 처리 함수 //
   const fashionDeleteHandler = () => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      alert("삭제가 완료되었습니다.");
+    } else {
+      alert("취소되었습니다.");
+      return;
+    }
     const accessToken = cookies[ACCESS_TOKEN];
     if(!fashionNumber) return;
     if(!accessToken) return;
@@ -520,6 +557,8 @@ function Comment() {
     if (!fashionNumber) return;
     console.log(fashionNumber);
     console.log(commentList);
+
+    getFashionDetailRequest(fashionNumber).then(getFashionDetailtResponse);
     getFashionCommentListRequest(fashionNumber).then(getFashionCommentResponse);
   }, []);
 
@@ -527,13 +566,13 @@ function Comment() {
   return (
     <div id='comment-main'>
       <div className='comment-button-box'>
-        <div className='comment-open-button' onClick={commentOpenHandler}>
-          {commentOpen ? "댓글 닫기" : "댓글 열기"}
-        </div>
+        <div className='comment-open-button' onClick={commentOpenHandler}>{commentOpen ? "댓글 닫기" : "댓글 열기"}</div>
+        {signInUser && fashionDetail?.userId === signInUser.userId ? (
         <div className='comment-button-box-right'>
-          <div className='comment-update-button' onClick={fashionUpdateHandler}>수정</div>
+          <div className='comment-update-button' onClick={() => fashionUpdateHandler(`${FASHION_UPDATE_PATH}/${fashionNumber}`)}>수정</div>
           <div className='comment-delete-button' onClick={fashionDeleteHandler}>삭제</div>
         </div>
+        ) : null }
       </div>
       {commentOpen &&
         <div className='comment-detail'>
@@ -548,7 +587,9 @@ function Comment() {
             <div className='comment-detail-bottom' key={index}>
               <div className='comment-detail-writer'>
                 <div className='comment-detail-name'>{comment.userId}</div>
+                {signInUser && comment.userId === signInUser.userId ? (
                 <div className='comment-detail-delete-button' onClick={onclickcommentDeleteHandler(comment.fashionCommentNumber)}>삭제</div>
+              ) : null }
               </div>
               <div className='comment-detail-text' style={{ wordBreak: 'break-word' }}>{comment.fashionComment}</div>
             </div>

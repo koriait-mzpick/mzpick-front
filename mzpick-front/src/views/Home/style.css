@@ -113,7 +113,7 @@
 }
 
 #home .home-category .category-container .travel-category {
-    background-image: url(/public/image/TravelImage.png);
+    background-image: url(/public/image/travel.jpg);
     line-height: 700px;
     object-fit: scale-down;
     background-size: cover;
@@ -129,7 +129,7 @@
 } */
 
 #home .home-category .category-container .fashion-category {
-    background-image: url(/public/image/fashionimage.png);
+    background-image: url(/public/image/fashion.png);
     line-height: 700px;
     object-fit: scale-down;
     background-size: cover;
