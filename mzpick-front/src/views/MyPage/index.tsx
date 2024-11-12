@@ -529,7 +529,6 @@ function Save() {
     };
     getCafeSaveList();
     savesetPageList(pageList);
-    
   }, [savecurrentSection, savetotalPage]);
 
   return (
