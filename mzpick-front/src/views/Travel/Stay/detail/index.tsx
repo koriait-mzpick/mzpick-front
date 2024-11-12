@@ -1,22 +1,22 @@
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
-import './style.css';
-import { ResponseDto } from 'src/apis/dto/response';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ACCESS_TOKEN, TRAVEL_STAY_DETAIL_PATH, TRAVEL_STAY_PATH, TRAVEL_STAY_UPDATE_PATH } from 'src/constants';
-import { useCookies } from 'react-cookie';
-import { StayDetail } from 'src/types';
+import { NavigateBefore as NavigateBeforeIcon, NavigateNext as NavigateNextIcon } from '@mui/icons-material';
 import { SvgIcon } from '@mui/material';
-import { NavigateNext as NavigateNextIcon, NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ResponseDto } from 'src/apis/dto/response';
+import { ACCESS_TOKEN, TRAVEL_STAY_DETAIL_PATH, TRAVEL_STAY_PATH, TRAVEL_STAY_UPDATE_PATH } from 'src/constants';
+import { StayDetail } from 'src/types';
+import './style.css';
 // slider
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import styled from 'styled-components';
-import { useAuthStore } from 'src/stores';
-import { GetStayCommentResponseDto, GetStayDetailResponseDto, GetStayLikeListResponseDto, GetStaySaveListResponseDto } from 'src/apis/stay/dto/response';
+import "slick-carousel/slick/slick.css";
 import { deleteStayCommentRequest, deleteStayRequest, getStayCommentListRequest, getStayDetailRequest, getStayLikeListRequest, getStaySaveListRequest, postStayCommentRequest, postUpViewStayRequest, putStayLikeRequest, putStaySaveRequest } from 'src/apis/stay';
+import { PostTravelStayCommentRequestDto } from 'src/apis/stay/dto/request';
+import { GetStayCommentResponseDto, GetStayDetailResponseDto, GetStayLikeListResponseDto, GetStaySaveListResponseDto } from 'src/apis/stay/dto/response';
+import { useAuthStore } from 'src/stores';
 import { StayComment } from 'src/types/stay/stayComment.interface';
-import { PostTravelStayCommentRequestDto } from 'src/apis/stay/dto/request'; 
+import styled from 'styled-components';
 
 // const [travelPhotoList, setTravelPhotoList] = useState<string[]>([]);
 
@@ -52,8 +52,10 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {  // Fixed p
     }
     .contents-image-item {
       margin: 0 auto;
-      max-width: 100%;
-      max-height: 500px; 
+      width: 100%
+      height: 1000px
+      max-width: 100%
+      max-height: 1500px; 
       object-fit: contain;
     }
   `;
