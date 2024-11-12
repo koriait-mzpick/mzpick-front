@@ -120,8 +120,8 @@ export const putTravelVoteClickRequest = async (travelVoteNumber:number | string
 }
 
 //function: Travel vote 투표 결과 요청 함수
-export const getTravelVoteTotalRequest = async (TravelVoteNumber: number | string) => {
-    const responseBody = await axios.get (GET_TRAVEL_VOTE_TOTAL_API_URL,{params: {TravelVoteNumber}})
+export const getTravelVoteTotalRequest = async (travelVoteNumber: number | string) => {
+    const responseBody = await axios.get (GET_TRAVEL_VOTE_TOTAL_API_URL,{params: {travelVoteNumber}})
         .then(responseDataHandler<GetTravelVoteTotalResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;

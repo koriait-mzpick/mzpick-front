@@ -1,4 +1,4 @@
 export default interface TravelVoteTotal {
-    choice : string;
-    count : number | string
+    userId : string;
+    selected : string;
 }

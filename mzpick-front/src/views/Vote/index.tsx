@@ -15,63 +15,32 @@ import { GetTravelListResponseDto } from 'src/apis/travel/dto/response';
 import DefaultImage from './resources/vote-default-image.png';
 import { red } from '@mui/material/colors';
 import { count } from 'console';
+import { styled } from 'styled-components';
+import { useAuthStore } from 'src/stores';
 
 function FirstCheckVote ({voteNumber, onModalClose}: { voteNumber: number; onModalClose : () => void}){
+  const { signInUser } = useAuthStore();
   const [cookies] = useCookies();
   const [voteTotal, setVoteTotal] = useState<TravelVoteTotal[]>([]);
 
-const[,setNonePhotomodal]=useState<boolean>();
-const{travelVoteNumber}  = useParams<{travelVoteNumber: string}>(); 
   const accessToken = cookies[ACCESS_TOKEN];
   
   const [check, setCheck] = useState<boolean>(false);
   const [secondCheck, setSecondCheck] = useState<boolean>(false);
 
-  // state: 체크 표시 상태 //
-  const [selectNumber, setSelectNumber] = useState<number>(0);
-
   // state: 퍼센트바 상태 //
-  const [persentage, setPersentage] = useState<number>(0);
+  const [num, setNum] = useState<number>(0);
+  const [maxNum, setMaxNum] = useState<number>(0);
 
-
-  const onSelectHandler = (userSelectNumber: number) => {
-    setSelectNumber(userSelectNumber);
-
-
-    putTravelVoteClickRequest(voteNumber, userSelectNumber, accessToken);
-    // console.log(selectNumber);
-  }
-
-  const onVoteTotalHandler = (userSelectNumber: number) => {
-    // if (userSelectNumber === 1) return;
-     
-    setVoteTotal(voteTotal);
-    putTravelVoteClickRequest(voteNumber, userSelectNumber, accessToken);
-    console.log(voteTotal);
-  }
-
-  const onPersentageHandler = () => {
-    const exp = 246;
-  }
-    
-  const onClickCheckHandler = () => {
-    if(secondCheck == false){
-      setCheck(!check);
-    } else if(secondCheck == true){
-      setSecondCheck(!secondCheck)
-      setCheck(!check)
-    }
+  const firstPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === '간다').length / voteTotal.length) * 100 : 0;
+  const secondPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === '안간다').length / voteTotal.length) * 100 : 0;
+  const totalCount = voteTotal.length ? (voteTotal.filter(item => item.selected === '간다').length + voteTotal.filter(item => item.selected === '안간다').length) : 0;
 
   
-  }
-
-  const onClickSecondCheckHandler = () => {
-    if(check == false){
-      setSecondCheck(!secondCheck);
-    } else if(check == true){
-      setCheck(!check);
-      setSecondCheck(!secondCheck);
-    }
+  
+    
+  const onClickCheckHandler = (selectNumber: string | number) => {
+    putTravelVoteClickRequest(voteNumber, selectNumber, accessToken).then(putTravelVoteClickResponse)
   }
 
   // const onClickVoteTotalHandler = (userSelectNumber: number[]) => {
@@ -80,9 +49,59 @@ const{travelVoteNumber}  = useParams<{travelVoteNumber: string}>();
   //     setVoteTotal(voteTotal);
    
   // }
+   // function: 투표 선택 불러오기 함수 //
+   const getTravelVoteTotalList= () => {
+    if (!voteNumber) return;
+    getTravelVoteTotalRequest(voteNumber).then(getTravelVotetotalResponse);
+  };
+
+
+  // function: get travelVote total response 처리 함수 //
+  const getTravelVotetotalResponse = (responseBody: GetTravelVoteTotalResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '모두 입력해주세요' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    };
+
+    const { voteResults } = responseBody as GetTravelVoteTotalResponseDto;
+    setVoteTotal(voteResults);
+  };
+
+  // function:  투표 클릭 response 함수//
+  const putTravelVoteClickResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '모두 입력해주세요' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    };
+
+    getTravelVoteTotalList();
+  }
+
+  
+  useEffect(()=>{
+    getTravelVoteTotalList();
+  },[])
+
+  useEffect(() => {
+  }, [voteTotal])
 
   return (
     <div>
+      
      {/* {nonePhotomodal && */}
         <div className='vote-nonephoto-modal'>
           <div className='close-main'>
@@ -92,25 +111,32 @@ const{travelVoteNumber}  = useParams<{travelVoteNumber: string}>();
           <div className='vote-modal-main'>
             
             <div className='modal-main-box'>
-              <div className='modal-text-two' onClick={onClickCheckHandler}>
+                  <div className='total-list'>
+                    <div className='total-vote'>합계:{totalCount}표</div>
+                  </div>
+              <div className='modal-text-two' onClick={() => onClickCheckHandler(1)}>
                 
-                <div className='modal-text-all' onClick={() => onSelectHandler(1)}>
-                  <div className='modal-first-text' style={{cursor:'pointer'}} onClick={() => onVoteTotalHandler(1)}>간다</div>
-                  <div className='modal-first-text-two' style={{cursor:'pointer'}}>0%</div>
+                <div className='modal-text-all'>
+                  <div>간다</div>
+                  <div>{firstPercent}%</div>
+                  <div className='process-bar' style={{ width: `${firstPercent}%` }}></div>
                 </div>
-                {check &&
+                {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === '간다') &&
 
                 <div className='modal-first-cehck' style={{cursor:'pointer'}}></div> 
                 
                 } 
               </div>  
               
-              <div className='modal-text' onClick={onClickSecondCheckHandler}>
-                <div className='modal-text-all-two' onClick={() => onSelectHandler(2)}>
-                  <div className='modal-second-text' style={{cursor:'pointer'}} >안 간다</div>
-                  <div className='modal-second-text-two' style={{cursor:'pointer'}}>50%</div>
+              <div className='modal-text' onClick={() => onClickCheckHandler(2)}>
+                <div className='modal-text-all-two'>
+                  <div>안 간다</div>
+                  <div>{secondPercent}%</div>
+                  <div className='process-bar-second' style={{ width: `${secondPercent}%` }}></div>
+                  {/* <div className='modal-second-text' style={{cursor:'pointer', width: `${secondPercent}%`}} >안 간다</div>
+                  <div className='modal-second-text-two' style={{cursor:'pointer'}}>{secondPercent}%</div> */}
                 </div>
-                {secondCheck &&
+                {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === '안간다') &&
                 <div className='modal-second-text-check' style={{cursor:'pointer'}}></div>
                 }
               </div>  
@@ -128,7 +154,14 @@ const{travelVoteNumber}  = useParams<{travelVoteNumber: string}>();
 }
 
 function SecondCheckVote ({voteNumber, onModalClose}: {voteNumber: number; onModalClose : () => void}) {
+  // state: 로그인유저 상태 //
+  const { signInUser } = useAuthStore();
+  // state: 투표 총합 상태 //
+  const [voteTotal, setVoteTotal] = useState<TravelVoteTotal[]>([]);
 
+  const firstPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === '간다').length / voteTotal.length) * 100 : 0;
+  const secondPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === '안간다').length / voteTotal.length) * 100 : 0;
+  const totalCount = voteTotal.length ? (voteTotal.filter(item => item.selected === '간다').length + voteTotal.filter(item => item.selected === '안간다').length) : 0;
   const [cookies] = useCookies();
 
    // state: 체크 표시 상태 //
@@ -149,13 +182,8 @@ function SecondCheckVote ({voteNumber, onModalClose}: {voteNumber: number; onMod
     console.log(userSelectNumber);
   }
 
-   const onClickCheckHandler = () => {
-    if(secondCheck == false){
-      setCheck(!check);
-    } else if(secondCheck == true){
-      setSecondCheck(!secondCheck)
-      setCheck(!check)
-    }
+  const onClickCheckHandler = (selectNumber: string | number) => {
+    putTravelVoteClickRequest(voteNumber, selectNumber, accessToken).then(putTravelVoteClickResponse)
   }
   
    const onClickSecondCheckHandler = () => {
@@ -166,6 +194,57 @@ function SecondCheckVote ({voteNumber, onModalClose}: {voteNumber: number; onMod
       setSecondCheck(!secondCheck);
     }
   }
+
+   // function: 투표 선택 불러오기 함수 //
+   const getTravelVoteTotalList= () => {
+    if (!voteNumber) return;
+    getTravelVoteTotalRequest(voteNumber).then(getTravelVotetotalResponse);
+  };
+
+  // function:  투표 클릭 response 함수//
+  const putTravelVoteClickResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '모두 입력해주세요' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    };
+
+    getTravelVoteTotalList();
+  }
+
+
+  // function: get travelVote total response 처리 함수 //
+  const getTravelVotetotalResponse = (responseBody: GetTravelVoteTotalResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '모두 입력해주세요' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    };
+
+    const { voteResults } = responseBody as GetTravelVoteTotalResponseDto;
+    setVoteTotal(voteResults);
+  };
+  
+  useEffect(()=>{
+    getTravelVoteTotalList();
+  },[])
+
+  useEffect(() => {
+  }, [voteTotal])
+
+
   return (
     <div>
         {/* { singlePhotomodal && */}
@@ -181,19 +260,25 @@ function SecondCheckVote ({voteNumber, onModalClose}: {voteNumber: number; onMod
             <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
           </div>
           <div className='singlemodal-text'>
-            <div className='single-check' onClick={() => onSelectHandler(1)}>
-                <div className='singlemodal-first-text' style={{cursor:'pointer'}} onClick={onClickCheckHandler}>간다</div>
-                {check &&
+            <div className='single-vote-all'>
+              <div className='single-check' onClick={() => onClickCheckHandler(1)}>
+                  <div>간다</div>
+                  <div>{firstPercent}%</div>
+                  <div className='single-process-bar' style={{ width: `${firstPercent}%` }}></div>
+              </div>
+            {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === '간다') &&
                 <div className='modal-singlefirst-cehck' style={{cursor:'pointer'}}></div>
                 }
             </div>
-            <div className='single-secondcheck' onClick={() => onSelectHandler(2)}>
-                <div className='singlemodal-second-text' style={{cursor:'pointer'}} onClick={onClickSecondCheckHandler}>안 간다</div>
-                {secondCheck &&
+            <div className='single-secondcheck' onClick={() => onClickCheckHandler(2)}>
+                  <div>안 간다</div>
+                  <div>{secondPercent}%</div>
+                  <div className='single-process-bar-second' style={{ width: `${secondPercent}%` }}></div>
+                {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === '안간다') &&
                 <div className='modal-singlesecond-text-check' style={{cursor:'pointer'}}></div>
                 }
             </div>
-          <button className='singlemodal-button' style={{cursor:'pointer'}}>투표</button>
+              <button className='singlemodal-button' style={{cursor:'pointer'}}>투표</button>
             </div>
         </div>
         <div className='vote-modal-bottom'>
@@ -234,7 +319,6 @@ function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModal
       setCheck(!check)
 
     }
-    console.log('aaa');
     console.log(setSecondCheck);
   }
   
@@ -440,8 +524,8 @@ export default function Vote() {
     if (!travelVoteNumber) return;
     if (!selectNumber) return;
     if (!accessToken) return;
-    const { resultSets } = responseBody as GetTravelVoteTotalResponseDto;
-    setVoteTotal(resultSets);
+    const { voteResults } = responseBody as GetTravelVoteTotalResponseDto;
+    setVoteTotal(voteResults);
     setVoteChoiceNumber(selectNumber);
 
     putTravelVoteClickRequest(travelVoteNumber, selectNumber, accessToken).then(getTravelVotetotalResponse);
