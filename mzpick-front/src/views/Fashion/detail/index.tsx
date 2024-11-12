@@ -1,23 +1,22 @@
-import React, { useEffect, useState, MouseEvent, ChangeEvent, KeyboardEvent } from 'react'
-import './style.css';
+import { NavigateBefore as NavigateBeforeIcon, NavigateNext as NavigateNextIcon } from '@mui/icons-material';
+import { SvgIcon } from '@mui/material';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ResponseDto } from 'src/apis/dto/response';
 import { GetTravelDetailResponseDto } from 'src/apis/travel/dto/response';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ACCESS_TOKEN, FASHION_ABSOLUTE_UPDATE_PATH, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_UPDATE_PATH, TRAVEL_PATH } from 'src/constants';
-import { useCookies } from 'react-cookie';
-import { getTravelCommentListRequest, getTravelDetailRequest } from 'src/apis/travel';
-import { SvgIcon } from '@mui/material';
-import { NavigateNext as NavigateNextIcon, NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
+import { ACCESS_TOKEN, FASHION_PATH } from 'src/constants';
+import './style.css';
 // slider
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { GetFashionCommentResponseDto, GetFashionDetailResponseDto, GetFashionLikeListResponseDto, GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
+import "slick-carousel/slick/slick.css";
 import { deleteFashionCommentRequest, deleteFashionRequest, getFashionCommentListRequest, getFashionDetailRequest, getFashionLikeListRequest, getFashionSaveListRequest, postFashionCommentRequest, postUpViewFashionRequest, putFashionLikeRequest, putFashionSaveRequest } from 'src/apis/fashion';
+import { PostFashionCommentRequestDto } from 'src/apis/fashion/dto/request';
+import { GetFashionCommentResponseDto, GetFashionDetailResponseDto, GetFashionLikeListResponseDto, GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
+import { useAuthStore } from 'src/stores';
 import { FashionComment, FashionDetail } from 'src/types';
 import styled from "styled-components";
-import { useAuthStore } from 'src/stores';
-import { PostFashionCommentRequestDto } from 'src/apis/fashion/dto/request';
 
 //function 이미지 슬라이드 컴포넌트 //
 function CarouselComponent({ photoList }: { photoList: string[] }) { 
@@ -177,7 +176,7 @@ function Content() {
         <div className='contents-information-left'>
           <div className='contents-information-hashtag'>
             {fashionHashtagList.map((hashtag: string, index: number) => (
-              <div key={index} className='board-tag-item'>{hashtag}</div>
+              <div key={index} className='board-tag-item'>#{hashtag}</div>
             ))}
 
           </div>
@@ -505,7 +504,6 @@ function Comment() {
       alert("취소되었습니다.");
       return;
     }
-
     const accessToken = cookies[ACCESS_TOKEN];
     if(!fashionNumber) return;
     if(!accessToken) return;

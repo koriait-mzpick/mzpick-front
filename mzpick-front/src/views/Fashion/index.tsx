@@ -164,7 +164,7 @@ export default function FashionMain() {
             </div>
             <div className='board-tag'>
               {item.fashionHashtagList.map((hashtag, index) => (
-                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>{hashtag}</div>
+                <div key={index} className='board-tag-item' onClick={() => onHashtagClickHandler(hashtag)}>#{hashtag}</div>
               ))}
             </div>
           </div>
