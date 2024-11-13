@@ -214,7 +214,7 @@
     display: flex;
     justify-content: space-between;
     top: 0;
-    height: 200px;
+    height: 15vw;
 
     
 }
@@ -347,6 +347,8 @@
     justify-content: space-between;
     
     width: calc(25vw - 30px);
+    border: 1px solid black;
+    border-radius: 8px;
 }
 .single-secondcheck {
     display: flex;
@@ -364,7 +366,7 @@
 
 .modal-singlephoto {
     width: 100%;
-    height: 400px;
+    height: 30vw;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -545,24 +547,55 @@
 
     border: 1px solid black;
     border-radius: 12px;
+
 }
 .single-vote-all {
     display: flex;
     gap: 10px;
 }
 
+
+.percent-text-one,
+.singlepercent-text-one,
+.doublemodal-first-text 
+{
+    padding-left: 0.8vw;
+}
+
+.percent-text-two,
+.singlepercent-text-two,
+.doublemodal-first-text-second
+{
+    padding-right: 0.8vw;
+}
+
+.percent-text-one-second,
+.singlepercent-text-one-second,
+.doublemodal-second-text
+{
+    padding-left: 0.8vw;
+}
+
+.percent-text-two-second,
+.singlepercent-text-two-second,
+.doublemodal-second-text-second
+{
+    padding-right: 0.8vw;
+}
+
+
 .process-bar {
     position: absolute;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 12px;
+    border-radius: 11px;
 }
 
 .single-process-bar {
     position: absolute;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 12px;
+    border-radius: 7px;
 
 }
 
@@ -570,26 +603,26 @@
     position: absolute;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 12px;
+    border-radius: 11px;
 }
 .process-bar-second {
     position: absolute;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 12px;
+    border-radius: 11px;
 }
 .single-process-bar-second {
     position: absolute;
     height: 10%;
     background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 12px;
+    border-radius: 7px;
 }
 
 .double-process-bar-second {
     position: absolute;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 12px;
+    border-radius: 11px;
 }
 
 
@@ -603,7 +636,7 @@
 }
 
 .double-total-list {
-    padding-top: 21.5vw;
+    padding-top: 23.8vw;
     height: 4vh;
 }
 .total-vote {
@@ -808,7 +841,6 @@
 
 
 
-    padding-left: 10px;
 }
 
 
@@ -820,7 +852,6 @@
     line-height: 160%;
     text-align: end;
 
-    padding-right: 10px;
 }
 
 .double-second-textall {
@@ -846,7 +877,6 @@
 
 
 
-    padding-left: 10px;
 }
 
 .doublemodal-second-text-second {
@@ -857,7 +887,6 @@
     line-height: 160%;
     text-align: end;
 
-    padding-right: 10px;
 }
 
 .modal-doublefirst-check {
@@ -973,6 +1002,6 @@
     justify-content: space-around;
 
     box-sizing: border-box;
-    padding-left: 660px;
-    gap: 470px;
+    padding-left: 76vw;
+    padding-top: 3vw;
 }
