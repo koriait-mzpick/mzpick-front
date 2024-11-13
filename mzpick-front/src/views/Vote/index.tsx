@@ -286,6 +286,7 @@ function SecondCheckVote ({travelVote, onModalClose}: {travelVote: TravelVote | 
                 {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === travelVote.travelVoteChoice2) &&
                   <div className='modal-singlefirst-cehck' style={{ cursor: 'pointer' }}></div>
                 }
+                
             </div>
           </div>
         </div>
