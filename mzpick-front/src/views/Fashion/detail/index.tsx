@@ -29,7 +29,7 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: photoList.length > 1,
-    adaptiveHeight: true,
+    // adaptiveHeight: true,
     waitForAnimate: false,
     loop: photoList.length > 1, 
     nextArrow: <SvgIcon component={NavigateNextIcon} inheritViewBox sx={{ color: 'black', fontSize: 30 }} />,
@@ -53,8 +53,10 @@ function CarouselComponent({ photoList }: { photoList: string[] }) {
     }
     .contents-image-item {
       margin: 0 auto;
-      max-width: 100%;
-      max-height: 500px; 
+      width: 100%
+      height: 1000px
+      max-width: 100%
+      max-height: 1500px; 
       object-fit: contain;
     }
   `;
@@ -145,6 +147,10 @@ function Content() {
     return `${yy}.${mm}.${dd}`;
   };
 
+  // event handler: 목록 버튼 클릭 이벤트 처리 //
+  const listButtonClickHandler = (path: string) => {
+    navigator(path);
+  }
 
   // effect:  게시글 정보 요청 함수 //
   useEffect(() => {
@@ -163,7 +169,7 @@ function Content() {
           <div className='contents-top-date'>{changeDateFormat(fashionDate)}</div>
         </div>
         <div className='contents-top-vote-button-box'>
-          <div className='contents-top-vote-button'>투표</div>
+          <div className='contents-top-vote-button' onClick={() => listButtonClickHandler(FASHION_PATH)}>목록</div>
         </div>
       </div>
       <CarouselComponent photoList={fashionPhotoList} />

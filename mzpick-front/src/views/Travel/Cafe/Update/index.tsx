@@ -86,7 +86,7 @@ export default function TravelCafeUpdate() {
     }
 
     if (!travelCafeNumber) return;
-    alert("등록이 완료되었습니다.");
+    alert("수정이 완료되었습니다.");
     navigator(`${TRAVEL_CAFE_DETAIL_PATH}/${travelCafeNumber}`);
   }
 
@@ -98,14 +98,14 @@ export default function TravelCafeUpdate() {
 
   // event handler: 해시태그 변경 이벤트 처리 //
   const travelCafeHashtagContentChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const maxLength = 10;
+    const maxLength = 6;
     const { value } = event.target;
     const filteredValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣\s]/g, '');
 
     if (value.length <= maxLength) {
       setTravelCafeHashtagContent(filteredValue);
     } else {
-      alert("최대 글자수는 10자입니다.");
+      alert("최대 글자수는 6자입니다.");
     };
   };
 
@@ -191,7 +191,7 @@ export default function TravelCafeUpdate() {
       return;
     }
 
-    if (!window.confirm("등록하시겠습니까?")) {
+    if (!window.confirm("수정하시겠습니까?")) {
       alert("취소되었습니다.");
       return;
     };

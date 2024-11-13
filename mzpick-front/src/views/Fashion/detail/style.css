@@ -108,7 +108,7 @@
     border-radius: 10px;
     align-items: center;
     width: 60%;
-    height: 60%;
+    height: 100%;
     object-fit: cover;
 }
 
@@ -127,6 +127,7 @@
     font-size: 20px;
     color: var(--primary-color);
     margin-bottom: 40px;
+    white-space: pre-wrap;
 }
 
 #contents-main .contents-information {
