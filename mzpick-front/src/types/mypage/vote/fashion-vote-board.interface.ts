@@ -1,4 +1,4 @@
-export default interface FashionVoteBoard {
+export default interface myPageVoteFashions {
     mypageVoteNumber: number;
     mypageVoteTitle: string;
     userId: string;
