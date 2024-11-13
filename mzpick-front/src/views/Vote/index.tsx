@@ -121,8 +121,8 @@ function FirstCheckVote ({travelVote, onModalClose}: { travelVote: TravelVote | 
               <div className='modal-text-two' onClick={() => onClickCheckHandler(1)}>
                 
                 <div className='modal-text-all'>
-                  <div>{travelVote?.travelVoteChoice1}</div>
-                  <div>{firstPercent}%</div>
+                  <div className='percent-text-one'>{travelVote?.travelVoteChoice1}</div>
+                  <div className='percent-text-two'>{firstPercent}%</div>
                   <div className='process-bar' style={{ width: `${firstPercent}%` }}></div>
                 </div>
                 {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === travelVote?.travelVoteChoice1) &&
@@ -134,8 +134,8 @@ function FirstCheckVote ({travelVote, onModalClose}: { travelVote: TravelVote | 
               
               <div className='modal-text' onClick={() => onClickCheckHandler(2)}>
                 <div className='modal-text-all-two'>
-                  <div>{travelVote?.travelVoteChoice2}</div>
-                  <div>{secondPercent}%</div>
+                  <div className='percent-text-one-second'>{travelVote?.travelVoteChoice2}</div>
+                  <div className='percent-text-two-second'>{secondPercent}%</div>
                   <div className='process-bar-second' style={{ width: `${secondPercent}%` }}></div>
                 </div>
                 {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === travelVote?.travelVoteChoice2) &&
@@ -268,9 +268,9 @@ function SecondCheckVote ({travelVote, onModalClose}: {travelVote: TravelVote | 
                     <div className='singletotal-vote'>합계:{totalCount}표</div>
          </div>
             <div className='single-vote-all'>
-              <div className='single-check' onClick={() => onClickCheckHandler(1)}>
-                <div>{travelVote.travelVoteChoice1}</div>
-                <div>{firstPercent}%</div>
+              <div className='single-check' onClick={() => onClickCheckHandler(1)} style={{cursor:'pointer'}}>
+                <div className='singlepercent-text-one'>{travelVote.travelVoteChoice1}</div>
+                <div className='singlepercent-text-two'>{firstPercent}%</div>
                 <div className='single-process-bar' style={{ width: `${firstPercent}%` }}></div>
               </div>
               {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === travelVote.travelVoteChoice1) &&
@@ -278,9 +278,9 @@ function SecondCheckVote ({travelVote, onModalClose}: {travelVote: TravelVote | 
               }
             </div>
             <div className='single-vote-all'>
-              <div className='single-check' onClick={() => onClickCheckHandler(2)}>
-                <div>{travelVote?.travelVoteChoice2}</div>
-                <div>{secondPercent}%</div>
+              <div className='single-check' onClick={() => onClickCheckHandler(2)} style={{cursor:'pointer'}}>
+                <div className='singlepercent-text-one-second'>{travelVote?.travelVoteChoice2}</div>
+                <div className='singlepercent-text-two-second'>{secondPercent}%</div>
                 <div className='single-process-bar' style={{ width: `${secondPercent}%` }}></div>
               </div>
                 {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === travelVote.travelVoteChoice2) &&

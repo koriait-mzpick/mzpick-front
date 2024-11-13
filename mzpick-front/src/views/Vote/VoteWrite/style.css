@@ -87,7 +87,7 @@
     grid-template-columns: 12vw;
     grid-template-rows: repeat(2 1fr);
 
-    padding-left: 2.5vw;
+    padding-left: 2.8vw;
 
     align-items: center;
     
@@ -142,7 +142,7 @@
 
     justify-content: end;
     align-items: end;
-    height: 14vw;    
+    height: 14.6vw;    
 
     gap: 15px;
     padding-right: 100px;
@@ -155,11 +155,11 @@
     grid-template-columns: 1fr;
     grid-template-rows: 2vw;
 
-    padding-left: 2vw;
-    padding-top: 0.5vw;
+    padding-left: 2.1vw;
+    padding-top: 0.4vw;
     
 
-    height: 1.8vw;    
+    height: 1.6vw;    
     color: white;
     border: 1px solid black;
     background-color: black;
@@ -176,11 +176,11 @@
     grid-template-columns: 1fr;
     grid-template-rows: 2vw;
 
-    padding-left: 2vw;
-    padding-top: 0.5vw;
+    padding-left: 2.1vw;
+    padding-top: 0.4vw;
 
 
-    height: 1.8vw;    
+    height: 1.6vw;    
     border: 1px solid black;
     border-radius: 10px;
     
