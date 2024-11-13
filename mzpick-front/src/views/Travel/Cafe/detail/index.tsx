@@ -138,6 +138,11 @@ function Content() {
     return `${yy}.${mm}.${dd}`;
   };
 
+  // event handler: 목록 버튼 클릭 이벤트 처리 //
+  const listButtonClickHandler = (path: string) => {
+    navigator(path);
+  }
+
   // effect:  게시글 정보 요청 함수 //
   useEffect(() => {
     if (!travelCafeNumber) return;
@@ -155,7 +160,7 @@ function Content() {
           <div className='contents-top-date'>{changeDateFormat(travelCafeDate)}</div>
         </div>
         <div className='contents-top-vote-button-box'>
-          <div className='contents-top-vote-button'>투표</div>
+          <div className='contents-top-vote-button' onClick={() => listButtonClickHandler(TRAVEL_CAFE_PATH)}>목록</div>
         </div>
       </div>
       <CarouselComponent photoList={travelCafePhotoList} />

@@ -60,14 +60,14 @@ export default function FashionWrite() {
 
   // event handler: 해시태그 변경 이벤트 처리 //
   const fashionHashtagContentChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const maxLength = 10;
+    const maxLength = 6;
     const { value } = event.target;
     const filteredValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣\s]/g, '');
 
     if (value.length <= maxLength) {
       setFashionHashtagContent(filteredValue);
     } else {
-      alert("최대 글자수는 10자입니다.");
+      alert("최대 글자수는 6자입니다.");
     };
   };
 

@@ -86,7 +86,7 @@ export default function FashionUpdate() {
     };
 
     if (!fashionNumber) return;
-    alert("등록이 완료되었습니다.");
+    alert("수정이 완료되었습니다.");
     navigator(`${FASHION_DETAIL_PATH}/${fashionNumber}`);
   };
 
@@ -105,7 +105,7 @@ export default function FashionUpdate() {
     if (value.length <= maxLength) {
       setFashionHashtagContent(filteredValue);
     } else {
-      alert("최대 글자수는 10자입니다.");
+      alert("최대 글자수는 6자입니다.");
     };
   };
 
@@ -191,7 +191,7 @@ export default function FashionUpdate() {
       return;
     };
 
-    if (!window.confirm("등록하시겠습니까?")) {
+    if (!window.confirm("수정하시겠습니까?")) {
       alert("취소되었습니다.");
       return;
     };

@@ -85,7 +85,7 @@ export default function TravelUpdate() {
     }
 
     if (!travelNumber) return;
-    alert("등록이 완료되었습니다.");
+    alert("수정이 완료되었습니다.");
     navigator(`${TRAVEL_DETAIL_PATH}/${travelNumber}`);
   }
 
@@ -104,7 +104,7 @@ export default function TravelUpdate() {
     if (value.length <= maxLength) {
       setTravelHashtagContent(filteredValue);
     } else {
-      alert("최대 글자수는 10자입니다.");
+      alert("최대 글자수는 6자입니다.");
     };
   };
 
@@ -190,7 +190,7 @@ export default function TravelUpdate() {
       return;
     }
 
-    if (!window.confirm("등록하시겠습니까?")) {
+    if (!window.confirm("수정하시겠습니까?")) {
       alert("취소되었습니다.");
       return;
     };
