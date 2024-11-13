@@ -38,7 +38,7 @@
     animation: fadeIn 2s forwards; 
 }
 
-#main-hof-wrapper .wrapper-container .icon-area {
+/* #main-hof-wrapper .wrapper-container .icon-area {
     grid-column: 3;
     grid-row: 1 / span 2;
     justify-self: self-end;
@@ -47,7 +47,7 @@
     background-image: url(/public/image/medal.png);
     background-size: contain;
     background-repeat: no-repeat; 
-}
+} */
 
 
 
@@ -71,7 +71,6 @@
     background-size: cover; 
     background-position: center;
     background-repeat: no-repeat;
-    /* z-index: 1; */
 }
 
 #main-hof-wrapper .wrapper-container .image-box .image-area {
@@ -101,7 +100,7 @@
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 50%;
-    
+    cursor: pointer;
 }
 
 #main-hof-wrapper .wrapper-container .image-box .button-container{
