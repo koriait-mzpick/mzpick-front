@@ -124,9 +124,9 @@ export default function SignUp() {
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
             alert(message);
-            return;
-        }
-
+            return; }
+            
+        alert("회원가입 완료")
         navigator(SIGN_IN_PATH);
 
     };
@@ -135,6 +135,12 @@ export default function SignUp() {
     const onNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setName(value);
+
+        const isMatched = value.length <=5;
+        const message = (isMatched) ? '' : '이름을 5자 이내로 입력해주세요.';
+
+        setNameMessage(message);
+        setNameMessageError(!isMatched);
     };
 
     // event handler: 아이디 변경 이벤트 처리 //
@@ -261,7 +267,6 @@ export default function SignUp() {
         <div className='auth-container' onKeyDown={signUpKeyDownHandler}>
             <div className="auth-box" >
                 <div className='title-box'>회원가입</div>
-
                 <div className="input-container" >
                     <InputBox messageError={nameMessageError} message={nameMessage} value={name} type='text' placeholder='이름을 입력해주세요.' onChange={onNameChangeHandler} />
                     <InputBox messageError={idMessageError} message={idMessage} value={id} type='text' placeholder='아이디를 입력해주세요.' buttonName='중복 확인' onChange={onIdChangeHandler} onButtonClick={onIdCheckClickHandler} />

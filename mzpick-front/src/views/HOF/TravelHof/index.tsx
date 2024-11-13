@@ -54,7 +54,6 @@ function TravelTop1() {
     <div id='main-hof-wrapper'>
       <div className='wrapper-container'>
         <div className='text-area'>"Travle Top 1"</div>
-        <div className='icon-area'></div>
         <div className='image-box'>
           <div className="decorated-img"></div>
           <div className='image-area' onClick={onTravelTop1ClickHandler}>

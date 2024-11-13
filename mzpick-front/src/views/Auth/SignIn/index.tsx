@@ -39,8 +39,9 @@ export default function SignIn() {
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
             setMessage(message);
-            return;
-        }
+            return; }
+            alert("로그인 완료");
+        
 
         const { accessToken, expiration } = responseBody as SignInResponseDto;
         const expires = new Date(Date.now() + (expiration * 1000));
@@ -71,8 +72,6 @@ export default function SignIn() {
         };
         signInRequest(requestBody).then(signInResponse);
         console.log(signInRequest);
-        alert("로그인 완료")
-
     };
 
     // event handler: 회원가입 클릭 이벤트 처리 //
