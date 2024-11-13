@@ -174,6 +174,17 @@ const onSecondImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) =
 
    const onClickPostHandler = async (event:MouseEvent<HTMLDivElement>) => {
        const accessToken = cookies[ACCESS_TOKEN];
+
+       if(!title) {
+        alert('제목을 입력해주세요')
+        return;
+      } else if (!content) {
+        alert('내용을 입력해주세요')
+        return;
+      } else if (!contentSeoncd) {
+        alert('내용을 입력해주세요')
+        return;
+      }
        if (accessToken) {
       
            alert('글 작성성공')
