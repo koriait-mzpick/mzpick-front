@@ -70,7 +70,7 @@
     grid-template-rows: repeat(2 1fr);
     align-items: center;
     
-    padding-left: 42px;
+    padding-left: 3vw;
     height: 3vw;    
     border: 1px solid rgb(203, 193, 193);
     border-radius: 10px;
@@ -88,7 +88,7 @@
     grid-template-columns: 12vw;
     grid-template-rows: repeat(2 1fr);
 
-    padding-left: 38px;
+    padding-left: 2.5vw;
 
     align-items: center;
     
@@ -137,6 +137,8 @@
     border: 1px solid black;
     border-radius: 6px;
     height: 2vw;
+    text-align: center;
+    align-items: center;
     color: black;
    cursor: pointer;
 
@@ -151,7 +153,8 @@
     height: 2vw;
     border: 1px solid rgb(203, 193, 193);
     border-radius: 6px;
-    
+    text-align: center;
+    align-items: center;
     
     color: rgb(203, 193, 193);
    cursor: pointer;

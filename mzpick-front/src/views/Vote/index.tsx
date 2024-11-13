@@ -18,7 +18,7 @@ import { count } from 'console';
 import { styled } from 'styled-components';
 import { useAuthStore } from 'src/stores';
 
-function FirstCheckVote ({voteNumber, onModalClose}: { voteNumber: number; onModalClose : () => void}){
+function FirstCheckVote ({travelVote, onModalClose}: { travelVote: TravelVote | null; onModalClose : () => void}){
   const { signInUser } = useAuthStore();
   const [cookies] = useCookies();
   const [voteTotal, setVoteTotal] = useState<TravelVoteTotal[]>([]);
@@ -32,15 +32,16 @@ function FirstCheckVote ({voteNumber, onModalClose}: { voteNumber: number; onMod
   const [num, setNum] = useState<number>(0);
   const [maxNum, setMaxNum] = useState<number>(0);
 
-  const firstPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === '간다').length / voteTotal.length) * 100 : 0;
-  const secondPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === '안간다').length / voteTotal.length) * 100 : 0;
-  const totalCount = voteTotal.length ? (voteTotal.filter(item => item.selected === '간다').length + voteTotal.filter(item => item.selected === '안간다').length) : 0;
+  const firstPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === travelVote?.travelVoteChoice1).length / voteTotal.length) * 100 : 0;
+  const secondPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === travelVote?.travelVoteChoice2).length / voteTotal.length) * 100 : 0;
+  const totalCount = voteTotal.length ? (voteTotal.filter(item => item.selected === travelVote?.travelVoteChoice1).length + voteTotal.filter(item => item.selected === travelVote?.travelVoteChoice2).length) : 0;
 
   
   
     
   const onClickCheckHandler = (selectNumber: string | number) => {
-    putTravelVoteClickRequest(voteNumber, selectNumber, accessToken).then(putTravelVoteClickResponse)
+    if (!travelVote) return;
+    putTravelVoteClickRequest(travelVote?.travelVoteNumber, selectNumber, accessToken).then(putTravelVoteClickResponse)
   }
 
   // const onClickVoteTotalHandler = (userSelectNumber: number[]) => {
@@ -51,8 +52,8 @@ function FirstCheckVote ({voteNumber, onModalClose}: { voteNumber: number; onMod
   // }
    // function: 투표 선택 불러오기 함수 //
    const getTravelVoteTotalList= () => {
-    if (!voteNumber) return;
-    getTravelVoteTotalRequest(voteNumber).then(getTravelVotetotalResponse);
+    if (!travelVote) return;
+    getTravelVoteTotalRequest(travelVote.travelVoteNumber).then(getTravelVotetotalResponse);
   };
 
 
@@ -99,13 +100,15 @@ function FirstCheckVote ({voteNumber, onModalClose}: { voteNumber: number; onMod
   useEffect(() => {
   }, [voteTotal])
 
+
+  if (!travelVote) return null;
   return (
     <div>
       
      {/* {nonePhotomodal && */}
         <div className='vote-nonephoto-modal'>
           <div className='close-main'>
-            <div className='modal-title'>제목 | 제주도 갈까유 말까유</div>
+            <div className='modal-title'>제목 | {travelVote?.travelVoteTitle}</div>
             <div className='modal-close' onClick={onModalClose} style={{cursor:"pointer"}}>x</div>
           </div>
           <div className='vote-modal-main'>
@@ -114,14 +117,15 @@ function FirstCheckVote ({voteNumber, onModalClose}: { voteNumber: number; onMod
                   <div className='total-list'>
                     <div className='total-vote'>합계:{totalCount}표</div>
                   </div>
+                 
               <div className='modal-text-two' onClick={() => onClickCheckHandler(1)}>
                 
                 <div className='modal-text-all'>
-                  <div>간다</div>
+                  <div>{travelVote?.travelVoteChoice1}</div>
                   <div>{firstPercent}%</div>
                   <div className='process-bar' style={{ width: `${firstPercent}%` }}></div>
                 </div>
-                {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === '간다') &&
+                {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === travelVote?.travelVoteChoice1) &&
 
                 <div className='modal-first-cehck' style={{cursor:'pointer'}}></div> 
                 
@@ -130,22 +134,19 @@ function FirstCheckVote ({voteNumber, onModalClose}: { voteNumber: number; onMod
               
               <div className='modal-text' onClick={() => onClickCheckHandler(2)}>
                 <div className='modal-text-all-two'>
-                  <div>안 간다</div>
+                  <div>{travelVote?.travelVoteChoice2}</div>
                   <div>{secondPercent}%</div>
                   <div className='process-bar-second' style={{ width: `${secondPercent}%` }}></div>
-                  {/* <div className='modal-second-text' style={{cursor:'pointer', width: `${secondPercent}%`}} >안 간다</div>
-                  <div className='modal-second-text-two' style={{cursor:'pointer'}}>{secondPercent}%</div> */}
                 </div>
-                {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === '안간다') &&
+                {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === travelVote?.travelVoteChoice2) &&
                 <div className='modal-second-text-check' style={{cursor:'pointer'}}></div>
                 }
               </div>  
-                <button className='modal-button' style={{cursor:'pointer'}}>투표</button>
             </div>
 
           </div>
           <div className='vote-modal-bottom'>
-              <button className='vote-user'>작성자</button>
+              <button className='vote-user'>작성자:{travelVote?.userId}</button>
           </div>
         </div>
         {/* } */}
@@ -153,15 +154,15 @@ function FirstCheckVote ({voteNumber, onModalClose}: { voteNumber: number; onMod
   )
 }
 
-function SecondCheckVote ({voteNumber, onModalClose}: {voteNumber: number; onModalClose : () => void}) {
+function SecondCheckVote ({travelVote, onModalClose}: {travelVote: TravelVote | null; onModalClose : () => void}) {
   // state: 로그인유저 상태 //
   const { signInUser } = useAuthStore();
   // state: 투표 총합 상태 //
   const [voteTotal, setVoteTotal] = useState<TravelVoteTotal[]>([]);
 
-  const firstPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === '간다').length / voteTotal.length) * 100 : 0;
-  const secondPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === '안간다').length / voteTotal.length) * 100 : 0;
-  const totalCount = voteTotal.length ? (voteTotal.filter(item => item.selected === '간다').length + voteTotal.filter(item => item.selected === '안간다').length) : 0;
+  const firstPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === travelVote?.travelVoteChoice1).length / voteTotal.length) * 100 : 0;
+  const secondPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === travelVote?.travelVoteChoice2).length / voteTotal.length) * 100 : 0;
+  const totalCount = voteTotal.length ? (voteTotal.filter(item => item.selected === travelVote?.travelVoteChoice1).length + voteTotal.filter(item => item.selected === travelVote?.travelVoteChoice2).length) : 0;
   const [cookies] = useCookies();
 
    // state: 체크 표시 상태 //
@@ -177,13 +178,15 @@ function SecondCheckVote ({voteNumber, onModalClose}: {voteNumber: number; onMod
 
   const onSelectHandler = (userSelectNumber: number) => {
     setSelectNumber(userSelectNumber);
-
-    putTravelVoteClickRequest(voteNumber, userSelectNumber, accessToken);
+    
+    if (!travelVote) return;
+    putTravelVoteClickRequest(travelVote.travelVoteNumber, userSelectNumber, accessToken);
     console.log(userSelectNumber);
   }
-
+  
   const onClickCheckHandler = (selectNumber: string | number) => {
-    putTravelVoteClickRequest(voteNumber, selectNumber, accessToken).then(putTravelVoteClickResponse)
+    if (!travelVote) return;
+    putTravelVoteClickRequest(travelVote.travelVoteNumber, selectNumber, accessToken).then(putTravelVoteClickResponse)
   }
   
    const onClickSecondCheckHandler = () => {
@@ -197,8 +200,8 @@ function SecondCheckVote ({voteNumber, onModalClose}: {voteNumber: number; onMod
 
    // function: 투표 선택 불러오기 함수 //
    const getTravelVoteTotalList= () => {
-    if (!voteNumber) return;
-    getTravelVoteTotalRequest(voteNumber).then(getTravelVotetotalResponse);
+    if (!travelVote) return;
+    getTravelVoteTotalRequest(travelVote.travelVoteNumber).then(getTravelVotetotalResponse);
   };
 
   // function:  투표 클릭 response 함수//
@@ -246,12 +249,12 @@ function SecondCheckVote ({voteNumber, onModalClose}: {voteNumber: number; onMod
   }, [voteTotal])
 
 
+  if (!travelVote) return null;
   return (
     <div>
-        {/* { singlePhotomodal && */}
         <div className='vote-nonephoto-modal' >
          <div className='close-main'>
-            <div className='modal-title'>제목</div>
+            <div className='modal-title'>제목{travelVote.travelVoteTitle}</div>
             <div className='modal-close' onClick={onModalClose} style={{cursor:"pointer"}}>x</div>
           </div>
         
@@ -261,47 +264,50 @@ function SecondCheckVote ({voteNumber, onModalClose}: {voteNumber: number; onMod
             <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
           </div>
           <div className='singlemodal-text'>
+          <div className='singletotal-list'>
+                    <div className='singletotal-vote'>합계:{totalCount}표</div>
+         </div>
             <div className='single-vote-all'>
               <div className='single-check' onClick={() => onClickCheckHandler(1)}>
-                  <div>간다</div>
-                  <div>{firstPercent}%</div>
-                  <div className='single-process-bar' style={{ width: `${firstPercent}%` }}></div>
+                <div>{travelVote.travelVoteChoice1}</div>
+                <div>{firstPercent}%</div>
+                <div className='single-process-bar' style={{ width: `${firstPercent}%` }}></div>
               </div>
-            {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === '간다') &&
-                <div className='modal-singlefirst-cehck' style={{cursor:'pointer'}}></div>
+              {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === travelVote.travelVoteChoice1) &&
+                <div className='modal-singlefirst-cehck' style={{ cursor: 'pointer' }}></div>
+              }
+            </div>
+            <div className='single-vote-all'>
+              <div className='single-check' onClick={() => onClickCheckHandler(2)}>
+                <div>{travelVote?.travelVoteChoice2}</div>
+                <div>{secondPercent}%</div>
+                <div className='single-process-bar' style={{ width: `${secondPercent}%` }}></div>
+              </div>
+                {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === travelVote.travelVoteChoice2) &&
+                  <div className='modal-singlefirst-cehck' style={{ cursor: 'pointer' }}></div>
                 }
             </div>
-            <div className='single-secondcheck' onClick={() => onClickCheckHandler(2)}>
-                  <div>안 간다</div>
-                  <div>{secondPercent}%</div>
-                  <div className='single-process-bar-second' style={{ width: `${secondPercent}%` }}></div>
-                {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === '안간다') &&
-                <div className='modal-singlesecond-text-check' style={{cursor:'pointer'}}></div>
-                }
-            </div>
-              <button className='singlemodal-button' style={{cursor:'pointer'}}>투표</button>
-            </div>
+          </div>
         </div>
         <div className='vote-modal-bottom'>
-              <button className='vote-user'>작성자</button>
+              <button className='singlevote-user'>작성자{travelVote.userId}</button>
           </div>
 
       </div>
-      {/* } */}
     </div>
   )
   
 }
 
-function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModalClose : () => void}) {
+function ThirdCheckVote ({travelVote, onModalClose}: {travelVote:TravelVote | null; onModalClose : () => void}) {
   // state: 로그인유저 상태 //
   const { signInUser } = useAuthStore();
   // state: 투표 총합 상태 //
   const [voteTotal, setVoteTotal] = useState<TravelVoteTotal[]>([]);
 
-  const firstPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === '간다').length / voteTotal.length) * 100 : 0;
-  const secondPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === '안간다').length / voteTotal.length) * 100 : 0;
-  const totalCount = voteTotal.length ? (voteTotal.filter(item => item.selected === '간다').length + voteTotal.filter(item => item.selected === '안간다').length) : 0;
+  const firstPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === travelVote?.travelVoteChoice1).length / voteTotal.length) * 100 : 0;
+  const secondPercent = voteTotal.length ? (voteTotal.filter(item => item.selected === travelVote?.travelVoteChoice2).length / voteTotal.length) * 100 : 0;
+  const totalCount = voteTotal.length ? (voteTotal.filter(item => item.selected === travelVote?.travelVoteChoice1).length + voteTotal.filter(item => item.selected === travelVote?.travelVoteChoice2).length) : 0;
 
   const [cookies] = useCookies();
   const accessToken = cookies[ACCESS_TOKEN];
@@ -316,12 +322,14 @@ function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModal
   const onSelectHandler = (userSelectNumber: number) => {
     setSelectNumber(userSelectNumber);
 
-    putTravelVoteClickRequest(voteNumber, userSelectNumber, accessToken);
+    if (!travelVote) return;
+    putTravelVoteClickRequest(travelVote.travelVoteNumber, userSelectNumber, accessToken);
     console.log(userSelectNumber);
   }
-
+  
   const onClickCheckHandler = (selectNumber: string | number) => {
-    putTravelVoteClickRequest(voteNumber, selectNumber, accessToken).then(putTravelVoteClickResponse)
+    if (!travelVote) return;
+    putTravelVoteClickRequest(travelVote.travelVoteNumber, selectNumber, accessToken).then(putTravelVoteClickResponse)
   }
   
    const onClickSecondCheckHandler = () => {
@@ -335,8 +343,8 @@ function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModal
 
    // function: 투표 선택 불러오기 함수 //
    const getTravelVoteTotalList= () => {
-    if (!voteNumber) return;
-    getTravelVoteTotalRequest(voteNumber).then(getTravelVotetotalResponse);
+    if (!travelVote) return;
+    getTravelVoteTotalRequest(travelVote.travelVoteNumber).then(getTravelVotetotalResponse);
   };
 
   // function:  투표 클릭 response 함수//
@@ -382,13 +390,13 @@ function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModal
   useEffect(() => {
   }, [voteTotal])
 
-
+  if (!travelVote) return null;
   return (
     <div>
         {/* {modal && */}
           <div className='vote-nonephoto-modal' >
           <div className='double-close-main'>
-            <div className='double-modal-title'>제목</div>
+            <div className='double-modal-title'>제목{travelVote.travelVoteTitle}</div>
             <div className='double-modal-close' onClick={onModalClose} style={{cursor:"pointer"}}>x</div>
           </div>
               <div className='double-main'>
@@ -401,17 +409,20 @@ function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModal
 
                     <div className='double-contents' onClick={() => onClickCheckHandler(1)}>
                       <div className='double-first-textall' >
-                        <div className='doublemodal-first-text' style={{cursor:'pointer'}} >간다</div>
+                        <div className='doublemodal-first-text' style={{cursor:'pointer'}} >{travelVote.travelVoteChoice1}</div>
                         <div className='doublemodal-first-text-second' style={{cursor:'pointer'}}>{firstPercent}%</div>
                          <div className='double-process-bar' style={{ width: `${firstPercent}%` }}></div>
 
                       </div>
-                      {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === '간다') &&
+                      {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === travelVote.travelVoteChoice1) &&
                       <div className='modal-doublefirst-check' style={{cursor:'pointer'}}></div>
                     } 
                     </div>
                   </div>
 
+                  <div className='double-total-list'>
+                    <div className='double-total-vote'>합계:{totalCount}표</div>
+                  </div>
                   <div className='modal-doublephoto'>
                     <div className='total-photo'>
                       <div className='modal-secondphoto'></div>
@@ -420,12 +431,12 @@ function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModal
 
                     <div className='double-contents' onClick={() => onClickCheckHandler(2)} >
                       <div className='double-second-textall'>
-                      <div className='doublemodal-second-text' style={{cursor:'pointer'}} >안 간다</div>
+                      <div className='doublemodal-second-text' style={{cursor:'pointer'}} >{travelVote.travelVoteChoice2}</div>
                       <div className='doublemodal-second-text-second' style={{cursor:'pointer'}}>{secondPercent}%</div>
                        <div className='double-process-bar-second' style={{ width: `${secondPercent}%` }}></div>
 
                       </div>
-                      {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === '안간다') &&
+                      {voteTotal.some(item => signInUser && item.userId === signInUser.userId && item.selected === travelVote.travelVoteChoice2) &&
                       <div className='modal-doublesecond-check' style={{cursor:'pointer'}}></div>
                       }
                     </div>
@@ -436,10 +447,9 @@ function ThirdCheckVote ({voteNumber, onModalClose}: {voteNumber:number; onModal
                 <div className='double-bottom'>
 
                   <div className='doublevote-buttons'>
-                    <button className='doublemodal-button' style={{cursor:'pointer'}}>투표</button>
                   </div>
                 <div className='doublevote-mainbutton'>
-              <button className='vote-user'>작성자</button>
+              <button className='doublevote-user'>작성자{travelVote.userId}</button>
                 </div>
                 </div>
              </div>
@@ -501,8 +511,10 @@ export default function Vote() {
   const [check, setCheck] = useState<boolean>(false);
   const [secondCheck, setSecondCheck] = useState<boolean>(false);
   const [selectedVoteNumber, setSelectedVoteNumber] = useState<number>(0);
+  const [selectedVote, setSelectdVote] = useState<TravelVote | null>(null);
 
   const onClickModalHandler = (travelVote: TravelVote) => {
+    setSelectdVote(travelVote);
     setSelectedVoteNumber(travelVote.travelVoteNumber);
     if (!travelVote.travelVotePhoto1 && !travelVote.travelVotePhoto2) {
       setNonePhotomodal(!nonePhotomodal);
@@ -542,6 +554,9 @@ export default function Vote() {
 
 
   }
+
+
+  
 
   // function: 투표 메인페이지 리스트 불러오기 함수 //
   const getTravelVoteList= () => {
@@ -614,9 +629,9 @@ useEffect(()=>{
        
       <div className='vote-top'>
 
-        { nonePhotomodal && <FirstCheckVote  voteNumber={selectedVoteNumber} onModalClose={onModalClose} />}
-        { singlePhotomodal && <SecondCheckVote voteNumber={selectedVoteNumber} onModalClose={onModalClose} />}
-        {modal && <ThirdCheckVote voteNumber={selectedVoteNumber} onModalClose={onModalClose} />}
+        { nonePhotomodal && <FirstCheckVote travelVote={selectedVote} onModalClose={onModalClose} />}
+        { singlePhotomodal && <SecondCheckVote travelVote={selectedVote} onModalClose={onModalClose} />}
+        {modal && <ThirdCheckVote travelVote={selectedVote} onModalClose={onModalClose} />}
 
        
        

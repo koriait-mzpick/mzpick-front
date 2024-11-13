@@ -200,6 +200,7 @@
     
 
     position: fixed;
+    left: 0;
     z-index: 9999;
 
     border: 1px solid rgba(238, 238, 238, 1);
@@ -258,8 +259,8 @@
     width: 100%;
 
     box-sizing: border-box;
-    padding-left: 40px;
-    padding-top: 10px;
+    padding-left: 4vw;
+    padding-top: 5vw;
 }
 .modal-title {
     font-size: 50px;
@@ -297,13 +298,36 @@
     justify-content: end;
 
     width: 100%;
-    height: 100px;
+    height: 8vw;
 
     box-sizing: border-box;
-    padding-right: 40px;
+    padding-right: 4vw;
 }
 
 .vote-user {
+    cursor: pointer;
+
+    width: 12vw;
+    height: 3vw;
+    border: 1px solid rgb(209, 195, 195);
+    border-radius: 20px;
+
+    outline: none;
+    border: none;
+}
+.singlevote-user {
+    cursor: pointer;
+
+    width: 12vw;
+    height: 3vw;
+
+    border: 1px solid rgb(209, 195, 195);
+    border-radius: 20px;
+
+    outline: none;
+    border: none;
+}
+.doublevote-user {
     cursor: pointer;
 
     width: 12vw;
@@ -359,7 +383,6 @@
 
 .double-main-box {
     display: flex;
-    gap: 110px;
 }
 
 .double-contents {
@@ -571,10 +594,48 @@
 
 
 .total-list {
-    padding-left: 400px;
-    height: 2vw;
+    padding-left: 25.5vw;
+    height: 4vh;
+}
+.singletotal-list {
+    padding-left: 16.5vw;
+    height: 4vh;
+}
+
+.double-total-list {
+    padding-top: 21.5vw;
+    height: 4vh;
 }
 .total-vote {
+    font-size: 1rem;
+    font-weight: 600;
+    
+    width: 7vw;
+    height: 2vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 12px;
+    letter-spacing: 0.25rem;
+    text-wrap: nowrap;
+}
+
+.singletotal-vote {
+    font-size: 1rem;
+    font-weight: 600;
+    
+    width: 7vw;
+    height: 2vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 12px;
+    letter-spacing: 0.25rem;
+    text-wrap: nowrap;
+}
+.double-total-vote {
     font-size: 1rem;
     font-weight: 600;
     
