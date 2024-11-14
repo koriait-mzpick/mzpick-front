@@ -1,7 +1,7 @@
-export default interface MyPageTravelSave {
+export default interface myPageSaveTravel {
     travelNumber: number;
     travelPhoto: string;
-    travelHashTagList: string[];
+    travelHashtagList: string[];
     travelDate: string;
 }
 
