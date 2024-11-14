@@ -8,7 +8,7 @@ import { GetMyPageUserDetailResponseDto } from 'src/apis/mypage/dto/response/use
 import { getCafeTotalCountRequest, getFashionTotalCountRequest, getFoodTotalCountRequest, getStayTotalCountRequest, getTotalCountRequest } from 'src/apis/pagination';
 import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import Pagination1 from 'src/components/Pagination1';
-import { ACCESS_TOKEN, FASHION_ABSOLUTE_DETAIL_PATH, FASHION_ABSOLUTE_UPDATE_PATH, FASHION_DETAIL_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_PATH, WRITE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, FASHION_ABSOLUTE_DETAIL_PATH, FASHION_ABSOLUTE_UPDATE_PATH, FASHION_DETAIL_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_PATH, WRITE_PATH } from 'src/constants';
 import BottomNav from 'src/layouts/BottomNav';
 import { MyPageCafeBoard, MyPageCafeLike, MyPageCafeSave } from 'src/types/mypage/cafe';
 import myPageSaveCafes from 'src/types/mypage/cafe/cafe-save.interface';
@@ -299,7 +299,7 @@ function Save() {
           <div key={`${item.type}-${item.id}`} className='WritePostBox'
             onClick={() => {
               const path = item.type === 'cafe' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
-                item.type === 'travel' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
+                item.type === 'travel' ? `${TRAVEL_DETAIL_PATH}/${item.id}` :
                   item.type === 'fashion' ? `${FASHION_DETAIL_PATH}/${item.id}` :
                     item.type === 'food' ? `${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.id}` :
                       `${TRAVEL_STAY_DETAIL_PATH}/${item.id}`;
