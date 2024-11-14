@@ -31,7 +31,7 @@ const GET_TRAVEL_VOTE_TOTAL_API_URL = `${TRAVEL_VOTE_MODULE_URL}/vote-total`
 
 //function: fashion vote List 요청 함수
 export const getFashionVoteListRequest = async () => {
-    const responseBody = await axios.get(GET_TRAVEL_VOTE_LIST_API_URL)
+    const responseBody = await axios.get(GET_FASHION_VOTE_LIST_API_URL)
         .then(responseDataHandler<GetFashionVoteListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
