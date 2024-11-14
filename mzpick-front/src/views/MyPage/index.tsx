@@ -103,7 +103,7 @@ function Save() {
         type: 'food',
         id: item.travelFoodNumber,
         photo: item.travelFoodPhoto,
-        hashtags: item.travelFoodHashTagList,
+        hashtags: item.travelFoodHashtagList,
         date: item.travelFoodDate,
       }))),
       ...(travelsaveviewList.map((item) => ({

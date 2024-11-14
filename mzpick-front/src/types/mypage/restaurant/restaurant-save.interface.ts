@@ -1,7 +1,7 @@
 export default interface myPageSaveFoods {
     travelFoodNumber: number;
     travelFoodPhoto: string;
-    travelFoodHashTagList: string[];
+    travelFoodHashtagList: string[];
     travelFoodDate: string;
 }
 
