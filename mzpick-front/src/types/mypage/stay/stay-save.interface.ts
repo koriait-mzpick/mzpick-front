@@ -1,4 +1,4 @@
-export default interface MyPageStaySave {
+export default interface myPageSaveStays {
     travelStayNumber: number;
     travelStayPhoto: string;
     travelStayHashTagList: string[];

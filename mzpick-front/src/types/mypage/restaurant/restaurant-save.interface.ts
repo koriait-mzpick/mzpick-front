@@ -1,4 +1,4 @@
-export default interface MyPageRestaurantSave {
+export default interface myPageSaveFoods {
     travelFoodNumber: number;
     travelFoodPhoto: string;
     travelFoodHashTagList: string[];

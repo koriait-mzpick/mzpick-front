@@ -1,5 +1,5 @@
-import { MyPageStaySave } from "src/types/mypage/stay";
-
-export default interface GetMyPageStaySaveResponseDto{
-    myPageStaySave : MyPageStaySave[];
+import { ResponseDto } from "src/apis/dto/response";
+import myPageSaveStays from "src/types/mypage/stay/stay-save.interface";
+export default interface GetMyPageStaySaveResponseDto extends ResponseDto{
+    myPageSaveStays : myPageSaveStays[];
 }
