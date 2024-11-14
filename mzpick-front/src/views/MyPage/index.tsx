@@ -322,151 +322,151 @@ function Save() {
   )
 }
 
-function Like() {
-  const navigator = useNavigate();
-  const [cookies] = useCookies();
+// function Like() {
+//   const navigator = useNavigate();
+//   const [cookies] = useCookies();
 
-  const accessToken = cookies[ACCESS_TOKEN];
+//   const accessToken = cookies[ACCESS_TOKEN];
 
-  const [cafelikeviewList, cafelikesetviewList] = useState<myPageLikeCafes[]>([]);
-  const [fashionlikeviewList, fashionlikesetviewList] = useState<MyPageFashionSave[]>([]);
-  const [travellikeviewList, travellikesetviewList] = useState<MyPageTravelLike[]>([]);
-  const [foodlikeviewList, foodlikesetviewList] = useState<MyPageRestaurantLike[]>([]);
-  const [staylikeviewList, staylikesetviewList] = useState<MyPageStayLike[]>([]);
+//   const [cafelikeviewList, cafelikesetviewList] = useState<myPageLikeCafes[]>([]);
+//   const [fashionlikeviewList, fashionlikesetviewList] = useState<MyPageFashionSave[]>([]);
+//   const [travellikeviewList, travellikesetviewList] = useState<MyPageTravelLike[]>([]);
+//   const [foodlikeviewList, foodlikesetviewList] = useState<MyPageRestaurantLike[]>([]);
+//   const [staylikeviewList, staylikesetviewList] = useState<MyPageStayLike[]>([]);
   
-  const [likecount, likesetCount] = useState<number>(0);
-  const [likepageList, likesetPageList] = useState<number[]>([]);
-  const [liketotalPage, likesetTotalPage] = useState<number>(0);
-  const [liketotalList, likesetTotalList] = useState<myPageLikeCafes[]>([]);
-  const [likecurrentPage, likesetCurrentPage] = useState<number>(1);
-  const [liketotalSection, likesetTotalSection] = useState<number>(0);
-  const [likecurrentSection, likesetCurrentSection] = useState<number>(1);
+//   const [likecount, likesetCount] = useState<number>(0);
+//   const [likepageList, likesetPageList] = useState<number[]>([]);
+//   const [liketotalPage, likesetTotalPage] = useState<number>(0);
+//   const [liketotalList, likesetTotalList] = useState<myPageLikeCafes[]>([]);
+//   const [likecurrentPage, likesetCurrentPage] = useState<number>(1);
+//   const [liketotalSection, likesetTotalSection] = useState<number>(0);
+//   const [likecurrentSection, likesetCurrentSection] = useState<number>(1);
 
 
-  // function: get total count response //
-  const getlikeTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
-    const { count } = dto as GetTotalCountResponseDto;
-    const liketotalPage = Math.ceil(count / 8);
-    likesetTotalPage(liketotalPage);
-    const liketotalSection = Math.ceil(liketotalPage / SECTION_PER_PAGE);
-    likesetTotalSection(liketotalSection);
-  }
+//   // function: get total count response //
+//   const getlikeTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+//     const { count } = dto as GetTotalCountResponseDto;
+//     const liketotalPage = Math.ceil(count / 8);
+//     likesetTotalPage(liketotalPage);
+//     const liketotalSection = Math.ceil(liketotalPage / SECTION_PER_PAGE);
+//     likesetTotalSection(liketotalSection);
+//   }
 
-  // function: getLike List 함수 //
-  const getCafeLikeList = () => {
-    getMyPageCafeLikeListRequest(accessToken).then(GetMyPageCafeLikeResponseDto);
-  }
-  
-  const getTravelSaveList = () => {
-    getMyPageTravelSaveListRequest(accessToken).then(GetMyPageTravelSaveResponseDto);
-  }
+//   // function: getLike List 함수 //
+//   const getCafeLikeList = () => {
+//     getMyPageCafeLikeListRequest(accessToken).then(GetMyPageCafeLikeResponseDto);
+//   }
 
-  const getFashionSaveList = () => {
-    getMyPageFashionSaveListRequest(accessToken).then(GetMyPageFashionSaveResponseDto);
-  }
+//   const getTravelSaveList = () => {
+//     getMyPageTravelSaveListRequest(accessToken).then(GetMyPageTravelSaveResponseDto);
+//   }
 
-  const getStaySaveList = () => {
-    getMyPageStaySaveListRequest(accessToken).then(GetMyPageStaySaveResponseDto);
-  }
+//   const getFashionSaveList = () => {
+//     getMyPageFashionSaveListRequest(accessToken).then(GetMyPageFashionSaveResponseDto);
+//   }
 
-  const getFoodSaveList = () => {
-    getMyPageRestaurantSaveListRequest(accessToken).then(GetMyPageRestaurantSaveResponseDto);
-  }
+//   const getStaySaveList = () => {
+//     getMyPageStaySaveListRequest(accessToken).then(GetMyPageStaySaveResponseDto);
+//   }
+
+//   const getFoodSaveList = () => {
+//     getMyPageRestaurantSaveListRequest(accessToken).then(GetMyPageRestaurantSaveResponseDto);
+//   }
 
 
-  // function: 날짜 포맷 변경 함수 //
-  const changeDateFormat = (date: string) => {
-    const yy = date.substring(2, 4);
-    const mm = date.substring(5, 7);
-    const dd = date.substring(8, 10);
-    return `${yy}.${mm}.${dd}`;
-  };
+//   // function: 날짜 포맷 변경 함수 //
+//   const changeDateFormat = (date: string) => {
+//     const yy = date.substring(2, 4);
+//     const mm = date.substring(5, 7);
+//     const dd = date.substring(8, 10);
+//     return `${yy}.${mm}.${dd}`;
+//   };
 
-  // function: get Save Response 함수 //
-  const GetMyPageCafeLikeResponseDto = (responseBody: GetMyPageCafeLikeResponseDto | ResponseDto | null) => {
-    const message =
-      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
-        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
-          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+//   // function: get Save Response 함수 //
+//   const GetMyPageCafeLikeResponseDto = (responseBody: GetMyPageCafeLikeResponseDto | ResponseDto | null) => {
+//     const message =
+//       !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+//         responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+//           responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+//             responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
 
-    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-    if (!isSuccessed) {
-      alert(message);
-      return;
-    }
+//     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+//     if (!isSuccessed) {
+//       alert(message);
+//       return;
+//     }
 
-    // cafesavesetviewList 상태 업데이트
-    const { myPageLikeCafes } = responseBody as GetMyPageCafeLikeResponseDto;
-    cafelikesetviewList(myPageLikeCafes);
-    console.log(myPageLikeCafes);
-  };
+//     // cafesavesetviewList 상태 업데이트
+//     const { myPageLikeCafes } = responseBody as GetMyPageCafeLikeResponseDto;
+//     cafelikesetviewList(myPageLikeCafes);
+//     console.log(myPageLikeCafes);
+//   };
 
-  const onButtonClickEventHandler = (path: string) => {
-    navigator(path);
-  };
+//   const onButtonClickEventHandler = (path: string) => {
+//     navigator(path);
+//   };
 
-  // interface : Properties //
-  interface TableSaveProps {
-    save: MyPageCafeLike;
-  }
+//   // interface : Properties //
+//   interface TableSaveProps {
+//     save: MyPageCafeLike;
+//   }
 
-  const onlikePageClickHandler = (page: number) => {
-    likesetCurrentPage(page);
-  }
+//   const onlikePageClickHandler = (page: number) => {
+//     likesetCurrentPage(page);
+//   }
 
-  const onlikePreSectionClickHandler = () => {
-    if (likecurrentSection === 1) return;
-    likesetCurrentSection(likecurrentSection - 1);
-    likesetCurrentPage((likecurrentSection - 1) * SECTION_PER_PAGE);
-  }
+//   const onlikePreSectionClickHandler = () => {
+//     if (likecurrentSection === 1) return;
+//     likesetCurrentSection(likecurrentSection - 1);
+//     likesetCurrentPage((likecurrentSection - 1) * SECTION_PER_PAGE);
+//   }
 
-  const onlikeNextSectionClickHandler = () => {
-    if (likecount === liketotalSection) return;
-    // likecurrentSection(likecurrentSection + 1);
-    likesetCurrentPage(likecurrentSection * SECTION_PER_PAGE + 1);
-  }
+//   const onlikeNextSectionClickHandler = () => {
+//     if (likecount === liketotalSection) return;
+//     // likecurrentSection(likecurrentSection + 1);
+//     likesetCurrentPage(likecurrentSection * SECTION_PER_PAGE + 1);
+//   }
 
-  useEffect(() => {
-    getCafeTotalCountRequest().then(getlikeTotalCountResponse);
-  }, []);
+//   useEffect(() => {
+//     getCafeTotalCountRequest().then(getlikeTotalCountResponse);
+//   }, []);
 
-  useEffect(() => {
-    const pageList: number[] = [];
-    const startPage = (likecurrentSection - 1) * SECTION_PER_PAGE + 1;
-    const endPage = likecurrentSection * SECTION_PER_PAGE;
-    for (let page = startPage; page <= endPage; page++) {
-      pageList.push(page);
-      if (page === liketotalPage) break;
-    };
-    getCafeLikeList();
-    likesetPageList(pageList);
+//   useEffect(() => {
+//     const pageList: number[] = [];
+//     const startPage = (likecurrentSection - 1) * SECTION_PER_PAGE + 1;
+//     const endPage = likecurrentSection * SECTION_PER_PAGE;
+//     for (let page = startPage; page <= endPage; page++) {
+//       pageList.push(page);
+//       if (page === liketotalPage) break;
+//     };
+//     getCafeLikeList();
+//     likesetPageList(pageList);
 
-  }, [likecurrentSection, liketotalPage]);
+//   }, [likecurrentSection, liketotalPage]);
 
-  return (
-    <div className='like-box'>
-      <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >LIKE</div>
-      <div className='imageBox'>
-        {cafelikeviewList.map((item) => (
-          <div key={item.mypageBoardNumber} className='WritePostBox' onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_DETAIL_PATH}/${item.mypageBoardNumber}`)}>
-            <div className='board-box'>
-              <img src={item.mypagePhotoList} alt={`Travel ${item.mypageBoardNumber}`} className='board-image' />
-              <div className='board-information'>
-                <div className='board-information-data'>{changeDateFormat(item.mypageBoardDate)}</div>
-              </div>
-              <div className='board-tag'>
-                {item.mypageHashTagList.map((hashtag, index) => (
-                  <div key={index} className='board-tag-item'>#{hashtag}</div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
+//   return (
+//     <div className='like-box'>
+//       <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >LIKE</div>
+//       <div className='imageBox'>
+//         {cafelikeviewList.map((item) => (
+//           <div key={item.mypageBoardNumber} className='WritePostBox' onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_DETAIL_PATH}/${item.mypageBoardNumber}`)}>
+//             <div className='board-box'>
+//               <img src={item.mypagePhotoList} alt={`Travel ${item.mypageBoardNumber}`} className='board-image' />
+//               <div className='board-information'>
+//                 <div className='board-information-data'>{changeDateFormat(item.mypageBoardDate)}</div>
+//               </div>
+//               <div className='board-tag'>
+//                 {item.mypageHashTagList.map((hashtag, index) => (
+//                   <div key={index} className='board-tag-item'>#{hashtag}</div>
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   )
+// }
 
 function Write() {
   const navigator = useNavigate();
