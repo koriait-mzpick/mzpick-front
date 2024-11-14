@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
 import { useNavigate, useParams } from 'react-router';
 import { ResponseDto } from 'src/apis/dto/response';
-import { getMyPageCafeBoardRequest, getMyPageCafeLikeListRequest, getMyPageCafeSaveListRequest, getMyPageFashionSaveListRequest, getMyPageFashionVoteRequest, getMyPageTravelLikeListRequest, getMyPageUserDetailRequest } from 'src/apis/mypage';
-import { GetMyPageCafeSaveResponseDto } from 'src/apis/mypage/dto/response/save';
+import { getMyPageCafeBoardRequest, getMyPageCafeLikeListRequest, getMyPageCafeSaveListRequest, getMyPageFashionSaveListRequest, getMyPageFashionVoteRequest, getMyPageRestaurantSaveListRequest, getMyPageStaySaveListRequest, getMyPageTravelLikeListRequest, getMyPageTravelSaveListRequest, getMyPageTravelVoteRequest, getMyPageUserDetailRequest } from 'src/apis/mypage';
+import { GetMyPageCafeSaveResponseDto, GetMyPageFashionSaveResponseDto, GetMyPageRestaurantSaveResponseDto, GetMyPageStaySaveResponseDto, GetMyPageTravelSaveResponseDto } from 'src/apis/mypage/dto/response/save';
 import { GetMyPageUserDetailResponseDto } from 'src/apis/mypage/dto/response/user';
-import { getCafeTotalCountRequest, getFashionTotalCountRequest } from 'src/apis/pagination';
+import { getCafeTotalCountRequest, getFashionTotalCountRequest, getFoodTotalCountRequest, getStayTotalCountRequest, getTotalCountRequest } from 'src/apis/pagination';
 import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import Pagination1 from 'src/components/Pagination1';
-import { ACCESS_TOKEN, FASHION_ABSOLUTE_DETAIL_PATH, FASHION_ABSOLUTE_UPDATE_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_PATH, WRITE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, FASHION_ABSOLUTE_DETAIL_PATH, FASHION_ABSOLUTE_UPDATE_PATH, FASHION_DETAIL_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_PATH, WRITE_PATH } from 'src/constants';
 import BottomNav from 'src/layouts/BottomNav';
 import { MyPageCafeBoard, MyPageCafeLike, MyPageCafeSave } from 'src/types/mypage/cafe';
 import myPageSaveCafes from 'src/types/mypage/cafe/cafe-save.interface';
@@ -18,10 +18,17 @@ import myPageLikeCafes from 'src/types/mypage/cafe/cafe-like.interface';
 import { GetMyPageCafeBoardResponseDto, GetMyPageFashionBoardResponseDto } from 'src/apis/mypage/dto/response/board';
 import myPageBoardCafes from 'src/types/mypage/cafe/cafe-board.interface';
 import myPageVoteFashions from 'src/types/mypage/vote/fashion-vote-board.interface';
-import { GetMyPageFashionVoteResponseDto } from 'src/apis/mypage/dto/response/vote';
+import { GetMyPageFashionVoteResponseDto, GetMyPageTravelVoteResponseDto } from 'src/apis/mypage/dto/response/vote';
 import { deleteCafeRequest } from 'src/apis/cafe';
 import { MyPageFashionSave } from 'src/types/mypage/fashion';
 import { GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
+import { getTravelVoteTotalRequest } from 'src/apis/vote';
+import { GetTravelSaveListResponseDto } from 'src/apis/travel/dto/response';
+import { getTravelSaveListRequest } from 'src/apis/travel';
+import { MyPageTravelSave } from 'src/types/mypage/travel';
+import { MyPageRestaurantSave } from 'src/types/mypage/restaurant';
+import { GetStaySaveListResponseDto } from 'src/apis/stay/dto/response';
+import { MyPageStaySave } from 'src/types/mypage/stay';
 
 
 const SECTION_PER_PAGE = 5;
@@ -34,6 +41,9 @@ function Save() {
 
   const [cafesaveviewList, cafesavesetviewList] = useState<myPageSaveCafes[]>([]);
   const [fashionsaveviewList, fashionsavesetviewList] = useState<MyPageFashionSave[]>([]);
+  const [travelsaveviewList, travelsavesetviewList] = useState<MyPageTravelSave[]>([]);
+  const [foodsaveviewList, foodsavesetviewList] = useState<MyPageRestaurantSave[]>([]);
+  const [staysaveviewList, staysavesetviewList] = useState<MyPageStaySave[]>([]);
 
   const [savepageList, savesetPageList] = useState<number[]>([]);
   const [savetotalPage, savesetTotalPage] = useState<number>(0);
@@ -55,19 +65,72 @@ function Save() {
     getMyPageCafeSaveListRequest(accessToken).then(GetMyPageCafeSaveResponseDto);
   }
 
-    // function: getSave List 함수 //
-    const getFashionSaveList = () => {
-      getMyPageFashionSaveListRequest(accessToken).then(GetMyPageFashionSaveResponseDto);
-    }
+  const getTravelSaveList = () => {
+    getMyPageTravelSaveListRequest(accessToken).then(GetMyPageTravelSaveResponseDto);
+  }
+
+  const getFashionSaveList = () => {
+    getMyPageFashionSaveListRequest(accessToken).then(GetMyPageFashionSaveResponseDto);
+  }
+
+  const getStaySaveList = () => {
+    getMyPageStaySaveListRequest(accessToken).then(GetMyPageStaySaveResponseDto);
+  }
+
+  const getFoodSaveList = () => {
+    getMyPageRestaurantSaveListRequest(accessToken).then(GetMyPageRestaurantSaveResponseDto);
+  }
+
 
   // function: 날짜 포맷 변경 함수 //
-  const changeDateFormat = (date: string) => {
+    const changeDateFormat = (date: string) => {
     const yy = date.substring(2, 4);
     const mm = date.substring(5, 7);
     const dd = date.substring(8, 10);
     return `${yy}.${mm}.${dd}`;
   };
 
+    // 저장된 모든 리스트를 하나로 합침
+    const combinedSaveList = [
+      ...(cafesaveviewList.map((item) => ({
+        type: 'cafe',
+        id: item.travelCafeNumber,
+        photo: item.travelCafePhoto,
+        hashtags: item.travelCafeHashtagList,
+        date: item.travelCafeDate,
+      }))),
+      ...(foodsaveviewList.map((item) => ({
+        type: 'food',
+        id: item.travelFoodNumber,
+        photo: item.travelFoodPhoto,
+        hashtags: item.travelFoodHashTagList,
+        date: item.travelFoodDate,
+      }))),
+      ...(travelsaveviewList.map((item) => ({
+        type: 'travel',
+        id: item.travelNumber,
+        photo: item.travelPhoto,
+        hashtags: item.travelHashtagList,
+        date: item.travelDate,
+      }))),
+      ...(fashionsaveviewList.map((item) => ({
+        type: 'fashion',
+        id: item.mypageFashionBoardNumber,
+        photo: item.mypageFashionPhotoList,
+        hashtags: item.mypageFashionHashTagList,
+        date: item.mypageFashionBoarDate,
+      }))),
+      ...(staysaveviewList.map((item) => ({
+        type: 'stay',
+        id: item.travelStayNumber,
+        photo: item.travelStayPhoto,
+        hashtags: item.travelStayHashTagList,
+        date: item.travelStayDate,
+      }))),
+      
+    ];
+
+    console.log(combinedSaveList);
   // function: get Save Response 함수 //   
   const GetMyPageCafeSaveResponseDto = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
     const message =
@@ -88,7 +151,26 @@ function Save() {
     console.log(myPageSaveCafes);
   };
   
-  const GetMyPageFashionSaveResponseDto = (responseBody: GetFashionSaveListResponseDto | ResponseDto | null) => {
+  const GetMyPageTravelSaveResponseDto = (responseBody: GetMyPageTravelSaveResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+    
+    // cafesavesetviewList 상태 업데이트
+    const { myPageSaveTravel } = responseBody as GetMyPageTravelSaveResponseDto;
+    travelsavesetviewList(myPageSaveTravel);
+    console.log(myPageSaveTravel);
+  };
+
+  const GetMyPageFashionSaveResponseDto = (responseBody: GetMyPageFashionSaveResponseDto | ResponseDto | null) => {
     const message =
       !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
         responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
@@ -102,9 +184,47 @@ function Save() {
     }
 
     // cafesavesetviewList 상태 업데이트
-    const { myPageSaveCafes } = responseBody as GetMyPageCafeSaveResponseDto;
-    cafesavesetviewList(myPageSaveCafes);
-    console.log(myPageSaveCafes);
+    const { myPageSaveFashions } = responseBody as GetMyPageFashionSaveResponseDto;
+    fashionsavesetviewList(myPageSaveFashions);
+    console.log(myPageSaveFashions);
+  };
+
+  const GetMyPageStaySaveResponseDto = (responseBody: GetMyPageStaySaveResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    // cafesavesetviewList 상태 업데이트
+    const { myPageSaveStays } = responseBody as GetMyPageStaySaveResponseDto;
+    staysavesetviewList(myPageSaveStays);
+    console.log(myPageSaveStays);
+  };
+
+  const GetMyPageRestaurantSaveResponseDto = (responseBody: GetMyPageRestaurantSaveResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    // cafesavesetviewList 상태 업데이트
+    const { myPageSaveFoods } = responseBody as GetMyPageRestaurantSaveResponseDto;
+    foodsavesetviewList(myPageSaveFoods);
+    console.log(myPageSaveFoods);
   };
 
   const onButtonClickEventHandler = (path: string) => {
@@ -112,6 +232,14 @@ function Save() {
     console.log();
     
   };
+
+  useEffect(() => {
+    getCafeSaveList();
+    getTravelSaveList();
+    getFashionSaveList();
+    getStaySaveList();
+    getFoodSaveList();
+  }, []);
 
   const onSavePageClickHandler = (page: number) => {
     savesetCurrentPage(page);
@@ -134,6 +262,22 @@ function Save() {
   }, []);
 
   useEffect(() => {
+    getTotalCountRequest().then(getsaveTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    getFashionTotalCountRequest().then(getsaveTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    getStayTotalCountRequest().then(getsaveTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    getFoodTotalCountRequest().then(getsaveTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
     const pageList: number[] = [];
     const startPage = (savecurrentSection - 1) * SECTION_PER_PAGE + 1;
     const endPage = savecurrentSection * SECTION_PER_PAGE;
@@ -148,17 +292,25 @@ function Save() {
 
   return (
     <div className='save-box'>
-      <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >SAVE</div>
-      <div className='imageBox'>
-        {cafesaveviewList.map((item) => (
-          <div key={item.travelCafeNumber} className='WritePostBox'  onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_DETAIL_PATH}/${item.travelCafeNumber}`)}>
+    <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >SAVE</div>
+    <div className='imageBox'>
+        {combinedSaveList.map((item) => (
+          <div key={`${item.type}-${item.id}`} className='WritePostBox'
+            onClick={() => {
+              const path = item.type === 'cafe' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
+                item.type === 'travel' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
+                  item.type === 'fashion' ? `${FASHION_DETAIL_PATH}/${item.id}` :
+                    item.type === 'food' ? `${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.id}` :
+                      `${TRAVEL_STAY_DETAIL_PATH}/${item.id}`;
+              onButtonClickEventHandler(path);
+            }}>
             <div className='board-box'>
-              <img src={item.travelCafePhoto} alt={`Travel ${item.travelCafeNumber}`} className='board-image' />
+              <img src={item.photo} alt={`Photo ${item.photo}`} className='board-image' />
               <div className='board-information'>
-                <div className='board-information-data'>{changeDateFormat(item.travelCafeDate)}</div>
+                <div className='board-information-data'>{changeDateFormat(item.date)}</div>
               </div>
               <div className='board-tag'>
-                {item.travelCafeHashtagList.map((hashtag, index) => (
+                {item.hashtags.map((hashtag, index) => (
                   <div key={index} className='board-tag-item'>#{hashtag}</div>
                 ))}
               </div>
@@ -475,6 +627,7 @@ function Vote() {
   const accessToken = cookies[ACCESS_TOKEN];
 
   const [fashionvoteviewList, fashionvotesetviewList] = useState<myPageVoteFashions[]>([]);
+  const [travelvoteviewList, travelvotesetviewList] = useState<myPageVoteFashions[]>([]);
 
   const [votecount, votesetCount] = useState<number>(0);
   const [votepageList, votesetPageList] = useState<number[]>([]);
@@ -496,6 +649,10 @@ function Vote() {
   // function: getLike List 함수 //
   const getFashionVoteList = () => {
     getMyPageFashionVoteRequest(accessToken).then(GetMyPageFashionVoteResponseDto);
+  }
+
+  const getTravelVoteList = () => {
+    getMyPageTravelVoteRequest(accessToken).then(GetMyPageTravelVoteResponseDto);
   }
 
   // function: 날짜 포맷 변경 함수 //
@@ -526,6 +683,25 @@ function Vote() {
     console.log(myPageVoteFashions);
   };
 
+  const GetMyPageTravelVoteResponseDto = (responseBody: GetMyPageTravelVoteResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+   // cafesavesetviewList 상태 업데이트
+    const { myPageTravelVoteBoard } = responseBody as GetMyPageTravelVoteResponseDto;
+    travelvotesetviewList(myPageTravelVoteBoard);
+    console.log(myPageTravelVoteBoard);
+  };
+
   const onButtonClickEventHandler = (path: string) => {
     navigator(path);
   };
@@ -546,8 +722,12 @@ function Vote() {
     votesetCurrentPage(votecurrentSection * SECTION_PER_PAGE + 1);
   }
 
+  // useEffect(() => {
+  //   getTravelVoteTotalRequest().then(getvoteTotalCountResponse);
+  // }, []);
+
   useEffect(() => {
-    getCafeTotalCountRequest().then(getvoteTotalCountResponse);
+    getFashionTotalCountRequest().then(getvoteTotalCountResponse);
   }, []);
 
   useEffect(() => {
@@ -578,9 +758,9 @@ function Vote() {
           {fashionvoteviewList.map((item) => (
           <div key={item.mypageVoteNumber} className='contentBox'>
             <div className='directed-writeBox'>{changeDateFormat(item.mypageVoteDate)}</div>
-            <div className='directed-writeBox2'  onClick={() => onButtonClickEventHandler(`${VOTE_PATH}/${item.mypageVoteNumber}`)}>{item.mypageVoteNumber}</div>
+            <div className='directed-writeBox2'  onClick={() => onButtonClickEventHandler(`${VOTE_PATH}/${item.mypageVoteNumber}`)}>{item.mypageVoteTitle}</div>
             <div className='directed-writeBox3'>
-              <div className='icon-box' onClick={() => onButtonClickEventHandler(`${VOTE_PATH}/${item.mypageVoteTitle}`)}></div>
+              <div className='icon-box' onClick={() => onButtonClickEventHandler(`${VOTE_PATH}/${item.mypageVoteNumber}`)}></div>
             </div>
             <div className='directed-writeBox4'>
               <div className='icon-box2'></div>

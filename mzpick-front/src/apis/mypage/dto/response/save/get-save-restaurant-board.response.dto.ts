@@ -1,5 +1,6 @@
-import { MyPageRestaurantSave } from "src/types/mypage/restaurant";
+import { ResponseDto } from "src/apis/dto/response";
+import myPageSaveFoods from "src/types/mypage/restaurant/restaurant-save.interface";
 
-export default interface GetMyPageRestaurantSaveResponseDto{
-    myPageRestaurantSave : MyPageRestaurantSave[];
+export default interface GetMyPageRestaurantSaveResponseDto extends ResponseDto{
+    myPageSaveFoods : myPageSaveFoods[];
 }
