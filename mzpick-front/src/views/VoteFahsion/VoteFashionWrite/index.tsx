@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { MZPICK_API_DOMAIN, responseDataHandler, responseErrorHandler } from 'src/apis';
 import { GetTravelVoteDetailResponseDto } from 'src/apis/vote/travel_vote/dto/response';
-import { getTravelVoteListRequest, postFashionVoteRequest, postTravelVoteRequest } from 'src/apis/vote';
+import { getFashionVoteListRequest, getTravelVoteListRequest, postFashionVoteRequest, postTravelVoteRequest } from 'src/apis/vote';
 import { PostTravelRequestDto } from 'src/apis/travel/dto/request';
 import { ResponseDto } from 'src/apis/dto/response';
 import { PostTravelVoteRequestDto } from 'src/apis/vote/travel_vote/dto/request';
@@ -63,13 +63,12 @@ export default function VoteFashionWrite() {
         return;
     }
 
-    if (!fashionTitle) return;
-
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
-    postFashionVoteRequest(accessToken, fashionTitle).then(postFashionVoteWriteResponse);
+    navigator(VOTEFASHION_PATH);
 };
+    // function: 투표 메인페이지 리스트 불러오기 함수 //
+  const getFashionVoteList= () => {
+    getFashionVoteListRequest().then();
+  }
 
     // function: 네비게이터 경로 이동 함수 //
     const onClickNavigator = () => {
@@ -95,6 +94,7 @@ export default function VoteFashionWrite() {
 
     const onClickPostHandler = (event:MouseEvent<HTMLDivElement>) => {
         const accessToken = cookies[ACCESS_TOKEN];
+        alert('gg');
 
         if(!title) {
           alert('제목을 입력해주세요')
@@ -107,11 +107,7 @@ export default function VoteFashionWrite() {
           return;
         }
 
-        if (accessToken) {
-       
-            alert('글 작성성공')
-            navigator(VOTEFASHION_PATH);
-        }    
+            
 
 
         const requestBody: PostFashionVoteRequestDto = {

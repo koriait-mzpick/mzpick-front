@@ -49,6 +49,10 @@ export default function VoteWrite() {
     const onClickPathChangeHandler = () => {
         navigator(VOTE_DETAILPHOTOPATH);
     }
+
+    const getTravelVoteList= () => {
+      getTravelVoteListRequest().then();
+    }
     
     // function: post vote write response 처리 함수 //
   const postVoteWriteResponse = (responseBody: ResponseDto | null) => {
@@ -64,12 +68,10 @@ export default function VoteWrite() {
         return;
     }
 
-    if (!travelTitle) return;
+  
 
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
+    navigator(VOTE_PATH);
 
-    postTravelVoteRequest(accessToken, travelTitle).then(postVoteWriteResponse);
 };
 
     // function: 네비게이터 경로 이동 함수 //
@@ -108,11 +110,7 @@ export default function VoteWrite() {
           return;
         }
 
-        if (accessToken) {
-       
-            alert('글 작성성공')
-            navigator(VOTE_PATH);
-        }    
+      
 
 
         const requestBody: PostTravelVoteRequestDto = {

@@ -5,7 +5,7 @@ import { ACCESS_TOKEN, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_PATH, VOTE_WR
 import { useCookies } from 'react-cookie';
 import { useSearchParams } from 'react-router-dom';
 import { ResponseDto } from 'src/apis/dto/response';
-import { postTravelVoteRequest } from 'src/apis/vote';
+import { getTravelVoteListRequest, postTravelVoteRequest } from 'src/apis/vote';
 import { PostTravelVoteRequestDto } from 'src/apis/vote/travel_vote/dto/request';
 import axios from 'axios';
 import { MZPICK_API_DOMAIN, responseDataHandler } from 'src/apis';
@@ -142,13 +142,15 @@ const onSecondImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) =
        return;
    }
 
-   if (!travelTitle) return;
+ 
 
-   const accessToken = cookies[ACCESS_TOKEN];
-   if (!accessToken) return;
-
-   postTravelVoteRequest(accessToken, travelTitle).then(postVoteWriteResponse);
+   navigator(VOTE_PATH);
 };
+
+    // function: 투표 메인페이지 리스트 불러오기 함수 //
+  const getTravelVoteList= () => {
+    getTravelVoteListRequest().then();
+  }
 
    // function: 네비게이터 경로 이동 함수 //
    const onClickNavigator = () => {
@@ -185,12 +187,7 @@ const onSecondImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) =
         alert('내용을 입력해주세요')
         return;
       }
-       if (accessToken) {
-      
-           alert('글 작성성공')
-           navigator(VOTE_PATH);
-
-       }    
+  
 
        let url: string | null = null;
       if (voteProfileImageFile) {
