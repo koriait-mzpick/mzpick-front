@@ -35,7 +35,7 @@ function FirstCheckVote ({fashionVote, onModalClose}: { fashionVote: FashionVote
   const [maxNum, setMaxNum] = useState<number>(0);
 
   const firstPercent = voteFashionTotal.length ? (voteFashionTotal.filter(item => item.selected === fashionVote?.fashionVoteChoice1).length / voteFashionTotal.length) * 100 : 0;
-  console.log("테스트" +firstPercent);
+  console.log("테스트" +voteFashionTotal);
   const secondPercent = voteFashionTotal.length ? (voteFashionTotal.filter(item => item.selected === fashionVote?.fashionVoteChoice2).length / voteFashionTotal.length) * 100 : 0;
   const totalCount = voteFashionTotal.length ? (voteFashionTotal.filter(item => item.selected === fashionVote?.fashionVoteChoice1).length + voteFashionTotal.filter(item => item.selected === fashionVote?.fashionVoteChoice2).length) : 0;
   
@@ -57,6 +57,9 @@ function FirstCheckVote ({fashionVote, onModalClose}: { fashionVote: FashionVote
    const getFashionVoteTotalList= () => {
     if (!fashionVote) return;
     getFashionVoteTotalRequest(fashionVote.fashionVoteNumber).then(getFashionVotetotalResponse);
+    console.log("두번째" + getFashionVoteListRequest)
+    console.log("세번째" + getFashionVotetotalResponse)
+    console.log("네번째" + getFashionVoteTotalList)
   };
 
 
@@ -190,7 +193,7 @@ function SecondCheckVote ({fashionVote, onModalClose}: {fashionVote: FashionVote
   
   const onClickCheckHandler = (selectNumber: string | number) => {
     if (!fashionVote) return;
-    putTravelVoteClickRequest(fashionVote.fashionVoteNumber, selectNumber, accessToken).then(putFashionVoteClickResponse);
+    putFashionVoteClickRequest(fashionVote?.fashionVoteNumber, selectNumber, accessToken).then(putFashionVoteClickResponse)
   }
   
    const onClickSecondCheckHandler = () => {
@@ -337,7 +340,7 @@ function ThirdCheckVote ({fashionVote, onModalClose}: {fashionVote: FashionVote 
   
   const onClickCheckHandler = (selectNumber: string | number) => {
     if (!fashionVote) return;
-    putTravelVoteClickRequest(fashionVote.fashionVoteNumber, selectNumber, accessToken).then(putFashionVoteClickResponse);
+    putFashionVoteClickRequest(fashionVote?.fashionVoteNumber, selectNumber, accessToken).then(putFashionVoteClickResponse)
   }
   
    const onClickSecondCheckHandler = () => {
