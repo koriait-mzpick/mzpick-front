@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
 import { useNavigate, useParams } from 'react-router';
 import { ResponseDto } from 'src/apis/dto/response';
-import { getMyPageCafeBoardRequest, getMyPageCafeLikeListRequest, getMyPageCafeSaveListRequest, getMyPageFashionSaveListRequest, getMyPageFashionVoteRequest, getMyPageRestaurantSaveListRequest, getMyPageStaySaveListRequest, getMyPageTravelLikeListRequest, getMyPageTravelSaveListRequest, getMyPageTravelVoteRequest, getMyPageUserDetailRequest } from 'src/apis/mypage';
+import { getMyPageCafeBoardRequest, getMyPageCafeLikeListRequest, getMyPageCafeSaveListRequest, getMyPageFashionLikeListRequest, getMyPageFashionSaveListRequest, getMyPageFashionVoteRequest, getMyPageRestaurantLikeListRequest, getMyPageRestaurantSaveListRequest, getMyPageStayLikeListRequest, getMyPageStaySaveListRequest, getMyPageTravelLikeListRequest, getMyPageTravelSaveListRequest, getMyPageTravelVoteRequest, getMyPageUserDetailRequest } from 'src/apis/mypage';
 import { GetMyPageCafeSaveResponseDto, GetMyPageFashionSaveResponseDto, GetMyPageRestaurantSaveResponseDto, GetMyPageStaySaveResponseDto, GetMyPageTravelSaveResponseDto } from 'src/apis/mypage/dto/response/save';
 import { GetMyPageUserDetailResponseDto } from 'src/apis/mypage/dto/response/user';
 import { getCafeTotalCountRequest, getFashionTotalCountRequest, getFoodTotalCountRequest, getStayTotalCountRequest, getTotalCountRequest } from 'src/apis/pagination';
@@ -13,17 +13,17 @@ import BottomNav from 'src/layouts/BottomNav';
 import { MyPageCafeBoard, MyPageCafeLike, MyPageCafeSave } from 'src/types/mypage/cafe';
 import myPageSaveCafes from 'src/types/mypage/cafe/cafe-save.interface';
 import './style.css';
-import { GetMyPageCafeLikeResponseDto } from 'src/apis/mypage/dto/response/like';
+import { GetMyPageCafeLikeResponseDto, GetMyPageFashionLikeResponseDto, GetMyPageRestaurantLikeResponseDto, GetMyPageStayLikeResponseDto, GetMyPageTravelLikeResponseDto } from 'src/apis/mypage/dto/response/like';
 import myPageLikeCafes from 'src/types/mypage/cafe/cafe-like.interface';
 import { GetMyPageCafeBoardResponseDto, GetMyPageFashionBoardResponseDto } from 'src/apis/mypage/dto/response/board';
 import myPageBoardCafes from 'src/types/mypage/cafe/cafe-board.interface';
 import myPageVoteFashions from 'src/types/mypage/vote/fashion-vote-board.interface';
 import { GetMyPageFashionVoteResponseDto, GetMyPageTravelVoteResponseDto } from 'src/apis/mypage/dto/response/vote';
 import { deleteCafeRequest } from 'src/apis/cafe';
-import { MyPageFashionSave } from 'src/types/mypage/fashion';
+import { MyPageFashionLike, MyPageFashionSave } from 'src/types/mypage/fashion';
 import { GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
 import { getTravelVoteTotalRequest } from 'src/apis/vote';
-import { GetTravelSaveListResponseDto } from 'src/apis/travel/dto/response';
+import { GetTravelLikeListResponseDto, GetTravelSaveListResponseDto } from 'src/apis/travel/dto/response';
 import { getTravelSaveListRequest } from 'src/apis/travel';
 import { MyPageTravelLike, MyPageTravelSave } from 'src/types/mypage/travel';
 import { MyPageRestaurantLike, MyPageRestaurantSave } from 'src/types/mypage/restaurant';
@@ -115,10 +115,10 @@ function Save() {
       }))),
       ...(fashionsaveviewList.map((item) => ({
         type: 'fashion',
-        id: item.mypageFashionBoardNumber,
-        photo: item.mypageFashionPhotoList,
-        hashtags: item.mypageFashionHashtagList,
-        date: item.mypageFashionBoarDate,
+        id: item.fashionNumber,
+        photo: item.fashionPhoto,
+        hashtags: item.fashionHashtagList,
+        date: item.fashionDate,
       }))),
       ...(staysaveviewList.map((item) => ({
         type: 'stay',
@@ -131,6 +131,7 @@ function Save() {
     ];
 
     console.log(combinedSaveList);
+
   // function: get Save Response 함수 //   
   const GetMyPageCafeSaveResponseDto = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
     const message =
@@ -322,151 +323,304 @@ function Save() {
   )
 }
 
-// function Like() {
-//   const navigator = useNavigate();
-//   const [cookies] = useCookies();
+function Like() {
+  const navigator = useNavigate();
+  const [cookies] = useCookies();
 
-//   const accessToken = cookies[ACCESS_TOKEN];
+  const accessToken = cookies[ACCESS_TOKEN];
 
-//   const [cafelikeviewList, cafelikesetviewList] = useState<myPageLikeCafes[]>([]);
-//   const [fashionlikeviewList, fashionlikesetviewList] = useState<MyPageFashionSave[]>([]);
-//   const [travellikeviewList, travellikesetviewList] = useState<MyPageTravelLike[]>([]);
-//   const [foodlikeviewList, foodlikesetviewList] = useState<MyPageRestaurantLike[]>([]);
-//   const [staylikeviewList, staylikesetviewList] = useState<MyPageStayLike[]>([]);
+  const [cafelikeviewList, cafelikesetviewList] = useState<myPageLikeCafes[]>([]);
+  const [fashionlikeviewList, fashionlikesetviewList] = useState<MyPageFashionLike[]>([]);
+  const [travellikeviewList, travellikesetviewList] = useState<MyPageTravelLike[]>([]);
+  const [foodlikeviewList, foodlikesetviewList] = useState<MyPageRestaurantLike[]>([]);
+  const [staylikeviewList, staylikesetviewList] = useState<MyPageStayLike[]>([]);
   
-//   const [likecount, likesetCount] = useState<number>(0);
-//   const [likepageList, likesetPageList] = useState<number[]>([]);
-//   const [liketotalPage, likesetTotalPage] = useState<number>(0);
-//   const [liketotalList, likesetTotalList] = useState<myPageLikeCafes[]>([]);
-//   const [likecurrentPage, likesetCurrentPage] = useState<number>(1);
-//   const [liketotalSection, likesetTotalSection] = useState<number>(0);
-//   const [likecurrentSection, likesetCurrentSection] = useState<number>(1);
+  const [likecount, likesetCount] = useState<number>(0);
+  const [likepageList, likesetPageList] = useState<number[]>([]);
+  const [liketotalPage, likesetTotalPage] = useState<number>(0);
+  const [liketotalList, likesetTotalList] = useState<myPageLikeCafes[]>([]);
+  const [likecurrentPage, likesetCurrentPage] = useState<number>(1);
+  const [liketotalSection, likesetTotalSection] = useState<number>(0);
+  const [likecurrentSection, likesetCurrentSection] = useState<number>(1);
 
 
-//   // function: get total count response //
-//   const getlikeTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
-//     const { count } = dto as GetTotalCountResponseDto;
-//     const liketotalPage = Math.ceil(count / 8);
-//     likesetTotalPage(liketotalPage);
-//     const liketotalSection = Math.ceil(liketotalPage / SECTION_PER_PAGE);
-//     likesetTotalSection(liketotalSection);
-//   }
+  // function: get total count response //
+  const getlikeTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+    const { count } = dto as GetTotalCountResponseDto;
+    const liketotalPage = Math.ceil(count / 8);
+    likesetTotalPage(liketotalPage);
+    const liketotalSection = Math.ceil(liketotalPage / SECTION_PER_PAGE);
+    likesetTotalSection(liketotalSection);
+  }
 
-//   // function: getLike List 함수 //
-//   const getCafeLikeList = () => {
-//     getMyPageCafeLikeListRequest(accessToken).then(GetMyPageCafeLikeResponseDto);
-//   }
+  // function: getLike List 함수 //
+  const getCafeLikeList = () => {
+    getMyPageCafeLikeListRequest(accessToken).then(GetMyPageCafeLikeResponseDto);
+  }
   
-//   const getTravelLikeList = () => {
-//     getMyPageTravelSaveListRequest(accessToken).then(GetMyPageTravelSaveResponseDto);
-//   }
+  const getTravelLikeList = () => {
+    getMyPageTravelLikeListRequest(accessToken).then(GetMyPageTravelLikeResponseDto);
+  }
 
-//   const getFashionLikeList = () => {
-//     getMyPageFashionSaveListRequest(accessToken).then(GetMyPageFashionSaveResponseDto);
-//   }
+  const getFashionLikeList = () => {
+    getMyPageFashionLikeListRequest(accessToken).then(GetMyPageFashionLikeResponseDto);
+  }
 
-//   const getStayLikeList = () => {
-//     getMyPageStaySaveListRequest(accessToken).then(GetMyPageStaySaveResponseDto);
-//   }
+  const getStayLikeList = () => {
+    getMyPageStayLikeListRequest(accessToken).then(GetMyPageStayLikeResponseDto);
+  }
 
-//   const getFoodLikeList = () => {
-//     getMyPageRestaurantSaveListRequest(accessToken).then(GetMyPageRestaurantSaveResponseDto);
-//   }
+  const getFoodLikeList = () => {
+    getMyPageRestaurantLikeListRequest(accessToken).then(GetMyPageRestaurantLikeResponseDto);
+  }
 
 
-//   // function: 날짜 포맷 변경 함수 //
-//   const changeDateFormat = (date: string) => {
-//     const yy = date.substring(2, 4);
-//     const mm = date.substring(5, 7);
-//     const dd = date.substring(8, 10);
-//     return `${yy}.${mm}.${dd}`;
-//   };
+  // function: 날짜 포맷 변경 함수 //
+  const changeDateFormat = (date: string) => {
+    const yy = date.substring(2, 4);
+    const mm = date.substring(5, 7);
+    const dd = date.substring(8, 10);
+    return `${yy}.${mm}.${dd}`;
+  };
 
-//   // function: get Save Response 함수 //
-//   const GetMyPageCafeLikeResponseDto = (responseBody: GetMyPageCafeLikeResponseDto | ResponseDto | null) => {
-//     const message =
-//       !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
-//         responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
-//           responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-//             responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+  const combinedLikeList = [
+    ...(cafelikeviewList.map((item) => ({
+      type: 'cafe',
+      id: item.mypageBoardNumber,
+      photo: item.mypagePhotoList,
+      hashtags: item.mypageHashTagList,
+      date: item.mypageBoardDate,
+    }))),
+    ...(foodlikeviewList.map((item) => ({
+      type: 'food',
+      id: item.mypageBoardNumber,
+      photo: item.mypagePhotoList,
+      hashtags: item.mypageHashTagList,
+      date: item.mypageBoardDate,
+    }))),
+    ...(travellikeviewList.map((item) => ({
+      type: 'travel',
+      id: item.mypageBoardNumber,
+      photo: item.mypagePhotoList,
+      hashtags: item.mypageHashTagList,
+      date: item.mypageBoardDate,
+    }))),
+    ...(fashionlikeviewList.map((item) => ({
+      type: 'fashion',
+      id: item.mypageBoardNumber,
+      photo: item.mypagePhotoList,
+      hashtags: item.mypageHashTagList,
+      date: item.mypageBoardDate,
+    }))),
+    ...(staylikeviewList.map((item) => ({
+      type: 'stay',
+      id: item.mypageBoardNumber,
+      photo: item.mypagePhotoList,
+      hashtags: item.mypageHashTagList,
+      date: item.mypageBoardDate,
+    }))),
+    
+  ];
 
-//     const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-//     if (!isSuccessed) {
-//       alert(message);
-//       return;
-//     }
+  console.log(combinedLikeList);
 
-//     // cafesavesetviewList 상태 업데이트
-//     const { myPageLikeCafes } = responseBody as GetMyPageCafeLikeResponseDto;
-//     cafelikesetviewList(myPageLikeCafes);
-//     console.log(myPageLikeCafes);
-//   };
+  // function: get Save Response 함수 //
+  const GetMyPageCafeLikeResponseDto = (responseBody: GetMyPageCafeSaveResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
 
-//   const onButtonClickEventHandler = (path: string) => {
-//     navigator(path);
-//   };
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
 
-//   // interface : Properties //
-//   interface TableSaveProps {
-//     save: MyPageCafeLike;
-//   }
+    // cafesavesetviewList 상태 업데이트
+    const { myPageLikeCafes } = responseBody as GetMyPageCafeLikeResponseDto;
+    cafelikesetviewList(myPageLikeCafes);
+    console.log(myPageLikeCafes);
+  };
+  
+  const GetMyPageTravelLikeResponseDto = (responseBody: GetMyPageTravelLikeResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
 
-//   const onlikePageClickHandler = (page: number) => {
-//     likesetCurrentPage(page);
-//   }
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+    
+    // cafesavesetviewList 상태 업데이트
+    const { myPageLikeTravels } = responseBody as GetMyPageTravelLikeResponseDto;
+    travellikesetviewList(myPageLikeTravels);
+    console.log(myPageLikeTravels);
+  };
 
-//   const onlikePreSectionClickHandler = () => {
-//     if (likecurrentSection === 1) return;
-//     likesetCurrentSection(likecurrentSection - 1);
-//     likesetCurrentPage((likecurrentSection - 1) * SECTION_PER_PAGE);
-//   }
+  const GetMyPageFashionLikeResponseDto = (responseBody: GetMyPageFashionLikeResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
 
-//   const onlikeNextSectionClickHandler = () => {
-//     if (likecount === liketotalSection) return;
-//     // likecurrentSection(likecurrentSection + 1);
-//     likesetCurrentPage(likecurrentSection * SECTION_PER_PAGE + 1);
-//   }
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
 
-//   useEffect(() => {
-//     getCafeTotalCountRequest().then(getlikeTotalCountResponse);
-//   }, []);
+    // cafesavesetviewList 상태 업데이트
+    const { myPageLikeFashions } = responseBody as GetMyPageFashionLikeResponseDto;
+    fashionlikesetviewList(myPageLikeFashions);
+    console.log(myPageLikeFashions);
+  };
 
-//   useEffect(() => {
-//     const pageList: number[] = [];
-//     const startPage = (likecurrentSection - 1) * SECTION_PER_PAGE + 1;
-//     const endPage = likecurrentSection * SECTION_PER_PAGE;
-//     for (let page = startPage; page <= endPage; page++) {
-//       pageList.push(page);
-//       if (page === liketotalPage) break;
-//     };
-//     getCafeLikeList();
-//     likesetPageList(pageList);
+  const GetMyPageStayLikeResponseDto = (responseBody: GetMyPageStayLikeResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
 
-//   }, [likecurrentSection, liketotalPage]);
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
 
-//   return (
-//     <div className='like-box'>
-//       <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >LIKE</div>
-//       <div className='imageBox'>
-//         {cafelikeviewList.map((item) => (
-//           <div key={item.mypageBoardNumber} className='WritePostBox' onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_DETAIL_PATH}/${item.mypageBoardNumber}`)}>
-//             <div className='board-box'>
-//               <img src={item.mypagePhotoList} alt={`Travel ${item.mypageBoardNumber}`} className='board-image' />
-//               <div className='board-information'>
-//                 <div className='board-information-data'>{changeDateFormat(item.mypageBoardDate)}</div>
-//               </div>
-//               <div className='board-tag'>
-//                 {item.mypageHashTagList.map((hashtag, index) => (
-//                   <div key={index} className='board-tag-item'>#{hashtag}</div>
-//                 ))}
-//               </div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   )
-// }
+    // cafesavesetviewList 상태 업데이트
+    const { myPageLikeStays } = responseBody as GetMyPageStayLikeResponseDto;
+    staylikesetviewList(myPageLikeStays);
+    console.log(myPageLikeStays);
+  };
+
+  const GetMyPageRestaurantLikeResponseDto = (responseBody: GetMyPageRestaurantLikeResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    // cafesavesetviewList 상태 업데이트
+    const { myPageLikeFoods } = responseBody as GetMyPageRestaurantLikeResponseDto;
+    foodlikesetviewList(myPageLikeFoods);
+    console.log(myPageLikeFoods);
+  };
+
+
+  const onButtonClickEventHandler = (path: string) => {
+    navigator(path);
+  };
+
+  useEffect(() => {
+    getCafeLikeList();
+    getTravelLikeList();
+    getFashionLikeList();
+    getStayLikeList();
+    getFoodLikeList();
+  }, []);
+
+  // interface : Properties //
+  interface TableSaveProps {
+    save: MyPageCafeLike;
+  }
+
+  const onlikePageClickHandler = (page: number) => {
+    likesetCurrentPage(page);
+  }
+
+  const onlikePreSectionClickHandler = () => {
+    if (likecurrentSection === 1) return;
+    likesetCurrentSection(likecurrentSection - 1);
+    likesetCurrentPage((likecurrentSection - 1) * SECTION_PER_PAGE);
+  }
+
+  const onlikeNextSectionClickHandler = () => {
+    if (likecount === liketotalSection) return;
+    // likecurrentSection(likecurrentSection + 1);
+    likesetCurrentPage(likecurrentSection * SECTION_PER_PAGE + 1);
+  }
+
+  useEffect(() => {
+    getCafeTotalCountRequest().then(getlikeTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    getTotalCountRequest().then(getlikeTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    getFashionTotalCountRequest().then(getlikeTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    getStayTotalCountRequest().then(getlikeTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    getFoodTotalCountRequest().then(getlikeTotalCountResponse);
+  }, []);
+
+
+
+  useEffect(() => {
+    const pageList: number[] = [];
+    const startPage = (likecurrentSection - 1) * SECTION_PER_PAGE + 1;
+    const endPage = likecurrentSection * SECTION_PER_PAGE;
+    for (let page = startPage; page <= endPage; page++) {
+      pageList.push(page);
+      if (page === liketotalPage) break;
+    };
+    getCafeLikeList();
+    likesetPageList(pageList);
+
+  }, [likecurrentSection, liketotalPage]);
+
+  return (
+    <div className='like-box'>
+      <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >LIKE</div>
+      <div className='imageBox'>
+      {combinedLikeList.map((item) => (
+          <div key={`${item.type}-${item.id}`} className='WritePostBox'
+            onClick={() => {
+              const path = item.type === 'cafe' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
+                item.type === 'travel' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
+                  item.type === 'fashion' ? `${FASHION_DETAIL_PATH}/${item.id}` :
+                    item.type === 'food' ? `${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.id}` :
+                      `${TRAVEL_STAY_DETAIL_PATH}/${item.id}`;
+              onButtonClickEventHandler(path);
+            }}>
+
+          <div className='board-box'>
+            <img src={item.photo} alt={`Photo ${item.photo}`} className='board-image' />
+            <div className='board-information'>
+              <div className='board-information-data'>{changeDateFormat(item.date)}</div>
+            </div>
+            <div className='board-tag'>
+              {item.hashtags.map((hashtag, index) => (
+                <div key={index} className='board-tag'>#{hashtag}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+      </div>
+    </div>
+  )
+}
 
 function Write() {
   const navigator = useNavigate();
@@ -718,9 +872,9 @@ function Vote() {
     }
 
    // cafesavesetviewList 상태 업데이트
-    const { myPageTravelVoteBoard } = responseBody as GetMyPageTravelVoteResponseDto;
-    travelvotesetviewList(myPageTravelVoteBoard);
-    console.log(myPageTravelVoteBoard);
+    const { myPageVoteTravels } = responseBody as GetMyPageTravelVoteResponseDto;
+    travelvotesetviewList(myPageVoteTravels);
+    console.log(myPageVoteTravels);
   };
 
   const onButtonClickEventHandler = (path: string) => {
@@ -866,7 +1020,7 @@ export default function MyPageMain() {
         </div>
 
         <Save />
-        {/* <Like /> */}
+        <Like />
         <Write />
         <div style={{ width: "100%", height: "80px" }}></div>
         <Vote />
