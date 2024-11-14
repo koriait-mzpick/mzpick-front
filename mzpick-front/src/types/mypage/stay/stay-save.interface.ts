@@ -1,7 +1,7 @@
 export default interface myPageSaveStays {
     travelStayNumber: number;
     travelStayPhoto: string;
-    travelStayHashTagList: string[];
+    travelStayHashtagList: string[];
     travelStayDate: string;
 }
 
