@@ -1,5 +1,5 @@
 import { ResponseDto } from "src/apis/dto/response";
-import myPageSaveFashions from "src/types/mypage/fashion/fashion-save.interface";
+import { MyPageSaveFashions } from "src/types/mypage/fashion";
 export default interface GetMyPageFashionSaveResponseDto extends ResponseDto{
-    myPageSaveFashions : myPageSaveFashions[];
+    myPageSaveFashions : MyPageSaveFashions[];
 }

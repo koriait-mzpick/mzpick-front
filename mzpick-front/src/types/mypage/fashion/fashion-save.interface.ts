@@ -1,7 +1,7 @@
-export default interface myPageSaveFashions {
-    mypageFashionBoardNumber: number;
-    mypageFashionPhotoList: string;
-    mypageFashionHashtagList: string[];
-    mypageFashionBoarDate: string;
+export default interface MyPageSaveFashions {
+    fashionNumber: number;
+    fashionPhoto: string;
+    fashionHashtagList: string[];
+    fashionDate: string;
 }
 
