@@ -44,10 +44,15 @@ export const HOF_FOOD_PATH = '/hof/food'
 export const HOF_FASHION_PATH = '/hof/fashion'
 
 export const VOTE_PATH = '/vote'
+export const VOTEFASHION_PATH = '/vote-fashion'
 export const VOTE_DETAILPATH = '/vote/vote-detail'
+export const VOTEFASHION_DETAILPATH = '/vote-fashion/votefashion-detail'
 export const VOTE_DETAILPHOTOPATH = '/vote/vote-photo'
+export const VOTEFASHION_DETAILPHOTOPATH = '/vote-fashion/votefashion-photo'
 export const VOTE_DOUBLEPHOTOPATH = '/vote/vote-doublephoto'
+export const VOTEFASHION_DOUBLEPHOTOPATH = '/vote-fashion/votefashion-doublephoto'
 export const VOTE_WRITEPATH = '/vote/vote-write'
+export const VOTEFASHION_WRITEPATH = '/vote-fashion/votefashion-write'
 
 export const MY_PAGE_PATH = '/mypage'
 
