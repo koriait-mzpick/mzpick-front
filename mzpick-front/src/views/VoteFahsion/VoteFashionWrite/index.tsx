@@ -94,7 +94,6 @@ export default function VoteFashionWrite() {
 
     const onClickPostHandler = (event:MouseEvent<HTMLDivElement>) => {
         const accessToken = cookies[ACCESS_TOKEN];
-        alert('gg');
 
         if(!title) {
           alert('제목을 입력해주세요')
