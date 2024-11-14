@@ -35,9 +35,10 @@ function FirstCheckVote ({fashionVote, onModalClose}: { fashionVote: FashionVote
   const [maxNum, setMaxNum] = useState<number>(0);
 
   const firstPercent = voteFashionTotal.length ? (voteFashionTotal.filter(item => item.selected === fashionVote?.fashionVoteChoice1).length / voteFashionTotal.length) * 100 : 0;
+  console.log("테스트" +firstPercent);
   const secondPercent = voteFashionTotal.length ? (voteFashionTotal.filter(item => item.selected === fashionVote?.fashionVoteChoice2).length / voteFashionTotal.length) * 100 : 0;
   const totalCount = voteFashionTotal.length ? (voteFashionTotal.filter(item => item.selected === fashionVote?.fashionVoteChoice1).length + voteFashionTotal.filter(item => item.selected === fashionVote?.fashionVoteChoice2).length) : 0;
-
+  
   
   
     
@@ -73,8 +74,8 @@ function FirstCheckVote ({fashionVote, onModalClose}: { fashionVote: FashionVote
       return;
     };
 
-    const {fashionvoteResults} = responseBody as GetFashionVoteTotalResponseDto;
-    setVoteFashionTotal(fashionvoteResults);
+    const {fashionVoteResults} = responseBody as GetFashionVoteTotalResponseDto;
+    setVoteFashionTotal(fashionVoteResults);
   };
 
   // function:  투표 클릭 response 함수//
@@ -224,8 +225,8 @@ function SecondCheckVote ({fashionVote, onModalClose}: {fashionVote: FashionVote
       return;
     };
 
-    const {fashionvoteResults} = responseBody as GetFashionVoteTotalResponseDto;
-    setVoteFashionTotal(fashionvoteResults);
+    const {fashionVoteResults} = responseBody as GetFashionVoteTotalResponseDto;
+    setVoteFashionTotal(fashionVoteResults);
   };
 
    // function:  투표 클릭 response 함수//
@@ -386,8 +387,8 @@ function ThirdCheckVote ({fashionVote, onModalClose}: {fashionVote: FashionVote 
       return;
     };
 
-    const {fashionvoteResults} = responseBody as GetFashionVoteTotalResponseDto;
-    setVoteFashionTotal(fashionvoteResults);
+    const {fashionVoteResults} = responseBody as GetFashionVoteTotalResponseDto;
+    setVoteFashionTotal(fashionVoteResults);
   };
   
   useEffect(()=>{
@@ -636,7 +637,8 @@ useEffect(()=>{
        
       <div className='vote-top'>
 
-        { nonePhotomodal && <FirstCheckVote fashionVote={selectedVote} onModalClose={onModalClose} />}
+        { nonePhotomodal && <FirstCheckVote fashionVote={selectedVote} onModalClose={onModalClose} />} 
+        
         { singlePhotomodal && <SecondCheckVote fashionVote={selectedVote} onModalClose={onModalClose} />}
         {modal && <ThirdCheckVote fashionVote={selectedVote} onModalClose={onModalClose} />}
 

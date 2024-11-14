@@ -174,7 +174,7 @@ const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
        if (accessToken) {
       
            alert('글 작성성공')
-           navigator(VOTE_PATH);
+           navigator(VOTEFASHION_PATH);
 
        }    
 
