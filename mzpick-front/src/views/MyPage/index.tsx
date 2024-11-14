@@ -103,7 +103,7 @@ function Save() {
         type: 'food',
         id: item.travelFoodNumber,
         photo: item.travelFoodPhoto,
-        hashtags: item.travelFoodHashTagList,
+        hashtags: item.travelFoodHashtagList,
         date: item.travelFoodDate,
       }))),
       ...(travelsaveviewList.map((item) => ({
@@ -117,14 +117,14 @@ function Save() {
         type: 'fashion',
         id: item.mypageFashionBoardNumber,
         photo: item.mypageFashionPhotoList,
-        hashtags: item.mypageFashionHashTagList,
+        hashtags: item.mypageFashionHashtagList,
         date: item.mypageFashionBoarDate,
       }))),
       ...(staysaveviewList.map((item) => ({
         type: 'stay',
         id: item.travelStayNumber,
         photo: item.travelStayPhoto,
-        hashtags: item.travelStayHashTagList,
+        hashtags: item.travelStayHashtagList,
         date: item.travelStayDate,
       }))),
       
@@ -356,20 +356,20 @@ function Save() {
 //   const getCafeLikeList = () => {
 //     getMyPageCafeLikeListRequest(accessToken).then(GetMyPageCafeLikeResponseDto);
 //   }
-
-//   const getTravelSaveList = () => {
+  
+//   const getTravelLikeList = () => {
 //     getMyPageTravelSaveListRequest(accessToken).then(GetMyPageTravelSaveResponseDto);
 //   }
 
-//   const getFashionSaveList = () => {
+//   const getFashionLikeList = () => {
 //     getMyPageFashionSaveListRequest(accessToken).then(GetMyPageFashionSaveResponseDto);
 //   }
 
-//   const getStaySaveList = () => {
+//   const getStayLikeList = () => {
 //     getMyPageStaySaveListRequest(accessToken).then(GetMyPageStaySaveResponseDto);
 //   }
 
-//   const getFoodSaveList = () => {
+//   const getFoodLikeList = () => {
 //     getMyPageRestaurantSaveListRequest(accessToken).then(GetMyPageRestaurantSaveResponseDto);
 //   }
 
