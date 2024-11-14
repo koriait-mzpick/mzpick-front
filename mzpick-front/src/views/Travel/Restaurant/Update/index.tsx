@@ -241,7 +241,7 @@ export default function TravelRestaurantUpdate() {
           <div className='middle-hashtag-box'>
             {travelFoodHashtagContentList.map((tag, index) => (
               <div className='middle-hashtag' key={index} onClick={() => travelFoodHashtagContentDeleteHandler(index)}>
-                {'#' + tag}
+                #{tag}
               </div>
             ))}
             <input className='middle-hashtag-write' type='text' value={travelFoodHashtagContent} placeholder='태그 (최대 3개)' onChange={travelFoodHashtagContentChangeHandler} onKeyDown={travelFoodHashtagContentAddHandler} onBlur={travelFoodHashtagContentBlurHandler} />
