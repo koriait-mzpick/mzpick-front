@@ -243,7 +243,7 @@ export default function TravelCafeUpdate() {
           <div className='middle-hashtag-box'>
             {travelCafeHashtagContentList.map((tag, index) => (
               <div className='middle-hashtag' key={index} onClick={() => travelCafeHashtagContentDeleteHandler(index)}>
-                {'#' + tag}
+                #{tag}
               </div>
             ))}
             <input className='middle-hashtag-write' type='text' value={travelCafeHashtagContent} placeholder='태그 (최대 3개)' onChange={travelCafeHashtagContentChangeHandler} onKeyDown={travelCafeHashtagContentAddHandler} onBlur={travelCafeHashtagContentBlurHandler} />

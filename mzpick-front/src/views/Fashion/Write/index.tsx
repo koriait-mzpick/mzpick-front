@@ -192,7 +192,7 @@ export default function FashionWrite() {
           <div className='middle-hashtag-box'>
             {fashionHashtagContentList.map((tag, index) => (
               <div className='middle-hashtag' key={index} onClick={() => fashionHashtagContentDeleteHandler(index)}>
-                {'#' + tag}
+                #{tag}
               </div>
             ))}
             <input className='middle-hashtag-write' type='text' value={fashionHashtagContent} placeholder='태그 (최대 3개)' onChange={fashionHashtagContentChangeHandler} onKeyDown={fashionHashtagContentAddHandler} onBlur={fashionHashtagContentBlurHandler} />
