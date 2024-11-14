@@ -866,7 +866,7 @@ export default function MyPageMain() {
         </div>
 
         <Save />
-        <Like />
+        {/* <Like /> */}
         <Write />
         <div style={{ width: "100%", height: "80px" }}></div>
         <Vote />
