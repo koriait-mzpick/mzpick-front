@@ -243,7 +243,7 @@ export default function TravelStayUpdate() {
           <div className='middle-hashtag-box'>
             {travelStayHashtagContentList.map((tag, index) => (
               <div className='middle-hashtag' key={index} onClick={() => travelStayHashtagContentDeleteHandler(index)}>
-                {'#' + tag}
+                #{tag}
               </div>
             ))}
             <input className='middle-hashtag-write' type='text' value={travelStayHashtagContent} placeholder='태그 (최대 3개)' onChange={travelStayHashtagContentChangeHandler} onKeyDown={travelStayHashtagContentAddHandler} onBlur={travelStayHashtagContentBlurHandler} />

@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from 'src/stores';
@@ -8,9 +8,9 @@ import './style.css';
 
 // component: 메인레이아웃 컴포넌트 //
 export default function MainLayout() {
-
+  
   // state: 사이드바 상태 //
-  const [sideBarOpen, setSideBarOpen] = useState(false); 
+  const [sideBarOpen, setSideBarOpen] = useState(false);
 
   // state: 사이드바 세부 카테고리 상태 //
   const [travelCategoryOpen, setTravelCategoryOpen] = useState(false);
@@ -25,7 +25,7 @@ export default function MainLayout() {
 
   // event handler: 사이드바 오픈 이벤트 처리 //
   const sideBarOpenHandler = () => {
-    setSideBarOpen(sideBar=> {
+    setSideBarOpen(sideBar => {
       if (sideBar) {
         setTravelCategoryOpen(false);
         setFashionCategoryOpen(false);
@@ -33,7 +33,19 @@ export default function MainLayout() {
       return !sideBar
     });
   }
-  
+
+  // event handler: 사이드바 오픈 이벤트 처리 //
+  const sideBarCloseHandler = (event: React.MouseEvent<HTMLDivElement>): void => {
+    const target = event.target as HTMLElement;
+    if (sideBarOpen && 
+        !target.closest('.side-bar') && 
+        !target.closest('.navi-icon')) {
+      setSideBarOpen(false);
+      setTravelCategoryOpen(false);
+      setFashionCategoryOpen(false);
+    }
+  }
+
   // event handler: 사이드바 세부 오픈 이벤트 처리 //
   const tarvelCategoryOpenHandler = () => {
     setTravelCategoryOpen(!travelCategoryOpen);
@@ -58,15 +70,15 @@ export default function MainLayout() {
 
   // render: 메인레이아웃 컴포넌트 렌더링 //
   return (
-    <div id='main-layout'>
+    <div id='main-layout' onClick={sideBarCloseHandler}>
       <div className='layout-logo'>
         <div className='box'>
           <div className='icon' onClick={() => onItemClickHandler(HOME_PATH)}></div>
-          <div className='title'onClick={() => onItemClickHandler(HOME_PATH)}>MZPICK</div>
+          <div className='title' onClick={() => onItemClickHandler(HOME_PATH)}>MZPICK</div>
         </div>
         <div className={`navi-box ${sideBarOpen ? 'active' : ''}`}>
           <div className='signin-signup'>
-            {cookies.accessToken ? ( 
+            {cookies.accessToken ? (
               <>
                 <div className='mypage-button' onClick={() => onItemClickHandler(MY_PAGE_PATH)}>마이페이지</div>
                 <div className='slice-line' style={{ cursor: "default" }}>/</div>
@@ -83,9 +95,9 @@ export default function MainLayout() {
           </div>
         </div>
       </div>
-      
+
       <div id='main-wrapper'>
-        { <Outlet /> }
+        {<Outlet />}
       </div>
 
       <div className={`side-bar ${sideBarOpen ? 'active' : ''}`}>
@@ -107,7 +119,7 @@ export default function MainLayout() {
           </div>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
-            <div className='category-detail-text'onClick={() => onItemClickHandler(TRAVEL_CAFE_PATH)}>카페</div>
+            <div className='category-detail-text' onClick={() => onItemClickHandler(TRAVEL_CAFE_PATH)}>카페</div>
           </div>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
@@ -115,7 +127,7 @@ export default function MainLayout() {
           </div>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
-            <div className='category-detail-text'onClick={() => onItemClickHandler(VOTE_PATH)}>투표</div>
+            <div className='category-detail-text' onClick={() => onItemClickHandler(VOTE_PATH)}>투표</div>
           </div>
         </div>
         <div className='category' onClick={fashionCategoryOpenHandler} >FASHION</div>
@@ -126,25 +138,25 @@ export default function MainLayout() {
           </div>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
-            <div className='category-detail-text'onClick={() => onItemClickHandler(VOTE_PATH)}>투표</div>
+            <div className='category-detail-text' onClick={() => onItemClickHandler(VOTE_PATH)}>투표</div>
           </div>
         </div>
         <div className='category' style={{ borderBottom: "1px solid rgba(201, 224, 253, 0.3)" }} onClick={() => onItemClickHandler(KEYWORD_PATH)}>KEYWORD</div>
         <div className='category' onClick={() => onItemClickHandler(HOF_PATH)}>HALL OF FAME</div>
         <div className='signin-signup'>
-            {cookies.accessToken ? ( 
-              <>
-                <div className='mypage-button' onClick={() => onItemClickHandler(MY_PAGE_PATH)}>마이페이지</div>
-                <div className='slice-line' style={{ cursor: "default" }}>/</div>
-                <div className='logout-button' onClick={handleLogout}>로그아웃</div>
-              </>
-            ) : (
-              <>
-                <div className='login-button' onClick={() => onItemClickHandler(SIGN_IN_PATH)}>로그인</div>
-                <div className='slice-line' style={{ cursor: "default" }}>/</div>
-                <div className='signup-button' onClick={() => onItemClickHandler(SIGN_UP_PATH)}>회원가입</div>
-              </>
-            )}
+          {cookies.accessToken ? (
+            <>
+              <div className='mypage-button' onClick={() => onItemClickHandler(MY_PAGE_PATH)}>마이페이지</div>
+              <div className='slice-line' style={{ cursor: "default" }}>/</div>
+              <div className='logout-button' onClick={handleLogout}>로그아웃</div>
+            </>
+          ) : (
+            <>
+              <div className='login-button' onClick={() => onItemClickHandler(SIGN_IN_PATH)}>로그인</div>
+              <div className='slice-line' style={{ cursor: "default" }}>/</div>
+              <div className='signup-button' onClick={() => onItemClickHandler(SIGN_UP_PATH)}>회원가입</div>
+            </>
+          )}
         </div>
       </div>
     </div>
