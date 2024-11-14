@@ -25,10 +25,10 @@ import { GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
 import { getTravelVoteTotalRequest } from 'src/apis/vote';
 import { GetTravelSaveListResponseDto } from 'src/apis/travel/dto/response';
 import { getTravelSaveListRequest } from 'src/apis/travel';
-import { MyPageTravelSave } from 'src/types/mypage/travel';
-import { MyPageRestaurantSave } from 'src/types/mypage/restaurant';
+import { MyPageTravelLike, MyPageTravelSave } from 'src/types/mypage/travel';
+import { MyPageRestaurantLike, MyPageRestaurantSave } from 'src/types/mypage/restaurant';
 import { GetStaySaveListResponseDto } from 'src/apis/stay/dto/response';
-import { MyPageStaySave } from 'src/types/mypage/stay';
+import { MyPageStayLike, MyPageStaySave } from 'src/types/mypage/stay';
 
 
 const SECTION_PER_PAGE = 5;
@@ -329,7 +329,11 @@ function Like() {
   const accessToken = cookies[ACCESS_TOKEN];
 
   const [cafelikeviewList, cafelikesetviewList] = useState<myPageLikeCafes[]>([]);
-
+  const [fashionlikeviewList, fashionlikesetviewList] = useState<MyPageFashionSave[]>([]);
+  const [travellikeviewList, travellikesetviewList] = useState<MyPageTravelLike[]>([]);
+  const [foodlikeviewList, foodlikesetviewList] = useState<MyPageRestaurantLike[]>([]);
+  const [staylikeviewList, staylikesetviewList] = useState<MyPageStayLike[]>([]);
+  
   const [likecount, likesetCount] = useState<number>(0);
   const [likepageList, likesetPageList] = useState<number[]>([]);
   const [liketotalPage, likesetTotalPage] = useState<number>(0);
@@ -352,6 +356,23 @@ function Like() {
   const getCafeLikeList = () => {
     getMyPageCafeLikeListRequest(accessToken).then(GetMyPageCafeLikeResponseDto);
   }
+  
+  const getTravelSaveList = () => {
+    getMyPageTravelSaveListRequest(accessToken).then(GetMyPageTravelSaveResponseDto);
+  }
+
+  const getFashionSaveList = () => {
+    getMyPageFashionSaveListRequest(accessToken).then(GetMyPageFashionSaveResponseDto);
+  }
+
+  const getStaySaveList = () => {
+    getMyPageStaySaveListRequest(accessToken).then(GetMyPageStaySaveResponseDto);
+  }
+
+  const getFoodSaveList = () => {
+    getMyPageRestaurantSaveListRequest(accessToken).then(GetMyPageRestaurantSaveResponseDto);
+  }
+
 
   // function: 날짜 포맷 변경 함수 //
   const changeDateFormat = (date: string) => {
