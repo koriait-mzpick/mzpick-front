@@ -270,7 +270,7 @@ function SecondCheckVote ({fashionVote, onModalClose}: {fashionVote: FashionVote
         <div className='modal-singlephoto'>
           <div className='modal-photo-all'>
             <div className='modal-photo' style={{ backgroundImage: `url(${fashionVote.fashionVotePhoto1})`}}></div>
-            <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
+            <div className='modal-photo-text'></div>
           </div>
           <div className='singlemodal-text'>
           <div className='singletotal-list'>
@@ -415,7 +415,7 @@ function ThirdCheckVote ({fashionVote, onModalClose}: {fashionVote: FashionVote 
                   <div className='modal-doublephoto'>
                     <div className='total-photo'>
                       <div className='modal-firstphoto' style={{ backgroundImage: `url(${fashionVote.fashionVotePhoto1})`}}></div>
-                      <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
+                      <div className='modal-photo-text'></div>
                     </div>
 
                     <div className='double-contents' onClick={() => onClickCheckHandler(1)}>
@@ -437,7 +437,7 @@ function ThirdCheckVote ({fashionVote, onModalClose}: {fashionVote: FashionVote 
                   <div className='modal-doublephoto'>
                     <div className='total-photo'>
                       <div className='modal-secondphoto' style={{ backgroundImage: `url(${fashionVote.fashionVotePhoto2})`}}></div>
-                      <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
+                      <div className='modal-photo-text'></div>
                     </div>
 
                     <div className='double-contents' onClick={() => onClickCheckHandler(2)} >
@@ -602,7 +602,6 @@ export default function VoteFashion() {
     setVoteFashionTotal(voteResults);
     setVoteFashionChoiceNumber(selectNumber);
 
-    putFashionVoteClickRequest(travelVoteNumber, selectNumber, accessToken).then(getFashionVotetotalResponse);
   };
 
   // function: get vote write response 처리 함수 //
@@ -620,7 +619,9 @@ export default function VoteFashion() {
     }
 
     const { fashionVotes } = responseBody as GetFashionVoteListResponseDto;
-    setFashionVoteList(fashionVotes);
+
+    const sorted = [...fashionVotes].sort((a,b)=> b.fashionVoteNumber - a.fashionVoteNumber);
+    setFashionVoteList(sorted);
 
     };
 

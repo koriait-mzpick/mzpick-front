@@ -261,7 +261,7 @@ function SecondCheckVote ({travelVote, onModalClose}: {travelVote: TravelVote | 
         <div className='modal-singlephoto'>
           <div className='modal-photo-all'>
             <div className='modal-photo' style={{ backgroundImage: `url(${travelVote.travelVotePhoto1})`}}></div>
-            <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
+            <div className='modal-photo-text'>{travelVote.travelVoteChoiceContentList}</div>
           </div>
           <div className='singlemodal-text'>
           <div className='singletotal-list'>
@@ -405,7 +405,7 @@ function ThirdCheckVote ({travelVote, onModalClose}: {travelVote:TravelVote | nu
                   <div className='modal-doublephoto'>
                     <div className='total-photo'>
                       <div className='modal-firstphoto' style={{ backgroundImage: `url(${travelVote.travelVotePhoto1})`}}></div>
-                      <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
+                      <div className='modal-photo-text'>{travelVote.travelVoteChoiceContentList}</div>
                     </div>
 
                     <div className='double-contents' onClick={() => onClickCheckHandler(1)}>
@@ -427,7 +427,7 @@ function ThirdCheckVote ({travelVote, onModalClose}: {travelVote:TravelVote | nu
                   <div className='modal-doublephoto'>
                     <div className='total-photo'>
                       <div className='modal-secondphoto' style={{ backgroundImage: `url(${travelVote.travelVotePhoto2})`}}></div>
-                      <div className='modal-photo-text'>#제주 #강정포구 #차박</div>
+                      <div className='modal-photo-text'></div>
                     </div>
 
                     <div className='double-contents' onClick={() => onClickCheckHandler(2)} >
@@ -610,7 +610,9 @@ export default function Vote() {
     }
 
     const { travelVotes } = responseBody as GetTravelVoteListResponseDto;
-    setTravelVoteList(travelVotes);
+    const sorted = [...travelVotes].sort((a,b)=> b.travelVoteNumber - a.travelVoteNumber);
+
+    setTravelVoteList(sorted);
 
     };
 
