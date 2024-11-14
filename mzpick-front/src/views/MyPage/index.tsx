@@ -14,28 +14,13 @@ import { ACCESS_TOKEN, FASHION_DETAIL_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE
 import BottomNav from 'src/layouts/BottomNav';
 import { MyPageCafeBoard } from 'src/types/mypage/cafe';
 import myPageBoardCafes from 'src/types/mypage/cafe/cafe-board.interface';
-<<<<<<< HEAD
 import myPageSaveCafes from 'src/types/mypage/cafe/cafe-save.interface';
-import { MyPageFashionSave } from 'src/types/mypage/fashion';
+import { MyPageSaveFashions } from 'src/types/mypage/fashion';
 import { MyPageRestaurantSave } from 'src/types/mypage/restaurant';
 import { MyPageStaySave } from 'src/types/mypage/stay';
 import { MyPageTravelSave } from 'src/types/mypage/travel';
 import myPageVoteFashions from 'src/types/mypage/vote/fashion-vote-board.interface';
 import './style.css';
-=======
-import myPageVoteFashions from 'src/types/mypage/vote/fashion-vote-board.interface';
-import { GetMyPageFashionVoteResponseDto, GetMyPageTravelVoteResponseDto } from 'src/apis/mypage/dto/response/vote';
-import { deleteCafeRequest } from 'src/apis/cafe';
-import { MyPageSaveFashions } from 'src/types/mypage/fashion';
-import { GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
-import { getTravelVoteTotalRequest } from 'src/apis/vote';
-import { GetTravelSaveListResponseDto } from 'src/apis/travel/dto/response';
-import { getTravelSaveListRequest } from 'src/apis/travel';
-import { MyPageTravelLike, MyPageTravelSave } from 'src/types/mypage/travel';
-import { MyPageRestaurantLike, MyPageRestaurantSave } from 'src/types/mypage/restaurant';
-import { GetStaySaveListResponseDto } from 'src/apis/stay/dto/response';
-import { MyPageStayLike, MyPageStaySave } from 'src/types/mypage/stay';
->>>>>>> 95d62dcbd292ca0d19add2c3c280702a88c2eef7
 
 
 const SECTION_PER_PAGE = 5;
@@ -886,4 +871,3 @@ export default function MyPageMain() {
       </div>
   );
 }
-
