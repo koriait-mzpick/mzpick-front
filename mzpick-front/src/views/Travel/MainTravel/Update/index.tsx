@@ -169,7 +169,6 @@ export default function TravelUpdate() {
     const file = files[0];
     const newFiles = [...travelPhotoList, file];
     const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file));
-    console.log(newPreviewUrls, newFiles)
     setTravelPhotoList(newFiles);
     setPreviewUrls(newPreviewUrls);
   };

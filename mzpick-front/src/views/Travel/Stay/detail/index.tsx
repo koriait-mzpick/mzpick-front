@@ -545,8 +545,6 @@ function Comment() {
   // effect: 댓글 리스트 요청 함수 //
   useEffect(() => {
     if (!travelStayNumber) return;
-    console.log(travelStayNumber);
-    console.log(commentList);
 
     getStayDetailRequest(travelStayNumber).then(getTravelStayDetailtResponse);
     getStayCommentListRequest(travelStayNumber).then(getTravelStayCommentResponse);

@@ -15,7 +15,6 @@ export const getTotalCountRequest = async () => {
         const response = await axios.get<GetTotalCountResponseDto>(GET_TRAVEL_TOTAL_COUNT_API_URL);
         return response.data;
     } catch (error) {
-        console.error("Failed to fetch total count:", error);
         return null;
     }
 };
@@ -26,7 +25,6 @@ export const getCafeTotalCountRequest = async () => {
         const response = await axios.get<GetCafeTotalCountResponseDto>(GET_TRAVEL_CAFE_TOTAL_COUNT_API_URL);
         return response.data;
     } catch (error) {
-        console.error("Failed to fetch total count:", error);
         return null;
     }
 };
@@ -37,7 +35,6 @@ export const getFoodTotalCountRequest = async () => {
         const response = await axios.get<GetFoodTotalCountResponseDto>(GET_TRAVEL_FOOD_TOTAL_COUNT_API_URL);
         return response.data;
     } catch (error) {
-        console.error("Failed to fetch total count:", error);
         return null;
     }
 };
@@ -48,7 +45,6 @@ export const getStayTotalCountRequest = async () => {
         const response = await axios.get<GetStayTotalCountResponseDto>(GET_TRAVEL_STAY_TOTAL_COUNT_API_URL);
         return response.data;
     } catch (error) {
-        console.error("Failed to fetch total count:", error);
         return null;
     }
 };
@@ -59,7 +55,6 @@ export const getFashionTotalCountRequest = async () => {
         const response = await axios.get<GetFashionTotalCountResponseDto>(GET_TRAVEL_FASHION_TOTAL_COUNT_API_URL);
         return response.data;
     } catch (error) {
-        console.error("Failed to fetch total count:", error);
         return null;
     }
 };

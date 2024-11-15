@@ -7,7 +7,7 @@ import { GetStayTotalCountResponseDto } from 'src/apis/pagination/response';
 import { getStayListRequest } from 'src/apis/stay';
 import { GetStayListResponseDto } from 'src/apis/stay/dto/response';
 import Pagination from 'src/components/Pagination';
-import { TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_STAY_WRITE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, SIGN_IN_PATH, TRAVEL_CAFE_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_STAY_WRITE_PATH } from 'src/constants';
 import { useAuthStore, useSearchLocationStore } from 'src/stores';
 import { Stay } from 'src/types';
 import './style.css';
@@ -106,8 +106,17 @@ export default function TravelStay() {
   }
 
 
-// event handler: 네비게이션 아이템 클릭 이벤트 처리 //
-const onItemClickHandler = (path: string) => {
+// event handler: 글쓰기 버튼 클릭 이벤트 처리 //
+const writeButtonClickHandler = (path: string) => {
+  const accessToken = cookies[ACCESS_TOKEN];
+  if (!accessToken) {
+    if (window.confirm("글쓰기를 하려면 로그인하시기 바랍니다.\n로그인 페이지로 이동하시겠습니까?")) {
+      navigate(SIGN_IN_PATH);
+      return;
+    } alert("취소되었습니다.");
+    return;
+  };
+
   navigate(path);
 };
 
@@ -173,7 +182,7 @@ useEffect(() => {
             <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_CAFE_PATH)}>카페</div>
           </div>
         </div>
-        <div className='write-button' onClick={() => onItemClickHandler(TRAVEL_STAY_WRITE_PATH)}>글쓰기</div>
+        <div className='write-button' onClick={() => writeButtonClickHandler(TRAVEL_STAY_WRITE_PATH)}>글쓰기</div>
       </div>
       <div className='board-middle'>
         {viewList.map((item) => (
