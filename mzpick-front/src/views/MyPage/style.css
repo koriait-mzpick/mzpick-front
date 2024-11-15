@@ -183,11 +183,11 @@
 
 .layout .subscribe-box .save-box .imageBox {
     display: flex;
-    width: 1235px;
-    height: 280px;
+    width: 1300px;
+    height: 500px;
 
     margin-left: 75px;
-    margin-top: 40px;
+    padding-top: 30px;
 
     gap: 147px;
 }
@@ -211,11 +211,12 @@
 
 .layout .subscribe-box .like-box .imageBox {
     display: flex;
-    width: 1235px;
-    height: 280px;
+    width: 1300px;
+    height: 500px;
 
     margin-left: 75px;
-    margin-top: 40px;
+    padding-top: 30px;
+
 
     gap: 147px;
 }
@@ -241,11 +242,12 @@
 
 .layout .subscribe-box .like-box2 .imageBox {
     display: flex;
-    width: 1235px;
-    height: 280px;
+    width: 1300px;
+    height: 500px;
 
     margin-left: 75px;
-    margin-top: 30px;
+    padding-top: 30px;
+
 
     gap: 147px;
 }
