@@ -625,175 +625,6 @@ function Like() {
   )
 }
 
-function Vote() {
-  const navigator = useNavigate();
-  const [cookies] = useCookies();
-
-  const accessToken = cookies[ACCESS_TOKEN];
-
-  const [fashionvoteviewList, fashionvotesetviewList] = useState<myPageVoteFashions[]>([]);
-  const [travelvoteviewList, travelvotesetviewList] = useState<TravelVoteBoard[]>([]);
-  
-  const [votecount, votesetCount] = useState<number>(0);
-  const [votepageList, votesetPageList] = useState<number[]>([]);
-  const [votetotalPage, votesetTotalPage] = useState<number>(0);
-  const [votetotalList, votesetTotalList] = useState<myPageVoteFashions[]>([]);
-  const [votecurrentPage, votesetCurrentPage] = useState<number>(1);
-  const [votetotalSection, votesetTotalSection] = useState<number>(0);
-  const [votecurrentSection, votesetCurrentSection] = useState<number>(1);
-
-  // function: get total count response //
-  const getvoteTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
-    const { count } = dto as GetTotalCountResponseDto;
-    const votetotalPage = Math.ceil(count / 8);
-    votesetTotalPage(votetotalPage);
-    const votetotalSection = Math.ceil(votetotalPage / SECTION_PER_PAGE);
-    votesetTotalSection(votetotalSection);
-  }
-
-  // function: getLike List 함수 //
-  const getFashionVoteList = () => {
-    getMyPageFashionVoteRequest(accessToken).then(GetMyPageFashionVoteResponseDto);
-  }
-
-  const getTravelVoteList = () => {
-    getMyPageTravelVoteRequest(accessToken).then(GetMyPageTravelVoteResponseDto);
-  }
-
-  // function: 날짜 포맷 변경 함수 //
-  const changeDateFormat = (date: string) => {
-    const yy = date.substring(0, 4);
-    const mm = date.substring(5, 7);
-    const dd = date.substring(8, 10);
-    return `${yy}.${mm}.${dd}`;
-  };
-
-  const combinedLikeList = [
-    ...(fashionvoteviewList.map((item) => ({
-      type: 'cafe',
-      id: item.mypageVoteNumber
-    }))),
-    ...(travelvoteviewList.map((item) => ({
-      type: 'food',
-      id: item.mypageVoteNumber
-    })))
-    
-  ];
-
-  console.log(combinedLikeList);
-
-
-
-  // function: get Save Response 함수 //
-  const GetMyPageFashionVoteResponseDto = (responseBody: GetMyPageFashionVoteResponseDto | ResponseDto | null) => {
-    const message =
-      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
-        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
-          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
-
-    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-    if (!isSuccessed) {
-      alert(message);
-      return;
-    }
-
-   // cafesavesetviewList 상태 업데이트
-    const { myPageVoteFashions } = responseBody as GetMyPageFashionVoteResponseDto;
-    fashionvotesetviewList(myPageVoteFashions);
-    console.log(myPageVoteFashions);
-  };
-
-  const GetMyPageTravelVoteResponseDto = (responseBody: GetMyPageTravelVoteResponseDto | ResponseDto | null) => {
-    const message =
-      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
-        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
-          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
-
-    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-    if (!isSuccessed) {
-      alert(message);
-      return;
-    }
-
-   // cafesavesetviewList 상태 업데이트
-    const { myPageVoteTravels } = responseBody as GetMyPageTravelVoteResponseDto;
-    travelvotesetviewList( myPageVoteTravels );
-    console.log(myPageVoteTravels);
-  };
-
-  const onButtonClickEventHandler = (path: string) => {
-    navigator(path);
-  };
-
-  useEffect(() => {
-    getTravelVoteList();
-    getFashionVoteList();
-  }, []);
-
-  const onvotePageClickHandler = (page: number) => {
-    votesetCurrentPage(page);
-  }
-
-  const onvotePreSectionClickHandler = () => {
-    if (votecurrentSection === 1) return;
-    votesetCurrentSection(votecurrentSection - 1);
-    votesetCurrentSection((votecurrentSection - 1) * SECTION_PER_PAGE);
-  }
-
-  const onvoteNextSectionClickHandler = () => {
-    if (votecount === votetotalSection) return;
-    votesetCurrentSection(votecurrentSection + 1);
-    votesetCurrentPage(votecurrentSection * SECTION_PER_PAGE + 1);
-  }
-
-  // useEffect(() => {
-  //   getTravelVoteTotalRequest().then(getvoteTotalCountResponse);
-  // }, []);
-
-  useEffect(() => {
-    getFashionTotalCountRequest().then(getvoteTotalCountResponse);
-  }, []);
-
-  useEffect(() => {
-    getTotalCountRequest().then(getvoteTotalCountResponse);
-  }, []);
-
-  useEffect(() => {
-    const pageList: number[] = [];
-    const startPage = (votecurrentSection - 1) * SECTION_PER_PAGE + 1;
-    const endPage = votecurrentSection * SECTION_PER_PAGE;
-    for (let page = startPage; page <= endPage; page++) {
-      pageList.push(page);
-      if (page === votetotalPage) break;
-    };
-    getFashionVoteList();
-    votesetPageList(pageList);
-
-  }, [votecurrentSection, votetotalPage]);
-
-  return (
-    <div className='like-box'>
-      <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >VOTE</div>
-      <div className='imageBox'>
-      {combinedLikeList.map((item) => (
-          <div key={`${item.type}-${item.id}`} className='WritePostBox'
-            onClick={() => {
-              const path = item.type === 'cafe' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
-                item.type === 'travel' ? `${TRAVEL_DETAIL_PATH}/${item.id}` :
-                  item.type === 'fashion' ? `${FASHION_DETAIL_PATH}/${item.id}` :
-                    item.type === 'food' ? `${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.id}` :
-                      `${TRAVEL_STAY_DETAIL_PATH}/${item.id}`;
-              onButtonClickEventHandler(path);
-            }}>
-        </div>
-      ))}
-      </div>
-    </div>
-  )
-}
-
 function Write() {
   const navigator = useNavigate();
   const [cookies] = useCookies();
@@ -995,6 +826,7 @@ function Write() {
 
    // state: 여행 게시물 번호 상태 //
   const { travelCafeNumber } = useParams<{ travelCafeNumber: string }>();
+  
 
   // interface : Properties //
   interface TableSaveProps {
@@ -1036,6 +868,14 @@ function Write() {
 
     deleteCafeRequest(travelCafeNumber, accessToken).then(deleteTravelCafeDetailtResponse);
   }
+
+  useEffect(() => {
+    getTravelWriteList();
+    getFashionWriteList();
+    getStayWriteList();
+    getFoodWriteList();
+    getCafeWriteList();
+  }, []);
 
 
   const onlikePageClickHandler = (page: number) => {
@@ -1099,19 +939,263 @@ function Write() {
             <div className='title'>삭제</div>
           </div>
 
-          {cafewriteviewList.map((item) => (
-          <div  key={item.mypageBoardNumber} className='contentBox'>
-            <div className='directed-writeBox'>{changeDateFormat(item.mypageBoardDate)}</div>
-            <div className='directed-writeBox2' onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_DETAIL_PATH}/${item.mypageBoardNumber}`)}>{item.mypageBoardTitle}</div>
+<div className='Box'>
+              {combinedLikeList.map((item) => (
+          <div key={`${item.type}-${item.id}`} className='contentBox'>
+            <div className='directed-writeBox'>{changeDateFormat(item.date)}</div>
+            <div className='directed-writeBox2' onClick={() => {
+              const path = item.type === 'cafe' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
+                item.type === 'travel' ? `${TRAVEL_DETAIL_PATH}/${item.id}` :
+                  item.type === 'fashion' ? `${FASHION_DETAIL_PATH}/${item.id}` :
+                    item.type === 'food' ? `${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.id}` :
+                      `${TRAVEL_STAY_DETAIL_PATH}/${item.id}`;
+              onButtonClickEventHandler(path);
+            }}>{item.title}</div>
             <div className='directed-writeBox3'>
-              <div className='icon-box' onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${item.mypageBoardNumber}`)}></div>
+              <div className='icon-box' onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${item.id}`)}></div>
             </div>
             <div className='directed-writeBox4'>
               <div className='icon-box2'  onClick={deleteButtonClickHandler}></div>
             </div>
           </div>
           ))}
+          </div>
+        </div>
 
+      </div>
+  );
+}
+
+function Vote() {
+  const navigator = useNavigate();
+  const [cookies] = useCookies();
+
+  const accessToken = cookies[ACCESS_TOKEN];
+
+  const [fashionvoteviewList, fashionvotesetviewList] = useState<myPageVoteFashions[]>([]);
+  const [travelvoteviewList, travelvotesetviewList] = useState<myPageVoteFashions[]>([]);
+
+  const [writecount, writesetCount] = useState<number>(0);
+  const [writepageList, writesetPageList] = useState<number[]>([]);
+  const [writetotalPage, writesetTotalPage] = useState<number>(0);
+  const [writetotalList, writesetTotalList] = useState<myPageBoardCafes[]>([]);
+  const [writecurrentPage, writesetCurrentPage] = useState<number>(1);
+  const [writetotalSection, writesetTotalSection] = useState<number>(0);
+  const [writecurrentSection, writesetCurrentSection] = useState<number>(1);
+
+
+
+  // function: get total count response //
+  const getwriteTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+    const { count } = dto as GetTotalCountResponseDto;
+    const writetotalPage = Math.ceil(count / 8);
+    writesetTotalPage(writetotalPage);
+    const writetotalSection = Math.ceil(writetotalPage / SECTION_PER_PAGE);
+    writesetTotalSection(writetotalSection);
+  }
+
+  // function: getLike List 함수 //
+
+  const getFashionVoteList = () => {
+    getMyPageFashionVoteRequest(accessToken).then(GetMyPageFashionVoteResponseDto);
+  }
+
+  const getTravelVoteList = () => {
+    getMyPageTravelVoteRequest(accessToken).then(GetMyPageTravelVoteResponseDto);
+  }
+
+  // function: 날짜 포맷 변경 함수 //
+  const changeDateFormat = (date: string) => {
+    const yy = date.substring(0, 4);
+    const mm = date.substring(5, 7);
+    const dd = date.substring(8, 10);
+    return `${yy}.${mm}.${dd}`;
+  };
+
+  
+  const combinedLikeList = [
+    ...(travelvoteviewList.map((item) => ({
+      type: 'travel',
+      id: item.mypageVoteNumber,
+      title: item.mypageVoteTitle,
+      date: item.mypageVoteDate,
+    }))),
+    ...(fashionvoteviewList.map((item) => ({
+      type: 'fashion',
+      id: item.mypageVoteNumber,
+      title: item.mypageVoteTitle,
+      date: item.mypageVoteDate,
+    }))),
+  ];
+
+  console.log(combinedLikeList);
+
+
+
+  // function: get Save Response 함수 //
+
+  const GetMyPageTravelVoteResponseDto = (responseBody: GetMyPageTravelVoteResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    // cafesavesetviewList 상태 업데이트
+    const { myPageVoteTravels } = responseBody as GetMyPageTravelVoteResponseDto;
+    travelvotesetviewList(myPageVoteTravels);
+    console.log(myPageVoteTravels);
+  };
+
+  const GetMyPageFashionVoteResponseDto = (responseBody: GetMyPageFashionVoteResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    // cafesavesetviewList 상태 업데이트
+    const { myPageVoteFashions } = responseBody as GetMyPageFashionVoteResponseDto;
+    fashionvotesetviewList(myPageVoteFashions);
+    console.log(myPageVoteFashions);
+  };
+
+  const onButtonClickEventHandler = (path: string) => {
+    navigator(path);
+  };
+
+   // state: 여행 게시물 번호 상태 //
+  const { travelCafeNumber } = useParams<{ travelCafeNumber: string }>();
+  
+
+  // interface : Properties //
+  interface TableSaveProps {
+    save: MyPageCafeBoard;
+  }
+
+    // function: 카페 삭제 요청 응답 함수 //
+    const deleteTravelCafeDetailtResponse = (responseBody: ResponseDto | null) => {
+      const message =
+        !responseBody ? '서버에 문제가 있습니다.' :
+          responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+              responseBody.code === 'NP' ? '권한이 없습니다.' :
+                responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+  
+      const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+      if (!isSuccessed) {
+        alert(message);
+        return;
+      }
+      if (!travelCafeNumber) return;
+      navigator(TRAVEL_CAFE_PATH);
+    };
+  
+
+   // event handler: 게시글 삭제 버튼 클릭 이벤트 처리 //
+    const deleteButtonClickHandler = () => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      alert("삭제가 완료되었습니다.");
+    } else {
+      alert("취소되었습니다.");
+      return;
+    }
+
+    if (!travelCafeNumber) return;
+
+    const accessToken = cookies[ACCESS_TOKEN];
+    if (!accessToken) return;
+
+    deleteCafeRequest(travelCafeNumber, accessToken).then(deleteTravelCafeDetailtResponse);
+  }
+
+  useEffect(() => {
+    getTravelVoteList();
+    getFashionVoteList();
+  }, []);
+
+
+  const onlikePageClickHandler = (page: number) => {
+    writesetCurrentPage(page);
+  }
+
+  const onlikePreSectionClickHandler = () => {
+    if (writecurrentSection === 1) return;
+    writesetCurrentSection(writecurrentSection - 1);
+    writesetCurrentPage((writecurrentSection - 1) * SECTION_PER_PAGE);
+  }
+
+  const onlikeNextSectionClickHandler = () => {
+    if (writecount === writetotalSection) return;
+    // likecurrentSection(likecurrentSection + 1);
+    writesetCurrentPage(writecurrentSection * SECTION_PER_PAGE + 1);
+  }
+
+  // useEffect(() => {
+  //   getTravelVoteTotalRequest().then();
+  // }, []);
+
+  // useEffect(() => {
+  //   getFashionTotalCountRequest().then(getwriteTotalCountResponse);
+  // }, []);
+
+  useEffect(() => {
+    const pageList: number[] = [];
+    const startPage = (writecurrentSection - 1) * SECTION_PER_PAGE + 1;
+    const endPage = writecurrentSection * SECTION_PER_PAGE;
+    for (let page = startPage; page <= endPage; page++) {
+      pageList.push(page);
+      if (page === writetotalPage) break;
+    };
+    writesetPageList(pageList);
+
+  }, [writecurrentSection, writetotalPage]);
+
+  return (
+
+        <div className='like-box2'>
+        <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>WRITE</div>
+        <div className='write-totalBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
+          <div className='write-titleBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
+            <div className='title'>작성일</div>
+            <div className='title2'>제목</div>
+            <div className='title'>수정</div>
+            <div className='title'>삭제</div>
+          </div>
+
+<div className='Box'>
+              {combinedLikeList.map((item) => (
+          <div key={`${item.type}-${item.id}`} className='contentBox'>
+            <div className='directed-writeBox'>{changeDateFormat(item.date)}</div>
+            <div className='directed-writeBox2' onClick={() => {
+              const path = item.type === 'cafe' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
+                item.type === 'travel' ? `${TRAVEL_DETAIL_PATH}/${item.id}` :
+                  item.type === 'fashion' ? `${FASHION_DETAIL_PATH}/${item.id}` :
+                    item.type === 'food' ? `${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.id}` :
+                      `${TRAVEL_STAY_DETAIL_PATH}/${item.id}`;
+              onButtonClickEventHandler(path);
+            }}>{item.title}</div>
+            <div className='directed-writeBox3'>
+              <div className='icon-box' onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${item.id}`)}></div>
+            </div>
+            <div className='directed-writeBox4'>
+              <div className='icon-box2'  onClick={deleteButtonClickHandler}></div>
+            </div>
+          </div>
+          ))}
+          </div>
         </div>
 
       </div>
@@ -1190,8 +1274,8 @@ export default function MyPageMain() {
 
         <Save />
         <Like />
-        <Vote />
         <Write />
+        <Vote />
 
       </div>
 
