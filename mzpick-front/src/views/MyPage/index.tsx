@@ -600,7 +600,7 @@ function Like() {
           <div key={`${item.type}-${item.id}`} className='WritePostBox'
             onClick={() => {
               const path = item.type === 'cafe' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
-                item.type === 'travel' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
+                item.type === 'travel' ? `${TRAVEL_DETAIL_PATH}/${item.id}` :
                   item.type === 'fashion' ? `${FASHION_DETAIL_PATH}/${item.id}` :
                     item.type === 'food' ? `${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.id}` :
                       `${TRAVEL_STAY_DETAIL_PATH}/${item.id}`;
@@ -781,7 +781,7 @@ function Vote() {
           <div key={`${item.type}-${item.id}`} className='WritePostBox'
             onClick={() => {
               const path = item.type === 'cafe' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
-                item.type === 'travel' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
+                item.type === 'travel' ? `${TRAVEL_DETAIL_PATH}/${item.id}` :
                   item.type === 'fashion' ? `${FASHION_DETAIL_PATH}/${item.id}` :
                     item.type === 'food' ? `${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.id}` :
                       `${TRAVEL_STAY_DETAIL_PATH}/${item.id}`;
