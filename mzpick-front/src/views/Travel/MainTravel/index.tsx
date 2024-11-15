@@ -73,8 +73,6 @@ export default function MainTravel() {
 
     setViewList(travelList);
 
-    console.log(travelList);
-
     if (searchLocation) {
       const filteredList = travelList.filter(item => item.travelLocation.includes(searchLocation));
       setViewList(filteredList);
@@ -114,16 +112,19 @@ export default function MainTravel() {
   //   setBookMarkClick(!bookMarkClick);
   // }
 
-  // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
-  const onItemClickHandler = (path: string) => {
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) {
-      alert("글쓰기를 하려면 로그인하시기 바랍니다.");
+// event handler: 글쓰기 버튼 클릭 이벤트 처리 //
+const writeButtonClickHandler = (path: string) => {
+  const accessToken = cookies[ACCESS_TOKEN];
+  if (!accessToken) {
+    if (window.confirm("글쓰기를 하려면 로그인하시기 바랍니다.\n로그인 페이지로 이동하시겠습니까?")) {
       navigate(SIGN_IN_PATH);
       return;
-    }
-    navigate(path);
+    } alert("취소되었습니다.");
+    return;
   };
+
+  navigate(path);
+};
   
   const onPageClickHandler = (page: number) => {
     setCurrentPage(page);
@@ -185,7 +186,7 @@ const onHashtagClickHandler = (hashtag: string) => {
             <div className='drop-down-sub-text' onClick={() => onDropDownSelect(TRAVEL_STAY_PATH)}>숙박</div>
           </div>
         </div>
-        <div className='write-button' onClick={() => onItemClickHandler(TRAVEL_WRITE_PATH)}>글쓰기</div>
+        <div className='write-button' onClick={() => writeButtonClickHandler(TRAVEL_WRITE_PATH)}>글쓰기</div>
       </div>
       <div className='board-middle'>
       {viewList.map((item) => (

@@ -142,8 +142,6 @@ export default function TraveMap() {
   const searchLocationUrl = useLocation();
 
   useEffect(() => {
-    console.log(searchLocationUrl);
-    console.log(searchLocation);
     setSearchLocation("");
   }, [])
 

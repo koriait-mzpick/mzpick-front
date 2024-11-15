@@ -557,8 +557,6 @@ function Comment() {
   // effect: 댓글 리스트 요청 함수 //
   useEffect(() => {
     if (!fashionNumber) return;
-    console.log(fashionNumber);
-    console.log(commentList);
 
     getFashionDetailRequest(fashionNumber).then(getFashionDetailtResponse);
     getFashionCommentListRequest(fashionNumber).then(getFashionCommentResponse);

@@ -170,7 +170,6 @@ export default function TravelCafeUpdate() {
     const file = files[0];
     const newFiles = [...travelCafePhotoList, file];
     const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file));
-    console.log(newPreviewUrls, newFiles)
     setTravelCafePhotoList(newFiles);
     setPreviewUrls(newPreviewUrls);
   };
