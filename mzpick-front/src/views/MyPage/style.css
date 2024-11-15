@@ -183,11 +183,11 @@
 
 .layout .subscribe-box .save-box .imageBox {
     display: flex;
-    width: 1235px;
-    height: 280px;
+    width: 1300px;
+    height: 500px;
 
     margin-left: 75px;
-    margin-top: 40px;
+    padding-top: 30px;
 
     gap: 147px;
     overflow: auto;
@@ -195,8 +195,8 @@
 
 .layout .subscribe-box .save-box .imageBox .WritePostBox {
     display: flex;
-    width: 300px;
-    height: 250px;
+    width: 313px;
+    height: 282px;
     
     border: 1px solid rgba(166, 166, 166, 100);
     border-radius: 10px;
@@ -212,11 +212,12 @@
 
 .layout .subscribe-box .like-box .imageBox {
     display: flex;
-    width: 1235px;
-    height: 280px;
+    width: 1300px;
+    height: 500px;
 
     margin-left: 75px;
-    margin-top: 40px;
+    padding-top: 30px;
+
 
     gap: 147px;
     overflow: auto;
@@ -224,8 +225,8 @@
 
 .layout .subscribe-box .like-box .imageBox .WritePostBox{
     display: flex;
-    width: 300px;
-    height: 250px;
+    width: 313px;
+    height: 282px;
     
     border: 1px solid rgba(166, 166, 166, 100);
     border-radius: 10px;
@@ -243,11 +244,12 @@
 
 .layout .subscribe-box .like-box2 .imageBox {
     display: flex;
-    width: 1235px;
-    height: 280px;
+    width: 1300px;
+    height: 500px;
 
     margin-left: 75px;
-    margin-top: 30px;
+    padding-top: 30px;
+
 
     gap: 147px;
     overflow: auto;

@@ -3,15 +3,15 @@ import { useCookies } from 'react-cookie';
 import { useNavigate, useParams } from 'react-router';
 import { deleteCafeRequest } from 'src/apis/cafe';
 import { ResponseDto } from 'src/apis/dto/response';
-import { getMyPageCafeBoardRequest, getMyPageCafeLikeListRequest, getMyPageCafeSaveListRequest, getMyPageFashionLikeListRequest, getMyPageFashionSaveListRequest, getMyPageFashionVoteRequest, getMyPageRestaurantLikeListRequest, getMyPageRestaurantSaveListRequest, getMyPageStayLikeListRequest, getMyPageStaySaveListRequest, getMyPageTravelLikeListRequest, getMyPageTravelSaveListRequest, getMyPageTravelVoteRequest, getMyPageUserDetailRequest } from 'src/apis/mypage';
-import { GetMyPageCafeBoardResponseDto } from 'src/apis/mypage/dto/response/board';
+import { getMyPageCafeBoardRequest, getMyPageCafeLikeListRequest, getMyPageCafeSaveListRequest, getMyPageFashionBoardRequest, getMyPageFashionLikeListRequest, getMyPageFashionSaveListRequest, getMyPageFashionVoteRequest, getMyPageRestaurantBoardRequest, getMyPageRestaurantLikeListRequest, getMyPageRestaurantSaveListRequest, getMyPageStayBoardRequest, getMyPageStayLikeListRequest, getMyPageStaySaveListRequest, getMyPageTravelBoardRequest, getMyPageTravelLikeListRequest, getMyPageTravelSaveListRequest, getMyPageTravelVoteRequest, getMyPageUserDetailRequest } from 'src/apis/mypage';
+import { GetMyPageCafeBoardResponseDto, GetMyPageFashionBoardResponseDto, GetMyPageRestaurantBoardResponseDto, GetMyPageStayBoardResponseDto, GetMyPageTravelBoardResponseDto } from 'src/apis/mypage/dto/response/board';
 import { GetMyPageCafeLikeResponseDto, GetMyPageFashionLikeResponseDto, GetMyPageRestaurantLikeResponseDto, GetMyPageStayLikeResponseDto, GetMyPageTravelLikeResponseDto } from 'src/apis/mypage/dto/response/like';
 import { GetMyPageCafeSaveResponseDto, GetMyPageFashionSaveResponseDto, GetMyPageRestaurantSaveResponseDto, GetMyPageStaySaveResponseDto, GetMyPageTravelSaveResponseDto } from 'src/apis/mypage/dto/response/save';
 import { GetMyPageUserDetailResponseDto } from 'src/apis/mypage/dto/response/user';
 import { GetMyPageFashionVoteResponseDto, GetMyPageTravelVoteResponseDto } from 'src/apis/mypage/dto/response/vote';
 import { getCafeTotalCountRequest, getFashionTotalCountRequest, getFoodTotalCountRequest, getStayTotalCountRequest, getTotalCountRequest } from 'src/apis/pagination';
 import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
-import { ACCESS_TOKEN, FASHION_DETAIL_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_STAY_DETAIL_PATH, VOTE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, FASHION_DETAIL_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_STAY_DETAIL_PATH } from 'src/constants';
 import BottomNav from 'src/layouts/BottomNav';
 import { MyPageCafeBoard, MyPageCafeLike } from 'src/types/mypage/cafe';
 import myPageBoardCafes from 'src/types/mypage/cafe/cafe-board.interface';
@@ -20,11 +20,11 @@ import myPageSaveCafes from 'src/types/mypage/cafe/cafe-save.interface';
 import myPageVoteFashions from 'src/types/mypage/vote/fashion-vote-board.interface';
 import './style.css';
 
-import { MyPageFashionLike, MyPageSaveFashions } from 'src/types/mypage/fashion';
-
-import { MyPageRestaurantLike, MyPageRestaurantSave } from 'src/types/mypage/restaurant';
-import { MyPageStayLike, MyPageStaySave } from 'src/types/mypage/stay';
-import { MyPageTravelLike, MyPageTravelSave } from 'src/types/mypage/travel';
+import { MyPageFashionBoard, MyPageFashionLike, MyPageSaveFashions } from 'src/types/mypage/fashion';
+import { MyPageRestaurantBoard, MyPageRestaurantLike, MyPageRestaurantSave } from 'src/types/mypage/restaurant';
+import { MyPageStayBoard, MyPageStayLike, MyPageStaySave } from 'src/types/mypage/stay';
+import { MyPageTravelBoard, MyPageTravelLike, MyPageTravelSave } from 'src/types/mypage/travel';
+import { TravelVoteBoard } from 'src/types/mypage/vote';
 
 
 const SECTION_PER_PAGE = 5;
@@ -618,6 +618,175 @@ function Like() {
   )
 }
 
+function Vote() {
+  const navigator = useNavigate();
+  const [cookies] = useCookies();
+
+  const accessToken = cookies[ACCESS_TOKEN];
+
+  const [fashionvoteviewList, fashionvotesetviewList] = useState<myPageVoteFashions[]>([]);
+  const [travelvoteviewList, travelvotesetviewList] = useState<TravelVoteBoard[]>([]);
+  
+  const [votecount, votesetCount] = useState<number>(0);
+  const [votepageList, votesetPageList] = useState<number[]>([]);
+  const [votetotalPage, votesetTotalPage] = useState<number>(0);
+  const [votetotalList, votesetTotalList] = useState<myPageVoteFashions[]>([]);
+  const [votecurrentPage, votesetCurrentPage] = useState<number>(1);
+  const [votetotalSection, votesetTotalSection] = useState<number>(0);
+  const [votecurrentSection, votesetCurrentSection] = useState<number>(1);
+
+  // function: get total count response //
+  const getvoteTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
+    const { count } = dto as GetTotalCountResponseDto;
+    const votetotalPage = Math.ceil(count / 8);
+    votesetTotalPage(votetotalPage);
+    const votetotalSection = Math.ceil(votetotalPage / SECTION_PER_PAGE);
+    votesetTotalSection(votetotalSection);
+  }
+
+  // function: getLike List 함수 //
+  const getFashionVoteList = () => {
+    getMyPageFashionVoteRequest(accessToken).then(GetMyPageFashionVoteResponseDto);
+  }
+
+  const getTravelVoteList = () => {
+    getMyPageTravelVoteRequest(accessToken).then(GetMyPageTravelVoteResponseDto);
+  }
+
+  // function: 날짜 포맷 변경 함수 //
+  const changeDateFormat = (date: string) => {
+    const yy = date.substring(0, 4);
+    const mm = date.substring(5, 7);
+    const dd = date.substring(8, 10);
+    return `${yy}.${mm}.${dd}`;
+  };
+
+  const combinedLikeList = [
+    ...(fashionvoteviewList.map((item) => ({
+      type: 'cafe',
+      id: item.mypageVoteNumber
+    }))),
+    ...(travelvoteviewList.map((item) => ({
+      type: 'food',
+      id: item.mypageVoteNumber
+    })))
+    
+  ];
+
+  console.log(combinedLikeList);
+
+
+
+  // function: get Save Response 함수 //
+  const GetMyPageFashionVoteResponseDto = (responseBody: GetMyPageFashionVoteResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+   // cafesavesetviewList 상태 업데이트
+    const { myPageVoteFashions } = responseBody as GetMyPageFashionVoteResponseDto;
+    fashionvotesetviewList(myPageVoteFashions);
+    console.log(myPageVoteFashions);
+  };
+
+  const GetMyPageTravelVoteResponseDto = (responseBody: GetMyPageTravelVoteResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+   // cafesavesetviewList 상태 업데이트
+    const { myPageVoteTravels } = responseBody as GetMyPageTravelVoteResponseDto;
+    travelvotesetviewList( myPageVoteTravels );
+    console.log(myPageVoteTravels);
+  };
+
+  const onButtonClickEventHandler = (path: string) => {
+    navigator(path);
+  };
+
+  useEffect(() => {
+    getTravelVoteList();
+    getFashionVoteList();
+  }, []);
+
+  const onvotePageClickHandler = (page: number) => {
+    votesetCurrentPage(page);
+  }
+
+  const onvotePreSectionClickHandler = () => {
+    if (votecurrentSection === 1) return;
+    votesetCurrentSection(votecurrentSection - 1);
+    votesetCurrentSection((votecurrentSection - 1) * SECTION_PER_PAGE);
+  }
+
+  const onvoteNextSectionClickHandler = () => {
+    if (votecount === votetotalSection) return;
+    votesetCurrentSection(votecurrentSection + 1);
+    votesetCurrentPage(votecurrentSection * SECTION_PER_PAGE + 1);
+  }
+
+  // useEffect(() => {
+  //   getTravelVoteTotalRequest().then(getvoteTotalCountResponse);
+  // }, []);
+
+  useEffect(() => {
+    getFashionTotalCountRequest().then(getvoteTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    getTotalCountRequest().then(getvoteTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    const pageList: number[] = [];
+    const startPage = (votecurrentSection - 1) * SECTION_PER_PAGE + 1;
+    const endPage = votecurrentSection * SECTION_PER_PAGE;
+    for (let page = startPage; page <= endPage; page++) {
+      pageList.push(page);
+      if (page === votetotalPage) break;
+    };
+    getFashionVoteList();
+    votesetPageList(pageList);
+
+  }, [votecurrentSection, votetotalPage]);
+
+  return (
+    <div className='like-box'>
+      <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }} >VOTE</div>
+      <div className='imageBox'>
+      {combinedLikeList.map((item) => (
+          <div key={`${item.type}-${item.id}`} className='WritePostBox'
+            onClick={() => {
+              const path = item.type === 'cafe' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
+                item.type === 'travel' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
+                  item.type === 'fashion' ? `${FASHION_DETAIL_PATH}/${item.id}` :
+                    item.type === 'food' ? `${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.id}` :
+                      `${TRAVEL_STAY_DETAIL_PATH}/${item.id}`;
+              onButtonClickEventHandler(path);
+            }}>
+        </div>
+      ))}
+      </div>
+    </div>
+  )
+}
+
 function Write() {
   const navigator = useNavigate();
   const [cookies] = useCookies();
@@ -625,6 +794,10 @@ function Write() {
   const accessToken = cookies[ACCESS_TOKEN];
 
   const [cafewriteviewList, cafewritesetviewList] = useState<myPageBoardCafes[]>([]);
+  const [fashionwriteviewList, fashionwritesetviewList] = useState<MyPageFashionBoard[]>([]);
+  const [travelwriteviewList, travelwritesetviewList] = useState<MyPageTravelBoard[]>([]);
+  const [foodwriteviewList, foodwritesetviewList] = useState<MyPageRestaurantBoard[]>([]);
+  const [staywriteviewList, staywritesetviewList] = useState<MyPageStayBoard[]>([]);
 
   const [writecount, writesetCount] = useState<number>(0);
   const [writepageList, writesetPageList] = useState<number[]>([]);
@@ -650,6 +823,22 @@ function Write() {
     getMyPageCafeBoardRequest(accessToken).then(GetMyPageCafeBoardResponseDto);
   }
 
+  const getFashionWriteList = () => {
+    getMyPageFashionBoardRequest(accessToken).then(GetMyPageFashionBoardResponseDto);
+  }
+
+  const getTravelWriteList = () => {
+    getMyPageTravelBoardRequest(accessToken).then(GetMyPageTravelBoardResponseDto);
+  }
+
+  const getFoodWriteList = () => {
+    getMyPageRestaurantBoardRequest(accessToken).then(GetMyPageRestaurantBoardResponseDto);
+  }
+
+  const getStayWriteList = () => {
+    getMyPageStayBoardRequest(accessToken).then(GetMyPageStayBoardResponseDto);
+  }
+
   // function: 날짜 포맷 변경 함수 //
   const changeDateFormat = (date: string) => {
     const yy = date.substring(0, 4);
@@ -657,6 +846,45 @@ function Write() {
     const dd = date.substring(8, 10);
     return `${yy}.${mm}.${dd}`;
   };
+
+  
+  const combinedLikeList = [
+    ...(cafewriteviewList.map((item) => ({
+      type: 'cafe',
+      id: item.mypageBoardNumber,
+      title: item.mypageBoardTitle,
+      date: item.mypageBoardDate,
+    }))),
+    ...(foodwriteviewList.map((item) => ({
+      type: 'food',
+      id: item.mypageBoardNumber,
+      title: item.mypageBoardTitle,
+      date: item.mypageBoardDate,
+    }))),
+    ...(travelwriteviewList.map((item) => ({
+      type: 'travel',
+      id: item.mypageBoardNumber,
+      title: item.mypageBoardTitle,
+      date: item.mypageBoardDate,
+    }))),
+    ...(fashionwriteviewList.map((item) => ({
+      type: 'fashion',
+      id: item.mypageBoardNumber,
+      title: item.mypageBoardTitle,
+      date: item.mypageBoardDate,
+    }))),
+    ...(staywriteviewList.map((item) => ({
+      type: 'stay',
+      id: item.mypageBoardNumber,
+      title: item.mypageBoardTitle,
+      date: item.mypageBoardDate,
+    }))),
+    
+  ];
+
+  console.log(combinedLikeList);
+
+
 
   // function: get Save Response 함수 //
   const GetMyPageCafeBoardResponseDto = (responseBody: GetMyPageCafeBoardResponseDto | ResponseDto | null) => {
@@ -676,6 +904,82 @@ function Write() {
     const { myPageBoardCafes } = responseBody as GetMyPageCafeBoardResponseDto;
     cafewritesetviewList(myPageBoardCafes);
     console.log(myPageBoardCafes);
+  };
+
+  const GetMyPageFashionBoardResponseDto = (responseBody: GetMyPageFashionBoardResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    // cafesavesetviewList 상태 업데이트
+    const { myPageBoardFashions } = responseBody as GetMyPageFashionBoardResponseDto;
+    fashionwritesetviewList(myPageBoardFashions);
+    console.log(myPageBoardFashions);
+  };
+
+  const GetMyPageRestaurantBoardResponseDto = (responseBody: GetMyPageRestaurantBoardResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    // cafesavesetviewList 상태 업데이트
+    const { myPageBoardFoods } = responseBody as GetMyPageRestaurantBoardResponseDto;
+    foodwritesetviewList(myPageBoardFoods);
+    console.log(myPageBoardFoods);
+  };
+
+  const GetMyPageStayBoardResponseDto = (responseBody: GetMyPageStayBoardResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    // cafesavesetviewList 상태 업데이트
+    const { myPageBoardStays } = responseBody as GetMyPageStayBoardResponseDto;
+    staywritesetviewList(myPageBoardStays);
+    console.log(myPageBoardStays);
+  };
+
+  const GetMyPageTravelBoardResponseDto = (responseBody: GetMyPageTravelBoardResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
+        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
+
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
+      return;
+    }
+
+    // cafesavesetviewList 상태 업데이트
+    const { myPageBoardTravels } = responseBody as GetMyPageTravelBoardResponseDto;
+    travelwritesetviewList(myPageBoardTravels);
+    console.log(myPageBoardTravels);
   };
 
   const onButtonClickEventHandler = (path: string) => {
@@ -748,6 +1052,22 @@ function Write() {
   }, []);
 
   useEffect(() => {
+    getFashionTotalCountRequest().then(getwriteTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    getTotalCountRequest().then(getwriteTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    getFoodTotalCountRequest().then(getwriteTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
+    getStayTotalCountRequest().then(getwriteTotalCountResponse);
+  }, []);
+
+  useEffect(() => {
     const pageList: number[] = [];
     const startPage = (writecurrentSection - 1) * SECTION_PER_PAGE + 1;
     const endPage = writecurrentSection * SECTION_PER_PAGE;
@@ -781,160 +1101,6 @@ function Write() {
             </div>
             <div className='directed-writeBox4'>
               <div className='icon-box2'  onClick={deleteButtonClickHandler}></div>
-            </div>
-          </div>
-          ))}
-
-        </div>
-
-      </div>
-  );
-}
-
-function Vote() {
-  const navigator = useNavigate();
-  const [cookies] = useCookies();
-
-  const accessToken = cookies[ACCESS_TOKEN];
-
-  const [fashionvoteviewList, fashionvotesetviewList] = useState<myPageVoteFashions[]>([]);
-  const [travelvoteviewList, travelvotesetviewList] = useState<myPageVoteFashions[]>([]);
-
-  const [votecount, votesetCount] = useState<number>(0);
-  const [votepageList, votesetPageList] = useState<number[]>([]);
-  const [votetotalPage, votesetTotalPage] = useState<number>(0);
-  const [votetotalList, votesetTotalList] = useState<myPageVoteFashions[]>([]);
-  const [votecurrentPage, votesetCurrentPage] = useState<number>(1);
-  const [votetotalSection, votesetTotalSection] = useState<number>(0);
-  const [votecurrentSection, votesetCurrentSection] = useState<number>(1);
-
-  // function: get total count response //
-  const getvoteTotalCountResponse = (dto: GetTotalCountResponseDto | ResponseDto | null) => {
-    const { count } = dto as GetTotalCountResponseDto;
-    const votetotalPage = Math.ceil(count / 8);
-    votesetTotalPage(votetotalPage);
-    const votetotalSection = Math.ceil(votetotalPage / SECTION_PER_PAGE);
-    votesetTotalSection(votetotalSection);
-  }
-
-  // function: getLike List 함수 //
-  const getFashionVoteList = () => {
-    getMyPageFashionVoteRequest(accessToken).then(GetMyPageFashionVoteResponseDto);
-  }
-
-  const getTravelVoteList = () => {
-    getMyPageTravelVoteRequest(accessToken).then(GetMyPageTravelVoteResponseDto);
-  }
-
-  // function: 날짜 포맷 변경 함수 //
-  const changeDateFormat = (date: string) => {
-    const yy = date.substring(0, 4);
-    const mm = date.substring(5, 7);
-    const dd = date.substring(8, 10);
-    return `${yy}.${mm}.${dd}`;
-  };
-
-  // function: get Save Response 함수 //
-  const GetMyPageFashionVoteResponseDto = (responseBody: GetMyPageFashionVoteResponseDto | ResponseDto | null) => {
-    const message =
-      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
-        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
-          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
-
-    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-    if (!isSuccessed) {
-      alert(message);
-      return;
-    }
-
-   // cafesavesetviewList 상태 업데이트
-    const { myPageVoteFashions } = responseBody as GetMyPageFashionVoteResponseDto;
-    fashionvotesetviewList(myPageVoteFashions);
-    console.log(myPageVoteFashions);
-  };
-
-  const GetMyPageTravelVoteResponseDto = (responseBody: GetMyPageTravelVoteResponseDto | ResponseDto | null) => {
-    const message =
-      !responseBody ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' :
-        responseBody.code === 'NI' ? '로그인 유저 정보가 존재하지 않습니다.' :
-          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'DBE' ? '로그인 유저 정보를 불러오는데 문제가 발생했습니다.' : '';
-
-    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-    if (!isSuccessed) {
-      alert(message);
-      return;
-    }
-
-   // cafesavesetviewList 상태 업데이트
-    const { myPageVoteTravels } = responseBody as GetMyPageTravelVoteResponseDto;
-    travelvotesetviewList(myPageVoteTravels);
-    console.log(myPageVoteTravels);
-  };
-
-  const onButtonClickEventHandler = (path: string) => {
-    navigator(path);
-  };
-
-  const onvotePageClickHandler = (page: number) => {
-    votesetCurrentPage(page);
-  }
-
-  const onvotePreSectionClickHandler = () => {
-    if (votecurrentSection === 1) return;
-    votesetCurrentSection(votecurrentSection - 1);
-    votesetCurrentSection((votecurrentSection - 1) * SECTION_PER_PAGE);
-  }
-
-  const onvoteNextSectionClickHandler = () => {
-    if (votecount === votetotalSection) return;
-    votesetCurrentSection(votecurrentSection + 1);
-    votesetCurrentPage(votecurrentSection * SECTION_PER_PAGE + 1);
-  }
-
-  // useEffect(() => {
-  //   getTravelVoteTotalRequest().then(getvoteTotalCountResponse);
-  // }, []);
-
-  useEffect(() => {
-    getFashionTotalCountRequest().then(getvoteTotalCountResponse);
-  }, []);
-
-  useEffect(() => {
-    const pageList: number[] = [];
-    const startPage = (votecurrentSection - 1) * SECTION_PER_PAGE + 1;
-    const endPage = votecurrentSection * SECTION_PER_PAGE;
-    for (let page = startPage; page <= endPage; page++) {
-      pageList.push(page);
-      if (page === votetotalPage) break;
-    };
-    getFashionVoteList();
-    votesetPageList(pageList);
-
-  }, [votecurrentSection, votetotalPage]);
-
-  return (
-
-        <div className='like-box2'>
-        <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>VOTE</div>
-        <div className='write-totalBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
-          <div className='write-titleBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
-            <div className='title'>작성일</div>
-            <div className='title2'>제목</div>
-            <div className='title'>수정</div>
-            <div className='title'>삭제</div>
-          </div>
-
-          {fashionvoteviewList.map((item) => (
-          <div key={item.mypageVoteNumber} className='contentBox'>
-            <div className='directed-writeBox'>{changeDateFormat(item.mypageVoteDate)}</div>
-            <div className='directed-writeBox2'  onClick={() => onButtonClickEventHandler(`${VOTE_PATH}/${item.mypageVoteNumber}`)}>{item.mypageVoteTitle}</div>
-            <div className='directed-writeBox3'>
-              <div className='icon-box' onClick={() => onButtonClickEventHandler(`${VOTE_PATH}/${item.mypageVoteNumber}`)}></div>
-            </div>
-            <div className='directed-writeBox4'>
-              <div className='icon-box2'></div>
             </div>
           </div>
           ))}
@@ -1017,9 +1183,8 @@ export default function MyPageMain() {
 
         <Save />
         <Like />
-        <Write />
-        <div style={{ width: "100%", height: "80px" }}></div>
         <Vote />
+        <Write />
 
       </div>
 
