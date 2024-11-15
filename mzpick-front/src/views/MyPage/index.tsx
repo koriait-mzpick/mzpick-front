@@ -612,9 +612,9 @@ function Like() {
             <div className='board-information'>
               <div className='board-information-data'>{changeDateFormat(item.date)}</div>
             </div>
-            <div className='board-tag-item'>
+            <div className='board-tag'>
               {item.hashtags.map((hashtag, index) => (
-                <div key={index} className='board-tag'>#{hashtag}</div>
+                <div key={index} className='board-tag-item'>#{hashtag}</div>
               ))}
             </div>
           </div>
