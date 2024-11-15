@@ -614,7 +614,7 @@ function Like() {
             </div>
             <div className='board-tag'>
               {item.hashtags.map((hashtag, index) => (
-                <div key={index} className='board-tag'>#{hashtag}</div>
+                <div key={index} className='board-tag-item'>#{hashtag}</div>
               ))}
             </div>
           </div>
@@ -1144,7 +1144,7 @@ function Vote() {
   }
 
   // useEffect(() => {
-  //   getTravelVoteTotalRequest().then();
+  //   getTravelVoteTotalRequest().then(GetMyPageTravelVoteResponseDto);
   // }, []);
 
   // useEffect(() => {
@@ -1166,7 +1166,7 @@ function Vote() {
   return (
 
         <div className='like-box2'>
-        <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>WRITE</div>
+        <div className='textBox' style={{ borderBottom: "4px solid rgba(0 , 0, 0, 100)" }}>VOTE</div>
         <div className='write-totalBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
           <div className='write-titleBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
             <div className='title'>작성일</div>
