@@ -2,15 +2,16 @@
 import React, { ChangeEvent, MouseEvent, useRef, useState } from 'react'
 import './style.css';
 import { useNavigate, useParams } from 'react-router';
-import VoteDetail from '../VoteDetail';
-import { ACCESS_TOKEN, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH } from 'src/constants';
+import VoteDetail from '../VoteFashionDetail';
+import { ACCESS_TOKEN, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH, VOTEFASHION_DETAILPHOTOPATH, VOTEFASHION_DOUBLEPHOTOPATH, VOTEFASHION_PATH, VOTEFASHION_WRITEPATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
 import { useSearchParams } from 'react-router-dom';
 import { ResponseDto } from 'src/apis/dto/response';
-import { getTravelVoteListRequest, postTravelVoteRequest } from 'src/apis/vote';
+import { getFashionVoteListRequest, postFashionVoteRequest, postTravelVoteRequest } from 'src/apis/vote';
 import { PostTravelVoteRequestDto } from 'src/apis/vote/travel_vote/dto/request';
 import { MZPICK_API_DOMAIN, responseDataHandler } from 'src/apis';
 import axios from 'axios';
+import { PostFashionVoteRequestDto } from 'src/apis/vote/fashion_vote/dto/request';
 
 
 // function: file upload 요청 함수 //
@@ -25,28 +26,24 @@ export const fileUploadRequest =  async (requestBody: FormData) => {
   return url;
 };
 
-export default function VoteDetailPhoto() {
-
-
-  // variable: 기본 프로필 이미지 URL //
-  const defaultProfileImageUrl = 'https://blog.kakaocdn.net/dn/4CElL/btrQw18lZMc/Q0oOxqQNdL6kZp0iSKLbV1/img.png'
+export default function VoteFashionDetailPhoto() {
 
  
   const onClickSecondNavigator = () => {
-    navigator(VOTE_DOUBLEPHOTOPATH);
+    navigator(VOTEFASHION_DOUBLEPHOTOPATH);
   }
 
   const onClicVoteNavigator = () => {
-    navigator(VOTE_WRITEPATH)
+    navigator(VOTEFASHION_WRITEPATH)
   }
   const onClicVoteCancelNavigator = () => {
     const isConfirm = window.confirm('나가시겠습니까?')
     if (!isConfirm) return;
-    navigator(VOTE_PATH)
+    navigator(VOTEFASHION_PATH)
   }
 
    // state: 파람값 상태 //
-   const { travelTitle } = useParams();
+   const { fashionTitle } = useParams();
 
    // state: 이미지 입력 참조 //
    const imageInputRef = useRef<HTMLInputElement|null>(null);
@@ -84,7 +81,6 @@ export default function VoteDetailPhoto() {
 
    
 
-
    // event handler: 프로필 이미지 클릭 이벤트 처리 //
    const onProfileImageClickHandler = () => {
     const { current } = imageInputRef;
@@ -118,7 +114,7 @@ const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
 
    
    // function: post vote write response 처리 함수 //
- const postVoteWriteResponse = (responseBody: ResponseDto | null) => {
+ const postFashionVoteWriteResponse = (responseBody: ResponseDto | null) => {
    const message = 
        !responseBody ? '서버에 문제가 있습니다.' : 
        responseBody.code === 'VF' ? '유효하지 않은 데이터입니다.' : 
@@ -132,21 +128,18 @@ const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
    }
 
   
-
-  
-   navigator(VOTE_PATH);
-
+    navigator(VOTEFASHION_PATH);
 };
     // function: 투표 메인페이지 리스트 불러오기 함수 //
-    const getTravelVoteList= () => {
-      getTravelVoteListRequest().then();
+    const getFashionVoteList= () => {
+      getFashionVoteListRequest().then();
     }
 
    // function: 네비게이터 경로 이동 함수 //
    const onClickNavigator = () => {
 
        const accessToken = cookies[ACCESS_TOKEN];
-       if (accessToken) navigator(VOTE_DETAILPHOTOPATH);
+       if (accessToken) navigator(VOTEFASHION_DETAILPHOTOPATH);
      }
 
    const onTitleHandler = (event:ChangeEvent<HTMLInputElement>) => {
@@ -177,7 +170,6 @@ const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         alert('내용을 입력해주세요')
         return;
       }
-     
 
       let url: string | null = null;
       if (profileImageFile) {
@@ -187,15 +179,15 @@ const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
       }
 
 
-       const requestBody: PostTravelVoteRequestDto = {
-           travelVoteTitle: title,
-           travelVotePhoto1: url,
-           travelVotePhoto2: null,
-           travelVoteChoice1: content,
-           travelVoteChoice2: contentSeoncd
+       const requestBody: PostFashionVoteRequestDto = {
+           fashionVoteTitle: title,
+           fashionVotePhoto1: url,
+           fashionVotePhoto2: null,
+           fashionVoteChoice1: content,
+           fashionVoteChoice2: contentSeoncd
        };
-       postTravelVoteRequest(requestBody, accessToken).then(postVoteWriteResponse);
-       console.log("테스트" + postTravelVoteRequest);
+       postFashionVoteRequest(requestBody, accessToken).then(postFashionVoteWriteResponse);
+       console.log("테스트" + postFashionVoteRequest);
    }
 
 

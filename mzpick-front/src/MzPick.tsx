@@ -3,7 +3,7 @@ import { useCookies } from 'react-cookie';
 import { Route, Routes, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import './MzPick.css';
 
-import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_UPDATE_PATH, FASHION_WRITE_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_ABSOLUTE_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, ROOT_PATH, SIGN_IN_PATH, SIGN_UP_PATH, SNS_SUCCESS_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_CAFE_WRITE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_RESTAURANT_UPDATE_PATH, TRAVEL_RESTAURANT_WRITE_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_STAY_PATH, TRAVEL_STAY_UPDATE_PATH, TRAVEL_STAY_WRITE_PATH, TRAVEL_UPDATE_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH } from './constants';
+import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, FASHION_DETAIL_PATH, FASHION_PATH, FASHION_UPDATE_PATH, FASHION_WRITE_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_PATH, HOF_TRAVEL_PATH, HOME_ABSOLUTE_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, ROOT_PATH, SIGN_IN_PATH, SIGN_UP_PATH, SNS_SUCCESS_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_CAFE_WRITE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_RESTAURANT_UPDATE_PATH, TRAVEL_RESTAURANT_WRITE_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_STAY_PATH, TRAVEL_STAY_UPDATE_PATH, TRAVEL_STAY_WRITE_PATH, TRAVEL_UPDATE_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_DETAILPHOTOPATH, VOTE_DOUBLEPHOTOPATH, VOTE_PATH, VOTE_WRITEPATH, VOTEFASHION_DETAILPATH, VOTEFASHION_DETAILPHOTOPATH, VOTEFASHION_DOUBLEPHOTOPATH, VOTEFASHION_PATH, VOTEFASHION_WRITEPATH } from './constants';
 
 import { ResponseDto } from './apis/dto/response';
 import { getMyPageUserDetailRequest } from './apis/mypage';
@@ -45,6 +45,11 @@ import VoteDetailPhoto from './views/Vote/VoteDetailPhoto';
 import VoteDoublePhoto from './views/Vote/VoteDoublePhoto';
 import VoteWrite from './views/Vote/VoteWrite';
 import TravelStayUpdate from './views/Travel/Stay/Update';
+import VoteFashion from './views/VoteFahsion';
+import VoteFashionDetail from './views/VoteFahsion/VoteFashionDetail';
+import VoteFashionDetailPhoto from './views/VoteFahsion/VoteFashionDetailPhoto';
+import VoteFashionDoublePhoto from './views/VoteFahsion/VoteFashionDoublePhoto';
+import VoteFashionWrite from './views/VoteFahsion/VoteFashionWrite';
 
 
 // component: root path 컴포넌트 //
@@ -217,6 +222,16 @@ export default function MzPick() {
         <Route path={VOTE_DOUBLEPHOTOPATH} element={< VoteDoublePhoto />} />
         <Route path={VOTE_WRITEPATH} element={< VoteWrite />} />
       </Route>
+      <Route path={SNS_SUCCESS_PATH} element={<SnsSuccess />} />
+
+      <Route path={VOTEFASHION_PATH} element={<MainLayout />}>
+        <Route path={VOTEFASHION_PATH} element={< VoteFashion />} />
+        <Route path={VOTEFASHION_DETAILPATH} element={< VoteFashionDetail />} />
+        <Route path={VOTEFASHION_DETAILPHOTOPATH} element={< VoteFashionDetailPhoto />} />
+        <Route path={VOTEFASHION_DOUBLEPHOTOPATH} element={< VoteFashionDoublePhoto />} />
+        <Route path={VOTEFASHION_WRITEPATH} element={< VoteFashionWrite />} />
+      </Route>
+
       <Route path={SNS_SUCCESS_PATH} element={<SnsSuccess />} />
     </Routes>
   );

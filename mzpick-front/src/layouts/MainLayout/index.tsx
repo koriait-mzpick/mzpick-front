@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from 'src/stores';
-import { FASHION_PATH, HOF_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_CAFE_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, VOTE_PATH } from '../../constants';
+import { FASHION_PATH, HOF_PATH, HOME_PATH, KEYWORD_PATH, MY_PAGE_PATH, SIGN_IN_PATH, SIGN_UP_PATH, TRAVEL_CAFE_PATH, TRAVEL_MAP_PATH, TRAVEL_PATH, TRAVEL_RESTAURANT_PATH, TRAVEL_STAY_PATH, VOTE_PATH, VOTEFASHION_PATH } from '../../constants';
 import './style.css';
 
 // component: 메인레이아웃 컴포넌트 //
@@ -138,7 +138,7 @@ export default function MainLayout() {
           </div>
           <div className='category-detail-text-box'>
             <div className='icon'></div>
-            <div className='category-detail-text' onClick={() => onItemClickHandler(VOTE_PATH)}>투표</div>
+            <div className='category-detail-text' onClick={() => onItemClickHandler(VOTEFASHION_PATH)}>투표</div>
           </div>
         </div>
         <div className='category' style={{ borderBottom: "1px solid rgba(201, 224, 253, 0.3)" }} onClick={() => onItemClickHandler(KEYWORD_PATH)}>KEYWORD</div>
