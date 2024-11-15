@@ -7,7 +7,7 @@ import { GetFashionListResponseDto } from 'src/apis/fashion/dto/response';
 import { getFashionTotalCountRequest } from 'src/apis/pagination';
 import { GetFashionTotalCountResponseDto } from 'src/apis/pagination/response';
 import Pagination from 'src/components/Pagination';
-import { FASHION_DETAIL_PATH, FASHION_WRITE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, FASHION_DETAIL_PATH, FASHION_WRITE_PATH, SIGN_IN_PATH } from 'src/constants';
 import { useAuthStore } from 'src/stores';
 import { Fashion } from 'src/types';
 import './style.css';
@@ -67,7 +67,6 @@ export default function FashionMain() {
     }
 
     const { fashionList } = resposenBody as GetFashionListResponseDto;
-    console.log(fashionList)
     setViewList(fashionList);
   }
 
@@ -83,10 +82,19 @@ export default function FashionMain() {
   };
 
 
-  // event handler: 네비게이션 아이템 클릭 이벤트 처리 //
-  const onItemClickHandler = (path: string) => {
-    navigate(path);
+// event handler: 글쓰기 버튼 클릭 이벤트 처리 //
+const writeButtonClickHandler = (path: string) => {
+  const accessToken = cookies[ACCESS_TOKEN];
+  if (!accessToken) {
+    if (window.confirm("글쓰기를 하려면 로그인하시기 바랍니다.\n로그인 페이지로 이동하시겠습니까?")) {
+      navigate(SIGN_IN_PATH);
+      return;
+    } alert("취소되었습니다.");
+    return;
   };
+
+  navigate(path);
+};
 
   const onPageClickHandler = (page: number) => {
     setCurrentPage(page);
@@ -98,7 +106,6 @@ export default function FashionMain() {
       return;
     }
     setSelectedHashtag(hashtag);
-    console.log(selectedHashtag);
   }
 
   const onPreSectionClickHandler = () => {
@@ -133,14 +140,13 @@ export default function FashionMain() {
 
   useEffect(()=>{
     getFashionList(currentPage, selectedHashtag);
-    console.log(selectedHashtag)
   }, [currentPage, currentSection,selectedHashtag, totalPage])
 
   // render: 패션 게시판 리스트 컴포넌트 렌더링//  
   return (
     <div id='list-main'>
       <div className='board-top-fashion'>
-        <div className='write-button' onClick={() => onItemClickHandler(FASHION_WRITE_PATH)}>글쓰기</div>
+        <div className='write-button' onClick={() => writeButtonClickHandler(FASHION_WRITE_PATH)}>글쓰기</div>
       </div>
       <div className='board-middle'>
         {viewList.map((item) => (

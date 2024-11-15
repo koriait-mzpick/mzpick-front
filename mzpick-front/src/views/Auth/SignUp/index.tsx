@@ -239,7 +239,6 @@ export default function SignUp() {
             joinPath: joinPath ? joinPath : 'home',
             snsId
         };
-        console.log(snsId);
         signUpRequest(requestBody).then(signUpResponse);
     };
 

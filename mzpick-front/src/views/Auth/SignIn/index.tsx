@@ -71,7 +71,6 @@ export default function SignIn() {
             password
         };
         signInRequest(requestBody).then(signInResponse);
-        console.log(signInRequest);
     };
 
     // event handler: 회원가입 클릭 이벤트 처리 //

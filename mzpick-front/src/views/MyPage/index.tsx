@@ -21,7 +21,7 @@ import myPageVoteFashions from 'src/types/mypage/vote/fashion-vote-board.interfa
 import { GetMyPageFashionVoteResponseDto, GetMyPageTravelVoteResponseDto } from 'src/apis/mypage/dto/response/vote';
 import { deleteCafeRequest } from 'src/apis/cafe';
 
-import { MyPageFashionLike, MyPageFashionSave } from 'src/types/mypage/fashion';
+import { MyPageFashionLike, MyPageSaveFashions } from 'src/types/mypage/fashion';
 
 import { GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
 import { getTravelVoteTotalRequest } from 'src/apis/vote';

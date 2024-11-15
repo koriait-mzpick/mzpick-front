@@ -132,7 +132,6 @@ export default function FashionWrite() {
     const file = files[0];
     const newFiles = [...fashionPhotoList, file];
     const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file));
-    console.log(newPreviewUrls, newFiles)
     setFashionPhotoList(newFiles);
     setPreviewUrls(newPreviewUrls);
   };
