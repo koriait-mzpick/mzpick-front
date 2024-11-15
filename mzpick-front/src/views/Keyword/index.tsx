@@ -39,14 +39,11 @@ export default function Keyword() {
 
         }));
         
-        console.log('Fetched keywords:', keywordList);
         setKeywords(keywordList);
       } else {
-        console.error('키워드 데이터가 배열이 아닙니다:', data);
         setKeywords([]);
       }
     } catch (error) {
-      console.error('키워드 가져오기 실패:', error);
       setKeywords([]);
     }
   };
@@ -86,7 +83,6 @@ export default function Keyword() {
   
         fetchAllKeywords(); 
       } catch (error) {
-        console.error('키워드 저장 실패:', error);
       }
     };
 
@@ -99,7 +95,6 @@ export default function Keyword() {
     if (inputValue.trim()) {
       postKeyword(inputValue);
     } else {
-      console.error("입력된 키워드가 유효하지 않습니다.");
     }
   };
 

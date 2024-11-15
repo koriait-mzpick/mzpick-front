@@ -190,7 +190,6 @@
     padding-top: 30px;
 
     gap: 147px;
-    overflow: auto;
 }
 
 .layout .subscribe-box .save-box .imageBox .WritePostBox {
@@ -220,7 +219,6 @@
 
 
     gap: 147px;
-    overflow: auto;
 }
 
 .layout .subscribe-box .like-box .imageBox .WritePostBox{
@@ -252,7 +250,6 @@
 
 
     gap: 147px;
-    overflow: auto;
 }
 
 /* .layout .subscribe-box .like-box2 .imageBox .WritePostBox {
