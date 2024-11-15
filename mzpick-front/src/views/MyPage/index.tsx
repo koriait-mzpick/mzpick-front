@@ -20,7 +20,7 @@ import myPageBoardCafes from 'src/types/mypage/cafe/cafe-board.interface';
 import myPageVoteFashions from 'src/types/mypage/vote/fashion-vote-board.interface';
 import { GetMyPageFashionVoteResponseDto, GetMyPageTravelVoteResponseDto } from 'src/apis/mypage/dto/response/vote';
 import { deleteCafeRequest } from 'src/apis/cafe';
-import { MyPageFashionBoard, MyPageFashionLike, MyPageFashionSave } from 'src/types/mypage/fashion';
+import { MyPageFashionBoard, MyPageFashionLike, MyPageSaveFashions } from 'src/types/mypage/fashion';
 import { GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
 import { getTravelVoteTotalRequest } from 'src/apis/vote';
 import { GetTravelLikeListResponseDto, GetTravelSaveListResponseDto } from 'src/apis/travel/dto/response';
@@ -43,7 +43,7 @@ function Save() {
   const accessToken = cookies[ACCESS_TOKEN];
 
   const [cafesaveviewList, cafesavesetviewList] = useState<myPageSaveCafes[]>([]);
-  const [fashionsaveviewList, fashionsavesetviewList] = useState<MyPageFashionSave[]>([]);
+  const [fashionsaveviewList, fashionsavesetviewList] = useState<MyPageSaveFashions[]>([]);
   const [travelsaveviewList, travelsavesetviewList] = useState<MyPageTravelSave[]>([]);
   const [foodsaveviewList, foodsavesetviewList] = useState<MyPageRestaurantSave[]>([]);
   const [staysaveviewList, staysavesetviewList] = useState<MyPageStaySave[]>([]);
