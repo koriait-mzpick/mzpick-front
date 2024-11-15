@@ -273,6 +273,7 @@
     height: 400px;
 
     flex-direction: column;
+    overflow: auto;
 }
 
 .layout .subscribe-box .like-box .write-totalBox .write-titleBox {
@@ -599,4 +600,12 @@
     font-family: 'Pretendard-Bold';
     src: url(/public/font/Pretendard-Bold.ttf);
     font-size: 15px;
+}
+
+.layout .like-box2 .write-totalBox .Box {
+    display: flex;
+    flex-direction: column;
+
+    height: 300px;
+    overflow: auto;
 }
