@@ -29,9 +29,9 @@ function FoodTop1() {
       return;
     }
 
-    const { travelFoodNumber, photoLink } = responseBody as GetRestaurantHallOfFameResponseDto;
+    const { travelNumber, photoLink } = responseBody as GetRestaurantHallOfFameResponseDto;
     setTopFoodphotoLink(photoLink);
-    setTopFoodNumber(travelFoodNumber);
+    setTopFoodNumber(travelNumber);
   }
 
   // effect: travel food top1 불러오기 함수 //
