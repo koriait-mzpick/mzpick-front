@@ -22,9 +22,9 @@ import { GetMyPageFashionVoteResponseDto, GetMyPageTravelVoteResponseDto } from 
 import { deleteCafeRequest } from 'src/apis/cafe';
 import { MyPageFashionBoard, MyPageFashionLike, MyPageSaveFashions } from 'src/types/mypage/fashion';
 import { GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
-import { getTravelVoteTotalRequest } from 'src/apis/vote';
+import { deleteFashionVoteRequest, deleteTravelVoteRequest, getFashionVoteListRequest, getTravelVoteListRequest, getTravelVoteTotalRequest } from 'src/apis/vote';
 import { GetTravelLikeListResponseDto, GetTravelSaveListResponseDto } from 'src/apis/travel/dto/response';
-import { getTravelSaveListRequest } from 'src/apis/travel';
+import { deleteTravelRequest, getTravelSaveListRequest } from 'src/apis/travel';
 import { MyPageTravelBoard, MyPageTravelLike, MyPageTravelSave } from 'src/types/mypage/travel';
 import { MyPageRestaurantBoard, MyPageRestaurantLike, MyPageRestaurantSave } from 'src/types/mypage/restaurant';
 import { GetStaySaveListResponseDto } from 'src/apis/stay/dto/response';
@@ -32,6 +32,9 @@ import { MyPageStayBoard, MyPageStayLike, MyPageStaySave } from 'src/types/mypag
 import { TravelVote } from 'src/types';
 import { TravelVoteBoard } from 'src/types/mypage/vote';
 import { title } from 'process';
+import { deleteFashionRequest, getFashionSaveListRequest } from 'src/apis/fashion';
+import { deleteRestaurantRequest } from 'src/apis/restaurant';
+import { deleteStayRequest } from 'src/apis/stay';
 
 
 const SECTION_PER_PAGE = 5;
@@ -600,7 +603,7 @@ function Like() {
           <div key={`${item.type}-${item.id}`} className='WritePostBox'
             onClick={() => {
               const path = item.type === 'cafe' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
-                item.type === 'travel' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
+                item.type === 'travel' ? `${TRAVEL_DETAIL_PATH}/${item.id}` :
                   item.type === 'fashion' ? `${FASHION_DETAIL_PATH}/${item.id}` :
                     item.type === 'food' ? `${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.id}` :
                       `${TRAVEL_STAY_DETAIL_PATH}/${item.id}`;
@@ -686,7 +689,7 @@ function Write() {
   };
 
   
-  const combinedLikeList = [
+  const combinedWriteList = [
     ...(cafewriteviewList.map((item) => ({
       type: 'cafe',
       id: item.mypageBoardNumber,
@@ -720,7 +723,7 @@ function Write() {
     
   ];
 
-  console.log(combinedLikeList);
+  console.log(combinedWriteList);
 
 
 
@@ -833,41 +836,42 @@ function Write() {
     save: MyPageCafeBoard;
   }
 
-    // function: 카페 삭제 요청 응답 함수 //
-    const deleteTravelCafeDetailtResponse = (responseBody: ResponseDto | null) => {
-      const message =
-        !responseBody ? '서버에 문제가 있습니다.' :
-          responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-              responseBody.code === 'NP' ? '권한이 없습니다.' :
-                responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-  
-      const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-      if (!isSuccessed) {
-        alert(message);
-        return;
-      }
-      if (!travelCafeNumber) return;
-      navigator(TRAVEL_CAFE_PATH);
-    };
-  
+  const boardDeleteDetailtResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'NP' ? '권한이 없습니다.' :
+              responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
-   // event handler: 게시글 삭제 버튼 클릭 이벤트 처리 //
-    const deleteButtonClickHandler = () => {
-    if (window.confirm("정말로 삭제하시겠습니까?")) {
-      alert("삭제가 완료되었습니다.");
-    } else {
-      alert("취소되었습니다.");
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
       return;
     }
+    
+  };
 
-    if (!travelCafeNumber) return;
-
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
-    deleteCafeRequest(travelCafeNumber, accessToken).then(deleteTravelCafeDetailtResponse);
+ // event handler: 게시글 삭제 버튼 클릭 이벤트 처리 //
+  const boardDeleteButtonClickHandler = (itemNumber:number, type: string) => {
+  if (window.confirm("정말로 삭제하시겠습니까?")) {
+    alert("삭제가 완료되었습니다.");
+  } else {
+    alert("취소되었습니다.");
+    return;
   }
+
+  if (!itemNumber) return;
+
+  const accessToken = cookies[ACCESS_TOKEN];
+  if (!accessToken) return;
+
+  if (type === 'travel') deleteTravelRequest(itemNumber, accessToken).then(boardDeleteDetailtResponse);
+  if (type === 'food') deleteRestaurantRequest(itemNumber, accessToken).then(boardDeleteDetailtResponse);
+  if (type === 'cafe') deleteCafeRequest(itemNumber, accessToken).then(boardDeleteDetailtResponse);
+  if (type === 'stay') deleteStayRequest(itemNumber, accessToken).then(boardDeleteDetailtResponse);
+  if (type === 'fashion') deleteFashionRequest(itemNumber, accessToken).then(boardDeleteDetailtResponse);
+}
 
   useEffect(() => {
     getTravelWriteList();
@@ -940,7 +944,7 @@ function Write() {
           </div>
 
 <div className='Box'>
-              {combinedLikeList.map((item) => (
+              {combinedWriteList.map((item) => (
           <div key={`${item.type}-${item.id}`} className='contentBox'>
             <div className='directed-writeBox'>{changeDateFormat(item.date)}</div>
             <div className='directed-writeBox2' onClick={() => {
@@ -955,7 +959,7 @@ function Write() {
               <div className='icon-box' onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${item.id}`)}></div>
             </div>
             <div className='directed-writeBox4'>
-              <div className='icon-box2'  onClick={deleteButtonClickHandler}></div>
+              <div className='icon-box2'  onClick={() => boardDeleteButtonClickHandler(item.id, item.type)}></div>
             </div>
           </div>
           ))}
@@ -973,7 +977,7 @@ function Vote() {
   const accessToken = cookies[ACCESS_TOKEN];
 
   const [fashionvoteviewList, fashionvotesetviewList] = useState<myPageVoteFashions[]>([]);
-  const [travelvoteviewList, travelvotesetviewList] = useState<myPageVoteFashions[]>([]);
+  const [travelvoteviewList, travelvotesetviewList] = useState<TravelVoteBoard[]>([]);
 
   const [writecount, writesetCount] = useState<number>(0);
   const [writepageList, writesetPageList] = useState<number[]>([]);
@@ -1013,7 +1017,7 @@ function Vote() {
   };
 
   
-  const combinedLikeList = [
+  const combinedVoteList = [
     ...(travelvoteviewList.map((item) => ({
       type: 'travel',
       id: item.mypageVoteNumber,
@@ -1028,7 +1032,7 @@ function Vote() {
     }))),
   ];
 
-  console.log(combinedLikeList);
+  console.log(combinedVoteList);
 
 
 
@@ -1048,9 +1052,9 @@ function Vote() {
     }
 
     // cafesavesetviewList 상태 업데이트
-    const { myPageVoteTravels } = responseBody as GetMyPageTravelVoteResponseDto;
-    travelvotesetviewList(myPageVoteTravels);
-    console.log(myPageVoteTravels);
+    const { VoteTravles } = responseBody as GetMyPageTravelVoteResponseDto;
+    travelvotesetviewList(VoteTravles);
+    console.log(VoteTravles);
   };
 
   const GetMyPageFashionVoteResponseDto = (responseBody: GetMyPageFashionVoteResponseDto | ResponseDto | null) => {
@@ -1085,41 +1089,39 @@ function Vote() {
     save: MyPageCafeBoard;
   }
 
-    // function: 카페 삭제 요청 응답 함수 //
-    const deleteTravelCafeDetailtResponse = (responseBody: ResponseDto | null) => {
-      const message =
-        !responseBody ? '서버에 문제가 있습니다.' :
-          responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-              responseBody.code === 'NP' ? '권한이 없습니다.' :
-                responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-  
-      const isSuccessed = responseBody !== null && responseBody.code === 'SU';
-      if (!isSuccessed) {
-        alert(message);
-        return;
-      }
-      if (!travelCafeNumber) return;
-      navigator(TRAVEL_CAFE_PATH);
-    };
-  
+  const voteDeleteDetailtResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+        responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+          responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'NP' ? '권한이 없습니다.' :
+              responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
-   // event handler: 게시글 삭제 버튼 클릭 이벤트 처리 //
-    const deleteButtonClickHandler = () => {
-    if (window.confirm("정말로 삭제하시겠습니까?")) {
-      alert("삭제가 완료되었습니다.");
-    } else {
-      alert("취소되었습니다.");
+    const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccessed) {
+      alert(message);
       return;
     }
+  };
 
-    if (!travelCafeNumber) return;
 
-    const accessToken = cookies[ACCESS_TOKEN];
-    if (!accessToken) return;
-
-    deleteCafeRequest(travelCafeNumber, accessToken).then(deleteTravelCafeDetailtResponse);
+ // event handler: 게시글 삭제 버튼 클릭 이벤트 처리 //
+ const voteDeleteButtonClickHandler = (itemNumber:number, type: string) => {
+  if (window.confirm("정말로 삭제하시겠습니까?")) {
+    alert("삭제가 완료되었습니다.");
+  } else {
+    alert("취소되었습니다.");
+    return;
   }
+
+  if (!itemNumber) return;
+
+  const accessToken = cookies[ACCESS_TOKEN];
+  if (!accessToken) return;
+
+  if (type === 'travel') deleteTravelVoteRequest(itemNumber, accessToken).then(voteDeleteDetailtResponse);
+  if (type === 'fashion') deleteFashionVoteRequest(itemNumber, accessToken).then(voteDeleteDetailtResponse);
+}
 
   useEffect(() => {
     getTravelVoteList();
@@ -1144,24 +1146,12 @@ function Vote() {
   }
 
   // useEffect(() => {
-  //   getTravelVoteTotalRequest().then(GetMyPageTravelVoteResponseDto);
+  //   getTravelVoteListRequest().then(GetMyPageTravelVoteResponseDto);
   // }, []);
 
   // useEffect(() => {
-  //   getFashionTotalCountRequest().then(getwriteTotalCountResponse);
+  //   getFashionVoteListRequest().then(GetMyPageFashionVoteResponseDto);
   // }, []);
-
-  useEffect(() => {
-    const pageList: number[] = [];
-    const startPage = (writecurrentSection - 1) * SECTION_PER_PAGE + 1;
-    const endPage = writecurrentSection * SECTION_PER_PAGE;
-    for (let page = startPage; page <= endPage; page++) {
-      pageList.push(page);
-      if (page === writetotalPage) break;
-    };
-    writesetPageList(pageList);
-
-  }, [writecurrentSection, writetotalPage]);
 
   return (
 
@@ -1176,7 +1166,7 @@ function Vote() {
           </div>
 
 <div className='Box'>
-              {combinedLikeList.map((item) => (
+              {combinedVoteList.map((item) => (
           <div key={`${item.type}-${item.id}`} className='contentBox'>
             <div className='directed-writeBox'>{changeDateFormat(item.date)}</div>
             <div className='directed-writeBox2' onClick={() => {
@@ -1191,7 +1181,7 @@ function Vote() {
               <div className='icon-box' onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${item.id}`)}></div>
             </div>
             <div className='directed-writeBox4'>
-              <div className='icon-box2'  onClick={deleteButtonClickHandler}></div>
+              <div className='icon-box2'  onClick={() => voteDeleteButtonClickHandler(item.id, item.type)}></div>
             </div>
           </div>
           ))}
