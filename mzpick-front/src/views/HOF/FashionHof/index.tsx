@@ -1,6 +1,6 @@
 
 import { useNavigate } from 'react-router';
-import { FASHION_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_TRAVEL_PATH } from 'src/constants';
+import { FASHION_DETAIL_PATH, FASHION_PATH, HOF_FASHION_PATH, HOF_FOOD_PATH, HOF_TRAVEL_PATH } from 'src/constants';
 import '../style.css';
 import { useEffect, useState } from 'react';
 import { GetFashionHallOfFameResponseDto } from 'src/apis/hall_of_fame/dto/response';
@@ -14,7 +14,8 @@ function FashionTop1() {
 
   // state: fashion top1 상태 //
   const [topFashionPhotoLink, setTopFashionPhotoLink] = useState<string>('');
-  const [topFashionNumber, setTopFashionNumber] = useState<string | number>();
+  const [topFashionNumber, setTopFashionNumber] = useState<string | number>('');
+  
 
   // function: 패션 top1 Response 처리 함수 //
   const getTopFashionResponse = (responseBody: GetFashionHallOfFameResponseDto | ResponseDto | null) => {
@@ -28,7 +29,7 @@ function FashionTop1() {
       alert(message);
       return;
     }
-
+  
     const { fashionNumber, photoLink } = responseBody as GetFashionHallOfFameResponseDto;
     setTopFashionPhotoLink(photoLink);
     setTopFashionNumber(fashionNumber);
@@ -40,8 +41,9 @@ function FashionTop1() {
   }, []);
 
   // event handler: top1 클릭시 게시물 이동 이벤트 처리 //
-  const onTravelTop1ClickHandler = () => {
-    navigator(`${FASHION_PATH}/${topFashionNumber}`);
+  const onTravelTop1ClickHandler = (topFashionNumber: number | string ) => {
+    console.log(topFashionNumber)
+    navigator(`${FASHION_DETAIL_PATH}/${topFashionNumber}`)
   };
 
   // event handler: 명예의전당 buttonbox 클릭 이벤트 //
@@ -57,7 +59,7 @@ function FashionTop1() {
         <div className='icon-area'></div>
         <div className='image-box'>
           <div className="decorated-img"></div>
-          <div className='image-area' onClick={onTravelTop1ClickHandler}>
+          <div className='image-area' onClick={()=>onTravelTop1ClickHandler(topFashionNumber)}>
             <div className='link-area' style={{ backgroundImage: `url(${topFashionPhotoLink})` }}></div>
           </div>
           <div className='button-container'>
