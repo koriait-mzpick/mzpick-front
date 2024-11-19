@@ -171,6 +171,7 @@
     border-radius: 10px;
     color: gray;
     font-weight: 500;
+    font-size: 20px;
 }
 
 #main .doubledetail-contents .photos-two .double-content{
@@ -189,6 +190,8 @@
     border-radius: 10px;
     color: gray;
     font-weight: 500;
+    font-size: 20px;
+
 }
 #main .doubledetail-contents .photos-one .photo-one{
     cursor: pointer;

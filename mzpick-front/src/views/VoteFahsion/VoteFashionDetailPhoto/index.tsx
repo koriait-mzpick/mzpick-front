@@ -73,6 +73,7 @@ export default function VoteFashionDetailPhoto() {
 
    // state: 프로필 이미지 상태 //
    const [profileImageFile, setProfileImageFile] = useState<File|null>(null);
+   const [addFont, setAddFont] = useState<string>('+');
    // state: 게시글 상태 //
   const [travelVotePhotoList, setTravelVotePhotoList] = useState<File[]>([]);
 
@@ -86,11 +87,16 @@ export default function VoteFashionDetailPhoto() {
     const { current } = imageInputRef;
     if (!current) return;
     current.click();
-    console.log(imageInputRef);
+
+    
+    
+    console.log(previewUrl);
 };
 
 // event handler: 이미지 변경 이벤트 처리 함수 //
 const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  
+
     const { files } = event.target;
     if (!files || !files?.length) return;
 
@@ -102,14 +108,18 @@ const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     // setTravelVotePhotoList(newFiles);
     // setPreviewUrls(newPreviewUrls);
     // console.log('file' + newFiles, 'preview' + newPreviewUrls);
-
+    
+    
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
     const newFiles = URL.createObjectURL(file);
     fileReader.onloadend = () => {
         setPreviewUrl(fileReader.result as string);
         setPreviewUrl(newFiles);
+        setAddFont('');
     };
+
+    
 };
 
    
@@ -213,7 +223,7 @@ const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
           </div>
         <div className='photo-detail-contents'>
 
-            <div className='photo-photo' style={{ backgroundImage: `url(${previewUrl})` }} onClick={onProfileImageClickHandler}>+</div>
+            <div className='photo-photo' style={{ backgroundImage: `url(${previewUrl})`}} onClick={onProfileImageClickHandler}>{addFont}</div>
               <input className='photo-input' ref={imageInputRef} style={{display:'none'}} type='file' accept='image/*' onChange={onImageInputChangeHandler}/>
             <div className='photo-content-box'>
               <input className='photo-content' placeholder='내용을 입력하세요.' value={content} onChange={onContentHandler}></input>

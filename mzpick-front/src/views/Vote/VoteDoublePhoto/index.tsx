@@ -73,7 +73,8 @@ export default function VoteDoublePhoto() {
    // state: 프로필 이미지 상태 //
    const [voteProfileImageFile, setVoteProfileImageFile] = useState<File|null>(null);
    const [voteSecondProfileImageFile, setVoteSecondProfileImageFile] = useState<File|null>(null);
-
+   const [addFont, setAddFont] = useState<string>('+');
+   const [addFontSecond, setAddFontSecond] = useState<string>('+');
 
 
    // event handler: 프로필 이미지 클릭 이벤트 처리 //
@@ -106,6 +107,7 @@ const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     fileReader.onloadend = () => {
         setPreviewUrl(fileReader.result as string);
         setPreviewUrl(newFiles);
+        setAddFont('');
     };
 };
 // event handler: 이미지 두 번째 변경 이벤트 처리 함수 //
@@ -123,6 +125,7 @@ const onSecondImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) =
     fileReader.onloadend = () => {
         setPreviewUrlTwo(fileReader.result as string)
         setPreviewUrlTwo(newFiles);
+        setAddFontSecond('');
     };
 };
 
@@ -236,14 +239,14 @@ const onSecondImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) =
 
         <div className='doubledetail-contents'>
             <div className='photos-one' >
-                <div className='photo-one' style={{backgroundImage:`url(${previewUrl})`}}  onClick={onProfileImageClickHandler}>+</div>
+                <div className='photo-one' style={{backgroundImage:`url(${previewUrl})`}}  onClick={onProfileImageClickHandler}>{addFont}</div>
                 <input className='photo-input' ref={imageInputRef} style={{display:'none'}} type='file' accept='image/*' onChange={onImageInputChangeHandler}/>
                 <div className='double-input'>
                     <input className='double-content' placeholder='내용을 입력하세요.' value={content} onChange={onContentHandler}></input>
                 </div>
             </div>
             <div className='photos-two'>
-                <div className='photo-two' style={{backgroundImage:`url(${previewUrlTwo})`}} onClick={onSecondProfileImageClickHandler}>+</div>
+                <div className='photo-two' style={{backgroundImage:`url(${previewUrlTwo})`}} onClick={onSecondProfileImageClickHandler}>{addFontSecond}</div>
                 <input className='photo-input' ref={imageSecondInputRef} style={{display:'none'}} type='file' accept='image/*' onChange={onSecondImageInputChangeHandler}/>
                 <div className='double-input'>
                     <input className='double-content' placeholder='내용을 입력하세요.' value={contentSeoncd} onChange={onContentSecondHandler}></input>
