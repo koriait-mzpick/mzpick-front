@@ -1175,7 +1175,7 @@ function Vote() {
           <div className='write-titleBox' style={{ borderBottom: "2px solid rgba(210 , 210, 210, 100)" }}>
             <div className='title'>작성일</div>
             <div className='title2'>제목</div>
-            <div className='title'>수정</div>
+            <div className='title'></div>
             <div className='title'>삭제</div>
           </div>
 
