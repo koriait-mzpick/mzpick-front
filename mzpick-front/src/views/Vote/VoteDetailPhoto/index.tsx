@@ -81,7 +81,7 @@ export default function VoteDetailPhoto() {
 
   // state: 사진 미리보기 URL 상태 //
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-
+  const [addFont, setAddFont] = useState<string>('+');
    
 
 
@@ -113,6 +113,7 @@ const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     fileReader.onloadend = () => {
         setPreviewUrl(fileReader.result as string);
         setPreviewUrl(newFiles);
+        setAddFont('');
     };
 };
 
@@ -221,7 +222,7 @@ const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
           </div>
         <div className='photo-detail-contents'>
 
-            <div className='photo-photo' style={{ backgroundImage: `url(${previewUrl})` }} onClick={onProfileImageClickHandler}>+</div>
+            <div className='photo-photo' style={{ backgroundImage: `url(${previewUrl})` }} onClick={onProfileImageClickHandler}>{addFont}</div>
               <input className='photo-input' ref={imageInputRef} style={{display:'none'}} type='file' accept='image/*' onChange={onImageInputChangeHandler}/>
             <div className='photo-content-box'>
               <input className='photo-content' placeholder='내용을 입력하세요.' value={content} onChange={onContentHandler}></input>
