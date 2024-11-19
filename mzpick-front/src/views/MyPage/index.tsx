@@ -8,7 +8,7 @@ import { GetMyPageUserDetailResponseDto } from 'src/apis/mypage/dto/response/use
 import { getCafeTotalCountRequest, getFashionTotalCountRequest, getFoodTotalCountRequest, getStayTotalCountRequest, getTotalCountRequest } from 'src/apis/pagination';
 import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import Pagination1 from 'src/components/Pagination1';
-import { ACCESS_TOKEN, FASHION_ABSOLUTE_DETAIL_PATH, FASHION_ABSOLUTE_UPDATE_PATH, FASHION_DETAIL_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_PATH, WRITE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, FASHION_ABSOLUTE_DETAIL_PATH, FASHION_ABSOLUTE_UPDATE_PATH, FASHION_DETAIL_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_PATH, VOTEFASHION_PATH, WRITE_PATH } from 'src/constants';
 import BottomNav from 'src/layouts/BottomNav';
 import { MyPageCafeBoard, MyPageCafeLike, MyPageCafeSave } from 'src/types/mypage/cafe';
 import myPageSaveCafes from 'src/types/mypage/cafe/cafe-save.interface';
@@ -22,19 +22,21 @@ import { GetMyPageFashionVoteResponseDto, GetMyPageTravelVoteResponseDto } from 
 import { deleteCafeRequest } from 'src/apis/cafe';
 import { MyPageFashionBoard, MyPageFashionLike, MyPageSaveFashions } from 'src/types/mypage/fashion';
 import { GetFashionSaveListResponseDto } from 'src/apis/fashion/dto/response';
-import { deleteFashionVoteRequest, deleteTravelVoteRequest, getFashionVoteListRequest, getTravelVoteListRequest, getTravelVoteTotalRequest } from 'src/apis/vote';
+import { deleteFashionVoteRequest, deleteTravelVoteRequest, getFashionVoteListRequest, getTravelVoteListRequest, getTravelVoteTotalRequest, putTravelVoteClickRequest } from 'src/apis/vote';
 import { GetTravelLikeListResponseDto, GetTravelSaveListResponseDto } from 'src/apis/travel/dto/response';
 import { deleteTravelRequest, getTravelSaveListRequest } from 'src/apis/travel';
 import { MyPageTravelBoard, MyPageTravelLike, MyPageTravelSave } from 'src/types/mypage/travel';
 import { MyPageRestaurantBoard, MyPageRestaurantLike, MyPageRestaurantSave } from 'src/types/mypage/restaurant';
 import { GetStaySaveListResponseDto } from 'src/apis/stay/dto/response';
 import { MyPageStayBoard, MyPageStayLike, MyPageStaySave } from 'src/types/mypage/stay';
-import { TravelVote } from 'src/types';
+import { TravelVote, TravelVoteTotal } from 'src/types';
 import { TravelVoteBoard } from 'src/types/mypage/vote';
 import { title } from 'process';
 import { deleteFashionRequest, getFashionSaveListRequest } from 'src/apis/fashion';
 import { deleteRestaurantRequest } from 'src/apis/restaurant';
 import { deleteStayRequest } from 'src/apis/stay';
+import { GetTravelVoteTotalResponseDto } from 'src/apis/vote/travel_vote/dto/response';
+import { useAuthStore } from 'src/stores';
 
 
 const SECTION_PER_PAGE = 5;
@@ -1052,9 +1054,9 @@ function Vote() {
     }
 
     // cafesavesetviewList 상태 업데이트
-    const { VoteTravles } = responseBody as GetMyPageTravelVoteResponseDto;
-    travelvotesetviewList(VoteTravles);
-    console.log(VoteTravles);
+    const { myPageVoteTravels } = responseBody as GetMyPageTravelVoteResponseDto;
+    travelvotesetviewList(myPageVoteTravels);
+    console.log(myPageVoteTravels);
   };
 
   const GetMyPageFashionVoteResponseDto = (responseBody: GetMyPageFashionVoteResponseDto | ResponseDto | null) => {
@@ -1077,8 +1079,12 @@ function Vote() {
   };
 
   const onButtonClickEventHandler = (path: string) => {
+
     navigator(path);
+
   };
+
+  
 
    // state: 여행 게시물 번호 상태 //
   const { travelCafeNumber } = useParams<{ travelCafeNumber: string }>();
@@ -1106,7 +1112,7 @@ function Vote() {
 
 
  // event handler: 게시글 삭제 버튼 클릭 이벤트 처리 //
- const voteDeleteButtonClickHandler = (itemNumber:number, type: string) => {
+  const voteDeleteButtonClickHandler = (itemNumber:number, type: string) => {
   if (window.confirm("정말로 삭제하시겠습니까?")) {
     alert("삭제가 완료되었습니다.");
   } else {
@@ -1132,6 +1138,14 @@ function Vote() {
   const onlikePageClickHandler = (page: number) => {
     writesetCurrentPage(page);
   }
+
+  // const onHashtagClickHandler = (hashtag: string) => {
+  //   if (user === hashtag) {
+  //     setSelectedHashtag('');
+  //     return;
+  //   }
+  //   setSelectedHashtag(hashtag);
+  // }
 
   const onlikePreSectionClickHandler = () => {
     if (writecurrentSection === 1) return;
@@ -1170,15 +1184,12 @@ function Vote() {
           <div key={`${item.type}-${item.id}`} className='contentBox'>
             <div className='directed-writeBox'>{changeDateFormat(item.date)}</div>
             <div className='directed-writeBox2' onClick={() => {
-              const path = item.type === 'cafe' ? `${TRAVEL_CAFE_DETAIL_PATH}/${item.id}` :
-                item.type === 'travel' ? `${TRAVEL_DETAIL_PATH}/${item.id}` :
-                  item.type === 'fashion' ? `${FASHION_DETAIL_PATH}/${item.id}` :
-                    item.type === 'food' ? `${TRAVEL_RESTAURANT_DETAIL_PATH}/${item.id}` :
-                      `${TRAVEL_STAY_DETAIL_PATH}/${item.id}`;
+              const path = item.type === 'travel' ? `${VOTE_PATH}` :
+                      `${VOTEFASHION_PATH}`;
               onButtonClickEventHandler(path);
             }}>{item.title}</div>
             <div className='directed-writeBox3'>
-              <div className='icon-box' onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${item.id}`)}></div>
+              <div className='icon-box0'></div>
             </div>
             <div className='directed-writeBox4'>
               <div className='icon-box2'  onClick={() => voteDeleteButtonClickHandler(item.id, item.type)}></div>
