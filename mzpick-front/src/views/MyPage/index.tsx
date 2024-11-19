@@ -8,7 +8,7 @@ import { GetMyPageUserDetailResponseDto } from 'src/apis/mypage/dto/response/use
 import { getCafeTotalCountRequest, getFashionTotalCountRequest, getFoodTotalCountRequest, getStayTotalCountRequest, getTotalCountRequest } from 'src/apis/pagination';
 import { GetTotalCountResponseDto } from 'src/apis/pagination/response';
 import Pagination1 from 'src/components/Pagination1';
-import { ACCESS_TOKEN, FASHION_ABSOLUTE_DETAIL_PATH, FASHION_ABSOLUTE_UPDATE_PATH, FASHION_DETAIL_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_PATH, VOTEFASHION_PATH, WRITE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, FASHION_ABSOLUTE_DETAIL_PATH, FASHION_ABSOLUTE_UPDATE_PATH, FASHION_DETAIL_PATH, FASHION_UPDATE_PATH, TRAVEL_CAFE_DETAIL_PATH, TRAVEL_CAFE_PATH, TRAVEL_CAFE_UPDATE_PATH, TRAVEL_DETAIL_PATH, TRAVEL_RESTAURANT_DETAIL_PATH, TRAVEL_RESTAURANT_UPDATE_PATH, TRAVEL_STAY_DETAIL_PATH, TRAVEL_STAY_UPDATE_PATH, TRAVEL_UPDATE_PATH, TRAVEL_WRITE_PATH, VOTE_DETAILPATH, VOTE_PATH, VOTEFASHION_PATH, WRITE_PATH } from 'src/constants';
 import BottomNav from 'src/layouts/BottomNav';
 import { MyPageCafeBoard, MyPageCafeLike, MyPageCafeSave } from 'src/types/mypage/cafe';
 import myPageSaveCafes from 'src/types/mypage/cafe/cafe-save.interface';
@@ -958,7 +958,14 @@ function Write() {
               onButtonClickEventHandler(path);
             }}>{item.title}</div>
             <div className='directed-writeBox3'>
-              <div className='icon-box' onClick={() => onButtonClickEventHandler(`${TRAVEL_CAFE_UPDATE_PATH}/${item.id}`)}></div>
+              <div className='icon-box' onClick={() => {
+              const path = item.type === 'cafe' ? `${TRAVEL_CAFE_UPDATE_PATH}/${item.id}` :
+                item.type === 'travel' ? `${TRAVEL_UPDATE_PATH}/${item.id}` :
+                  item.type === 'fashion' ? `${FASHION_UPDATE_PATH}/${item.id}` :
+                    item.type === 'food' ? `${TRAVEL_RESTAURANT_UPDATE_PATH}/${item.id}` :
+                      `${TRAVEL_STAY_UPDATE_PATH}/${item.id}`;
+              onButtonClickEventHandler(path);
+            }}></div>
             </div>
             <div className='directed-writeBox4'>
               <div className='icon-box2'  onClick={() => boardDeleteButtonClickHandler(item.id, item.type)}></div>
@@ -1281,7 +1288,7 @@ export default function MyPageMain() {
       </div>
 
       
-      <div style={{ width: "100%", height: "175px" }}></div>
+      <div style={{ width: "100%", height: "75px" }}></div>
       <BottomNav></BottomNav>
       </div>
   );
